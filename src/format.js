@@ -1,0 +1,186 @@
+// ─────────────────────────────────────────────────────────────
+// Format — Number, cost, duration, and time formatting utilities
+// ─────────────────────────────────────────────────────────────
+
+/**
+ * Format a number with compact notation and adaptive decimal precision.
+ * e.g. 10000000 → "10M", 3500 → "3.5K", 42 → "42"
+ *
+ * @param {number} n
+ * @returns {string}
+ */
+export function formatCompact(n) {
+  if (n == null) return "—";
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(n % 1_000 === 0 ? 0 : 1)}K`;
+  return n.toLocaleString();
+}
+
+/**
+ * Format a number with K/M abbreviation (truncated, no decimals).
+ * @param {number} n
+ * @returns {string}
+ */
+export function formatNumber(n) {
+  if (n === null || n === undefined) return "0";
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(0)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(0)}K`;
+  return n.toLocaleString();
+}
+
+/**
+ * Format a token count as full value with thousands separators.
+ * Unlike formatNumber, this never abbreviates to K/M.
+ * e.g. 1234567 → "1,234,567"
+ *
+ * @param {number} n
+ * @returns {string}
+ */
+export function formatTokenCount(n) {
+  if (n === null || n === undefined || n === 0) return "0";
+  return Number(n).toLocaleString();
+}
+
+/**
+ * Format a USD cost with fixed 5-decimal precision.
+ * @param {number} n
+ * @returns {string}
+ */
+export function formatCost(n) {
+  if (n === null || n === undefined) return "$0.00";
+  return `$${n.toFixed(5)}`;
+}
+
+/**
+ * Format a USD cost with adaptive precision.
+ * Costs < $0.01 show 4 decimals, otherwise 2.
+ * e.g. 0.0034 → "$0.0034", 1.50 → "$1.50"
+ *
+ * @param {number} cost
+ * @returns {string}
+ */
+export function formatCostAdaptive(cost) {
+  if (!cost || cost === 0) return "$0.00";
+  if (cost < 0.01) return `$${cost.toFixed(4)}`;
+  return `$${cost.toFixed(2)}`;
+}
+
+/**
+ * Format an estimated cost as a log-friendly tag string.
+ * Returns `, cost: $0.001234` when cost is available, or empty string otherwise.
+ *
+ * @param {number|null} estimatedCost
+ * @returns {string}
+ */
+export function formatCostTag(estimatedCost) {
+  return estimatedCost !== null ? `, cost: $${estimatedCost.toFixed(6)}` : "";
+}
+
+/**
+ * Format a latency value given in seconds.
+ * e.g. 0.3 → "300ms", 5.2 → "5.2s", 90 → "1.5m"
+ *
+ * @param {number} seconds
+ * @returns {string}
+ */
+export function formatLatency(seconds) {
+  if (seconds === null || seconds === undefined) return "-";
+  if (seconds >= 60) return `${(seconds / 60).toFixed(1)}m`;
+  if (seconds >= 1) return `${seconds.toFixed(1)}s`;
+  return `${Math.round(seconds * 1000)}ms`;
+}
+
+/**
+ * Format a latency value given in milliseconds.
+ * Thin wrapper over formatLatency(seconds).
+ *
+ * @param {number} ms
+ * @returns {string}
+ */
+export function formatLatencyMs(ms) {
+  if (!ms) return "—";
+  return formatLatency(ms / 1000);
+}
+
+/**
+ * Format a duration in milliseconds to a human-readable string.
+ * e.g. 500 → "500ms", 5000 → "5.0s", 90000 → "1m 30s"
+ *
+ * @param {number} ms
+ * @returns {string}
+ */
+export function formatDuration(ms) {
+  if (ms == null) return "—";
+  if (ms < 1000) return `${ms}ms`;
+  if (ms < 60_000) return `${(ms / 1000).toFixed(1)}s`;
+  const mins = Math.floor(ms / 60_000);
+  const secs = Math.floor((ms % 60_000) / 1000);
+  if (mins < 60) return secs > 0 ? `${mins}m ${secs}s` : `${mins}m`;
+  const hrs = Math.floor(mins / 60);
+  const remMins = mins % 60;
+  return remMins > 0 ? `${hrs}h ${remMins}m` : `${hrs}h`;
+}
+
+/**
+ * Format an elapsed duration (in seconds) into a human-readable string.
+ * e.g. 5 → "5s", 65 → "1m 5s", 3665 → "1h 1m"
+ *
+ * @param {number} seconds
+ * @returns {string}
+ */
+export function formatElapsedTime(seconds) {
+  if (seconds == null || seconds <= 0) return "0s";
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  if (h > 0) return m > 0 ? `${h}h ${m}m` : `${h}h`;
+  if (m > 0) return s > 0 ? `${m}m ${s}s` : `${m}m`;
+  return `${s}s`;
+}
+
+/**
+ * Format a byte count as human-readable file size (GB, MB, KB).
+ * @param {number} bytes
+ * @returns {string|null}
+ */
+export function formatFileSize(bytes) {
+  if (!bytes) return null;
+  if (bytes >= 1_073_741_824) return `${(bytes / 1_073_741_824).toFixed(1)} GB`;
+  if (bytes >= 1_048_576) return `${(bytes / 1_048_576).toFixed(1)} MB`;
+  return `${(bytes / 1024).toFixed(0)} KB`;
+}
+
+/**
+ * Format tokens-per-second with consistent precision.
+ * Returns "X.X" or "—" for null/zero values.
+ *
+ * @param {number} value
+ * @returns {string}
+ */
+export function formatTokensPerSec(value) {
+  if (value === null || value === undefined || value === 0) return "—";
+  return `${Number(value).toFixed(1)}`;
+}
+
+/**
+ * Format a context window token count (e.g. 128000 → "128K", 1000000 → "1M").
+ * @param {number} tokens
+ * @returns {string|null}
+ */
+export function formatContextTokens(tokens) {
+  if (!tokens) return null;
+  if (tokens >= 1_000_000)
+    return `${(tokens / 1_000_000).toFixed(tokens % 1_000_000 === 0 ? 0 : 1)}M`;
+  return `${Math.round(tokens / 1000)}K`;
+}
+
+/**
+ * Round a floating-point seconds value to millisecond precision (3 decimals).
+ * Standard precision for all timing metrics stored in the database.
+ *
+ * @param {number} sec
+ * @returns {number}
+ */
+export function roundMs(sec) {
+  return parseFloat(sec.toFixed(3));
+}
