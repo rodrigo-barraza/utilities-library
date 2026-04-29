@@ -9,7 +9,7 @@ Shared JavaScript utility functions used across sun workspace projects. Zero run
 npm install --save @rodrigo-barraza/utilities
 
 # Or via file: protocol (local development):
-# "dependencies": { "@rodrigo-barraza/utilities": "file:../utilities" }
+# "dependencies": { "@rodrigo-barraza/utilities": "file:../utilities-library" }
 ```
 
 ## Usage
