@@ -13,6 +13,7 @@ export {
   formatCost,
   formatCostAdaptive,
   formatCostTag,
+  formatCurrency,
   formatLatency,
   formatLatencyMs,
   formatDuration,
@@ -40,3 +41,6 @@ export { parseIntParam, parsePrice, validateMaxLength } from "./validation.js";
 
 // Crypto — Browser-safe cryptographic utilities
 export { generateUUID } from "./crypto.js";
+
+// Phone — Phone number formatting
+export { formatPhone } from "./phone.js";

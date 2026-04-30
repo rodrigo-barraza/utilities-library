@@ -29,9 +29,13 @@ chunk([1,2,3,4,5], 2);     // [[1,2], [3,4], [5]]
 ### Node.js-only imports (backend services)
 
 ```js
-import { logger, asyncHandler, HealthTracker, createVaultClient } from "@rodrigo-barraza/utilities/node";
+import { logger, createLogger, asyncHandler, HealthTracker, createVaultClient } from "@rodrigo-barraza/utilities/node";
 
-logger.info("Server starting...");
+logger.info("Server starting...");  // [2026-04-29T18:37:24.123Z] INFO  Server starting...
+
+// Or create a scoped logger for your service:
+const log = createLogger("my-service");
+log.info("Ready");  // [2026-04-29T18:37:24.123Z] INFO  [my-service] Ready
 
 const vault = createVaultClient({ localEnvFile: "./.env" });
 const secrets = await vault.fetch();
@@ -59,6 +63,6 @@ router.get("/api/data", asyncHandler(async (req) => {
 
 | Module | Exports |
 |--------|---------|
-| **logger** | `logger` (default), `COLORS` |
+| **logger** | `logger` (default), `createLogger` |
 | **express** | `asyncHandler`, `HealthTracker`, `setupStreamingSSE`, `TokenManager`, `lazyImport` |
 | **vault** | `createVaultClient` |

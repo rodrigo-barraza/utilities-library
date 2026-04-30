@@ -5,8 +5,8 @@
 // and should NOT be imported in browser/client bundles.
 // ─────────────────────────────────────────────────────────────
 
-// Logger — Colorized console logger
-export { default as logger, COLORS } from "./logger.js";
+// Logger — Structured console logger
+export { default as logger, createLogger } from "./logger.js";
 
 // Express — Route handler wrappers and service utilities
 export {

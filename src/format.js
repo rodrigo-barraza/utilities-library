@@ -184,3 +184,21 @@ export function formatContextTokens(tokens) {
 export function roundMs(sec) {
   return parseFloat(sec.toFixed(3));
 }
+
+/**
+ * Format a monetary amount with its currency symbol.
+ * Uses adaptive decimal precision: amounts < 0.01 show 4 decimals, otherwise 2.
+ * Falls back to the raw currency code if the symbol is unknown.
+ *
+ * @param {number} amount - The monetary value
+ * @param {string} [currencyCode="USD"] - ISO 4217 currency code
+ * @returns {string}
+ */
+export function formatCurrency(amount, currencyCode = "USD") {
+  const SYMBOLS = { USD: "$", EUR: "€", GBP: "£", CAD: "CA$", JPY: "¥" };
+  const symbol = SYMBOLS[currencyCode] || `${currencyCode} `;
+  if (amount == null || amount === 0) return `${symbol}0.00`;
+  const abs = Math.abs(amount);
+  const formatted = abs < 0.01 ? abs.toFixed(4) : abs.toFixed(2);
+  return amount < 0 ? `-${symbol}${formatted}` : `${symbol}${formatted}`;
+}
