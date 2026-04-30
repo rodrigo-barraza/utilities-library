@@ -36,7 +36,7 @@
 //
 //   // Resolve a single service URL (with fallback chain)
 //   const toolsUrl = await vault.resolveServiceUrl("tools-service");
-//   // → "http://192.168.86.2:5590" (or localhost fallback)
+//   // → "http://<host>:5590" (or localhost fallback)
 //
 // For local development:
 //   cp .env.example .env
@@ -51,7 +51,7 @@ import { readFileSync, existsSync } from "fs";
 import { resolve } from "path";
 
 // ── Default Configuration ──────────────────────────────────────
-const DEFAULT_VAULT_SERVICE_URL = "http://192.168.86.2:5599";
+const DEFAULT_VAULT_SERVICE_URL = "http://localhost:5599";
 const FETCH_TIMEOUT_MS = 3_000;
 
 /**
@@ -97,7 +97,7 @@ function parseEnvFile(filePath) {
  *
  * @param {object} options
  * @param {string} [options.localEnvFile]      - Project-level .env for local dev overrides (highest priority)
- * @param {string} [options.vaultUrl]          - Vault service URL (default: http://192.168.86.2:5599)
+ * @param {string} [options.vaultUrl]          - Vault service URL (default: http://localhost:5599)
  * @param {string} [options.vaultToken]        - Bearer token for Vault auth
  * @param {string} [options.fallbackEnvFile]   - Path to shared .env file for offline fallback (lowest priority)
  * @param {string[]} [options.keys]            - Specific keys to request from Vault (omit for all)
