@@ -293,15 +293,18 @@ export function createVaultClient(options = {}) {
         return null;
       }
 
+      // Derive the URL env var name from the service ID convention
+      const urlEnv = `${serviceId.toUpperCase().replace(/-/g, "_")}_URL`;
+
       // 1. process.env override
-      if (service.urlEnv && process.env[service.urlEnv]) {
-        return process.env[service.urlEnv];
+      if (process.env[urlEnv]) {
+        return process.env[urlEnv];
       }
 
       // 2. Local .env override
       const local = _localOverrides || {};
-      if (service.urlEnv && local[service.urlEnv]) {
-        return local[service.urlEnv];
+      if (local[urlEnv]) {
+        return local[urlEnv];
       }
 
       // 3. Vault-resolved URL (already enriched by the registry endpoint)
