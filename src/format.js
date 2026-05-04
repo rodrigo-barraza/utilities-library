@@ -187,18 +187,24 @@ export function roundMs(sec) {
 
 /**
  * Format a monetary amount with its currency symbol.
- * Uses adaptive decimal precision: amounts < 0.01 show 4 decimals, otherwise 2.
- * Falls back to the raw currency code if the symbol is unknown.
+ * Uses Intl.NumberFormat to correctly place thousands separators and
+ * applies the symbol for the requested currency.
  *
  * @param {number} amount - The monetary value
  * @param {string} [currencyCode="USD"] - ISO 4217 currency code
  * @returns {string}
  */
 export function formatCurrency(amount, currencyCode = "USD") {
-  const SYMBOLS = { USD: "$", EUR: "€", GBP: "£", CAD: "CA$", JPY: "¥" };
-  const symbol = SYMBOLS[currencyCode] || `${currencyCode} `;
-  if (amount == null || amount === 0) return `${symbol}0.00`;
-  const abs = Math.abs(amount);
-  const formatted = abs < 0.01 ? abs.toFixed(4) : abs.toFixed(2);
-  return amount < 0 ? `-${symbol}${formatted}` : `${symbol}${formatted}`;
+  if (amount == null || amount === 0) {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: currencyCode,
+    }).format(0);
+  }
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currencyCode,
+    minimumFractionDigits: Math.abs(amount) < 0.01 ? 4 : 2,
+    maximumFractionDigits: Math.abs(amount) < 0.01 ? 4 : 2,
+  }).format(amount);
 }

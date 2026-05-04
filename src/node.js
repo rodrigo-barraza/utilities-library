@@ -15,6 +15,7 @@ export {
   setupStreamingSSE,
   TokenManager,
   lazyImport,
+  httpError,
 } from "./express.js";
 
 // Vault — Secret bootstrap client

@@ -125,3 +125,15 @@ export function lazyImport(specifier, extract = (m) => m.default) {
     return cached;
   };
 }
+
+/**
+ * Create an HTTP error with a status code.
+ * @param {number} status - HTTP status code
+ * @param {string} message - Error message
+ * @returns {Error}
+ */
+export function httpError(status, message) {
+  const err = new Error(message);
+  err.status = status;
+  return err;
+}
