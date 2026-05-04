@@ -33,6 +33,20 @@ export { toISODate, timeAgo, daysSinceIso } from "./date.js";
 // Async — Promise-based timing
 export { sleep } from "./async.js";
 
+// Time — Duration constants and converters
+export {
+  MS_PER_SECOND,
+  MS_PER_MINUTE,
+  MS_PER_HOUR,
+  MS_PER_DAY,
+  MS_PER_WEEK,
+  seconds,
+  minutes,
+  hours,
+  days,
+  weeks,
+} from "./time.js";
+
 // Arrays — Array and object manipulation
 export { chunk, shuffleArray, pickRandom, compactPayload } from "./arrays.js";
 
