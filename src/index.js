@@ -26,7 +26,7 @@ export {
 } from "./format.js";
 
 // Text — String manipulation and sanitization
-export { stripHtml, normalizeName, renderToolName, humanizeToolName, truncate, escapeRegex } from "./text.js";
+export { stripHtml, normalizeName, renderToolName, humanizeToolName, truncate, escapeRegex, getRootDomain, getSubdomain } from "./text.js";
 
 // Date — Date formatting and relative time
 export { toISODate, timeAgo, daysSinceIso, formatDateTime } from "./date.js";
@@ -58,7 +58,7 @@ export { deepMerge, pick, omit } from "./objects.js";
 export { clamp } from "./math.js";
 
 // Validation — Input parsing and constraint checking
-export { parseIntParam, parsePrice, validateMaxLength, parseJsonSafe } from "./validation.js";
+export { parseIntParam, parsePrice, validateMaxLength, parseJsonSafe, parseJsonFromLlmResponse } from "./validation.js";
 
 // Crypto — Browser-safe cryptographic utilities
 export { generateUUID } from "./crypto.js";

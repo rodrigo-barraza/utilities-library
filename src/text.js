@@ -94,3 +94,29 @@ export function truncate(str, maxLen = 80, suffix = "…") {
 export function escapeRegex(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
+
+/**
+ * Extract the registrable root domain (domain + TLD) from a FQDN.
+ * e.g. "api.prism.rod.dev" → "rod.dev", "clock-crew.com" → "clock-crew.com"
+ *
+ * @param {string} fqdn
+ * @returns {string}
+ */
+export function getRootDomain(fqdn) {
+  if (!fqdn) return "";
+  const parts = fqdn.split(".");
+  return parts.length <= 2 ? fqdn : parts.slice(-2).join(".");
+}
+
+/**
+ * Extract the subdomain prefix from a FQDN.
+ * e.g. "api.prism.rod.dev" → "api.prism", "rod.dev" → ""
+ *
+ * @param {string} fqdn
+ * @returns {string}
+ */
+export function getSubdomain(fqdn) {
+  if (!fqdn) return "";
+  const parts = fqdn.split(".");
+  return parts.length <= 2 ? "" : parts.slice(0, -2).join(".");
+}

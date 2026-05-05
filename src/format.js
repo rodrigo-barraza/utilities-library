@@ -140,10 +140,22 @@ export function formatElapsedTime(seconds) {
 
 /**
  * Format a byte count as human-readable file size (GB, MB, KB).
+ *
  * @param {number} bytes
+ * @param {object} [options]
+ * @param {boolean} [options.compact=false] - If true, omit space between number and unit ("1.5KB" vs "1.5 KB")
+ *                                           and show "0B" for zero. Matches the style used in request loggers.
  * @returns {string|null}
  */
-export function formatFileSize(bytes) {
+export function formatFileSize(bytes, { compact = false } = {}) {
+  const sp = compact ? "" : " ";
+  if (compact) {
+    if (bytes === 0) return "0B";
+    if (bytes < 1024) return `${bytes}B`;
+    if (bytes < 1_048_576) return `${(bytes / 1024).toFixed(1)}${sp}KB`;
+    if (bytes < 1_073_741_824) return `${(bytes / 1_048_576).toFixed(1)}${sp}MB`;
+    return `${(bytes / 1_073_741_824).toFixed(1)}${sp}GB`;
+  }
   if (!bytes) return null;
   if (bytes >= 1_073_741_824) return `${(bytes / 1_073_741_824).toFixed(1)} GB`;
   if (bytes >= 1_048_576) return `${(bytes / 1_048_576).toFixed(1)} MB`;
