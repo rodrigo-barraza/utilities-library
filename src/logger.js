@@ -11,11 +11,15 @@
 //   // Or with a service name prefix:
 //   import { createLogger } from "@rodrigo-barraza/utilities/node";
 //   const logger = createLogger("prism");
-//   logger.info("Ready");  // → [2026-04-29T18:37:24.123Z] INFO  [prism] Ready
+//   logger.info("Ready");  // → [18:37:24] INFO  [prism] Ready
 // ─────────────────────────────────────────────────────────────
 
 function timestamp() {
-  return new Date().toISOString();
+  const d = new Date();
+  const h = String(d.getHours()).padStart(2, "0");
+  const m = String(d.getMinutes()).padStart(2, "0");
+  const s = String(d.getSeconds()).padStart(2, "0");
+  return `${h}:${m}:${s}`;
 }
 
 /**
