@@ -21,17 +21,18 @@ export {
   formatFileSize,
   formatTokensPerSec,
   formatContextTokens,
+  formatPercent,
   roundMs,
 } from "./format.js";
 
 // Text — String manipulation and sanitization
-export { stripHtml, normalizeName, renderToolName, humanizeToolName } from "./text.js";
+export { stripHtml, normalizeName, renderToolName, humanizeToolName, truncate, escapeRegex } from "./text.js";
 
 // Date — Date formatting and relative time
-export { toISODate, timeAgo, daysSinceIso } from "./date.js";
+export { toISODate, timeAgo, daysSinceIso, formatDateTime } from "./date.js";
 
-// Async — Promise-based timing
-export { sleep } from "./async.js";
+// Async — Promise-based timing and control
+export { sleep, retry, withTimeout } from "./async.js";
 
 // Time — Duration constants and converters
 export {
@@ -47,11 +48,17 @@ export {
   weeks,
 } from "./time.js";
 
-// Arrays — Array and object manipulation
-export { chunk, shuffleArray, pickRandom, compactPayload } from "./arrays.js";
+// Arrays — Array manipulation
+export { chunk, shuffleArray, pickRandom, compactPayload, groupBy, uniqueBy } from "./arrays.js";
+
+// Objects — Plain-object manipulation
+export { deepMerge, pick, omit } from "./objects.js";
+
+// Math — Numeric utilities
+export { clamp } from "./math.js";
 
 // Validation — Input parsing and constraint checking
-export { parseIntParam, parsePrice, validateMaxLength } from "./validation.js";
+export { parseIntParam, parsePrice, validateMaxLength, parseJsonSafe } from "./validation.js";
 
 // Crypto — Browser-safe cryptographic utilities
 export { generateUUID } from "./crypto.js";

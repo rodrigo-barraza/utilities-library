@@ -16,14 +16,18 @@
   "scripts": {
     "lint": "eslint src",
     "format": "prettier --write src",
-    "format:check": "prettier --check src"
+    "format:check": "prettier --check src",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "vitest run"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
     "eslint": "^9",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^16.5.0",
-    "prettier": "^3.8.1"
+    "prettier": "^3.8.1",
+    "vitest": "^4.1.5"
   },
   "repository": {
     "type": "git",

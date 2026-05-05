@@ -45,3 +45,20 @@ export function validateMaxLength(value, maxLength, label) {
   }
   return null;
 }
+
+/**
+ * Safely parse a JSON string, returning a fallback on failure.
+ * Avoids the repetitive `try { JSON.parse(x) } catch { return null }` pattern.
+ *
+ * @param {string} str - JSON string to parse
+ * @param {*} [fallback=null] - Value to return if parsing fails
+ * @returns {*}
+ */
+export function parseJsonSafe(str, fallback = null) {
+  if (!str) return fallback;
+  try {
+    return JSON.parse(str);
+  } catch {
+    return fallback;
+  }
+}

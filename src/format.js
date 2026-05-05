@@ -208,3 +208,16 @@ export function formatCurrency(amount, currencyCode = "USD") {
     maximumFractionDigits: Math.abs(amount) < 0.01 ? 4 : 2,
   }).format(amount);
 }
+
+/**
+ * Format a numeric value as a percentage string.
+ * e.g. 85.456 → "85.5%", null → "—"
+ *
+ * @param {number} value - The percentage value (e.g. 85.5, not 0.855)
+ * @param {number} [decimals=1] - Number of decimal places
+ * @returns {string}
+ */
+export function formatPercent(value, decimals = 1) {
+  if (value == null) return "—";
+  return `${Number(value).toFixed(decimals)}%`;
+}

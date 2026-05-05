@@ -48,3 +48,27 @@ export function timeAgo(date) {
 export function daysSinceIso(isoDate) {
   return Math.max(0, Math.floor((Date.now() - new Date(isoDate).getTime()) / 86_400_000));
 }
+
+/**
+ * Format an ISO timestamp as a compact, human-readable date-time string.
+ * Uses Intl.DateTimeFormat for locale-correct output.
+ * Omits the year when the date is in the current year.
+ *
+ * @param {string|Date} dateInput - ISO date string or Date object
+ * @param {Intl.DateTimeFormatOptions} [opts] - Additional Intl options to merge
+ * @returns {string}
+ */
+export function formatDateTime(dateInput, opts = {}) {
+  if (!dateInput) return "—";
+  const d = dateInput instanceof Date ? dateInput : new Date(dateInput);
+  if (isNaN(d.getTime())) return "—";
+  const sameYear = d.getFullYear() === new Date().getFullYear();
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    ...(sameYear ? {} : { year: "numeric" }),
+    hour: "numeric",
+    minute: "2-digit",
+    ...opts,
+  });
+}

@@ -70,3 +70,27 @@ export function humanizeToolName(name) {
     .replace(/_/g, " ")
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
+
+/**
+ * Truncate a string to a maximum length, appending a suffix.
+ *
+ * @param {string} str - The string to truncate
+ * @param {number} [maxLen=80] - Maximum allowed length (including suffix)
+ * @param {string} [suffix="…"] - Suffix appended when truncated
+ * @returns {string}
+ */
+export function truncate(str, maxLen = 80, suffix = "…") {
+  if (!str || str.length <= maxLen) return str || "";
+  return str.slice(0, maxLen - suffix.length) + suffix;
+}
+
+/**
+ * Escape special RegExp characters in a string so it can be used
+ * as a literal pattern inside `new RegExp(...)`.
+ *
+ * @param {string} str
+ * @returns {string}
+ */
+export function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
