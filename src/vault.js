@@ -52,7 +52,7 @@ import { resolve } from "path";
 
 // ── Default Configuration ──────────────────────────────────────
 const DEFAULT_VAULT_SERVICE_URL = "http://localhost:5599";
-const FETCH_TIMEOUT_MS = 3_000;
+const FETCH_TIMEOUT_MS = 5_000;
 
 /**
  * Parse a .env file into a key-value object.
