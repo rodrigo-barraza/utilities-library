@@ -1,15 +1,19 @@
 # @rodrigo-barraza/utilities
 
-Shared JavaScript utility functions used across sun workspace projects. Zero runtime dependencies, isomorphic design.
+Shared JavaScript utility functions used across Sun ecosystem projects. Zero runtime dependencies, isomorphic design — browser-safe by default with a dedicated Node.js entry point for server-only utilities.
 
-## Install
+## Installation
 
 ```bash
-# In any sun workspace project:
-npm install --save @rodrigo-barraza/utilities
+npm install @rodrigo-barraza/utilities
+```
 
-# Or via file: protocol (local development):
-# "dependencies": { "@rodrigo-barraza/utilities": "file:../utilities-library" }
+## Directory Structure
+
+```
+utilities-library/
+├── src/
+├── tests/
 ```
 
 ## Usage
@@ -45,24 +49,80 @@ router.get("/api/data", asyncHandler(async (req) => {
 }, "Data fetch"));
 ```
 
+### Vault client (dedicated entry point)
+
+```js
+import { createVaultClient } from "@rodrigo-barraza/utilities/vault";
+
+const vault = createVaultClient({
+  localEnvFile: "./.env",
+  fallbackEnvFile: "../vault-service/.env",
+});
+
+const secrets = await vault.fetch();
+const registry = await vault.fetchRegistry();
+const toolsUrl = await vault.resolveServiceUrl("tools-service");
+const mongoUrl = await vault.resolveInfraUrl("mongodb");
+```
+
+## Export Map
+
+```json
+{
+  ".":       "./src/index.js",
+  "./node":  "./src/node.js",
+  "./vault": "./src/vault.js"
+}
+```
+
 ## Modules
 
 ### Isomorphic (`@rodrigo-barraza/utilities`)
 
 | Module | Exports |
 |--------|---------|
-| **format** | `formatCompact`, `formatNumber`, `formatTokenCount`, `formatCost`, `formatCostAdaptive`, `formatCostTag`, `formatLatency`, `formatLatencyMs`, `formatDuration`, `formatElapsedTime`, `formatFileSize`, `formatTokensPerSec`, `formatContextTokens`, `roundMs` |
-| **text** | `stripHtml`, `normalizeName`, `renderToolName`, `humanizeToolName` |
-| **date** | `toISODate`, `timeAgo`, `daysSinceIso` |
-| **async** | `sleep` |
-| **arrays** | `chunk`, `shuffleArray`, `pickRandom`, `compactPayload` |
-| **validation** | `parseIntParam`, `parsePrice`, `validateMaxLength` |
+| **format** | `formatCompact`, `formatNumber`, `formatTokenCount`, `formatCost`, `formatCostAdaptive`, `formatCostTag`, `formatCurrency`, `formatLatency`, `formatLatencyMs`, `formatDuration`, `formatElapsedTime`, `formatFileSize`, `formatTokensPerSec`, `formatContextTokens`, `formatPercent`, `roundMs` |
+| **text** | `stripHtml`, `normalizeName`, `renderToolName`, `humanizeToolName`, `truncate`, `escapeRegex`, `getRootDomain`, `getSubdomain` |
+| **date** | `toISODate`, `timeAgo`, `daysSinceIso`, `formatDateTime` |
+| **async** | `sleep`, `retry`, `withTimeout` |
+| **time** | `MS_PER_SECOND`, `MS_PER_MINUTE`, `MS_PER_HOUR`, `MS_PER_DAY`, `MS_PER_WEEK`, `seconds`, `minutes`, `hours`, `days`, `weeks` |
+| **arrays** | `chunk`, `shuffleArray`, `pickRandom`, `compactPayload`, `groupBy`, `uniqueBy` |
+| **objects** | `deepMerge`, `pick`, `omit` |
+| **math** | `clamp` |
+| **validation** | `parseIntParam`, `parsePrice`, `validateMaxLength`, `parseJsonSafe`, `parseJsonFromLlmResponse` |
 | **crypto** | `generateUUID` |
+| **phone** | `formatPhone` |
 
 ### Node-only (`@rodrigo-barraza/utilities/node`)
 
 | Module | Exports |
 |--------|---------|
-| **logger** | `logger` (default), `createLogger` |
-| **express** | `asyncHandler`, `HealthTracker`, `setupStreamingSSE`, `TokenManager`, `lazyImport` |
-| **vault** | `createVaultClient` |
+| **logger** | `logger` (default instance), `createLogger` (scoped) |
+| **express** | `asyncHandler`, `HealthTracker`, `setupStreamingSSE`, `TokenManager`, `lazyImport`, `httpError` |
+
+### Vault (`@rodrigo-barraza/utilities/vault`)
+
+| Export | Description |
+|--------|-------------|
+| `createVaultClient` | Secret + registry bootstrap client with 4-layer resolution: `process.env` → local `.env` → Vault service → fallback `.env` |
+
+#### Vault Client Methods
+
+| Method | Description |
+|--------|-------------|
+| `vault.fetch()` | Fetch and merge secrets from all sources |
+| `vault.fetchRegistry()` | Fetch the full infrastructure registry (services + infrastructure with resolved URLs) |
+| `vault.resolveServiceUrl(id)` | Resolve a single service URL by its ID through the precedence chain |
+| `vault.resolveInfraUrl(id)` | Resolve a single infrastructure URL by its ID |
+| `vault.clearRegistryCache()` | Invalidate the cached registry |
+
+## Testing
+
+```bash
+npm test           # Run all tests (Vitest)
+npm run test:watch # Watch mode
+```
+
+## License
+
+MIT
