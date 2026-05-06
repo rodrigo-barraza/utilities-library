@@ -5,11 +5,11 @@
 // No colors — designed for clean, uniform, grep-friendly output.
 //
 // Usage:
-//   import { logger } from "@rodrigo-barraza/utilities/node";
+//   import { logger } from "@rodrigo-barraza/utilities-library/node";
 //   logger.info("Server started");
 //
 //   // Or with a service name prefix:
-//   import { createLogger } from "@rodrigo-barraza/utilities/node";
+//   import { createLogger } from "@rodrigo-barraza/utilities-library/node";
 //   const logger = createLogger("prism");
 //   logger.info("Ready");  // → [18:37:24] INFO  [prism] Ready
 // ─────────────────────────────────────────────────────────────

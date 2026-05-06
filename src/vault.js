@@ -19,7 +19,7 @@
 //
 // Usage (in any service's boot.js):
 //
-//   import { createVaultClient } from "@rodrigo-barraza/utilities/vault";
+//   import { createVaultClient } from "@rodrigo-barraza/utilities-library/vault";
 //
 //   const vault = createVaultClient({
 //     localEnvFile: "./.env",               // project-level overrides

@@ -1,8 +1,8 @@
 // ─────────────────────────────────────────────────────────────
-// @rodrigo-barraza/utilities — Isomorphic entry point
+// @rodrigo-barraza/utilities-library — Isomorphic entry point
 // ─────────────────────────────────────────────────────────────
 // Browser-safe utilities. No Node.js APIs (fs, crypto, process).
-// For Node-only utilities, import from "@rodrigo-barraza/utilities/node".
+// For Node-only utilities, import from "@rodrigo-barraza/utilities-library/node".
 // ─────────────────────────────────────────────────────────────
 
 // Format — Number, cost, duration, and time formatting

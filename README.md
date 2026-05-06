@@ -1,11 +1,11 @@
-# @rodrigo-barraza/utilities
+# @rodrigo-barraza/utilities-library
 
 Shared JavaScript utility functions used across Sun ecosystem projects. Zero runtime dependencies, isomorphic design — browser-safe by default with a dedicated Node.js entry point for server-only utilities.
 
 ## Installation
 
 ```bash
-npm install @rodrigo-barraza/utilities
+npm install @rodrigo-barraza/utilities-library
 ```
 
 ## Directory Structure
@@ -21,7 +21,7 @@ utilities-library/
 ### Browser-safe imports (works everywhere)
 
 ```js
-import { sleep, formatCompact, stripHtml, timeAgo, chunk } from "@rodrigo-barraza/utilities";
+import { sleep, formatCompact, stripHtml, timeAgo, chunk } from "@rodrigo-barraza/utilities-library";
 
 await sleep(1000);
 formatCompact(3500);       // "3.5K"
@@ -33,7 +33,7 @@ chunk([1,2,3,4,5], 2);     // [[1,2], [3,4], [5]]
 ### Node.js-only imports (backend services)
 
 ```js
-import { logger, createLogger, asyncHandler, HealthTracker, createVaultClient } from "@rodrigo-barraza/utilities/node";
+import { logger, createLogger, asyncHandler, HealthTracker, createVaultClient } from "@rodrigo-barraza/utilities-library/node";
 
 logger.info("Server starting...");  // [2026-04-29T18:37:24.123Z] INFO  Server starting...
 
@@ -52,7 +52,7 @@ router.get("/api/data", asyncHandler(async (req) => {
 ### Vault client (dedicated entry point)
 
 ```js
-import { createVaultClient } from "@rodrigo-barraza/utilities/vault";
+import { createVaultClient } from "@rodrigo-barraza/utilities-library/vault";
 
 const vault = createVaultClient({
   localEnvFile: "./.env",
@@ -77,7 +77,7 @@ const mongoUrl = await vault.resolveInfraUrl("mongodb");
 
 ## Modules
 
-### Isomorphic (`@rodrigo-barraza/utilities`)
+### Isomorphic (`@rodrigo-barraza/utilities-library`)
 
 | Module | Exports |
 |--------|---------|
@@ -93,14 +93,14 @@ const mongoUrl = await vault.resolveInfraUrl("mongodb");
 | **crypto** | `generateUUID` |
 | **phone** | `formatPhone` |
 
-### Node-only (`@rodrigo-barraza/utilities/node`)
+### Node-only (`@rodrigo-barraza/utilities-library/node`)
 
 | Module | Exports |
 |--------|---------|
 | **logger** | `logger` (default instance), `createLogger` (scoped) |
 | **express** | `asyncHandler`, `HealthTracker`, `setupStreamingSSE`, `TokenManager`, `lazyImport`, `httpError` |
 
-### Vault (`@rodrigo-barraza/utilities/vault`)
+### Vault (`@rodrigo-barraza/utilities-library/vault`)
 
 | Export | Description |
 |--------|-------------|

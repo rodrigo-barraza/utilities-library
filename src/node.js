@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────
-// @rodrigo-barraza/utilities/node — Node.js-only entry point
+// @rodrigo-barraza/utilities-library/node — Node.js-only entry point
 // ─────────────────────────────────────────────────────────────
 // These utilities require Node.js APIs (fs, process, etc.)
 // and should NOT be imported in browser/client bundles.
