@@ -73,11 +73,69 @@ export function parseJsonSafe(str, fallback = null) {
 export function parseJsonFromLlmResponse(text) {
   if (!text) return null;
   let jsonText = text.trim();
+
+  // 1. Try extracting from ```json ... ``` fences
   const jsonMatch = jsonText.match(/```(?:json)?\s*([\s\S]*?)```/);
   if (jsonMatch) jsonText = jsonMatch[1].trim();
+
+  // 2. Try direct parse (works for clean JSON or fence-extracted)
   try {
     return JSON.parse(jsonText);
   } catch {
-    return null;
+    // continue to fallback strategies
   }
+
+  // 3. Fallback: extract first top-level JSON object via brace matching
+  const objStart = jsonText.indexOf("{");
+  if (objStart !== -1) {
+    let depth = 0;
+    let inString = false;
+    let escape = false;
+    for (let i = objStart; i < jsonText.length; i++) {
+      const ch = jsonText[i];
+      if (escape) { escape = false; continue; }
+      if (ch === "\\") { escape = true; continue; }
+      if (ch === '"') { inString = !inString; continue; }
+      if (inString) continue;
+      if (ch === "{") depth++;
+      else if (ch === "}") {
+        depth--;
+        if (depth === 0) {
+          try {
+            return JSON.parse(jsonText.slice(objStart, i + 1));
+          } catch {
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  // 4. Fallback: extract first top-level JSON array via bracket matching
+  const arrStart = jsonText.indexOf("[");
+  if (arrStart !== -1) {
+    let depth = 0;
+    let inString = false;
+    let escape = false;
+    for (let i = arrStart; i < jsonText.length; i++) {
+      const ch = jsonText[i];
+      if (escape) { escape = false; continue; }
+      if (ch === "\\") { escape = true; continue; }
+      if (ch === '"') { inString = !inString; continue; }
+      if (inString) continue;
+      if (ch === "[") depth++;
+      else if (ch === "]") {
+        depth--;
+        if (depth === 0) {
+          try {
+            return JSON.parse(jsonText.slice(arrStart, i + 1));
+          } catch {
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  return null;
 }
