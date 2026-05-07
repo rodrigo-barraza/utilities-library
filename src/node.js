@@ -16,7 +16,7 @@ export {
   TokenManager,
   lazyImport,
   httpError,
-  createServiceApp,
+  createRequestLoggerMiddleware,
 } from "./express.js";
 
 // Vault — Secret bootstrap client
