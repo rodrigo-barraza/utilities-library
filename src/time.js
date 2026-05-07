@@ -14,6 +14,9 @@ export const MS_PER_HOUR = 3_600_000;
 /** One day in milliseconds. */
 export const MS_PER_DAY = 86_400_000;
 
+/** One day in seconds. */
+export const SECONDS_PER_DAY = 86_400;
+
 /** One week in milliseconds. */
 export const MS_PER_WEEK = 604_800_000;
 

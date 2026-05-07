@@ -46,7 +46,10 @@ export function timeAgo(date) {
  * @returns {number} Non-negative integer days
  */
 export function daysSinceIso(isoDate) {
-  return Math.max(0, Math.floor((Date.now() - new Date(isoDate).getTime()) / 86_400_000));
+  return Math.max(
+    0,
+    Math.floor((Date.now() - new Date(isoDate).getTime()) / 86_400_000),
+  );
 }
 
 /**
@@ -71,4 +74,30 @@ export function formatDateTime(dateInput, opts = {}) {
     minute: "2-digit",
     ...opts,
   });
+}
+
+/**
+ * Return a new Date that is `n` days in the past from now.
+ *
+ * @param {number} n - Number of days ago
+ * @returns {Date}
+ */
+export function daysAgo(n) {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return d;
+}
+
+/**
+ * Format a Date as a local-time date string (YYYY-MM-DD).
+ * Unlike `toISODate()`, this uses the local timezone rather than UTC.
+ *
+ * @param {Date} [date=new Date()] - The date to format
+ * @returns {string}
+ */
+export function toLocalDateString(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 }

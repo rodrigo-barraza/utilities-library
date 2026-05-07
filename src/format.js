@@ -11,7 +11,8 @@
  */
 export function formatCompact(n) {
   if (n == null) return "—";
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M`;
+  if (n >= 1_000_000)
+    return `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M`;
   if (n >= 1_000) return `${(n / 1_000).toFixed(n % 1_000 === 0 ? 0 : 1)}K`;
   return n.toLocaleString();
 }
@@ -153,7 +154,8 @@ export function formatFileSize(bytes, { compact = false } = {}) {
     if (bytes === 0) return "0B";
     if (bytes < 1024) return `${bytes}B`;
     if (bytes < 1_048_576) return `${(bytes / 1024).toFixed(1)}${sp}KB`;
-    if (bytes < 1_073_741_824) return `${(bytes / 1_048_576).toFixed(1)}${sp}MB`;
+    if (bytes < 1_073_741_824)
+      return `${(bytes / 1_048_576).toFixed(1)}${sp}MB`;
     return `${(bytes / 1_073_741_824).toFixed(1)}${sp}GB`;
   }
   if (!bytes) return null;

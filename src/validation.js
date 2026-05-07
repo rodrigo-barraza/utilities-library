@@ -93,9 +93,18 @@ export function parseJsonFromLlmResponse(text) {
     let escape = false;
     for (let i = objStart; i < jsonText.length; i++) {
       const ch = jsonText[i];
-      if (escape) { escape = false; continue; }
-      if (ch === "\\") { escape = true; continue; }
-      if (ch === '"') { inString = !inString; continue; }
+      if (escape) {
+        escape = false;
+        continue;
+      }
+      if (ch === "\\") {
+        escape = true;
+        continue;
+      }
+      if (ch === '"') {
+        inString = !inString;
+        continue;
+      }
       if (inString) continue;
       if (ch === "{") depth++;
       else if (ch === "}") {
@@ -119,9 +128,18 @@ export function parseJsonFromLlmResponse(text) {
     let escape = false;
     for (let i = arrStart; i < jsonText.length; i++) {
       const ch = jsonText[i];
-      if (escape) { escape = false; continue; }
-      if (ch === "\\") { escape = true; continue; }
-      if (ch === '"') { inString = !inString; continue; }
+      if (escape) {
+        escape = false;
+        continue;
+      }
+      if (ch === "\\") {
+        escape = true;
+        continue;
+      }
+      if (ch === '"') {
+        inString = !inString;
+        continue;
+      }
       if (inString) continue;
       if (ch === "[") depth++;
       else if (ch === "]") {

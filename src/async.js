@@ -21,7 +21,10 @@ export function sleep(ms) {
  * @param {number} [options.backoff=2] - Multiplier applied to the delay after each retry
  * @returns {Promise<*>}
  */
-export async function retry(fn, { retries = 3, delay = 1000, backoff = 2 } = {}) {
+export async function retry(
+  fn,
+  { retries = 3, delay = 1000, backoff = 2 } = {},
+) {
   for (let attempt = 0; ; attempt++) {
     try {
       return await fn(attempt);

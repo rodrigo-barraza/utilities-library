@@ -15,9 +15,13 @@
  */
 export function asyncHandler(fn, label, errorStatusOrOpts = 502) {
   const errorStatus =
-    typeof errorStatusOrOpts === "number" ? errorStatusOrOpts : (errorStatusOrOpts.errorStatus || 502);
+    typeof errorStatusOrOpts === "number"
+      ? errorStatusOrOpts
+      : errorStatusOrOpts.errorStatus || 502;
   const health =
-    typeof errorStatusOrOpts === "object" ? errorStatusOrOpts.health : undefined;
+    typeof errorStatusOrOpts === "object"
+      ? errorStatusOrOpts.health
+      : undefined;
   return async (req, res) => {
     try {
       const result = await fn(req, res);
@@ -25,7 +29,9 @@ export function asyncHandler(fn, label, errorStatusOrOpts = 502) {
       if (result !== undefined) res.json(result);
     } catch (err) {
       if (health) health.markError(err);
-      res.status(errorStatus).json({ error: `${label} failed: ${err.message}` });
+      res
+        .status(errorStatus)
+        .json({ error: `${label} failed: ${err.message}` });
     }
   };
 }
@@ -136,4 +142,36 @@ export function httpError(status, message) {
   const err = new Error(message);
   err.status = status;
   return err;
+}
+
+/**
+ * Standard request logger middleware — logs method, path, status, timing, and size.
+ * Used by services that only need console-based request logging (no MongoDB persistence).
+ * Requires a logger instance with a `.request()` method from `createLogger()`.
+ *
+ * @param {object} logger - Logger instance from `createLogger()`
+ * @returns {Function} Express middleware
+ */
+export function createRequestLoggerMiddleware(logger) {
+  return function requestLoggerMiddleware(req, res, next) {
+    const start = Date.now();
+
+    // Capture the original end to log after response
+    const originalEnd = res.end;
+    let size = 0;
+
+    res.end = function (chunk, ...args) {
+      if (chunk) size += Buffer.byteLength(chunk);
+      const timing = `${Date.now() - start}ms`;
+      const sizeTag = size > 1024
+        ? `${(size / 1024).toFixed(1)}KB`
+        : `${size}B`;
+
+      logger.request(req.method, req.originalUrl || req.url, res.statusCode, timing, sizeTag);
+
+      return originalEnd.call(this, chunk, ...args);
+    };
+
+    next();
+  };
 }

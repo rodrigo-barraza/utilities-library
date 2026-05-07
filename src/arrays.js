@@ -50,7 +50,9 @@ export function pickRandom(array) {
  */
 export function compactPayload(obj) {
   return Object.fromEntries(
-    Object.entries(obj).filter(([, value]) => value !== null && value !== undefined),
+    Object.entries(obj).filter(
+      ([, value]) => value !== null && value !== undefined,
+    ),
   );
 }
 

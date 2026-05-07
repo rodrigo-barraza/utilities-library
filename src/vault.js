@@ -161,7 +161,9 @@ export function createVaultClient(options = {}) {
         if (local) {
           Object.assign(merged, local);
           _localOverrides = local;
-          console.warn(`📋 Local .env → loaded ${Object.keys(local).length} overrides`);
+          console.warn(
+            `📋 Local .env → loaded ${Object.keys(local).length} overrides`,
+          );
         }
       }
 
@@ -197,7 +199,9 @@ export function createVaultClient(options = {}) {
             }
           }
 
-          console.warn(`🔐 Vault → loaded ${Object.keys(secrets).length} secrets`);
+          console.warn(
+            `🔐 Vault → loaded ${Object.keys(secrets).length} secrets`,
+          );
         } catch (err) {
           console.warn(`⚠️  Vault unreachable (${err.message})`);
         }
@@ -228,7 +232,6 @@ export function createVaultClient(options = {}) {
 
       return merged;
     },
-
 
     /**
      * Fetch the full infrastructure registry from the Vault service.
@@ -263,14 +266,15 @@ export function createVaultClient(options = {}) {
         }
 
         _cachedRegistry = await res.json();
-        console.warn(`📋 Registry → ${_cachedRegistry.services?.length || 0} services, ${_cachedRegistry.infrastructure?.length || 0} infrastructure`);
+        console.warn(
+          `📋 Registry → ${_cachedRegistry.services?.length || 0} services, ${_cachedRegistry.infrastructure?.length || 0} infrastructure`,
+        );
         return _cachedRegistry;
       } catch (err) {
         console.warn(`⚠️  Registry unreachable (${err.message})`);
         return { version: 0, services: [], infrastructure: [] };
       }
     },
-
 
     /**
      * Resolve a single service URL by its ID.
@@ -320,7 +324,6 @@ export function createVaultClient(options = {}) {
       return null;
     },
 
-
     /**
      * Resolve a single infrastructure URL by its ID.
      *
@@ -329,7 +332,9 @@ export function createVaultClient(options = {}) {
      */
     async resolveInfraUrl(infraId) {
       const registry = await this.fetchRegistry();
-      const infra = (registry.infrastructure || []).find((i) => i.id === infraId);
+      const infra = (registry.infrastructure || []).find(
+        (i) => i.id === infraId,
+      );
 
       if (!infra) {
         console.warn(`⚠️  Infrastructure "${infraId}" not found in registry`);
@@ -355,7 +360,6 @@ export function createVaultClient(options = {}) {
       return null;
     },
 
-
     /**
      * Clear the cached registry, forcing the next fetchRegistry() to
      * re-fetch from the Vault service.
@@ -364,4 +368,27 @@ export function createVaultClient(options = {}) {
       _cachedRegistry = null;
     },
   };
+}
+
+/**
+ * Helper to bootstrap environment variables from Vault.
+ * Replaces the boilerplate boot.js sequence in services.
+ * 
+ * @param {object} [options]
+ * @param {string} [options.localEnvFile="./.env"]
+ * @param {string} [options.fallbackEnvFile="../vault-service/.env"]
+ */
+export async function bootstrapEnv(options = {}) {
+  const vault = createVaultClient({
+    localEnvFile: options.localEnvFile || "./.env",
+    fallbackEnvFile: options.fallbackEnvFile || "../vault-service/.env",
+  });
+
+  const secrets = await vault.fetch();
+
+  for (const [key, value] of Object.entries(secrets)) {
+    if (process.env[key] === undefined) {
+      process.env[key] = value;
+    }
+  }
 }

@@ -8,7 +8,11 @@
   "exports": {
     ".": "./src/index.js",
     "./node": "./src/node.js",
-    "./vault": "./src/vault.js"
+    "./vault": "./src/vault.js",
+    "./mongo": "./src/mongo.js",
+    "./eslint": "./src/config/eslint.js",
+    "./vitest": "./src/config/vitest.js",
+    "./express": "./src/express.js"
   },
   "files": [
     "src"
@@ -42,5 +46,8 @@
   "license": "MIT",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "mongodb": "^7.2.0"
   }
 }

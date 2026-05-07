@@ -12,7 +12,10 @@
  * @returns {string}
  */
 export function generateUUID() {
-  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+  if (
+    typeof crypto !== "undefined" &&
+    typeof crypto.randomUUID === "function"
+  ) {
     return crypto.randomUUID();
   }
   // Fallback: construct UUID v4 from getRandomValues (available in insecure contexts)
