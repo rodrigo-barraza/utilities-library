@@ -82,13 +82,13 @@ const mongoUrl = await vault.resolveInfraUrl("mongodb");
 | Module | Exports |
 |--------|---------|
 | **format** | `formatCompact`, `formatNumber`, `formatTokenCount`, `formatCost`, `formatCostAdaptive`, `formatCostTag`, `formatCurrency`, `formatLatency`, `formatLatencyMs`, `formatDuration`, `formatElapsedTime`, `formatFileSize`, `formatTokensPerSec`, `formatContextTokens`, `formatPercent`, `roundMs` |
-| **text** | `stripHtml`, `normalizeName`, `renderToolName`, `humanizeToolName`, `truncate`, `escapeRegex`, `getRootDomain`, `getSubdomain` |
+| **text** | `stripHtml`, `normalizeName`, `renderToolName`, `humanizeToolName`, `truncate`, `escapeRegex`, `getRootDomain`, `getSubdomain`, `capitalize` |
 | **date** | `toISODate`, `timeAgo`, `daysSinceIso`, `formatDateTime` |
-| **async** | `sleep`, `retry`, `withTimeout` |
+| **async** | `sleep`, `retry`, `withTimeout`, `fetchWithTimeout` |
 | **time** | `MS_PER_SECOND`, `MS_PER_MINUTE`, `MS_PER_HOUR`, `MS_PER_DAY`, `MS_PER_WEEK`, `seconds`, `minutes`, `hours`, `days`, `weeks` |
 | **arrays** | `chunk`, `shuffleArray`, `pickRandom`, `compactPayload`, `groupBy`, `uniqueBy` |
 | **objects** | `deepMerge`, `pick`, `omit` |
-| **math** | `clamp` |
+| **math** | `clamp`, `roundCents`, `randomInt`, `cosineSimilarity` |
 | **validation** | `parseIntParam`, `parsePrice`, `validateMaxLength`, `parseJsonSafe`, `parseJsonFromLlmResponse` |
 | **crypto** | `generateUUID` |
 | **phone** | `formatPhone` |

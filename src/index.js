@@ -35,13 +35,14 @@ export {
   escapeRegex,
   getRootDomain,
   getSubdomain,
+  capitalize,
 } from "./text.js";
 
 // Date — Date formatting and relative time
 export { toISODate, timeAgo, daysSinceIso, formatDateTime, daysAgo, toLocalDateString } from "./date.js";
 
 // Async — Promise-based timing and control
-export { sleep, retry, withTimeout } from "./async.js";
+export { sleep, retry, withTimeout, fetchWithTimeout } from "./async.js";
 
 // Time — Duration constants and converters
 export {
@@ -72,7 +73,7 @@ export {
 export { deepMerge, pick, omit } from "./objects.js";
 
 // Math — Numeric utilities
-export { clamp } from "./math.js";
+export { clamp, roundCents, randomInt, cosineSimilarity } from "./math.js";
 
 // Validation — Input parsing and constraint checking
 export {

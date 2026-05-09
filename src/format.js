@@ -124,19 +124,15 @@ export function formatDuration(ms) {
 
 /**
  * Format an elapsed duration (in seconds) into a human-readable string.
- * e.g. 5 → "5s", 65 → "1m 5s", 3665 → "1h 1m"
+ * Delegates to `formatDuration(ms)` internally.
+ * e.g. 5 → "5.0s", 65 → "1m 5s", 3665 → "1h 1m"
  *
  * @param {number} seconds
  * @returns {string}
  */
 export function formatElapsedTime(seconds) {
   if (seconds == null || seconds <= 0) return "0s";
-  const h = Math.floor(seconds / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  const s = Math.floor(seconds % 60);
-  if (h > 0) return m > 0 ? `${h}h ${m}m` : `${h}h`;
-  if (m > 0) return s > 0 ? `${m}m ${s}s` : `${m}m`;
-  return `${s}s`;
+  return formatDuration(seconds * 1000);
 }
 
 /**
@@ -178,14 +174,13 @@ export function formatTokensPerSec(value) {
 
 /**
  * Format a context window token count (e.g. 128000 → "128K", 1000000 → "1M").
+ * Delegates to `formatCompact` with truncated decimals.
  * @param {number} tokens
  * @returns {string|null}
  */
 export function formatContextTokens(tokens) {
   if (!tokens) return null;
-  if (tokens >= 1_000_000)
-    return `${(tokens / 1_000_000).toFixed(tokens % 1_000_000 === 0 ? 0 : 1)}M`;
-  return `${Math.round(tokens / 1000)}K`;
+  return formatCompact(tokens);
 }
 
 /**

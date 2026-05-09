@@ -35,3 +35,15 @@ export function getDB() {
 export function setDBForTesting(mockDb) {
   db = mockDb;
 }
+
+/**
+ * Close the MongoDB connection and reset the singleton.
+ * Use in test teardown to prevent leaked connections.
+ */
+export async function disconnectDB() {
+  if (client) {
+    await client.close();
+    client = null;
+    db = null;
+  }
+}

@@ -120,3 +120,15 @@ export function getSubdomain(fqdn) {
   const parts = fqdn.split(".");
   return parts.length <= 2 ? "" : parts.slice(0, -2).join(".");
 }
+
+/**
+ * Capitalize the first character of a string.
+ * e.g. "hello" → "Hello", "HELLO" → "HELLO"
+ *
+ * @param {string} str
+ * @returns {string}
+ */
+export function capitalize(str) {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

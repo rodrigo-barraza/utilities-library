@@ -45,10 +45,32 @@ export async function retry(
  * @returns {Promise<*>}
  */
 export function withTimeout(promise, ms, message = "Operation timed out") {
+  let timer;
   return Promise.race([
-    promise,
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error(message)), ms),
-    ),
+    promise.finally(() => clearTimeout(timer)),
+    new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error(message)), ms);
+    }),
   ]);
+}
+
+/**
+ * Fetch a URL with an automatic timeout.
+ * Returns parsed JSON on success, or `fallback` on failure/timeout.
+ *
+ * @param {string} url - URL to fetch
+ * @param {number} [timeoutMs=5000] - Timeout in milliseconds
+ * @param {*} [fallback=null] - Value to return on failure
+ * @returns {Promise<*>}
+ */
+export async function fetchWithTimeout(url, timeoutMs = 5000, fallback = null) {
+  try {
+    const res = await fetch(url, {
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+    if (!res.ok) return fallback;
+    return await res.json();
+  } catch {
+    return fallback;
+  }
 }
