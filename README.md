@@ -111,7 +111,7 @@ const mongoUrl = await vault.resolveInfraUrl("mongodb");
 | Method | Description |
 |--------|-------------|
 | `vault.fetch()` | Fetch and merge secrets from all sources |
-| `vault.fetchRegistry()` | Fetch the full infrastructure registry (services + infrastructure with resolved URLs) |
+| `vault.fetchRegistry()` | Fetch the full infrastructure registry (projects + infrastructure with resolved URLs) |
 | `vault.resolveServiceUrl(id)` | Resolve a single service URL by its ID through the precedence chain |
 | `vault.resolveInfraUrl(id)` | Resolve a single infrastructure URL by its ID |
 | `vault.clearRegistryCache()` | Invalidate the cached registry |

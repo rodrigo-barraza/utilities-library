@@ -3,7 +3,7 @@
 // ============================================================
 // Fetches secrets and infrastructure config from the Vault
 // service, which serves as the single source of truth for
-// both secrets and service topology.
+// both secrets and project topology.
 //
 // Resolution order for secrets (first wins per key):
 //   1. process.env (manual env vars, Docker --env)
@@ -31,7 +31,7 @@
 //
 //   // Fetch the full infrastructure registry
 //   const registry = await vault.fetchRegistry();
-//   // registry.services        → [{id, label, port, url, ...}, ...]
+//   // registry.projects        → [{id, label, port, url, ...}, ...]
 //   // registry.infrastructure  → [{id, label, type, url, ...}, ...]
 //
 //   // Resolve a single service URL (with fallback chain)
@@ -237,7 +237,7 @@ export function createVaultClient(options = {}) {
      * Fetch the full infrastructure registry from the Vault service.
      *
      * Returns an object with:
-     *   - services[]        — enriched with resolved URLs
+     *   - projects[]        — enriched with resolved URLs
      *   - infrastructure[]  — enriched with resolved URLs
      *   - version           — manifest schema version
      *
@@ -250,7 +250,7 @@ export function createVaultClient(options = {}) {
 
       if (!_vaultToken) {
         console.warn("⚠️  No VAULT_SERVICE_TOKEN set — cannot fetch registry");
-        return { version: 0, services: [], infrastructure: [] };
+        return { version: 0, projects: [], infrastructure: [] };
       }
 
       try {
@@ -267,12 +267,12 @@ export function createVaultClient(options = {}) {
 
         _cachedRegistry = await res.json();
         console.warn(
-          `📋 Registry → ${_cachedRegistry.services?.length || 0} services, ${_cachedRegistry.infrastructure?.length || 0} infrastructure`,
+          `📋 Registry → ${_cachedRegistry.projects?.length || 0} projects, ${_cachedRegistry.infrastructure?.length || 0} infrastructure`,
         );
         return _cachedRegistry;
       } catch (err) {
         console.warn(`⚠️  Registry unreachable (${err.message})`);
-        return { version: 0, services: [], infrastructure: [] };
+        return { version: 0, projects: [], infrastructure: [] };
       }
     },
 
@@ -290,7 +290,7 @@ export function createVaultClient(options = {}) {
      */
     async resolveServiceUrl(serviceId) {
       const registry = await this.fetchRegistry();
-      const service = (registry.services || []).find((s) => s.id === serviceId);
+      const service = (registry.projects || []).find((s) => s.id === serviceId);
 
       if (!service) {
         console.warn(`⚠️  Service "${serviceId}" not found in registry`);
