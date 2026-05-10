@@ -54,3 +54,21 @@ export const days = (n) => n * MS_PER_DAY;
  * @returns {number}
  */
 export const weeks = (n) => n * MS_PER_WEEK;
+
+// ── Polling Interval Tiers ──────────────────────────────────
+// Standardized intervals for UI polling across all clients.
+
+/** 3 s — Live status, benchmarks, worker panels. */
+export const POLL_FAST = 3_000;
+
+/** 5 s — Default table/list polling (containers, conversations). */
+export const POLL_STANDARD = 5_000;
+
+/** 15 s — Model lists, analytics, moderate-frequency data. */
+export const POLL_MODERATE = 15_000;
+
+/** 30 s — Health checks, background probes. */
+export const POLL_SLOW = 30_000;
+
+/** 60 s — Dashboard-level refreshes. */
+export const POLL_LAZY = 60_000;

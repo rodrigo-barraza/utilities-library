@@ -161,6 +161,27 @@ export function formatFileSize(bytes, { compact = false } = {}) {
 }
 
 /**
+ * Format bytes with adaptive decimal precision.
+ * Uses the common Math.log/Math.pow approach with dynamic rounding:
+ *   - < 10 units  → 2 decimals  (e.g. "3.25 GB")
+ *   - < 100 units → 1 decimal   (e.g. "34.5 MB")
+ *   - >= 100      → integer     (e.g. "512 KB")
+ *
+ * Supports B, KB, MB, GB, TB. Returns "0 B" for zero/falsy values.
+ * Preferred over `formatFileSize` for infrastructure/system metrics.
+ *
+ * @param {number} bytes
+ * @returns {string}
+ */
+export function formatBytes(bytes) {
+  if (!bytes || bytes === 0) return "0 B";
+  const units = ["B", "KB", "MB", "GB", "TB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  const val = bytes / Math.pow(1024, i);
+  return `${val < 10 ? val.toFixed(2) : val < 100 ? val.toFixed(1) : Math.round(val)} ${units[i]}`;
+}
+
+/**
  * Format tokens-per-second with consistent precision.
  * Returns "X.X" or "—" for null/zero values.
  *
@@ -222,11 +243,23 @@ export function formatCurrency(amount, currencyCode = "USD") {
  * Format a numeric value as a percentage string.
  * e.g. 85.456 → "85.5%", null → "—"
  *
+ * When `decimals` is `"adaptive"`, uses dynamic precision:
+ *   - < 0.01  → "0%"
+ *   - < 1     → 2 decimals  ("0.42%")
+ *   - < 10    → 1 decimal   ("3.5%")
+ *   - >= 10   → integer     ("85%")
+ *
  * @param {number} value - The percentage value (e.g. 85.5, not 0.855)
- * @param {number} [decimals=1] - Number of decimal places
+ * @param {number|"adaptive"} [decimals=1] - Number of decimal places, or "adaptive"
  * @returns {string}
  */
 export function formatPercent(value, decimals = 1) {
   if (value == null) return "—";
+  if (decimals === "adaptive") {
+    if (value < 0.01) return "0%";
+    if (value < 1) return `${value.toFixed(2)}%`;
+    if (value < 10) return `${value.toFixed(1)}%`;
+    return `${Math.round(value)}%`;
+  }
   return `${Number(value).toFixed(decimals)}%`;
 }

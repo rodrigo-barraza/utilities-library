@@ -74,3 +74,21 @@ export async function fetchWithTimeout(url, timeoutMs = 5000, fallback = null) {
     return fallback;
   }
 }
+
+/**
+ * Race a promise against a timeout, resolving to `fallback` on timeout.
+ * Unlike `withTimeout`, this never rejects — it gracefully degrades.
+ * Useful for health probes and best-effort discovery where a timeout
+ * should return a default value rather than propagate an error.
+ *
+ * @param {Promise<*>} promise
+ * @param {number} ms - Timeout in milliseconds
+ * @param {*} [fallback=null] - Value to resolve with on timeout
+ * @returns {Promise<*>}
+ */
+export function withTimeoutFallback(promise, ms, fallback = null) {
+  return Promise.race([
+    promise,
+    new Promise((resolve) => setTimeout(() => resolve(fallback), ms)),
+  ]);
+}

@@ -19,6 +19,7 @@ export {
   formatDuration,
   formatElapsedTime,
   formatFileSize,
+  formatBytes,
   formatTokensPerSec,
   formatContextTokens,
   formatPercent,
@@ -42,9 +43,9 @@ export {
 export { toISODate, timeAgo, daysSinceIso, formatDateTime, daysAgo, toLocalDateString } from "./date.js";
 
 // Async — Promise-based timing and control
-export { sleep, retry, withTimeout, fetchWithTimeout } from "./async.js";
+export { sleep, retry, withTimeout, withTimeoutFallback, fetchWithTimeout } from "./async.js";
 
-// Time — Duration constants and converters
+// Time — Duration constants, converters, and polling intervals
 export {
   MS_PER_SECOND,
   MS_PER_MINUTE,
@@ -57,6 +58,11 @@ export {
   hours,
   days,
   weeks,
+  POLL_FAST,
+  POLL_STANDARD,
+  POLL_MODERATE,
+  POLL_SLOW,
+  POLL_LAZY,
 } from "./time.js";
 
 // Arrays — Array manipulation

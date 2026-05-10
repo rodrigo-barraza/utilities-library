@@ -69,9 +69,10 @@ const mongoUrl = await vault.resolveInfraUrl("mongodb");
 
 ```json
 {
-  ".":       "./src/index.js",
-  "./node":  "./src/node.js",
-  "./vault": "./src/vault.js"
+  ".":         "./src/index.js",
+  "./node":    "./src/node.js",
+  "./vault":   "./src/vault.js",
+  "./effects": "./src/effects.js"
 }
 ```
 
@@ -92,6 +93,44 @@ const mongoUrl = await vault.resolveInfraUrl("mongodb");
 | **validation** | `parseIntParam`, `parsePrice`, `validateMaxLength`, `parseJsonSafe`, `parseJsonFromLlmResponse` |
 | **crypto** | `generateUUID` |
 | **phone** | `formatPhone` |
+
+### Browser-only (`@rodrigo-barraza/utilities-library/effects`)
+
+| Export | Description |
+|--------|-------------|
+| `applyStatic` | Analog TV static noise overlay via SVG feTurbulence |
+| `applyChromaticAberration` | RGB channel separation with animated or static text-shadow |
+| `applyScanlines` | CRT scanline overlay with optional rolling animation |
+| `applyGlitch` | Hue-cycling + jitter distortion (consolidated from prism-client) |
+| `applyVhsTracking` | VHS tracking — sporadic horizontal skew + offset |
+| `applyHueRotate` | Continuous 360° hue rotation (rainbow cycle) |
+| `applyShimmer` | Loading shimmer highlight sweep |
+| `applyDissolve` | Pixel dissolve / disintegration |
+| `applyVignette` | CRT-style darkened edge vignette |
+| `applyFlicker` | Fluorescent light flicker |
+| `applyCRT` | Composite CRT effect (scanlines + vignette + static) |
+| `composeEffects` | Chain multiple effects, returns single cleanup |
+
+```js
+import { applyStatic, applyChromaticAberration, applyCRT, composeEffects } from "@rodrigo-barraza/utilities-library/effects";
+
+// Single effect
+const cleanup = applyStatic(myElement, { intensity: 0.15 });
+
+// Composite CRT monitor
+const cleanupCRT = applyCRT(myPanel, { scanIntensity: 0.06, noiseIntensity: 0.1 });
+
+// Compose ad-hoc
+const cleanupAll = composeEffects(el, [
+  (el) => applyChromaticAberration(el, { offset: 3 }),
+  (el) => applyStatic(el, { intensity: 0.08 }),
+]);
+
+// Teardown
+cleanup();
+cleanupCRT();
+cleanupAll();
+```
 
 ### Node-only (`@rodrigo-barraza/utilities-library/node`)
 
