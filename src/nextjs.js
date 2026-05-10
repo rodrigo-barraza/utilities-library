@@ -20,8 +20,8 @@ const PASSTHROUGH_HEADERS = ["content-type", "content-disposition", "content-len
  * @param {Request} request - Incoming Next.js request
  * @param {object} config
  * @param {number} config.port - Service port
- * @param {string} [config.publicUrlEnv] - process.env value for public URL
- * @param {string} [config.internalUrlEnv] - process.env value for internal URL
+ * @param {string} [config.publicUrlEnv] - Resolved public URL value
+ * @param {string} [config.internalUrlEnv] - Resolved internal URL value
  * @returns {string}
  */
 function resolveUpstream(request, { port, publicUrlEnv, internalUrlEnv }) {
@@ -60,12 +60,18 @@ function resolveUpstream(request, { port, publicUrlEnv, internalUrlEnv }) {
  *  - Binary passthrough for non-JSON responses
  *  - JSON body forwarding for mutating methods
  *  - Structured error response on failure
+ *  - Lazy env resolution — reads process.env at request time, not import time
+ *
+ * Accepts either raw URL values or env var key names. When a key name
+ * is provided (no "://" in the string), `process.env[key]` is read at
+ * request time. This solves Next.js standalone mode where runtime env
+ * vars are not available at module initialization.
  *
  * @param {object} config
  * @param {number} config.port - Service port
  * @param {string} config.serviceName - Human-readable name for error messages
- * @param {string} [config.publicUrlEnv] - process.env value for public URL
- * @param {string} [config.internalUrlEnv] - process.env value for internal URL
+ * @param {string} [config.publicUrlEnv] - URL value or env var key name for public URL
+ * @param {string} [config.internalUrlEnv] - URL value or env var key name for internal URL
  * @returns {{ GET: Function, POST: Function, PUT: Function, DELETE: Function, PATCH: Function }}
  *
  * @example
@@ -75,8 +81,8 @@ function resolveUpstream(request, { port, publicUrlEnv, internalUrlEnv }) {
  * export const { GET, POST, PUT, DELETE, PATCH } = createNextjsProxy({
  *   port: 5603,
  *   serviceName: "ledger",
- *   publicUrlEnv: process.env.LEDGER_SERVICE_PUBLIC_URL,
- *   internalUrlEnv: process.env.LEDGER_SERVICE_URL,
+ *   publicUrlEnv: "LEDGER_SERVICE_PUBLIC_URL",
+ *   internalUrlEnv: "LEDGER_SERVICE_URL",
  * });
  */
 export function createNextjsProxy({
@@ -85,6 +91,16 @@ export function createNextjsProxy({
   publicUrlEnv,
   internalUrlEnv,
 }) {
+  /**
+   * Resolve a config value that may be a literal URL or an env var key name.
+   * Keys are identified by not containing "://".
+   */
+  function resolveEnvValue(valueOrKey) {
+    if (!valueOrKey) return undefined;
+    if (valueOrKey.includes("://")) return valueOrKey;
+    return process.env[valueOrKey] || undefined;
+  }
+
   async function proxyRequest(request, { params }) {
     const { path } = await params;
     const segments = Array.isArray(path) ? path.join("/") : path;
@@ -93,8 +109,8 @@ export function createNextjsProxy({
     const queryString = url.search || "";
     const upstreamBase = resolveUpstream(request, {
       port,
-      publicUrlEnv,
-      internalUrlEnv,
+      publicUrlEnv: resolveEnvValue(publicUrlEnv),
+      internalUrlEnv: resolveEnvValue(internalUrlEnv),
     });
     const targetUrl = `${upstreamBase}/${segments}${queryString}`;
 
