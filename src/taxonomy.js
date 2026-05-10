@@ -3,10 +3,6 @@
 // ─────────────────────────────────────────────────────────────
 // Single source of truth for label names, domain names,
 // and prefixed enabledTools entry builders.
-//
-// Used by: tools-service (ToolSchemaService), prism-service
-// (ToolOrchestratorService, AgentPersonaRegistry), and
-// prism-client (CustomAgentsPanel UI).
 // ─────────────────────────────────────────────────────────────
 
 // ── Label Names ─────────────────────────────────────────────

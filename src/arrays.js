@@ -90,3 +90,85 @@ export function uniqueBy(array, keyFn) {
     return true;
   });
 }
+
+/**
+ * Split an array into two groups based on a predicate.
+ * The first array contains items where `fn` returns true,
+ * the second contains the rest.
+ *
+ * @param {Array} array
+ * @param {(item: *) => boolean} fn - Predicate function
+ * @returns {[Array, Array]} [passing, failing]
+ */
+export function partition(array, fn) {
+  const pass = [];
+  const fail = [];
+  for (const item of array) {
+    (fn(item) ? pass : fail).push(item);
+  }
+  return [pass, fail];
+}
+
+/**
+ * Return elements present in both arrays.
+ * Uses strict equality. Preserves order from the first array.
+ *
+ * @param {Array} a
+ * @param {Array} b
+ * @returns {Array}
+ */
+export function intersection(a, b) {
+  const set = new Set(b);
+  return a.filter((item) => set.has(item));
+}
+
+/**
+ * Return elements in `a` that are not in `b`.
+ * Uses strict equality. Preserves order from `a`.
+ *
+ * @param {Array} a
+ * @param {Array} b
+ * @returns {Array}
+ */
+export function difference(a, b) {
+  const set = new Set(b);
+  return a.filter((item) => !set.has(item));
+}
+
+/**
+ * Sort an array of objects by a key or comparator function.
+ * Returns a new sorted copy — does not mutate the original.
+ *
+ * @param {Array} array
+ * @param {string|((a: *, b: *) => number)} keyOrFn - Property name (ascending) or comparator
+ * @param {{ descending?: boolean }} [options]
+ * @returns {Array}
+ */
+export function sortBy(array, keyOrFn, { descending = false } = {}) {
+  const copy = [...array];
+  if (typeof keyOrFn === "function") {
+    copy.sort(keyOrFn);
+  } else {
+    copy.sort((a, b) => {
+      const va = a[keyOrFn];
+      const vb = b[keyOrFn];
+      if (va < vb) return -1;
+      if (va > vb) return 1;
+      return 0;
+    });
+  }
+  return descending ? copy.reverse() : copy;
+}
+
+/**
+ * Flatten a nested array to a given depth.
+ * Wrapper around Array.flat() with a clearer API for shared usage.
+ *
+ * @param {Array} array - Possibly nested array
+ * @param {number} [depth=1] - Maximum flatten depth (Infinity for full flatten)
+ * @returns {Array}
+ */
+export function flatten(array, depth = 1) {
+  return array.flat(depth);
+}
+

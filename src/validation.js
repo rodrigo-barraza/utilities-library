@@ -4,7 +4,6 @@
 
 /**
  * Parse an integer query param with a default fallback and optional max clamp.
- * Replaces the repeated `Math.min(parseInt(req.query.X) || default, max)` pattern.
  *
  * @param {string|undefined} value - Raw query string value
  * @param {number} defaultValue
@@ -48,7 +47,6 @@ export function validateMaxLength(value, maxLength, label) {
 
 /**
  * Safely parse a JSON string, returning a fallback on failure.
- * Avoids the repetitive `try { JSON.parse(x) } catch { return null }` pattern.
  *
  * @param {string} str - JSON string to parse
  * @param {*} [fallback=null] - Value to return if parsing fails
@@ -157,3 +155,51 @@ export function parseJsonFromLlmResponse(text) {
 
   return null;
 }
+
+/**
+ * Check if a string is a valid email address.
+ * Uses a practical regex covering 99.9% of real-world addresses
+ * (not the full RFC 5322 grammar, which is deliberately over-broad).
+ *
+ * @param {string} str
+ * @returns {boolean}
+ */
+export function isEmail(str) {
+  if (!str) return false;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(str);
+}
+
+/**
+ * Check if a string is a valid HTTP(S) URL.
+ * Uses the URL constructor for spec-compliant parsing.
+ *
+ * @param {string} str
+ * @param {{ requireHttps?: boolean }} [options]
+ * @returns {boolean}
+ */
+export function isUrl(str, { requireHttps = false } = {}) {
+  if (!str) return false;
+  try {
+    const url = new URL(str);
+    if (requireHttps) return url.protocol === "https:";
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Check if a value is numeric (finite number or numeric string).
+ * e.g. isNumeric("3.14") → true, isNumeric("abc") → false, isNumeric(NaN) → false
+ *
+ * @param {*} value
+ * @returns {boolean}
+ */
+export function isNumeric(value) {
+  if (typeof value === "number") return Number.isFinite(value);
+  if (typeof value === "string" && value.trim() !== "") {
+    return Number.isFinite(Number(value));
+  }
+  return false;
+}
+

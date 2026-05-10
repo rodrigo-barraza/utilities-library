@@ -72,7 +72,9 @@ const mongoUrl = await vault.resolveInfraUrl("mongodb");
   ".":         "./src/index.js",
   "./node":    "./src/node.js",
   "./vault":   "./src/vault.js",
-  "./effects": "./src/effects.js"
+  "./effects": "./src/effects.js",
+  "./rate":    "./src/rate.js",
+  "./color":   "./src/color.js"
 }
 ```
 
@@ -82,15 +84,15 @@ const mongoUrl = await vault.resolveInfraUrl("mongodb");
 
 | Module | Exports |
 |--------|---------|
-| **format** | `formatCompact`, `formatNumber`, `formatTokenCount`, `formatCost`, `formatCostAdaptive`, `formatCostTag`, `formatCurrency`, `formatLatency`, `formatLatencyMs`, `formatDuration`, `formatElapsedTime`, `formatFileSize`, `formatTokensPerSec`, `formatContextTokens`, `formatPercent`, `roundMs` |
-| **text** | `stripHtml`, `normalizeName`, `renderToolName`, `humanizeToolName`, `truncate`, `escapeRegex`, `getRootDomain`, `getSubdomain`, `capitalize` |
-| **date** | `toISODate`, `timeAgo`, `daysSinceIso`, `formatDateTime` |
-| **async** | `sleep`, `retry`, `withTimeout`, `fetchWithTimeout` |
-| **time** | `MS_PER_SECOND`, `MS_PER_MINUTE`, `MS_PER_HOUR`, `MS_PER_DAY`, `MS_PER_WEEK`, `seconds`, `minutes`, `hours`, `days`, `weeks` |
-| **arrays** | `chunk`, `shuffleArray`, `pickRandom`, `compactPayload`, `groupBy`, `uniqueBy` |
-| **objects** | `deepMerge`, `pick`, `omit` |
-| **math** | `clamp`, `roundCents`, `randomInt`, `cosineSimilarity` |
-| **validation** | `parseIntParam`, `parsePrice`, `validateMaxLength`, `parseJsonSafe`, `parseJsonFromLlmResponse` |
+| **format** | `formatCompact`, `formatNumber`, `formatTokenCount`, `formatCost`, `formatCostAdaptive`, `formatCostTag`, `formatCurrency`, `formatLatency`, `formatLatencyMs`, `formatDuration`, `formatElapsedTime`, `formatFileSize`, `formatBytes`, `formatTokensPerSec`, `formatContextTokens`, `formatPercent`, `roundMs` |
+| **text** | `stripHtml`, `normalizeName`, `renderToolName`, `humanizeToolName`, `truncate`, `escapeRegex`, `getRootDomain`, `getSubdomain`, `capitalize`, `slugify`, `toKebabCase`, `toCamelCase`, `toPascalCase`, `toSnakeCase`, `pluralize`, `wordCount` |
+| **date** | `toISODate`, `timeAgo`, `daysSinceIso`, `formatDateTime`, `daysAgo`, `toLocalDateString` |
+| **async** | `sleep`, `retry`, `withTimeout`, `withTimeoutFallback`, `fetchWithTimeout`, `pMap`, `defer` |
+| **time** | `MS_PER_SECOND`, `MS_PER_MINUTE`, `MS_PER_HOUR`, `MS_PER_DAY`, `SECONDS_PER_DAY`, `MS_PER_WEEK`, `seconds`, `minutes`, `hours`, `days`, `weeks`, `POLL_FAST`, `POLL_STANDARD`, `POLL_MODERATE`, `POLL_SLOW`, `POLL_LAZY` |
+| **arrays** | `chunk`, `shuffleArray`, `pickRandom`, `compactPayload`, `groupBy`, `uniqueBy`, `partition`, `intersection`, `difference`, `sortBy`, `flatten` |
+| **objects** | `deepMerge`, `pick`, `omit`, `mapValues`, `mapKeys`, `invert`, `isEmpty`, `deepEqual` |
+| **math** | `clamp`, `roundCents`, `randomInt`, `cosineSimilarity`, `lerp`, `remap`, `sum`, `average`, `median`, `roundTo` |
+| **validation** | `parseIntParam`, `parsePrice`, `validateMaxLength`, `parseJsonSafe`, `parseJsonFromLlmResponse`, `isEmail`, `isUrl`, `isNumeric` |
 | **crypto** | `generateUUID` |
 | **phone** | `formatPhone` |
 
@@ -130,6 +132,38 @@ const cleanupAll = composeEffects(el, [
 cleanup();
 cleanupCRT();
 cleanupAll();
+```
+
+### Rate limiting (`@rodrigo-barraza/utilities-library/rate`)
+
+| Export | Description |
+|--------|-------------|
+| `debounce` | Classic debounce with `.cancel()` / `.flush()` + optional leading edge |
+| `throttle` | Leading-edge throttle with trailing replay and `.cancel()` |
+
+```js
+import { debounce, throttle } from "@rodrigo-barraza/utilities-library/rate";
+
+const search = debounce((query) => fetchResults(query), 300);
+const resize = throttle(() => recalcLayout(), 100);
+```
+
+### Color manipulation (`@rodrigo-barraza/utilities-library/color`)
+
+| Export | Description |
+|--------|-------------|
+| `parseHex` | Parse #RGB / #RRGGBB / #RRGGBBAA into `{ r, g, b, a }` |
+| `toHex` | Convert `{ r, g, b }` back to hex string |
+| `lerpColor` | Linear interpolation between two hex colors |
+| `rgbToHsl` / `hslToRgb` | Color space conversion |
+| `adjustBrightness` | Lighten or darken a hex color by percentage |
+
+```js
+import { lerpColor, adjustBrightness } from "@rodrigo-barraza/utilities-library/color";
+
+lerpColor("#ff0000", "#0000ff", 0.5); // midpoint purple
+adjustBrightness("#3366cc", 20);       // lighten by 20%
+adjustBrightness("#3366cc", -15);      // darken by 15%
 ```
 
 ### Node-only (`@rodrigo-barraza/utilities-library/node`)

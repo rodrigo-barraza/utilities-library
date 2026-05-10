@@ -16,7 +16,9 @@
     "./nextjs": "./src/nextjs.js",
     "./taxonomy": "./src/taxonomy.js",
     "./media": "./src/media.js",
-    "./effects": "./src/effects.js"
+    "./effects": "./src/effects.js",
+    "./rate": "./src/rate.js",
+    "./color": "./src/color.js"
   },
   "files": [
     "src"

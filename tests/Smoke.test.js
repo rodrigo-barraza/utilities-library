@@ -649,3 +649,548 @@ describe("phone.js", () => {
     });
   });
 });
+
+// ─── New Text Utilities ─────────────────────────────────────────
+
+describe("text.js — new utilities", () => {
+  let txt;
+  beforeAll(async () => {
+    txt = await import("../src/text.js");
+  });
+
+  describe("slugify", () => {
+    it("converts to URL-safe slug", () => {
+      expect(txt.slugify("Hello World! Foo")).toBe("hello-world-foo");
+    });
+    it("strips diacritics", () => {
+      expect(txt.slugify("Café Résumé")).toBe("cafe-resume");
+    });
+    it("collapses multiple separators", () => {
+      expect(txt.slugify("hello   ---   world")).toBe("hello-world");
+    });
+    it("handles null/empty", () => {
+      expect(txt.slugify(null)).toBe("");
+      expect(txt.slugify("")).toBe("");
+    });
+  });
+
+  describe("toKebabCase", () => {
+    it("converts camelCase", () => {
+      expect(txt.toKebabCase("helloWorld")).toBe("hello-world");
+    });
+    it("converts spaces and underscores", () => {
+      expect(txt.toKebabCase("Hello World_Test")).toBe("hello-world-test");
+    });
+  });
+
+  describe("toCamelCase", () => {
+    it("converts kebab-case", () => {
+      expect(txt.toCamelCase("hello-world")).toBe("helloWorld");
+    });
+    it("converts snake_case", () => {
+      expect(txt.toCamelCase("hello_world")).toBe("helloWorld");
+    });
+    it("converts from PascalCase", () => {
+      expect(txt.toCamelCase("HelloWorld")).toBe("helloWorld");
+    });
+  });
+
+  describe("toPascalCase", () => {
+    it("converts from kebab-case", () => {
+      expect(txt.toPascalCase("hello-world")).toBe("HelloWorld");
+    });
+  });
+
+  describe("toSnakeCase", () => {
+    it("converts camelCase", () => {
+      expect(txt.toSnakeCase("helloWorld")).toBe("hello_world");
+    });
+    it("converts spaces", () => {
+      expect(txt.toSnakeCase("Hello World")).toBe("hello_world");
+    });
+  });
+
+  describe("pluralize", () => {
+    it("returns singular for count 1", () => {
+      expect(txt.pluralize("item", 1)).toBe("item");
+    });
+    it("appends s for other counts", () => {
+      expect(txt.pluralize("item", 0)).toBe("items");
+      expect(txt.pluralize("item", 5)).toBe("items");
+    });
+    it("uses custom plural form", () => {
+      expect(txt.pluralize("child", 3, "children")).toBe("children");
+    });
+  });
+
+  describe("wordCount", () => {
+    it("counts words", () => {
+      expect(txt.wordCount("hello world foo")).toBe(3);
+    });
+    it("handles extra whitespace", () => {
+      expect(txt.wordCount("  hello   world  ")).toBe(2);
+    });
+    it("returns 0 for null/empty", () => {
+      expect(txt.wordCount(null)).toBe(0);
+      expect(txt.wordCount("")).toBe(0);
+    });
+  });
+});
+
+// ─── New Math Utilities ─────────────────────────────────────────
+
+describe("math.js — new utilities", () => {
+  let math;
+  beforeAll(async () => {
+    math = await import("../src/math.js");
+  });
+
+  describe("lerp", () => {
+    it("returns a when t=0", () => {
+      expect(math.lerp(0, 100, 0)).toBe(0);
+    });
+    it("returns b when t=1", () => {
+      expect(math.lerp(0, 100, 1)).toBe(100);
+    });
+    it("interpolates at midpoint", () => {
+      expect(math.lerp(0, 100, 0.5)).toBe(50);
+    });
+  });
+
+  describe("remap", () => {
+    it("remaps value between ranges", () => {
+      expect(math.remap(50, 0, 100, 0, 1)).toBe(0.5);
+    });
+    it("handles negative output ranges", () => {
+      expect(math.remap(75, 0, 100, -10, 10)).toBe(5);
+    });
+  });
+
+  describe("sum", () => {
+    it("sums numbers", () => {
+      expect(math.sum([1, 2, 3, 4])).toBe(10);
+    });
+    it("returns 0 for empty/null", () => {
+      expect(math.sum([])).toBe(0);
+      expect(math.sum(null)).toBe(0);
+    });
+  });
+
+  describe("average", () => {
+    it("computes arithmetic mean", () => {
+      expect(math.average([10, 20, 30])).toBe(20);
+    });
+    it("returns 0 for empty", () => {
+      expect(math.average([])).toBe(0);
+    });
+  });
+
+  describe("median", () => {
+    it("returns middle for odd-length", () => {
+      expect(math.median([3, 1, 2])).toBe(2);
+    });
+    it("returns average of middle two for even-length", () => {
+      expect(math.median([1, 2, 3, 4])).toBe(2.5);
+    });
+    it("returns 0 for empty", () => {
+      expect(math.median([])).toBe(0);
+    });
+    it("does not mutate input", () => {
+      const input = [3, 1, 2];
+      math.median(input);
+      expect(input).toEqual([3, 1, 2]);
+    });
+  });
+
+  describe("roundTo", () => {
+    it("rounds to specified decimals", () => {
+      expect(math.roundTo(1.23456, 3)).toBe(1.235);
+    });
+    it("defaults to 2 decimals", () => {
+      expect(math.roundTo(1.005)).toBe(1.01);
+    });
+  });
+});
+
+// ─── New Object Utilities ───────────────────────────────────────
+
+describe("objects.js — new utilities", () => {
+  let obj;
+  beforeAll(async () => {
+    obj = await import("../src/objects.js");
+  });
+
+  describe("mapValues", () => {
+    it("transforms values", () => {
+      expect(obj.mapValues({ a: 1, b: 2 }, (v) => v * 2)).toEqual({ a: 2, b: 4 });
+    });
+    it("passes key as second arg", () => {
+      const result = obj.mapValues({ x: 1 }, (v, k) => `${k}=${v}`);
+      expect(result.x).toBe("x=1");
+    });
+  });
+
+  describe("mapKeys", () => {
+    it("transforms keys", () => {
+      expect(obj.mapKeys({ a: 1, b: 2 }, (k) => k.toUpperCase())).toEqual({ A: 1, B: 2 });
+    });
+  });
+
+  describe("invert", () => {
+    it("swaps keys and values", () => {
+      expect(obj.invert({ a: "1", b: "2" })).toEqual({ "1": "a", "2": "b" });
+    });
+  });
+
+  describe("isEmpty", () => {
+    it("returns true for null/undefined", () => {
+      expect(obj.isEmpty(null)).toBe(true);
+      expect(obj.isEmpty(undefined)).toBe(true);
+    });
+    it("returns true for empty string", () => {
+      expect(obj.isEmpty("")).toBe(true);
+    });
+    it("returns true for empty array", () => {
+      expect(obj.isEmpty([])).toBe(true);
+    });
+    it("returns true for empty object", () => {
+      expect(obj.isEmpty({})).toBe(true);
+    });
+    it("returns true for empty Map/Set", () => {
+      expect(obj.isEmpty(new Map())).toBe(true);
+      expect(obj.isEmpty(new Set())).toBe(true);
+    });
+    it("returns false for non-empty values", () => {
+      expect(obj.isEmpty("hi")).toBe(false);
+      expect(obj.isEmpty([1])).toBe(false);
+      expect(obj.isEmpty({ a: 1 })).toBe(false);
+      expect(obj.isEmpty(0)).toBe(false);
+      expect(obj.isEmpty(false)).toBe(false);
+    });
+  });
+
+  describe("deepEqual", () => {
+    it("returns true for identical primitives", () => {
+      expect(obj.deepEqual(1, 1)).toBe(true);
+      expect(obj.deepEqual("a", "a")).toBe(true);
+    });
+    it("returns false for different primitives", () => {
+      expect(obj.deepEqual(1, 2)).toBe(false);
+    });
+    it("deeply compares objects", () => {
+      expect(obj.deepEqual({ a: { b: 1 } }, { a: { b: 1 } })).toBe(true);
+      expect(obj.deepEqual({ a: { b: 1 } }, { a: { b: 2 } })).toBe(false);
+    });
+    it("deeply compares arrays", () => {
+      expect(obj.deepEqual([1, [2, 3]], [1, [2, 3]])).toBe(true);
+      expect(obj.deepEqual([1, 2], [1, 3])).toBe(false);
+    });
+    it("handles null comparison", () => {
+      expect(obj.deepEqual(null, null)).toBe(true);
+      expect(obj.deepEqual(null, {})).toBe(false);
+    });
+  });
+});
+
+// ─── New Array Utilities ────────────────────────────────────────
+
+describe("arrays.js — new utilities", () => {
+  let arr;
+  beforeAll(async () => {
+    arr = await import("../src/arrays.js");
+  });
+
+  describe("partition", () => {
+    it("splits by predicate", () => {
+      const [evens, odds] = arr.partition([1, 2, 3, 4, 5], (n) => n % 2 === 0);
+      expect(evens).toEqual([2, 4]);
+      expect(odds).toEqual([1, 3, 5]);
+    });
+  });
+
+  describe("intersection", () => {
+    it("returns shared elements", () => {
+      expect(arr.intersection([1, 2, 3], [2, 3, 4])).toEqual([2, 3]);
+    });
+    it("preserves order from first array", () => {
+      expect(arr.intersection([3, 1, 2], [2, 3])).toEqual([3, 2]);
+    });
+  });
+
+  describe("difference", () => {
+    it("returns elements only in first array", () => {
+      expect(arr.difference([1, 2, 3], [2, 4])).toEqual([1, 3]);
+    });
+  });
+
+  describe("sortBy", () => {
+    it("sorts by string key", () => {
+      const items = [{ name: "c" }, { name: "a" }, { name: "b" }];
+      expect(arr.sortBy(items, "name").map((i) => i.name)).toEqual(["a", "b", "c"]);
+    });
+    it("sorts descending", () => {
+      const items = [{ v: 1 }, { v: 3 }, { v: 2 }];
+      expect(arr.sortBy(items, "v", { descending: true }).map((i) => i.v)).toEqual([3, 2, 1]);
+    });
+    it("does not mutate original", () => {
+      const items = [{ v: 3 }, { v: 1 }];
+      arr.sortBy(items, "v");
+      expect(items[0].v).toBe(3);
+    });
+    it("accepts comparator function", () => {
+      const result = arr.sortBy([3, 1, 2], (a, b) => a - b);
+      expect(result).toEqual([1, 2, 3]);
+    });
+  });
+
+  describe("flatten", () => {
+    it("flattens one level by default", () => {
+      expect(arr.flatten([[1, 2], [3, [4]]])).toEqual([1, 2, 3, [4]]);
+    });
+    it("fully flattens with Infinity", () => {
+      expect(arr.flatten([[1, [2, [3, [4]]]]], Infinity)).toEqual([1, 2, 3, 4]);
+    });
+  });
+});
+
+// ─── New Async Utilities ────────────────────────────────────────
+
+describe("async.js — new utilities", () => {
+  let asyncMod;
+  beforeAll(async () => {
+    asyncMod = await import("../src/async.js");
+  });
+
+  describe("pMap", () => {
+    it("maps concurrently", async () => {
+      const results = await asyncMod.pMap([1, 2, 3], async (n) => n * 2);
+      expect(results).toEqual([2, 4, 6]);
+    });
+    it("respects concurrency limit", async () => {
+      let active = 0;
+      let maxActive = 0;
+      const results = await asyncMod.pMap(
+        [1, 2, 3, 4, 5],
+        async (n) => {
+          active++;
+          maxActive = Math.max(maxActive, active);
+          await asyncMod.sleep(10);
+          active--;
+          return n;
+        },
+        { concurrency: 2 },
+      );
+      expect(results).toEqual([1, 2, 3, 4, 5]);
+      expect(maxActive).toBeLessThanOrEqual(2);
+    });
+    it("preserves order", async () => {
+      const results = await asyncMod.pMap(
+        [30, 10, 20],
+        async (ms) => {
+          await asyncMod.sleep(ms);
+          return ms;
+        },
+        { concurrency: 3 },
+      );
+      expect(results).toEqual([30, 10, 20]);
+    });
+  });
+
+  describe("defer", () => {
+    it("resolves externally", async () => {
+      const { promise, resolve } = asyncMod.defer();
+      setTimeout(() => resolve("done"), 10);
+      const result = await promise;
+      expect(result).toBe("done");
+    });
+    it("rejects externally", async () => {
+      const { promise, reject } = asyncMod.defer();
+      setTimeout(() => reject(new Error("fail")), 10);
+      await expect(promise).rejects.toThrow("fail");
+    });
+  });
+});
+
+// ─── New Validation Utilities ───────────────────────────────────
+
+describe("validation.js — new utilities", () => {
+  let val;
+  beforeAll(async () => {
+    val = await import("../src/validation.js");
+  });
+
+  describe("isEmail", () => {
+    it("validates correct emails", () => {
+      expect(val.isEmail("user@example.com")).toBe(true);
+      expect(val.isEmail("hello@rod.dev")).toBe(true);
+    });
+    it("rejects invalid emails", () => {
+      expect(val.isEmail("not-an-email")).toBe(false);
+      expect(val.isEmail("@nope.com")).toBe(false);
+      expect(val.isEmail("user@x.y")).toBe(false); // 1-char TLD rejected
+      expect(val.isEmail(null)).toBe(false);
+      expect(val.isEmail("")).toBe(false);
+    });
+  });
+
+  describe("isUrl", () => {
+    it("validates HTTP URLs", () => {
+      expect(val.isUrl("http://example.com")).toBe(true);
+      expect(val.isUrl("https://rod.dev/page")).toBe(true);
+    });
+    it("rejects non-HTTP protocols", () => {
+      expect(val.isUrl("ftp://files.com")).toBe(false);
+    });
+    it("enforces HTTPS when required", () => {
+      expect(val.isUrl("http://example.com", { requireHttps: true })).toBe(false);
+      expect(val.isUrl("https://example.com", { requireHttps: true })).toBe(true);
+    });
+    it("rejects invalid URLs", () => {
+      expect(val.isUrl("not a url")).toBe(false);
+      expect(val.isUrl(null)).toBe(false);
+    });
+  });
+
+  describe("isNumeric", () => {
+    it("validates numbers", () => {
+      expect(val.isNumeric(42)).toBe(true);
+      expect(val.isNumeric(3.14)).toBe(true);
+      expect(val.isNumeric("100")).toBe(true);
+      expect(val.isNumeric("-5.5")).toBe(true);
+    });
+    it("rejects non-numeric", () => {
+      expect(val.isNumeric("abc")).toBe(false);
+      expect(val.isNumeric(NaN)).toBe(false);
+      expect(val.isNumeric(Infinity)).toBe(false);
+      expect(val.isNumeric("")).toBe(false);
+      expect(val.isNumeric("  ")).toBe(false);
+    });
+  });
+});
+
+// ─── Rate Utilities ─────────────────────────────────────────────
+
+describe("rate.js", () => {
+  let rate, sleep;
+  beforeAll(async () => {
+    rate = await import("../src/rate.js");
+    sleep = (await import("../src/async.js")).sleep;
+  });
+
+  describe("debounce", () => {
+    it("delays execution", async () => {
+      let count = 0;
+      const fn = rate.debounce(() => count++, 50);
+      fn();
+      fn();
+      fn();
+      expect(count).toBe(0);
+      await sleep(80);
+      expect(count).toBe(1);
+    });
+
+    it("supports leading edge", async () => {
+      let count = 0;
+      const fn = rate.debounce(() => count++, 50, { leading: true });
+      fn();
+      expect(count).toBe(1);
+      fn();
+      fn();
+      await sleep(80);
+      expect(count).toBe(2); // leading + trailing
+    });
+
+    it("cancel prevents execution", async () => {
+      let count = 0;
+      const fn = rate.debounce(() => count++, 50);
+      fn();
+      fn.cancel();
+      await sleep(80);
+      expect(count).toBe(0);
+    });
+  });
+
+  describe("throttle", () => {
+    it("invokes immediately on first call", () => {
+      let count = 0;
+      const fn = rate.throttle(() => count++, 100);
+      fn();
+      expect(count).toBe(1);
+      fn.cancel();
+    });
+
+    it("throttles subsequent calls", async () => {
+      let count = 0;
+      const fn = rate.throttle(() => count++, 50);
+      fn();
+      fn();
+      fn();
+      expect(count).toBe(1);
+      await sleep(80);
+      expect(count).toBe(2); // trailing call fires
+      fn.cancel();
+    });
+  });
+});
+
+// ─── Color Utilities ────────────────────────────────────────────
+
+describe("color.js", () => {
+  let color;
+  beforeAll(async () => {
+    color = await import("../src/color.js");
+  });
+
+  describe("parseHex", () => {
+    it("parses 6-digit hex", () => {
+      expect(color.parseHex("#ff8800")).toEqual({ r: 255, g: 136, b: 0, a: 1 });
+    });
+    it("parses 3-digit hex", () => {
+      expect(color.parseHex("#f80")).toEqual({ r: 255, g: 136, b: 0, a: 1 });
+    });
+    it("parses without hash", () => {
+      expect(color.parseHex("ff0000")).toEqual({ r: 255, g: 0, b: 0, a: 1 });
+    });
+    it("parses 8-digit hex with alpha", () => {
+      const result = color.parseHex("#ff000080");
+      expect(result.r).toBe(255);
+      expect(result.a).toBeCloseTo(0.502, 2);
+    });
+  });
+
+  describe("toHex", () => {
+    it("converts RGB to hex string", () => {
+      expect(color.toHex({ r: 255, g: 0, b: 0 })).toBe("#ff0000");
+    });
+    it("pads single-digit channels", () => {
+      expect(color.toHex({ r: 0, g: 0, b: 0 })).toBe("#000000");
+    });
+  });
+
+  describe("lerpColor", () => {
+    it("returns colorA at t=0", () => {
+      expect(color.lerpColor("#000000", "#ffffff", 0)).toBe("#000000");
+    });
+    it("returns colorB at t=1", () => {
+      expect(color.lerpColor("#000000", "#ffffff", 1)).toBe("#ffffff");
+    });
+    it("interpolates at midpoint", () => {
+      const result = color.lerpColor("#000000", "#ffffff", 0.5);
+      // Should be around #808080 (grey)
+      expect(result).toMatch(/^#[78][0-9a-f][78][0-9a-f][78][0-9a-f]$/);
+    });
+  });
+
+  describe("adjustBrightness", () => {
+    it("lightens a color", () => {
+      const lighter = color.adjustBrightness("#800000", 20);
+      const parsed = color.parseHex(lighter);
+      expect(parsed.r).toBeGreaterThan(128);
+    });
+    it("darkens a color", () => {
+      const darker = color.adjustBrightness("#ff0000", -30);
+      const parsed = color.parseHex(darker);
+      expect(parsed.r).toBeLessThan(255);
+    });
+  });
+});

@@ -198,7 +198,6 @@ export function applyScanlines(el, { intensity = 0.08, gap = 3, rolling = false 
 }
 
 // ── 4. Glitch / Jitter ────────────────────────────────────
-// Consolidated from prism-client CycleButton + HistoryPanel
 
 const GLITCH_CSS = `
 @keyframes rb-fx-glitch-hue {
@@ -245,7 +244,6 @@ const GLITCH_CSS = `
 
 /**
  * Apply glitch distortion (hue cycling + jitter + RGB text-shadow).
- * Consolidated from prism-client's CycleButton and HistoryPanel effects.
  * @param {HTMLElement} el
  * @param {{ subtle?: boolean }} [options]
  * @returns {() => void} cleanup

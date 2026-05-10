@@ -38,8 +38,6 @@ export function asyncHandler(fn, label, errorStatusOrOpts = 502) {
 
 /**
  * Reusable health-state tracker for route domains.
- * Replaces the duplicated `const state = { lastChecked, error }` +
- * `getXxxHealth()` pattern found across multiple services.
  */
 export class HealthTracker {
   #state = { lastChecked: null, error: null };
@@ -118,7 +116,6 @@ export class TokenManager {
 
 /**
  * Create a lazy-loading async getter for an ES module.
- * Replaces the duplicated `let mod; async function getMod() { ... }` pattern.
  *
  * @param {string} specifier - The import specifier (e.g. "qrcode")
  * @param {(m: any) => any} [extract=m => m.default] - Extractor for the module export

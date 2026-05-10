@@ -92,3 +92,53 @@ export function withTimeoutFallback(promise, ms, fallback = null) {
     new Promise((resolve) => setTimeout(() => resolve(fallback), ms)),
   ]);
 }
+
+/**
+ * Map over an iterable with bounded concurrency (concurrency-limited Promise.all).
+ *
+ * @param {Iterable<*>} iterable - Items to process
+ * @param {(item: *, index: number) => Promise<*>} fn - Async mapper function
+ * @param {object} [options]
+ * @param {number} [options.concurrency=Infinity] - Maximum concurrent promises
+ * @returns {Promise<*[]>} Results in original order
+ */
+export async function pMap(iterable, fn, { concurrency = Infinity } = {}) {
+  const items = [...iterable];
+  const results = new Array(items.length);
+
+  if (concurrency === Infinity) {
+    return Promise.all(items.map((item, i) => fn(item, i)));
+  }
+
+  let nextIndex = 0;
+
+  async function worker() {
+    while (nextIndex < items.length) {
+      const i = nextIndex++;
+      results[i] = await fn(items[i], i);
+    }
+  }
+
+  const workers = Array.from(
+    { length: Math.min(concurrency, items.length) },
+    () => worker(),
+  );
+  await Promise.all(workers);
+  return results;
+}
+
+/**
+ * Create an externally-resolvable promise (Deferred pattern).
+ * Useful for coordinating between event handlers, streams, and async flows.
+ *
+ * @returns {{ promise: Promise<*>, resolve: (value: *) => void, reject: (reason: *) => void }}
+ */
+export function defer() {
+  let resolve, reject;
+  const promise = new Promise((res, rej) => {
+    resolve = res;
+    reject = rej;
+  });
+  return { promise, resolve, reject };
+}
+

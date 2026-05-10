@@ -4,7 +4,6 @@
 
 /**
  * Format a Date as an ISO date string (YYYY-MM-DD).
- * Replaces the repeated `date.toISOString().slice(0, 10)` pattern.
  *
  * @param {Date} [date=new Date()] - The date to format
  * @returns {string}

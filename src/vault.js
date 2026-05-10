@@ -35,8 +35,8 @@
 //   // registry.infrastructure  → [{id, label, type, url, ...}, ...]
 //
 //   // Resolve a single service URL (with fallback chain)
-//   const toolsUrl = await vault.resolveServiceUrl("tools-service");
-//   // → "http://<host>:5590" (or localhost fallback)
+//   const serviceUrl = await vault.resolveServiceUrl("my-service");
+//   // → "http://<host>:<port>" (or localhost fallback)
 //
 // For local development:
 //   cp .env.example .env
@@ -285,7 +285,7 @@ export function createVaultClient(options = {}) {
      *   3. Vault registry       (resolved URL from master .env)
      *   4. http://localhost:{port}  (from manifest port field)
      *
-     * @param {string} serviceId — e.g. "prism-service", "tools-service"
+     * @param {string} serviceId — e.g. "my-service", "auth-service"
      * @returns {Promise<string|null>} — resolved URL, or null if service not found
      */
     async resolveServiceUrl(serviceId) {

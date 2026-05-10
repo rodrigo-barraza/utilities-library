@@ -26,7 +26,7 @@ export {
   roundMs,
 } from "./format.js";
 
-// Text — String manipulation and sanitization
+// Text — String manipulation, sanitization, and case conversion
 export {
   stripHtml,
   normalizeName,
@@ -37,13 +37,20 @@ export {
   getRootDomain,
   getSubdomain,
   capitalize,
+  slugify,
+  toKebabCase,
+  toCamelCase,
+  toPascalCase,
+  toSnakeCase,
+  pluralize,
+  wordCount,
 } from "./text.js";
 
 // Date — Date formatting and relative time
 export { toISODate, timeAgo, daysSinceIso, formatDateTime, daysAgo, toLocalDateString } from "./date.js";
 
-// Async — Promise-based timing and control
-export { sleep, retry, withTimeout, withTimeoutFallback, fetchWithTimeout } from "./async.js";
+// Async — Promise-based timing, concurrency, and control
+export { sleep, retry, withTimeout, withTimeoutFallback, fetchWithTimeout, pMap, defer } from "./async.js";
 
 // Time — Duration constants, converters, and polling intervals
 export {
@@ -73,13 +80,18 @@ export {
   compactPayload,
   groupBy,
   uniqueBy,
+  partition,
+  intersection,
+  difference,
+  sortBy,
+  flatten,
 } from "./arrays.js";
 
 // Objects — Plain-object manipulation
-export { deepMerge, pick, omit } from "./objects.js";
+export { deepMerge, pick, omit, mapValues, mapKeys, invert, isEmpty, deepEqual } from "./objects.js";
 
 // Math — Numeric utilities
-export { clamp, roundCents, randomInt, cosineSimilarity } from "./math.js";
+export { clamp, roundCents, randomInt, cosineSimilarity, lerp, remap, sum, average, median, roundTo } from "./math.js";
 
 // Validation — Input parsing and constraint checking
 export {
@@ -88,6 +100,9 @@ export {
   validateMaxLength,
   parseJsonSafe,
   parseJsonFromLlmResponse,
+  isEmail,
+  isUrl,
+  isNumeric,
 } from "./validation.js";
 
 // Crypto — Browser-safe cryptographic utilities
@@ -95,3 +110,9 @@ export { generateUUID } from "./crypto.js";
 
 // Phone — Phone number formatting
 export { formatPhone } from "./phone.js";
+
+// Rate — Debounce and throttle
+export { debounce, throttle } from "./rate.js";
+
+// Color — Color manipulation and interpolation
+export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness } from "./color.js";

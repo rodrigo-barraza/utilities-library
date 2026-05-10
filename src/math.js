@@ -58,3 +58,84 @@ export function cosineSimilarity(a, b) {
   const denom = Math.sqrt(magA) * Math.sqrt(magB);
   return denom === 0 ? 0 : dot / denom;
 }
+
+/**
+ * Linearly interpolate between two numbers.
+ * Standard lerp function — returns `a` when `t=0`, `b` when `t=1`.
+ *
+ * @param {number} a - Start value
+ * @param {number} b - End value
+ * @param {number} t - Interpolation factor (0–1)
+ * @returns {number}
+ */
+export function lerp(a, b, t) {
+  return a + (b - a) * t;
+}
+
+/**
+ * Remap a value from one range to another (linear mapping).
+ * e.g. remap(50, 0, 100, 0, 1) → 0.5
+ *
+ * @param {number} value - Input value
+ * @param {number} inMin - Source range minimum
+ * @param {number} inMax - Source range maximum
+ * @param {number} outMin - Target range minimum
+ * @param {number} outMax - Target range maximum
+ * @returns {number}
+ */
+export function remap(value, inMin, inMax, outMin, outMax) {
+  return ((value - inMin) / (inMax - inMin)) * (outMax - outMin) + outMin;
+}
+
+/**
+ * Sum all numbers in an array.
+ *
+ * @param {number[]} arr
+ * @returns {number}
+ */
+export function sum(arr) {
+  if (!arr || arr.length === 0) return 0;
+  return arr.reduce((acc, n) => acc + n, 0);
+}
+
+/**
+ * Compute the arithmetic mean of a numeric array.
+ *
+ * @param {number[]} arr
+ * @returns {number}
+ */
+export function average(arr) {
+  if (!arr || arr.length === 0) return 0;
+  return sum(arr) / arr.length;
+}
+
+/**
+ * Compute the median of a numeric array.
+ * Returns the middle value for odd-length arrays, or the average
+ * of the two middle values for even-length arrays.
+ *
+ * @param {number[]} arr
+ * @returns {number}
+ */
+export function median(arr) {
+  if (!arr || arr.length === 0) return 0;
+  const sorted = [...arr].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 !== 0
+    ? sorted[mid]
+    : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+/**
+ * Round a number to a specific number of decimal places.
+ * More precise than `Number.toFixed()` for arithmetic (returns a number, not a string).
+ *
+ * @param {number} value
+ * @param {number} [decimals=2] - Number of decimal places
+ * @returns {number}
+ */
+export function roundTo(value, decimals = 2) {
+  const factor = Math.pow(10, decimals);
+  return Math.round((value + Number.EPSILON) * factor) / factor;
+}
+
