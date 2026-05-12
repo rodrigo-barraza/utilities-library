@@ -29,9 +29,11 @@ export function asyncHandler(fn, label, errorStatusOrOpts = 502) {
       if (result !== undefined) res.json(result);
     } catch (err) {
       if (health) health.markError(err);
-      res
-        .status(errorStatus)
-        .json({ error: `${label} failed: ${err.message}` });
+      const msg = label ? `${label} failed` : "Internal server error";
+      if (typeof console !== "undefined") {
+        console.error(`[asyncHandler] ${msg}:`, err.message || err);
+      }
+      res.status(errorStatus).json({ error: msg });
     }
   };
 }
