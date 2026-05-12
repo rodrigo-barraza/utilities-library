@@ -1,6 +1,6 @@
 # @rodrigo-barraza/utilities-library
 
-Shared JavaScript utility functions used across Sun ecosystem projects. Zero runtime dependencies, isomorphic design — browser-safe by default with a dedicated Node.js entry point for server-only utilities.
+Shared JavaScript utility functions used across all projects. Zero runtime dependencies, isomorphic design — browser-safe by default with a dedicated Node.js entry point for server-only utilities.
 
 ## Installation
 
