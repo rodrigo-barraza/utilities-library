@@ -22,18 +22,28 @@ export function asyncHandler(fn, label, errorStatusOrOpts = 502) {
     typeof errorStatusOrOpts === "object"
       ? errorStatusOrOpts.health
       : undefined;
-  return async (req, res) => {
+  return async (req, res, next) => {
     try {
-      const result = await fn(req, res);
+      const result = await fn(req, res, next);
       if (health) health.markSuccess();
-      if (result !== undefined) res.json(result);
+      if (result !== undefined && !res.headersSent) res.json(result);
     } catch (err) {
       if (health) health.markError(err);
+      
+      if (next) {
+        if (!err.status) err.status = errorStatus;
+        return next(err);
+      }
+
       const msg = label ? `${label} failed` : "Internal server error";
       if (typeof console !== "undefined") {
         console.error(`[asyncHandler] ${msg}:`, err.message || err);
       }
-      res.status(errorStatus).json({ error: msg });
+      res.status(err.status || errorStatus).json({ 
+        error: true, 
+        message: err.message || msg, 
+        statusCode: err.status || errorStatus 
+      });
     }
   };
 }
