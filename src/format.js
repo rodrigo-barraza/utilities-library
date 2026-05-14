@@ -263,3 +263,20 @@ export function formatPercent(value, decimals = 1) {
   }
   return `${Number(value).toFixed(decimals)}%`;
 }
+
+/**
+ * Format a duration in seconds as a media timestamp (H:MM:SS or M:SS).
+ * Used for video players, track durations, and media metadata.
+ * e.g. 65 → "1:05", 3661 → "1:01:01", 0 → "0:00"
+ *
+ * @param {number} seconds
+ * @returns {string}
+ */
+export function formatMediaTimestamp(seconds) {
+  if (!seconds || seconds <= 0) return "0:00";
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  if (h > 0) return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  return `${m}:${String(s).padStart(2, "0")}`;
+}

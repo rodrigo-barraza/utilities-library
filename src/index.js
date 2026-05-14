@@ -20,6 +20,7 @@ export {
   formatElapsedTime,
   formatFileSize,
   formatBytes,
+  formatMediaTimestamp,
   formatTokensPerSec,
   formatContextTokens,
   formatPercent,

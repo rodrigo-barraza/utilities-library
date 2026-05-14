@@ -4,6 +4,58 @@
 
 import { NextResponse } from "next/server";
 
+// ── Private Network Detection ───────────────────────────────
+
+/**
+ * RFC 1918 private network check on the Host header.
+ * Matches 10.x.x.x, 172.16–31.x.x, 192.168.x.x, localhost, and [::1].
+ */
+export const PRIVATE_HOST_RE =
+  /^(localhost|127\.\d+\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+|192\.168\.\d+\.\d+|\[::1\])(:\d+)?$/;
+
+/**
+ * Check whether a Next.js request originates from a private/LAN host.
+ *
+ * @param {Request} request - Incoming Next.js request
+ * @returns {boolean}
+ */
+export function isPrivateHost(request) {
+  const host = request.headers.get("host") || "";
+  return PRIVATE_HOST_RE.test(host);
+}
+
+/**
+ * Create a Next.js middleware function that conditionally enforces auth,
+ * with automatic LAN bypass for private/RFC 1918 hosts.
+ *
+ * When `authEnabled` is false or the request comes from a private host,
+ * the middleware passes through. Otherwise it delegates to the `auth`
+ * handler (typically Auth.js / NextAuth.js).
+ *
+ * @param {object} config
+ * @param {Function} config.auth - Auth.js `auth` function (middleware mode)
+ * @param {boolean} config.authEnabled - Whether auth enforcement is active
+ * @returns {Function} Next.js middleware handler
+ *
+ * @example
+ * // src/middleware.js
+ * import { createAuthMiddleware } from "@rodrigo-barraza/utilities-library/nextjs";
+ * import { auth, AUTH_ENABLED } from "@/auth";
+ *
+ * export const middleware = createAuthMiddleware({ auth, authEnabled: AUTH_ENABLED });
+ * export const config = {
+ *   matcher: ["/((?!api/auth|_next/static|_next/image|favicon.ico).*)"],
+ * };
+ */
+export function createAuthMiddleware({ auth, authEnabled }) {
+  return function middleware(request) {
+    if (!authEnabled || isPrivateHost(request)) {
+      return NextResponse.next();
+    }
+    return auth(request);
+  };
+}
+
 // ── Passthrough Headers ─────────────────────────────────────
 // Headers forwarded from upstream for non-JSON (binary) responses.
 const PASSTHROUGH_HEADERS = ["content-type", "content-disposition", "content-length"];
@@ -72,7 +124,10 @@ function resolveUpstream(request, { port, publicUrlEnv, internalUrlEnv }) {
  * @param {string} config.serviceName - Human-readable name for error messages
  * @param {string} [config.publicUrlEnv] - URL value or env var key name for public URL
  * @param {string} [config.internalUrlEnv] - URL value or env var key name for internal URL
- * @returns {{ GET: Function, POST: Function, PUT: Function, DELETE: Function, PATCH: Function }}
+ * @param {string[]} [config.forwardHeaders] - Request header names to forward upstream
+ *   (e.g. ["x-forwarded-for", "user-agent", "accept-language"])
+ * @param {string[]} [config.methods] - HTTP methods to export (default: all 5)
+ * @returns {{ GET?: Function, POST?: Function, PUT?: Function, DELETE?: Function, PATCH?: Function }}
  *
  * @example
  * // src/app/api/ledger/[...path]/route.js
@@ -84,12 +139,25 @@ function resolveUpstream(request, { port, publicUrlEnv, internalUrlEnv }) {
  *   publicUrlEnv: "LEDGER_SERVICE_PUBLIC_URL",
  *   internalUrlEnv: "LEDGER_SERVICE_URL",
  * });
+ *
+ * @example
+ * // Sessions proxy with identity header forwarding
+ * export const { GET, POST } = createNextjsProxy({
+ *   port: 5580,
+ *   serviceName: "sessions",
+ *   publicUrlEnv: "SESSIONS_SERVICE_PUBLIC_URL",
+ *   internalUrlEnv: "SESSIONS_SERVICE_URL",
+ *   forwardHeaders: ["x-forwarded-for", "x-real-ip", "user-agent", "x-session-id", "accept-language"],
+ *   methods: ["GET", "POST"],
+ * });
  */
 export function createNextjsProxy({
   port,
   serviceName,
   publicUrlEnv,
   internalUrlEnv,
+  forwardHeaders = [],
+  methods,
 }) {
   /**
    * Resolve a config value that may be a literal URL or an env var key name.
@@ -119,6 +187,12 @@ export function createNextjsProxy({
         method: request.method,
         headers: { "Content-Type": "application/json" },
       };
+
+      // Forward specified request headers to upstream
+      for (const name of forwardHeaders) {
+        const value = request.headers.get(name);
+        if (value) fetchOptions.headers[name] = value;
+      }
 
       if (request.method !== "GET" && request.method !== "HEAD") {
         try {
@@ -161,11 +235,20 @@ export function createNextjsProxy({
     }
   }
 
-  return {
+  const allMethods = {
     GET: proxyRequest,
     POST: proxyRequest,
     PUT: proxyRequest,
     DELETE: proxyRequest,
     PATCH: proxyRequest,
   };
+
+  // If methods is specified, return only those
+  if (methods) {
+    const filtered = {};
+    for (const m of methods) filtered[m] = proxyRequest;
+    return filtered;
+  }
+
+  return allMethods;
 }
