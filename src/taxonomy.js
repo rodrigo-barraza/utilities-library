@@ -32,6 +32,7 @@ export const LABELS = {
   AUTOMATION: "automation",
   DATA_SCIENCE: "data_science",
   ORCHESTRATION: "orchestration",
+  DOWNLOAD: "download",
 };
 
 // ── Domain Names ────────────────────────────────────────────
@@ -79,6 +80,7 @@ export const DOMAINS = {
   AGENTIC_STRUCTURED: "Agentic: Structured Output",
   AGENTIC_GIT_ISOLATION: "Agentic: Git Isolation",
   AGENTIC_TASK_MGMT: "Agentic: Task Management",
+  TORRENT: "Torrent",
 };
 
 // ── Prefixed enabledTools Helpers ────────────────────────────
