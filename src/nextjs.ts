@@ -12,7 +12,6 @@ let _NextResponse: any = null;
 
 async function getNextResponse() {
   if (!_NextResponse) {
-    // @ts-expect-error — next/server is an optional peer dependency
     const mod = await import(/* webpackIgnore: true */ "next/server");
     _NextResponse = mod.NextResponse;
   }
