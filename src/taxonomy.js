@@ -70,6 +70,7 @@ export const DOMAINS = {
   AGENTIC_TASKS: "Agentic: Task Management",
   AGENTIC_MEMORY: "Agentic: Memory",
   AGENTIC_AGENTS: "Agentic: Agent Management",
+  AGENTIC_TOOLS: "Agentic: Tool Management",
   AGENTIC_META: "Agentic: Meta",
   AGENTIC_SCHEDULING: "Agentic: Scheduling",
   // Prism-local domains (added by ToolOrchestratorService)
