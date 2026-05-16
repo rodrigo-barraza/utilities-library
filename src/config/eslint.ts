@@ -2,14 +2,12 @@
  * Factory function to create the standard service ESLint config.
  * Accepts the dependencies as arguments to avoid the library needing
  * to have eslint packages as its own dependencies.
- *
- * @param {object} deps
- * @param {object} deps.js - @eslint/js module
- * @param {object} deps.prettierConfig - eslint-config-prettier module
- * @param {object} deps.globals - globals module
- * @returns {Array} ESLint flat config array
  */
-export function createServiceEslintConfig({ js, prettierConfig, globals }) {
+export function createServiceEslintConfig({ js, prettierConfig, globals }: {
+  js: { configs: { recommended: unknown } };
+  prettierConfig: unknown;
+  globals: { node: Record<string, string> };
+}): unknown[] {
   return [
     js.configs.recommended,
     prettierConfig,

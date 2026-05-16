@@ -4,13 +4,8 @@
 
 /**
  * Parse an integer query param with a default fallback and optional max clamp.
- *
- * @param {string|undefined} value - Raw query string value
- * @param {number} defaultValue
- * @param {number} [max] - Optional upper bound (clamped via Math.min)
- * @returns {number}
  */
-export function parseIntParam(value, defaultValue, max) {
+export function parseIntParam(value: string | undefined | null, defaultValue: number, max?: number): number {
   if (value == null) return defaultValue;
   const parsed = parseInt(value, 10);
   const result = isNaN(parsed) ? defaultValue : parsed;
@@ -19,10 +14,8 @@ export function parseIntParam(value, defaultValue, max) {
 
 /**
  * Safely parse a price string like "$29.99" or "29.99" into a number.
- * @param {string} priceStr
- * @returns {number|null}
  */
-export function parsePrice(priceStr) {
+export function parsePrice(priceStr: string | null | undefined): number | null {
   if (!priceStr) return null;
   const cleaned = String(priceStr).replace(/[^0-9.]/g, "");
   const num = parseFloat(cleaned);
@@ -32,13 +25,8 @@ export function parsePrice(priceStr) {
 /**
  * Validate that a string value does not exceed a maximum length.
  * Returns an error message string if exceeded, or null if valid.
- *
- * @param {string} value - The string to validate
- * @param {number} maxLength - Maximum allowed length
- * @param {string} label - Human-readable label (e.g. "Code", "Command")
- * @returns {string|null} Error message or null
  */
-export function validateMaxLength(value, maxLength, label) {
+export function validateMaxLength(value: string | null | undefined, maxLength: number, label: string): string | null {
   if (value && value.length > maxLength) {
     return `${label} exceeds maximum length of ${maxLength.toLocaleString()} characters`;
   }
@@ -47,15 +35,11 @@ export function validateMaxLength(value, maxLength, label) {
 
 /**
  * Safely parse a JSON string, returning a fallback on failure.
- *
- * @param {string} str - JSON string to parse
- * @param {*} [fallback=null] - Value to return if parsing fails
- * @returns {*}
  */
-export function parseJsonSafe(str, fallback = null) {
+export function parseJsonSafe<T = unknown>(str: string | null | undefined, fallback: T | null = null): T | null {
   if (!str) return fallback;
   try {
-    return JSON.parse(str);
+    return JSON.parse(str) as T;
   } catch {
     return fallback;
   }
@@ -64,11 +48,8 @@ export function parseJsonSafe(str, fallback = null) {
 /**
  * Parse JSON from an LLM response, handling markdown code blocks.
  * Many LLMs wrap JSON in ```json ... ``` — this strips that before parsing.
- *
- * @param {string} text - Raw LLM response text
- * @returns {object|Array|null} Parsed JSON, or null if parsing fails
  */
-export function parseJsonFromLlmResponse(text) {
+export function parseJsonFromLlmResponse(text: string | null | undefined): Record<string, unknown> | unknown[] | null {
   if (!text) return null;
   let jsonText = text.trim();
 
@@ -160,11 +141,8 @@ export function parseJsonFromLlmResponse(text) {
  * Check if a string is a valid email address.
  * Uses a practical regex covering 99.9% of real-world addresses
  * (not the full RFC 5322 grammar, which is deliberately over-broad).
- *
- * @param {string} str
- * @returns {boolean}
  */
-export function isEmail(str) {
+export function isEmail(str: string | null | undefined): boolean {
   if (!str) return false;
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(str);
 }
@@ -172,12 +150,12 @@ export function isEmail(str) {
 /**
  * Check if a string is a valid HTTP(S) URL.
  * Uses the URL constructor for spec-compliant parsing.
- *
- * @param {string} str
- * @param {{ requireHttps?: boolean }} [options]
- * @returns {boolean}
  */
-export function isUrl(str, { requireHttps = false } = {}) {
+export interface IsUrlOptions {
+  requireHttps?: boolean;
+}
+
+export function isUrl(str: string | null | undefined, { requireHttps = false }: IsUrlOptions = {}): boolean {
   if (!str) return false;
   try {
     const url = new URL(str);
@@ -191,15 +169,11 @@ export function isUrl(str, { requireHttps = false } = {}) {
 /**
  * Check if a value is numeric (finite number or numeric string).
  * e.g. isNumeric("3.14") → true, isNumeric("abc") → false, isNumeric(NaN) → false
- *
- * @param {*} value
- * @returns {boolean}
  */
-export function isNumeric(value) {
+export function isNumeric(value: unknown): boolean {
   if (typeof value === "number") return Number.isFinite(value);
   if (typeof value === "string" && value.trim() !== "") {
     return Number.isFinite(Number(value));
   }
   return false;
 }
-

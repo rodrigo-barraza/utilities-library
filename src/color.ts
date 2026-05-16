@@ -2,15 +2,28 @@
 // Color — Color manipulation and interpolation utilities
 // ─────────────────────────────────────────────────────────────
 
+export interface RGB {
+  r: number;
+  g: number;
+  b: number;
+}
+
+export interface RGBA extends RGB {
+  a: number;
+}
+
+export interface HSL {
+  h: number;
+  s: number;
+  l: number;
+}
+
 /**
  * Parse a hex color string (#RGB, #RRGGBB, or #RRGGBBAA) into
  * an `{ r, g, b, a }` object with values in the 0–255 range
  * (alpha as 0–1).
- *
- * @param {string} hex - Hex color string (with or without #)
- * @returns {{ r: number, g: number, b: number, a: number }}
  */
-export function parseHex(hex) {
+export function parseHex(hex: string): RGBA {
   let normalizedHex = hex.replace(/^#/, "");
   if (normalizedHex.length === 3 || normalizedHex.length === 4) {
     normalizedHex = [...normalizedHex].map((c) => c + c).join("");
@@ -34,11 +47,8 @@ export function parseHex(hex) {
 
 /**
  * Convert an `{ r, g, b }` object (0–255) to a hex color string.
- *
- * @param {{ r: number, g: number, b: number }} color
- * @returns {string} Hex color string (e.g. "#ff8800")
  */
-export function toHex({ r, g, b }) {
+export function toHex({ r, g, b }: RGB): string {
   return (
     "#" +
     [r, g, b]
@@ -49,13 +59,8 @@ export function toHex({ r, g, b }) {
 
 /**
  * Linearly interpolate between two hex colors.
- *
- * @param {string} colorA - Start hex color
- * @param {string} colorB - End hex color
- * @param {number} t - Interpolation factor (0 = colorA, 1 = colorB)
- * @returns {string} Interpolated hex color
  */
-export function lerpColor(colorA, colorB, t) {
+export function lerpColor(colorA: string, colorB: string, t: number): string {
   const startColor = parseHex(colorA);
   const endColor = parseHex(colorB);
   return toHex({
@@ -67,21 +72,18 @@ export function lerpColor(colorA, colorB, t) {
 
 /**
  * Convert an `{ r, g, b }` object (0–255) to an HSL object.
- *
- * @param {{ r: number, g: number, b: number }} color
- * @returns {{ h: number, s: number, l: number }} h in [0,360], s and l in [0,100]
  */
-export function rgbToHsl({ r, g, b }) {
-  r /= 255;
-  g /= 255;
-  b /= 255;
+export function rgbToHsl({ r: rIn, g: gIn, b: bIn }: RGB): HSL {
+  const r = rIn / 255;
+  const g = gIn / 255;
+  const b = bIn / 255;
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
   const l = (max + min) / 2;
   if (max === min) return { h: 0, s: 0, l: l * 100 };
   const delta = max - min;
   const s = l > 0.5 ? delta / (2 - max - min) : delta / (max + min);
-  let h;
+  let h: number;
   if (max === r) h = ((g - b) / delta + (g < b ? 6 : 0)) / 6;
   else if (max === g) h = ((b - r) / delta + 2) / 6;
   else h = ((r - g) / delta + 4) / 6;
@@ -90,19 +92,16 @@ export function rgbToHsl({ r, g, b }) {
 
 /**
  * Convert an HSL object to `{ r, g, b }` (0–255).
- *
- * @param {{ h: number, s: number, l: number }} hsl - h in [0,360], s and l in [0,100]
- * @returns {{ r: number, g: number, b: number }}
  */
-export function hslToRgb({ h, s, l }) {
-  h /= 360;
-  s /= 100;
-  l /= 100;
+export function hslToRgb({ h: hIn, s: sIn, l: lIn }: HSL): RGB {
+  const h = hIn / 360;
+  const s = sIn / 100;
+  const l = lIn / 100;
   if (s === 0) {
     const grayscaleValue = Math.round(l * 255);
     return { r: grayscaleValue, g: grayscaleValue, b: grayscaleValue };
   }
-  const hue2rgb = (p, q, t) => {
+  const hue2rgb = (p: number, q: number, t: number): number => {
     if (t < 0) t += 1;
     if (t > 1) t -= 1;
     if (t < 1 / 6) return p + (q - p) * 6 * t;
@@ -121,12 +120,8 @@ export function hslToRgb({ h, s, l }) {
 
 /**
  * Lighten or darken a hex color by a percentage.
- *
- * @param {string} hex - Hex color string
- * @param {number} amount - Percentage to lighten (+) or darken (−), e.g. 20 or -20
- * @returns {string} Adjusted hex color
  */
-export function adjustBrightness(hex, amount) {
+export function adjustBrightness(hex: string, amount: number): string {
   const rgb = parseHex(hex);
   const hsl = rgbToHsl(rgb);
   hsl.l = Math.max(0, Math.min(100, hsl.l + amount));

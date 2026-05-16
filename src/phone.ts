@@ -6,11 +6,8 @@
  * Format a phone number string for display.
  * Handles North American (NANP) numbers with +1 prefix.
  * Other formats are returned as-is.
- *
- * @param {string} phone - Phone number (ideally E.164 format)
- * @returns {string}
  */
-export function formatPhone(phone) {
+export function formatPhone(phone: string | null | undefined): string {
   if (!phone) return "Unknown";
   const cleaned = phone.replace(/\D/g, "");
   if (cleaned.length === 11 && cleaned.startsWith("1")) {

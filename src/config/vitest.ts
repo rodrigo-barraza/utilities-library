@@ -7,4 +7,4 @@ export const serviceVitestConfig = {
     globals: true,
     exclude: ["tests/live/**", "node_modules/**"],
   },
-};
+} as const;

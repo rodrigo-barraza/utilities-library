@@ -1,23 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 // Logger — Structured console logger for Node.js services
 // ─────────────────────────────────────────────────────────────
-// Shared base logger used across all backend services.
-// Supports colorized output via ANSI escape codes (no deps).
-//
-// Usage:
-//   import { logger } from "@rodrigo-barraza/utilities-library/node";
-//   logger.info("Server started");
-//
-//   // With a service name prefix:
-//   import { createLogger } from "@rodrigo-barraza/utilities-library/node";
-//   const logger = createLogger("prism");
-//   logger.info("Ready");  // → [18:37:24] INFO  [prism] Ready
-//
-//   // Explicit color control:
-//   const logger = createLogger({ service: "vault", color: false });
-// ─────────────────────────────────────────────────────────────
 
-// ── ANSI escape codes ──────────────────────────────────────────
 const RESET = "\x1b[0m";
 const DIM = "\x1b[2m";
 const BOLD = "\x1b[1m";
@@ -31,10 +15,11 @@ const FG = {
   cyan: "\x1b[36m",
   white: "\x1b[37m",
   gray: "\x1b[90m",
-};
+} as const;
 
-// ── Level color map ────────────────────────────────────────────
-const LEVEL_STYLES = {
+type LogLevel = "INFO" | "OK" | "WARN" | "ERR" | "DBG";
+
+const LEVEL_STYLES: Record<LogLevel, { label: string; color: string }> = {
   INFO: { label: "INFO ", color: FG.blue },
   OK: { label: "OK   ", color: FG.green },
   WARN: { label: "WARN ", color: FG.yellow },
@@ -42,7 +27,7 @@ const LEVEL_STYLES = {
   DBG: { label: "DBG  ", color: FG.magenta },
 };
 
-function timestamp() {
+function timestamp(): string {
   const now = new Date();
   const hours = String(now.getHours()).padStart(2, "0");
   const minutes = String(now.getMinutes()).padStart(2, "0");
@@ -50,25 +35,32 @@ function timestamp() {
   return `${hours}:${minutes}:${seconds}`;
 }
 
-/**
- * Detect whether the current process should use colors.
- * Respects NO_COLOR (https://no-color.org/) and FORCE_COLOR env vars.
- */
-function shouldUseColor() {
+function shouldUseColor(): boolean {
   if (process.env.NO_COLOR !== undefined) return false;
   if (process.env.FORCE_COLOR !== undefined) return true;
   return process.stdout.isTTY === true;
 }
 
+export interface Logger {
+  info(message: string, ...args: unknown[]): void;
+  success(message: string, ...args: unknown[]): void;
+  warn(message: string, ...args: unknown[]): void;
+  error(message: string, ...args: unknown[]): void;
+  debug(message: string, ...args: unknown[]): void;
+  request(method: string, path: string, status: number, timing: string, sizeTag?: string): void;
+}
+
+export interface LoggerOptions {
+  /** Service identifier shown in log lines. */
+  service?: string;
+  /** Enable/disable colors (default: auto-detect TTY). */
+  color?: boolean;
+}
+
 /**
  * Build a logger instance, optionally scoped to a service name.
- *
- * @param {string|object} [opts] — Service name string, or options object.
- * @param {string}  [opts.service] — Service identifier shown in log lines.
- * @param {boolean} [opts.color]   — Enable/disable colors (default: auto-detect TTY).
- * @returns {{ info, success, warn, error, debug, request }}
  */
-function createLogger(opts) {
+function createLogger(opts?: string | LoggerOptions): Logger {
   let service = "";
   let useColor = shouldUseColor();
 
@@ -79,10 +71,7 @@ function createLogger(opts) {
     if (typeof opts.color === "boolean") useColor = opts.color;
   }
 
-  /**
-   * Format a log line with optional ANSI colors.
-   */
-  function formatLine(level, message) {
+  function formatLine(level: LogLevel, message: string): string {
     const time = timestamp();
     const style = LEVEL_STYLES[level];
 
@@ -101,35 +90,27 @@ function createLogger(opts) {
   }
 
   return {
-    info(message, ...args) {
+    info(message: string, ...args: unknown[]) {
       console.log(formatLine("INFO", message), ...args);
     },
 
-    success(message, ...args) {
+    success(message: string, ...args: unknown[]) {
       console.log(formatLine("OK", message), ...args);
     },
 
-    warn(message, ...args) {
+    warn(message: string, ...args: unknown[]) {
       console.warn(formatLine("WARN", message), ...args);
     },
 
-    error(message, ...args) {
+    error(message: string, ...args: unknown[]) {
       console.error(formatLine("ERR", message), ...args);
     },
 
-    debug(message, ...args) {
+    debug(message: string, ...args: unknown[]) {
       console.log(formatLine("DBG", message), ...args);
     },
 
-    /**
-     * Log an HTTP request. Used by RequestLoggerMiddleware.
-     * @param {string} method  — HTTP method (GET, POST, etc.)
-     * @param {string} path    — Request path
-     * @param {number} status  — Response status code
-     * @param {string} timing  — Human-readable elapsed time
-     * @param {string} [sizeTag] — Optional size summary
-     */
-    request(method, path, status, timing, sizeTag) {
+    request(method: string, path: string, status: number, timing: string, sizeTag?: string) {
       const size = sizeTag ? ` ${sizeTag}` : "";
       const time = timestamp();
 
@@ -142,8 +123,7 @@ function createLogger(opts) {
       const timeFormatted = `${DIM}[${time}]${RESET}`;
       const tag = service ? ` ${FG.cyan}[${service}]${RESET}` : "";
 
-      // Color status code by class
-      let statusColor = FG.green;
+      let statusColor: string = FG.green;
       if (status >= 500) statusColor = FG.red;
       else if (status >= 400) statusColor = FG.yellow;
       else if (status >= 300) statusColor = FG.blue;
@@ -160,7 +140,7 @@ function createLogger(opts) {
 }
 
 /** Default (unscoped) logger instance. */
-const logger = createLogger();
+const logger: Logger = createLogger();
 
 export default logger;
 export { createLogger };

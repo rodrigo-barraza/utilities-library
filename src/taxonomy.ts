@@ -1,13 +1,6 @@
 // ─────────────────────────────────────────────────────────────
 // Tool Taxonomy Constants
 // ─────────────────────────────────────────────────────────────
-// Single source of truth for label names, domain names,
-// and prefixed enabledTools entry builders.
-// ─────────────────────────────────────────────────────────────
-
-// ── Label Names ─────────────────────────────────────────────
-// Semantic cross-cutting categories. A tool can carry
-// multiple labels (e.g. ["coding", "web"]).
 
 export const LABELS = {
   CODING: "coding",
@@ -33,10 +26,10 @@ export const LABELS = {
   DATA_SCIENCE: "data_science",
   ORCHESTRATION: "orchestration",
   DOWNLOAD: "download",
-};
+} as const;
 
-// ── Domain Names ────────────────────────────────────────────
-// Functional grouping — each tool belongs to exactly one domain.
+export type LabelKey = keyof typeof LABELS;
+export type LabelValue = (typeof LABELS)[LabelKey];
 
 export const DOMAINS = {
   WEATHER: "Weather & Environment",
@@ -59,7 +52,6 @@ export const DOMAINS = {
   GAMING: "Gaming",
   DISCORD: "Discord",
   SMART_HOME: "Smart Home",
-  // Agentic sub-domains
   AGENTIC_FILES: "Agentic: File Operations",
   AGENTIC_SEARCH: "Agentic: Search & Discovery",
   AGENTIC_WEB: "Agentic: Web",
@@ -73,7 +65,6 @@ export const DOMAINS = {
   AGENTIC_TOOLS: "Agentic: Tool Management",
   AGENTIC_META: "Agentic: Meta",
   AGENTIC_SCHEDULING: "Agentic: Scheduling",
-  // Prism-local domains (added by ToolOrchestratorService)
   REASONING: "Reasoning",
   COORDINATOR: "Coordinator",
   AGENTIC_SKILLS: "Agentic: Skills",
@@ -82,16 +73,15 @@ export const DOMAINS = {
   AGENTIC_GIT_ISOLATION: "Agentic: Git Isolation",
   AGENTIC_TASK_MGMT: "Agentic: Task Management",
   TORRENT: "Torrent",
-};
+} as const;
 
-// ── Prefixed enabledTools Helpers ────────────────────────────
-// Builds "label:X" and "domain:X" strings for use in
-// agent enabledTools arrays. Prevents typos.
+export type DomainKey = keyof typeof DOMAINS;
+export type DomainValue = (typeof DOMAINS)[DomainKey];
 
 export const L = Object.fromEntries(
   Object.entries(LABELS).map(([k, v]) => [k, `label:${v}`]),
-);
+) as Record<LabelKey, `label:${LabelValue}`>;
 
 export const D = Object.fromEntries(
   Object.entries(DOMAINS).map(([k, v]) => [k, `domain:${v}`]),
-);
+) as Record<DomainKey, `domain:${DomainValue}`>;

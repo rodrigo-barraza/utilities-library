@@ -1,37 +1,16 @@
 // ─────────────────────────────────────────────────────────────
 // Effects — Visual Filter Effects (Browser-only)
 // ─────────────────────────────────────────────────────────────
-// GPU-accelerated CSS + Canvas visual effects that can be
-// applied to any DOM element. Each effect injects its own
-// scoped CSS on first use (idempotent) and returns a cleanup
-// function for easy teardown.
-//
-// Usage:
-//   import { applyStatic, applyChromaticAberration } from '@rodrigo-barraza/utilities-library/effects';
-//   const cleanup = applyStatic(element, { intensity: 0.4 });
-//   cleanup(); // remove effect
-// ─────────────────────────────────────────────────────────────
-
-/* global document */
 
 const STYLE_ID = "rb-effects-stylesheet";
+const _injected = new Set<string>();
 
-// ── Internals ──────────────────────────────────────────────
-
-/** @type {Set<string>} Tracks which effect stylesheets have been injected */
-const _injected = new Set();
-
-/**
- * Inject a `<style>` block once per effect name.
- * @param {string} name
- * @param {string} css
- */
-function _injectCSS(name, css) {
+function _injectCSS(name: string, css: string): void {
   if (typeof document === "undefined") return;
   if (_injected.has(name)) return;
   _injected.add(name);
 
-  let sheet = document.getElementById(STYLE_ID);
+  let sheet = document.getElementById(STYLE_ID) as HTMLStyleElement | null;
   if (!sheet) {
     sheet = document.createElement("style");
     sheet.id = STYLE_ID;
@@ -40,19 +19,12 @@ function _injectCSS(name, css) {
   sheet.textContent += `\n/* ── ${name} ── */\n${css}\n`;
 }
 
-/**
- * Add class(es) to an element, return a cleanup that removes them.
- * @param {HTMLElement} el
- * @param {string[]} classes
- * @returns {() => void}
- */
-function _applyClasses(el, classes) {
+function _applyClasses(el: HTMLElement, classes: string[]): () => void {
   classes.forEach((c) => el.classList.add(c));
   return () => classes.forEach((c) => el.classList.remove(c));
 }
 
 // ── 1. Static / Noise ──────────────────────────────────────
-// Analog TV static — animated pseudo-element with SVG feTurbulence
 
 const STATIC_CSS = `
 @keyframes rb-fx-static-drift {
@@ -89,20 +61,13 @@ const STATIC_CSS = `
 }
 `;
 
-/**
- * Apply analog TV static / noise overlay.
- * @param {HTMLElement} el
- * @param {{ intensity?: number }} [options]
- * @returns {() => void} cleanup
- */
-export function applyStatic(el, { intensity = 0.12 } = {}) {
+export function applyStatic(el: HTMLElement, { intensity = 0.12 } = {}): () => void {
   _injectCSS("static", STATIC_CSS);
   el.style.setProperty("--rb-fx-static-intensity", String(intensity));
   return _applyClasses(el, ["rb-fx-static"]);
 }
 
 // ── 2. Chromatic Aberration (RGB Split) ────────────────────
-// Separates color channels via offset text-shadows and box-shadows
 
 const CHROMATIC_CSS = `
 @keyframes rb-fx-chromatic-shift {
@@ -111,20 +76,10 @@ const CHROMATIC_CSS = `
       var(--rb-fx-ca-offset, 2px) 0 0 rgba(255, 0, 0, var(--rb-fx-ca-intensity, 0.6)),
       calc(var(--rb-fx-ca-offset, 2px) * -1) 0 0 rgba(0, 255, 255, var(--rb-fx-ca-intensity, 0.6));
   }
-  25% {
-    text-shadow:
-      calc(var(--rb-fx-ca-offset, 2px) * -0.5) var(--rb-fx-ca-offset, 2px) 0 rgba(255, 0, 0, var(--rb-fx-ca-intensity, 0.6)),
-      var(--rb-fx-ca-offset, 2px) calc(var(--rb-fx-ca-offset, 2px) * -0.5) 0 rgba(0, 255, 255, var(--rb-fx-ca-intensity, 0.6));
-  }
   50% {
     text-shadow:
       calc(var(--rb-fx-ca-offset, 2px) * -1) 0 0 rgba(255, 0, 0, var(--rb-fx-ca-intensity, 0.6)),
       var(--rb-fx-ca-offset, 2px) 0 0 rgba(0, 255, 255, var(--rb-fx-ca-intensity, 0.6));
-  }
-  75% {
-    text-shadow:
-      var(--rb-fx-ca-offset, 2px) calc(var(--rb-fx-ca-offset, 2px) * -0.5) 0 rgba(255, 0, 0, var(--rb-fx-ca-intensity, 0.6)),
-      calc(var(--rb-fx-ca-offset, 2px) * -0.5) var(--rb-fx-ca-offset, 2px) 0 rgba(0, 255, 255, var(--rb-fx-ca-intensity, 0.6));
   }
 }
 .rb-fx-chromatic {
@@ -138,13 +93,7 @@ const CHROMATIC_CSS = `
 }
 `;
 
-/**
- * Apply chromatic aberration (RGB channel separation) via text-shadow.
- * @param {HTMLElement} el
- * @param {{ offset?: number, intensity?: number, animated?: boolean }} [options]
- * @returns {() => void} cleanup
- */
-export function applyChromaticAberration(el, { offset = 2, intensity = 0.6, animated = true } = {}) {
+export function applyChromaticAberration(el: HTMLElement, { offset = 2, intensity = 0.6, animated = true } = {}): () => void {
   _injectCSS("chromatic", CHROMATIC_CSS);
   el.style.setProperty("--rb-fx-ca-offset", `${offset}px`);
   el.style.setProperty("--rb-fx-ca-intensity", String(intensity));
@@ -154,10 +103,7 @@ export function applyChromaticAberration(el, { offset = 2, intensity = 0.6, anim
 // ── 3. CRT Scanlines ──────────────────────────────────────
 
 const SCANLINE_CSS = `
-.rb-fx-scanlines {
-  position: relative;
-  overflow: hidden;
-}
+.rb-fx-scanlines { position: relative; overflow: hidden; }
 .rb-fx-scanlines::before {
   content: "";
   position: absolute;
@@ -182,13 +128,7 @@ const SCANLINE_CSS = `
 }
 `;
 
-/**
- * Apply CRT scanline overlay.
- * @param {HTMLElement} el
- * @param {{ intensity?: number, gap?: number, rolling?: boolean }} [options]
- * @returns {() => void} cleanup
- */
-export function applyScanlines(el, { intensity = 0.08, gap = 3, rolling = false } = {}) {
+export function applyScanlines(el: HTMLElement, { intensity = 0.08, gap = 3, rolling = false } = {}): () => void {
   _injectCSS("scanlines", SCANLINE_CSS);
   el.style.setProperty("--rb-fx-scan-intensity", String(intensity));
   el.style.setProperty("--rb-fx-scan-gap", `${gap}px`);
@@ -202,9 +142,7 @@ export function applyScanlines(el, { intensity = 0.08, gap = 3, rolling = false 
 const GLITCH_CSS = `
 @keyframes rb-fx-glitch-hue {
   0%   { filter: hue-rotate(0deg) brightness(1.2); }
-  25%  { filter: hue-rotate(90deg) brightness(1.6); }
   50%  { filter: hue-rotate(180deg) brightness(0.8); }
-  75%  { filter: hue-rotate(270deg) brightness(1.4); }
   100% { filter: hue-rotate(360deg) brightness(1.2); }
 }
 @keyframes rb-fx-glitch-jitter {
@@ -214,27 +152,10 @@ const GLITCH_CSS = `
   75%  { transform: translate3d(1px, 0, 0) scale(1.01); }
   100% { transform: translate3d(-1px, 0, 0) scale(0.99); }
 }
-@keyframes rb-fx-glitch-clip {
-  0%   { clip-path: inset(40% 0 60% 0); }
-  10%  { clip-path: inset(10% 0 85% 0); }
-  20%  { clip-path: inset(80% 0 5% 0); }
-  30%  { clip-path: inset(25% 0 50% 0); }
-  40%  { clip-path: inset(60% 0 15% 0); }
-  50%  { clip-path: inset(5% 0 70% 0); }
-  60%  { clip-path: inset(90% 0 2% 0); }
-  70%  { clip-path: inset(15% 0 75% 0); }
-  80%  { clip-path: inset(55% 0 30% 0); }
-  90%  { clip-path: inset(35% 0 45% 0); }
-  100% { clip-path: inset(70% 0 10% 0); }
-}
 .rb-fx-glitch {
-  animation:
-    rb-fx-glitch-hue 0.15s linear infinite,
-    rb-fx-glitch-jitter 0.05s steps(2) infinite;
+  animation: rb-fx-glitch-hue 0.15s linear infinite, rb-fx-glitch-jitter 0.05s steps(2) infinite;
   will-change: filter, transform, text-shadow;
-  text-shadow:
-    1px 0 0 rgba(255, 0, 0, 0.7),
-    -1px 0 0 rgba(0, 255, 255, 0.7);
+  text-shadow: 1px 0 0 rgba(255,0,0,0.7), -1px 0 0 rgba(0,255,255,0.7);
 }
 .rb-fx-glitch-subtle {
   animation: rb-fx-glitch-jitter 0.1s steps(3) infinite;
@@ -242,13 +163,7 @@ const GLITCH_CSS = `
 }
 `;
 
-/**
- * Apply glitch distortion (hue cycling + jitter + RGB text-shadow).
- * @param {HTMLElement} el
- * @param {{ subtle?: boolean }} [options]
- * @returns {() => void} cleanup
- */
-export function applyGlitch(el, { subtle = false } = {}) {
+export function applyGlitch(el: HTMLElement, { subtle = false } = {}): () => void {
   _injectCSS("glitch", GLITCH_CSS);
   return _applyClasses(el, [subtle ? "rb-fx-glitch-subtle" : "rb-fx-glitch"]);
 }
@@ -261,80 +176,42 @@ const VHS_CSS = `
   2%   { transform: translate3d(4px, 0, 0) skewX(0.5deg); opacity: 0.85; }
   4%   { transform: translate3d(-2px, 0, 0) skewX(-0.3deg); opacity: 1; }
   5%   { transform: translate3d(0, 0, 0) skewX(0deg); opacity: 1; }
-  45%  { transform: translate3d(0, 0, 0) skewX(0deg); opacity: 1; }
-  46%  { transform: translate3d(-6px, 0, 0) skewX(1deg); opacity: 0.8; }
-  47%  { transform: translate3d(3px, 0, 0) skewX(-0.5deg); opacity: 0.95; }
-  48%  { transform: translate3d(0, 0, 0) skewX(0deg); opacity: 1; }
   100% { transform: translate3d(0, 0, 0) skewX(0deg); opacity: 1; }
 }
-.rb-fx-vhs {
-  animation: rb-fx-vhs-track 4s linear infinite;
-  will-change: transform, opacity;
-}
+.rb-fx-vhs { animation: rb-fx-vhs-track 4s linear infinite; will-change: transform, opacity; }
 `;
 
-/**
- * Apply VHS tracking distortion — sporadic horizontal skew + offset.
- * @param {HTMLElement} el
- * @returns {() => void} cleanup
- */
-export function applyVhsTracking(el) {
+export function applyVhsTracking(el: HTMLElement): () => void {
   _injectCSS("vhs", VHS_CSS);
   return _applyClasses(el, ["rb-fx-vhs"]);
 }
 
-// ── 6. Hue Rotate (Rainbow Cycle) ─────────────────────────
+// ── 6. Hue Rotate ─────────────────────────────────────────
 
 const HUE_CSS = `
-@keyframes rb-fx-hue-rotate {
-  from { filter: hue-rotate(0deg); }
-  to   { filter: hue-rotate(360deg); }
-}
-.rb-fx-hue-rotate {
-  animation: rb-fx-hue-rotate var(--rb-fx-hue-duration, 4s) linear infinite;
-  will-change: filter;
-}
+@keyframes rb-fx-hue-rotate { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
+.rb-fx-hue-rotate { animation: rb-fx-hue-rotate var(--rb-fx-hue-duration, 4s) linear infinite; will-change: filter; }
 `;
 
-/**
- * Apply continuous hue rotation (rainbow cycle).
- * @param {HTMLElement} el
- * @param {{ duration?: number }} [options] duration in seconds
- * @returns {() => void} cleanup
- */
-export function applyHueRotate(el, { duration = 4 } = {}) {
+export function applyHueRotate(el: HTMLElement, { duration = 4 } = {}): () => void {
   _injectCSS("hue-rotate", HUE_CSS);
   el.style.setProperty("--rb-fx-hue-duration", `${duration}s`);
   return _applyClasses(el, ["rb-fx-hue-rotate"]);
 }
 
-// ── 7. Shimmer / Skeleton Loading ─────────────────────────
+// ── 7. Shimmer ─────────────────────────────────────────────
 
 const SHIMMER_CSS = `
-@keyframes rb-fx-shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
+@keyframes rb-fx-shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 .rb-fx-shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent 25%,
-    rgba(255, 255, 255, var(--rb-fx-shimmer-intensity, 0.06)) 50%,
-    transparent 75%
-  );
+  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,var(--rb-fx-shimmer-intensity, 0.06)) 50%, transparent 75%);
   background-size: 400% 100%;
   animation: rb-fx-shimmer var(--rb-fx-shimmer-duration, 1.5s) ease-in-out infinite;
   will-change: background-position;
 }
 `;
 
-/**
- * Apply shimmer / loading highlight sweep.
- * @param {HTMLElement} el
- * @param {{ intensity?: number, duration?: number }} [options]
- * @returns {() => void} cleanup
- */
-export function applyShimmer(el, { intensity = 0.06, duration = 1.5 } = {}) {
+export function applyShimmer(el: HTMLElement, { intensity = 0.06, duration = 1.5 } = {}): () => void {
   _injectCSS("shimmer", SHIMMER_CSS);
   el.style.setProperty("--rb-fx-shimmer-intensity", String(intensity));
   el.style.setProperty("--rb-fx-shimmer-duration", `${duration}s`);
@@ -345,23 +222,14 @@ export function applyShimmer(el, { intensity = 0.06, duration = 1.5 } = {}) {
 
 const DISSOLVE_CSS = `
 @keyframes rb-fx-dissolve {
-  0%   { filter: contrast(1) brightness(1) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='d'%3E%3CfeTurbulence baseFrequency='0.02'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='0'/%3E%3C/filter%3E%3C/svg%3E#d"); }
+  0%   { filter: contrast(1) brightness(1); }
   50%  { filter: contrast(1.2) brightness(1.1); opacity: 0.7; }
   100% { filter: contrast(1) brightness(1); opacity: 0; }
 }
-.rb-fx-dissolve {
-  animation: rb-fx-dissolve var(--rb-fx-dissolve-duration, 1s) ease-out forwards;
-  will-change: filter, opacity;
-}
+.rb-fx-dissolve { animation: rb-fx-dissolve var(--rb-fx-dissolve-duration, 1s) ease-out forwards; will-change: filter, opacity; }
 `;
 
-/**
- * Apply pixel dissolve / disintegration effect.
- * @param {HTMLElement} el
- * @param {{ duration?: number }} [options]
- * @returns {() => void} cleanup
- */
-export function applyDissolve(el, { duration = 1 } = {}) {
+export function applyDissolve(el: HTMLElement, { duration = 1 } = {}): () => void {
   _injectCSS("dissolve", DISSOLVE_CSS);
   el.style.setProperty("--rb-fx-dissolve-duration", `${duration}s`);
   return _applyClasses(el, ["rb-fx-dissolve"]);
@@ -370,31 +238,18 @@ export function applyDissolve(el, { duration = 1 } = {}) {
 // ── 9. CRT Vignette ──────────────────────────────────────
 
 const VIGNETTE_CSS = `
-.rb-fx-vignette {
-  position: relative;
-  overflow: hidden;
-}
+.rb-fx-vignette { position: relative; overflow: hidden; }
 .rb-fx-vignette::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 50%,
-    rgba(0, 0, 0, var(--rb-fx-vignette-intensity, 0.6)) 100%
-  );
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,var(--rb-fx-vignette-intensity, 0.6)) 100%);
   pointer-events: none;
   z-index: 9997;
 }
 `;
 
-/**
- * Apply CRT-style vignette (darkened edges).
- * @param {HTMLElement} el
- * @param {{ intensity?: number }} [options]
- * @returns {() => void} cleanup
- */
-export function applyVignette(el, { intensity = 0.6 } = {}) {
+export function applyVignette(el: HTMLElement, { intensity = 0.6 } = {}): () => void {
   _injectCSS("vignette", VIGNETTE_CSS);
   el.style.setProperty("--rb-fx-vignette-intensity", String(intensity));
   return _applyClasses(el, ["rb-fx-vignette"]);
@@ -407,34 +262,19 @@ const FLICKER_CSS = `
   0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
   20%, 24%, 55% { opacity: var(--rb-fx-flicker-min, 0.4); }
 }
-.rb-fx-flicker {
-  animation: rb-fx-flicker var(--rb-fx-flicker-duration, 3s) linear infinite;
-  will-change: opacity;
-}
+.rb-fx-flicker { animation: rb-fx-flicker var(--rb-fx-flicker-duration, 3s) linear infinite; will-change: opacity; }
 `;
 
-/**
- * Apply fluorescent light flicker.
- * @param {HTMLElement} el
- * @param {{ duration?: number, minOpacity?: number }} [options]
- * @returns {() => void} cleanup
- */
-export function applyFlicker(el, { duration = 3, minOpacity = 0.4 } = {}) {
+export function applyFlicker(el: HTMLElement, { duration = 3, minOpacity = 0.4 } = {}): () => void {
   _injectCSS("flicker", FLICKER_CSS);
   el.style.setProperty("--rb-fx-flicker-duration", `${duration}s`);
   el.style.setProperty("--rb-fx-flicker-min", String(minOpacity));
   return _applyClasses(el, ["rb-fx-flicker"]);
 }
 
-// ── 11. CRT Bundle (scanlines + vignette + static) ────────
+// ── 11. CRT Bundle ────────────────────────────────────────
 
-/**
- * Apply a full CRT monitor effect (scanlines + vignette + static noise).
- * @param {HTMLElement} el
- * @param {{ scanIntensity?: number, vignetteIntensity?: number, noiseIntensity?: number }} [options]
- * @returns {() => void} cleanup
- */
-export function applyCRT(el, { scanIntensity = 0.06, vignetteIntensity = 0.5, noiseIntensity = 0.08 } = {}) {
+export function applyCRT(el: HTMLElement, { scanIntensity = 0.06, vignetteIntensity = 0.5, noiseIntensity = 0.08 } = {}): () => void {
   const cleanups = [
     applyScanlines(el, { intensity: scanIntensity, rolling: true }),
     applyVignette(el, { intensity: vignetteIntensity }),
@@ -443,15 +283,9 @@ export function applyCRT(el, { scanIntensity = 0.06, vignetteIntensity = 0.5, no
   return () => cleanups.forEach((fn) => fn());
 }
 
-// ── 12. Compose — chain multiple effects ──────────────────
+// ── 12. Compose ──────────────────────────────────────────
 
-/**
- * Apply multiple effects to one element. Returns a single cleanup.
- * @param {HTMLElement} el
- * @param {Array<(el: HTMLElement) => (() => void)>} fns
- * @returns {() => void} cleanup
- */
-export function composeEffects(el, fns) {
+export function composeEffects(el: HTMLElement, fns: Array<(el: HTMLElement) => () => void>): () => void {
   const cleanups = fns.map((fn) => fn(el));
   return () => cleanups.forEach((fn) => fn());
 }

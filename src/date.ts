@@ -4,11 +4,8 @@
 
 /**
  * Format a Date as an ISO date string (YYYY-MM-DD).
- *
- * @param {Date} [date=new Date()] - The date to format
- * @returns {string}
  */
-export function toISODate(date = new Date()) {
+export function toISODate(date: Date = new Date()): string {
   return date.toISOString().slice(0, 10);
 }
 
@@ -16,11 +13,8 @@ export function toISODate(date = new Date()) {
  * Human-readable relative timestamp from an ISO date string or Date.
  * Covers fine-grained ("just now", "30s ago") and
  * coarse-grained ("today", "yesterday", "3d ago") ranges.
- *
- * @param {string|Date} date
- * @returns {string}
  */
-export function timeAgo(date) {
+export function timeAgo(date: string | Date | null | undefined): string {
   if (!date) return "—";
   const diff = Date.now() - new Date(date).getTime();
   const seconds = Math.floor(diff / 1000);
@@ -40,11 +34,8 @@ export function timeAgo(date) {
 
 /**
  * Calculate whole days elapsed since an ISO 8601 timestamp.
- *
- * @param {string} isoDate - ISO date string
- * @returns {number} Non-negative integer days
  */
-export function daysSinceIso(isoDate) {
+export function daysSinceIso(isoDate: string): number {
   return Math.max(
     0,
     Math.floor((Date.now() - new Date(isoDate).getTime()) / 86_400_000),
@@ -55,12 +46,8 @@ export function daysSinceIso(isoDate) {
  * Format an ISO timestamp as a compact, human-readable date-time string.
  * Uses Intl.DateTimeFormat for locale-correct output.
  * Omits the year when the date is in the current year.
- *
- * @param {string|Date} dateInput - ISO date string or Date object
- * @param {Intl.DateTimeFormatOptions} [opts] - Additional Intl options to merge
- * @returns {string}
  */
-export function formatDateTime(dateInput, opts = {}) {
+export function formatDateTime(dateInput: string | Date | null | undefined, opts: Intl.DateTimeFormatOptions = {}): string {
   if (!dateInput) return "—";
   const parsedDate = dateInput instanceof Date ? dateInput : new Date(dateInput);
   if (isNaN(parsedDate.getTime())) return "—";
@@ -77,11 +64,8 @@ export function formatDateTime(dateInput, opts = {}) {
 
 /**
  * Return a new Date that is `n` days in the past from now.
- *
- * @param {number} n - Number of days ago
- * @returns {Date}
  */
-export function daysAgo(n) {
+export function daysAgo(n: number): Date {
   const result = new Date();
   result.setDate(result.getDate() - n);
   return result;
@@ -90,11 +74,8 @@ export function daysAgo(n) {
 /**
  * Format a Date as a local-time date string (YYYY-MM-DD).
  * Unlike `toISODate()`, this uses the local timezone rather than UTC.
- *
- * @param {Date} [date=new Date()] - The date to format
- * @returns {string}
  */
-export function toLocalDateString(date = new Date()) {
+export function toLocalDateString(date: Date = new Date()): string {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");

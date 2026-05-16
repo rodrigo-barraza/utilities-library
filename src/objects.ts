@@ -6,13 +6,9 @@
  * Recursively merge `source` into `target`, returning a new object.
  * Only plain objects are merged recursively — arrays and other types
  * are replaced outright. Neither input is mutated.
- *
- * @param {object} target - Base object
- * @param {object} source - Object whose values override `target`
- * @returns {object}
  */
-export function deepMerge(target, source) {
-  const out = { ...target };
+export function deepMerge<T extends Record<string, unknown>>(target: T, source: Record<string, unknown>): T {
+  const out = { ...target } as Record<string, unknown>;
   for (const [key, val] of Object.entries(source)) {
     if (
       val !== null &&
@@ -22,51 +18,39 @@ export function deepMerge(target, source) {
       typeof target[key] === "object" &&
       !Array.isArray(target[key])
     ) {
-      out[key] = deepMerge(target[key], val);
+      out[key] = deepMerge(target[key] as Record<string, unknown>, val as Record<string, unknown>);
     } else {
       out[key] = val;
     }
   }
-  return out;
+  return out as T;
 }
 
 /**
  * Create a new object with only the specified keys from `obj`.
- *
- * @param {object} obj - Source object
- * @param {string[]} keys - Keys to include
- * @returns {object}
  */
-export function pick(obj, keys) {
-  const out = {};
+export function pick<T extends Record<string, unknown>, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
+  const out = {} as Pick<T, K>;
   for (const k of keys) {
-    if (k in obj) out[k] = obj[k];
+    if (k in obj) (out as Record<string, unknown>)[k as string] = obj[k];
   }
   return out;
 }
 
 /**
  * Create a new object with all keys from `obj` except those listed.
- *
- * @param {object} obj - Source object
- * @param {string[]} keys - Keys to exclude
- * @returns {object}
  */
-export function omit(obj, keys) {
-  const exclude = new Set(keys);
+export function omit<T extends Record<string, unknown>, K extends keyof T>(obj: T, keys: K[]): Omit<T, K> {
+  const exclude = new Set<string>(keys as string[]);
   return Object.fromEntries(
     Object.entries(obj).filter(([k]) => !exclude.has(k)),
-  );
+  ) as Omit<T, K>;
 }
 
 /**
  * Create a new object with the same keys but values transformed by `fn`.
- *
- * @param {object} obj - Source object
- * @param {(value: *, key: string) => *} fn - Transform function
- * @returns {object}
  */
-export function mapValues(obj, fn) {
+export function mapValues<T extends Record<string, unknown>, R>(obj: T, fn: (value: unknown, key: string) => R): Record<string, R> {
   return Object.fromEntries(
     Object.entries(obj).map(([k, v]) => [k, fn(v, k)]),
   );
@@ -74,12 +58,8 @@ export function mapValues(obj, fn) {
 
 /**
  * Create a new object with keys transformed by `fn`, values unchanged.
- *
- * @param {object} obj - Source object
- * @param {(key: string, value: *) => string} fn - Key transform function
- * @returns {object}
  */
-export function mapKeys(obj, fn) {
+export function mapKeys(obj: Record<string, unknown>, fn: (key: string, value: unknown) => string): Record<string, unknown> {
   return Object.fromEntries(
     Object.entries(obj).map(([k, v]) => [fn(k, v), v]),
   );
@@ -88,11 +68,8 @@ export function mapKeys(obj, fn) {
 /**
  * Swap keys and values in an object.
  * e.g. { a: "1", b: "2" } → { "1": "a", "2": "b" }
- *
- * @param {object} obj
- * @returns {object}
  */
-export function invert(obj) {
+export function invert(obj: Record<string, string>): Record<string, string> {
   return Object.fromEntries(
     Object.entries(obj).map(([k, v]) => [v, k]),
   );
@@ -106,11 +83,8 @@ export function invert(obj) {
  * - Plain object with no own keys `{}` → true
  * - Map/Set with size 0 → true
  * - Everything else → false
- *
- * @param {*} value
- * @returns {boolean}
  */
-export function isEmpty(value) {
+export function isEmpty(value: unknown): boolean {
   if (value == null) return true;
   if (typeof value === "string") return value.length === 0;
   if (Array.isArray(value)) return value.length === 0;
@@ -123,12 +97,8 @@ export function isEmpty(value) {
  * Deep structural equality check for JSON-serializable values.
  * Compares primitives, plain objects, and arrays recursively.
  * Does not handle circular references, Dates, RegExps, etc.
- *
- * @param {*} a
- * @param {*} b
- * @returns {boolean}
  */
-export function deepEqual(a, b) {
+export function deepEqual(a: unknown, b: unknown): boolean {
   if (a === b) return true;
   if (a == null || b == null) return false;
   if (typeof a !== typeof b) return false;
@@ -137,11 +107,10 @@ export function deepEqual(a, b) {
     return a.every((val, i) => deepEqual(val, b[i]));
   }
   if (typeof a === "object") {
-    const keysA = Object.keys(a);
-    const keysB = Object.keys(b);
+    const keysA = Object.keys(a as Record<string, unknown>);
+    const keysB = Object.keys(b as Record<string, unknown>);
     if (keysA.length !== keysB.length) return false;
-    return keysA.every((k) => deepEqual(a[k], b[k]));
+    return keysA.every((k) => deepEqual((a as Record<string, unknown>)[k], (b as Record<string, unknown>)[k]));
   }
   return false;
 }
-

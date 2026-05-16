@@ -4,10 +4,8 @@
 
 /**
  * Strip HTML tags from a string and decode common HTML entities.
- * @param {string} html
- * @returns {string}
  */
-export function stripHtml(html) {
+export function stripHtml(html: string | null | undefined): string {
   if (!html) return "";
   return html
     .replace(/<br\s*\/?>/gi, " ")
@@ -24,11 +22,8 @@ export function stripHtml(html) {
 /**
  * Normalize a name/title for deduplication and matching.
  * Strips non-alphanumeric chars, lowercases, collapses whitespace.
- *
- * @param {string} str
- * @returns {string}
  */
-export function normalizeName(str) {
+export function normalizeName(str: string | null | undefined): string {
   if (!str) return "";
   return str
     .toLowerCase()
@@ -41,11 +36,8 @@ export function normalizeName(str) {
  * Convert a snake_case function name to a human-readable title.
  * Strips common prefixes: get_, mcp__<server>__
  * e.g. "get_stock_price" → "Stock Price", "mcp__github__list_repos" → "List Repos"
- *
- * @param {string} name
- * @returns {string}
  */
-export function renderToolName(name) {
+export function renderToolName(name: string): string {
   return name
     .replace(/^(get_|mcp__\w+__)/, "")
     .replace(/_/g, " ")
@@ -57,11 +49,8 @@ export function renderToolName(name) {
  * before title-casing. Use for display contexts where the action verb
  * is redundant (e.g. tool catalog pages).
  * e.g. "search_web_results" → "Web Results", "execute_python" → "Python"
- *
- * @param {string} name
- * @returns {string}
  */
-export function humanizeToolName(name) {
+export function humanizeToolName(name: string): string {
   return name
     .replace(
       /^(get|set|search|list|create|delete|update|fetch|read|write|check|run|execute|find|query|rank|lookup|send|track|stop|cancel|submit|browse|navigate|click|scroll|type|clear|wait|close|open|save|load|ask|plan|log|emit|extract|consolidate|manage|add|remove|use|exit|enter)_/i,
@@ -73,13 +62,8 @@ export function humanizeToolName(name) {
 
 /**
  * Truncate a string to a maximum length, appending a suffix.
- *
- * @param {string} str - The string to truncate
- * @param {number} [maxLen=80] - Maximum allowed length (including suffix)
- * @param {string} [suffix="…"] - Suffix appended when truncated
- * @returns {string}
  */
-export function truncate(str, maxLen = 80, suffix = "…") {
+export function truncate(str: string | null | undefined, maxLen = 80, suffix = "…"): string {
   if (!str || str.length <= maxLen) return str || "";
   return str.slice(0, maxLen - suffix.length) + suffix;
 }
@@ -87,22 +71,16 @@ export function truncate(str, maxLen = 80, suffix = "…") {
 /**
  * Escape special RegExp characters in a string so it can be used
  * as a literal pattern inside `new RegExp(...)`.
- *
- * @param {string} str
- * @returns {string}
  */
-export function escapeRegex(str) {
+export function escapeRegex(str: string): string {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 /**
  * Extract the registrable root domain (domain + TLD) from a FQDN.
  * e.g. "api.prism.rod.dev" → "rod.dev", "clock-crew.com" → "clock-crew.com"
- *
- * @param {string} fqdn
- * @returns {string}
  */
-export function getRootDomain(fqdn) {
+export function getRootDomain(fqdn: string | null | undefined): string {
   if (!fqdn) return "";
   const parts = fqdn.split(".");
   return parts.length <= 2 ? fqdn : parts.slice(-2).join(".");
@@ -111,11 +89,8 @@ export function getRootDomain(fqdn) {
 /**
  * Extract the subdomain prefix from a FQDN.
  * e.g. "api.prism.rod.dev" → "api.prism", "rod.dev" → ""
- *
- * @param {string} fqdn
- * @returns {string}
  */
-export function getSubdomain(fqdn) {
+export function getSubdomain(fqdn: string | null | undefined): string {
   if (!fqdn) return "";
   const parts = fqdn.split(".");
   return parts.length <= 2 ? "" : parts.slice(0, -2).join(".");
@@ -124,11 +99,8 @@ export function getSubdomain(fqdn) {
 /**
  * Capitalize the first character of a string.
  * e.g. "hello" → "Hello", "HELLO" → "HELLO"
- *
- * @param {string} str
- * @returns {string}
  */
-export function capitalize(str) {
+export function capitalize(str: string | null | undefined): string {
   if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -139,11 +111,8 @@ export function capitalize(str) {
  * collapses whitespace/hyphens into single hyphens.
  *
  * e.g. "Hello World! Foo" → "hello-world-foo"
- *
- * @param {string} str
- * @returns {string}
  */
-export function slugify(str) {
+export function slugify(str: string | null | undefined): string {
   if (!str) return "";
   return str
     .toLowerCase()
@@ -157,11 +126,8 @@ export function slugify(str) {
 /**
  * Convert a string to kebab-case.
  * e.g. "helloWorld" → "hello-world", "Hello World" → "hello-world"
- *
- * @param {string} str
- * @returns {string}
  */
-export function toKebabCase(str) {
+export function toKebabCase(str: string | null | undefined): string {
   if (!str) return "";
   return str
     .replace(/([a-z])([A-Z])/g, "$1-$2")
@@ -172,25 +138,19 @@ export function toKebabCase(str) {
 /**
  * Convert a string to camelCase.
  * e.g. "hello-world" → "helloWorld", "Hello World" → "helloWorld"
- *
- * @param {string} str
- * @returns {string}
  */
-export function toCamelCase(str) {
+export function toCamelCase(str: string | null | undefined): string {
   if (!str) return "";
   return str
-    .replace(/[-_\s]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ""))
+    .replace(/[-_\s]+(.)?/g, (_, c: string | undefined) => (c ? c.toUpperCase() : ""))
     .replace(/^[A-Z]/, (c) => c.toLowerCase());
 }
 
 /**
  * Convert a string to PascalCase.
  * e.g. "hello-world" → "HelloWorld", "hello world" → "HelloWorld"
- *
- * @param {string} str
- * @returns {string}
  */
-export function toPascalCase(str) {
+export function toPascalCase(str: string | null | undefined): string {
   if (!str) return "";
   const camel = toCamelCase(str);
   return camel.charAt(0).toUpperCase() + camel.slice(1);
@@ -199,11 +159,8 @@ export function toPascalCase(str) {
 /**
  * Convert a string to snake_case.
  * e.g. "helloWorld" → "hello_world", "Hello World" → "hello_world"
- *
- * @param {string} str
- * @returns {string}
  */
-export function toSnakeCase(str) {
+export function toSnakeCase(str: string | null | undefined): string {
   if (!str) return "";
   return str
     .replace(/([a-z])([A-Z])/g, "$1_$2")
@@ -215,13 +172,8 @@ export function toSnakeCase(str) {
  * Simple count-based English pluralization.
  * Appends "s" (or a custom suffix) when `count !== 1`.
  * e.g. pluralize("item", 0) → "items", pluralize("item", 1) → "item"
- *
- * @param {string} word - Singular form
- * @param {number} count - Count controlling pluralization
- * @param {string} [plural] - Custom plural form (overrides default "s" suffix)
- * @returns {string}
  */
-export function pluralize(word, count, plural) {
+export function pluralize(word: string, count: number, plural?: string): string {
   if (count === 1) return word;
   return plural || word + "s";
 }
@@ -229,11 +181,8 @@ export function pluralize(word, count, plural) {
 /**
  * Count words in a string.
  * Splits on whitespace and filters empty tokens.
- *
- * @param {string} str
- * @returns {number}
  */
-export function wordCount(str) {
+export function wordCount(str: string | null | undefined): number {
   if (!str) return 0;
   return str.trim().split(/\s+/).filter(Boolean).length;
 }

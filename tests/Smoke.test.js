@@ -7,7 +7,7 @@ import { describe, it, expect } from "vitest";
 describe("format.js", () => {
   let fmt;
   beforeAll(async () => {
-    fmt = await import("../src/format.js");
+    fmt = await import("../dist/format.js");
   });
 
   describe("formatCompact", () => {
@@ -154,7 +154,7 @@ describe("format.js", () => {
 describe("text.js", () => {
   let txt;
   beforeAll(async () => {
-    txt = await import("../src/text.js");
+    txt = await import("../dist/text.js");
   });
 
   describe("stripHtml", () => {
@@ -237,7 +237,7 @@ describe("text.js", () => {
 describe("date.js", () => {
   let date;
   beforeAll(async () => {
-    date = await import("../src/date.js");
+    date = await import("../dist/date.js");
   });
 
   describe("toISODate", () => {
@@ -299,7 +299,7 @@ describe("date.js", () => {
 describe("async.js", () => {
   let async;
   beforeAll(async () => {
-    async = await import("../src/async.js");
+    async = await import("../dist/async.js");
   });
 
   describe("sleep", () => {
@@ -349,7 +349,7 @@ describe("async.js", () => {
 describe("time.js", () => {
   let time;
   beforeAll(async () => {
-    time = await import("../src/time.js");
+    time = await import("../dist/time.js");
   });
 
   it("defines MS constants", () => {
@@ -373,7 +373,7 @@ describe("time.js", () => {
 describe("arrays.js", () => {
   let arr;
   beforeAll(async () => {
-    arr = await import("../src/arrays.js");
+    arr = await import("../dist/arrays.js");
   });
 
   describe("chunk", () => {
@@ -442,7 +442,7 @@ describe("arrays.js", () => {
 describe("objects.js", () => {
   let obj;
   beforeAll(async () => {
-    obj = await import("../src/objects.js");
+    obj = await import("../dist/objects.js");
   });
 
   describe("deepMerge", () => {
@@ -483,7 +483,7 @@ describe("objects.js", () => {
 describe("math.js", () => {
   let math;
   beforeAll(async () => {
-    math = await import("../src/math.js");
+    math = await import("../dist/math.js");
   });
 
   describe("clamp", () => {
@@ -539,7 +539,7 @@ describe("math.js", () => {
 describe("validation.js", () => {
   let val;
   beforeAll(async () => {
-    val = await import("../src/validation.js");
+    val = await import("../dist/validation.js");
   });
 
   describe("parseIntParam", () => {
@@ -608,7 +608,7 @@ describe("validation.js", () => {
 describe("crypto.js", () => {
   let crypto;
   beforeAll(async () => {
-    crypto = await import("../src/crypto.js");
+    crypto = await import("../dist/crypto.js");
   });
 
   describe("generateUUID", () => {
@@ -631,7 +631,7 @@ describe("crypto.js", () => {
 describe("phone.js", () => {
   let phone;
   beforeAll(async () => {
-    phone = await import("../src/phone.js");
+    phone = await import("../dist/phone.js");
   });
 
   describe("formatPhone", () => {
@@ -655,7 +655,7 @@ describe("phone.js", () => {
 describe("text.js — new utilities", () => {
   let txt;
   beforeAll(async () => {
-    txt = await import("../src/text.js");
+    txt = await import("../dist/text.js");
   });
 
   describe("slugify", () => {
@@ -742,7 +742,7 @@ describe("text.js — new utilities", () => {
 describe("math.js — new utilities", () => {
   let math;
   beforeAll(async () => {
-    math = await import("../src/math.js");
+    math = await import("../dist/math.js");
   });
 
   describe("lerp", () => {
@@ -817,7 +817,7 @@ describe("math.js — new utilities", () => {
 describe("objects.js — new utilities", () => {
   let obj;
   beforeAll(async () => {
-    obj = await import("../src/objects.js");
+    obj = await import("../dist/objects.js");
   });
 
   describe("mapValues", () => {
@@ -897,7 +897,7 @@ describe("objects.js — new utilities", () => {
 describe("arrays.js — new utilities", () => {
   let arr;
   beforeAll(async () => {
-    arr = await import("../src/arrays.js");
+    arr = await import("../dist/arrays.js");
   });
 
   describe("partition", () => {
@@ -958,7 +958,7 @@ describe("arrays.js — new utilities", () => {
 describe("async.js — new utilities", () => {
   let asyncMod;
   beforeAll(async () => {
-    asyncMod = await import("../src/async.js");
+    asyncMod = await import("../dist/async.js");
   });
 
   describe("pMap", () => {
@@ -1016,7 +1016,7 @@ describe("async.js — new utilities", () => {
 describe("validation.js — new utilities", () => {
   let val;
   beforeAll(async () => {
-    val = await import("../src/validation.js");
+    val = await import("../dist/validation.js");
   });
 
   describe("isEmail", () => {
@@ -1073,8 +1073,8 @@ describe("validation.js — new utilities", () => {
 describe("rate.js", () => {
   let rate, sleep;
   beforeAll(async () => {
-    rate = await import("../src/rate.js");
-    sleep = (await import("../src/async.js")).sleep;
+    rate = await import("../dist/rate.js");
+    sleep = (await import("../dist/async.js")).sleep;
   });
 
   describe("debounce", () => {
@@ -1138,7 +1138,7 @@ describe("rate.js", () => {
 describe("color.js", () => {
   let color;
   beforeAll(async () => {
-    color = await import("../src/color.js");
+    color = await import("../dist/color.js");
   });
 
   describe("parseHex", () => {

@@ -8,10 +8,8 @@
  * Prefers `crypto.randomUUID()` when available (secure contexts: HTTPS / localhost).
  * Falls back to `crypto.getRandomValues()` which works in ALL browser contexts,
  * including plain HTTP over LAN IPs (e.g. http://192.168.x.x).
- *
- * @returns {string}
  */
-export function generateUUID() {
+export function generateUUID(): string {
   if (
     typeof crypto !== "undefined" &&
     typeof crypto.randomUUID === "function"

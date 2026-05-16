@@ -5,47 +5,31 @@
 /**
  * Clamp a value between a minimum and maximum bound.
  * Replaces the pervasive `Math.min(Math.max(value, min), max)` pattern.
- *
- * @param {number} value - The value to clamp
- * @param {number} min - Lower bound
- * @param {number} max - Upper bound
- * @returns {number}
  */
-export function clamp(value, min, max) {
+export function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }
 
 /**
  * Round to 2 decimal places using banker's rounding.
  * Standard for financial calculations — avoids floating-point drift.
- *
- * @param {number} n
- * @returns {number}
  */
-export function roundCents(n) {
+export function roundCents(n: number): number {
   return Math.round((n + Number.EPSILON) * 100) / 100;
 }
 
 /**
  * Return a random integer between min and max (inclusive).
- *
- * @param {number} min - Lower bound (inclusive)
- * @param {number} max - Upper bound (inclusive)
- * @returns {number}
  */
-export function randomInt(min, max) {
+export function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 /**
  * Compute cosine similarity between two vectors.
  * Returns a value between -1 and 1, where 1 means identical direction.
- *
- * @param {number[]} a - First vector
- * @param {number[]} b - Second vector
- * @returns {number} Similarity score (-1 to 1), 0 on invalid input
  */
-export function cosineSimilarity(a, b) {
+export function cosineSimilarity(a: number[] | null, b: number[] | null): number {
   if (!a || !b || a.length !== b.length) return 0;
   let dot = 0,
     magA = 0,
@@ -62,49 +46,31 @@ export function cosineSimilarity(a, b) {
 /**
  * Linearly interpolate between two numbers.
  * Standard lerp function — returns `a` when `t=0`, `b` when `t=1`.
- *
- * @param {number} a - Start value
- * @param {number} b - End value
- * @param {number} t - Interpolation factor (0–1)
- * @returns {number}
  */
-export function lerp(a, b, t) {
+export function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t;
 }
 
 /**
  * Remap a value from one range to another (linear mapping).
  * e.g. remap(50, 0, 100, 0, 1) → 0.5
- *
- * @param {number} value - Input value
- * @param {number} inMin - Source range minimum
- * @param {number} inMax - Source range maximum
- * @param {number} outMin - Target range minimum
- * @param {number} outMax - Target range maximum
- * @returns {number}
  */
-export function remap(value, inMin, inMax, outMin, outMax) {
+export function remap(value: number, inMin: number, inMax: number, outMin: number, outMax: number): number {
   return ((value - inMin) / (inMax - inMin)) * (outMax - outMin) + outMin;
 }
 
 /**
  * Sum all numbers in an array.
- *
- * @param {number[]} arr
- * @returns {number}
  */
-export function sum(arr) {
+export function sum(arr: number[] | null): number {
   if (!arr || arr.length === 0) return 0;
   return arr.reduce((acc, n) => acc + n, 0);
 }
 
 /**
  * Compute the arithmetic mean of a numeric array.
- *
- * @param {number[]} arr
- * @returns {number}
  */
-export function average(arr) {
+export function average(arr: number[] | null): number {
   if (!arr || arr.length === 0) return 0;
   return sum(arr) / arr.length;
 }
@@ -113,11 +79,8 @@ export function average(arr) {
  * Compute the median of a numeric array.
  * Returns the middle value for odd-length arrays, or the average
  * of the two middle values for even-length arrays.
- *
- * @param {number[]} arr
- * @returns {number}
  */
-export function median(arr) {
+export function median(arr: number[] | null): number {
   if (!arr || arr.length === 0) return 0;
   const sorted = [...arr].sort((a, b) => a - b);
   const mid = Math.floor(sorted.length / 2);
@@ -129,13 +92,8 @@ export function median(arr) {
 /**
  * Round a number to a specific number of decimal places.
  * More precise than `Number.toFixed()` for arithmetic (returns a number, not a string).
- *
- * @param {number} value
- * @param {number} [decimals=2] - Number of decimal places
- * @returns {number}
  */
-export function roundTo(value, decimals = 2) {
+export function roundTo(value: number, decimals = 2): number {
   const factor = Math.pow(10, decimals);
   return Math.round((value + Number.EPSILON) * factor) / factor;
 }
-

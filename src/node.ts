@@ -1,12 +1,10 @@
 // ─────────────────────────────────────────────────────────────
 // @rodrigo-barraza/utilities-library/node — Node.js-only entry point
 // ─────────────────────────────────────────────────────────────
-// These utilities require Node.js APIs (fs, process, etc.)
-// and should NOT be imported in browser/client bundles.
-// ─────────────────────────────────────────────────────────────
 
 // Logger — Structured console logger
-export { default as logger, createLogger } from "./logger.js";
+export { default as logger, createLogger } from "./logger.ts";
+export type { Logger, LoggerOptions } from "./logger.ts";
 
 // Express — Route handler wrappers and service utilities
 export {
@@ -17,7 +15,9 @@ export {
   lazyImport,
   httpError,
   createRequestLoggerMiddleware,
-} from "./express.js";
+} from "./express.ts";
+export type { AsyncHandlerOptions } from "./express.ts";
 
 // Vault — Secret bootstrap client
-export { createVaultClient } from "./vault.js";
+export { createVaultClient } from "./vault.ts";
+export type { VaultClientOptions, VaultClient } from "./vault.ts";
