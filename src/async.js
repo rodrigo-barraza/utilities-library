@@ -28,8 +28,8 @@ export async function retry(
   for (let attempt = 0; ; attempt++) {
     try {
       return await fn(attempt);
-    } catch (err) {
-      if (attempt >= retries) throw err;
+    } catch (error) {
+      if (attempt >= retries) throw error;
       await sleep(delay * Math.pow(backoff, attempt));
     }
   }

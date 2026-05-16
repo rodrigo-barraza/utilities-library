@@ -202,8 +202,8 @@ export function createVaultClient(options = {}) {
           console.warn(
             `🔐 Vault → loaded ${Object.keys(secrets).length} secrets`,
           );
-        } catch (err) {
-          console.warn(`⚠️  Vault unreachable (${err.message})`);
+        } catch (error) {
+          console.warn(`⚠️  Vault unreachable (${error.message})`);
         }
       } else {
         console.warn("⚠️  No VAULT_SERVICE_TOKEN set — skipping Vault");
@@ -270,8 +270,8 @@ export function createVaultClient(options = {}) {
           `📋 Registry → ${_cachedRegistry.projects?.length || 0} projects, ${_cachedRegistry.infrastructure?.length || 0} infrastructure`,
         );
         return _cachedRegistry;
-      } catch (err) {
-        console.warn(`⚠️  Registry unreachable (${err.message})`);
+      } catch (error) {
+        console.warn(`⚠️  Registry unreachable (${error.message})`);
         return { version: 0, projects: [], infrastructure: [] };
       }
     },

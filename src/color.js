@@ -11,12 +11,12 @@
  * @returns {{ r: number, g: number, b: number, a: number }}
  */
 export function parseHex(hex) {
-  let h = hex.replace(/^#/, "");
-  if (h.length === 3 || h.length === 4) {
-    h = [...h].map((c) => c + c).join("");
+  let normalizedHex = hex.replace(/^#/, "");
+  if (normalizedHex.length === 3 || normalizedHex.length === 4) {
+    normalizedHex = [...normalizedHex].map((c) => c + c).join("");
   }
-  const int = parseInt(h, 16);
-  if (h.length === 8) {
+  const int = parseInt(normalizedHex, 16);
+  if (normalizedHex.length === 8) {
     return {
       r: (int >>> 24) & 0xff,
       g: (int >>> 16) & 0xff,
@@ -56,12 +56,12 @@ export function toHex({ r, g, b }) {
  * @returns {string} Interpolated hex color
  */
 export function lerpColor(colorA, colorB, t) {
-  const a = parseHex(colorA);
-  const b = parseHex(colorB);
+  const startColor = parseHex(colorA);
+  const endColor = parseHex(colorB);
   return toHex({
-    r: a.r + (b.r - a.r) * t,
-    g: a.g + (b.g - a.g) * t,
-    b: a.b + (b.b - a.b) * t,
+    r: startColor.r + (endColor.r - startColor.r) * t,
+    g: startColor.g + (endColor.g - startColor.g) * t,
+    b: startColor.b + (endColor.b - startColor.b) * t,
   });
 }
 
@@ -79,12 +79,12 @@ export function rgbToHsl({ r, g, b }) {
   const min = Math.min(r, g, b);
   const l = (max + min) / 2;
   if (max === min) return { h: 0, s: 0, l: l * 100 };
-  const d = max - min;
-  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  const delta = max - min;
+  const s = l > 0.5 ? delta / (2 - max - min) : delta / (max + min);
   let h;
-  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
-  else if (max === g) h = ((b - r) / d + 2) / 6;
-  else h = ((r - g) / d + 4) / 6;
+  if (max === r) h = ((g - b) / delta + (g < b ? 6 : 0)) / 6;
+  else if (max === g) h = ((b - r) / delta + 2) / 6;
+  else h = ((r - g) / delta + 4) / 6;
   return { h: h * 360, s: s * 100, l: l * 100 };
 }
 
@@ -99,8 +99,8 @@ export function hslToRgb({ h, s, l }) {
   s /= 100;
   l /= 100;
   if (s === 0) {
-    const v = Math.round(l * 255);
-    return { r: v, g: v, b: v };
+    const grayscaleValue = Math.round(l * 255);
+    return { r: grayscaleValue, g: grayscaleValue, b: grayscaleValue };
   }
   const hue2rgb = (p, q, t) => {
     if (t < 0) t += 1;

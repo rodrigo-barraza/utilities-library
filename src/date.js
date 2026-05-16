@@ -62,10 +62,10 @@ export function daysSinceIso(isoDate) {
  */
 export function formatDateTime(dateInput, opts = {}) {
   if (!dateInput) return "—";
-  const d = dateInput instanceof Date ? dateInput : new Date(dateInput);
-  if (isNaN(d.getTime())) return "—";
-  const sameYear = d.getFullYear() === new Date().getFullYear();
-  return d.toLocaleDateString("en-US", {
+  const parsedDate = dateInput instanceof Date ? dateInput : new Date(dateInput);
+  if (isNaN(parsedDate.getTime())) return "—";
+  const sameYear = parsedDate.getFullYear() === new Date().getFullYear();
+  return parsedDate.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     ...(sameYear ? {} : { year: "numeric" }),
@@ -82,9 +82,9 @@ export function formatDateTime(dateInput, opts = {}) {
  * @returns {Date}
  */
 export function daysAgo(n) {
-  const d = new Date();
-  d.setDate(d.getDate() - n);
-  return d;
+  const result = new Date();
+  result.setDate(result.getDate() - n);
+  return result;
 }
 
 /**
@@ -95,8 +95,8 @@ export function daysAgo(n) {
  * @returns {string}
  */
 export function toLocalDateString(date = new Date()) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }

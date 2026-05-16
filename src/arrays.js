@@ -24,12 +24,12 @@ export function chunk(array, size) {
  * @returns {Array}
  */
 export function shuffleArray(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+  const shuffled = [...arr];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const swapIndex = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[i]];
   }
-  return a;
+  return shuffled;
 }
 
 /**
@@ -150,10 +150,10 @@ export function sortBy(array, keyOrFn, { descending = false } = {}) {
     copy.sort(keyOrFn);
   } else {
     copy.sort((a, b) => {
-      const va = a[keyOrFn];
-      const vb = b[keyOrFn];
-      if (va < vb) return -1;
-      if (va > vb) return 1;
+      const valueA = a[keyOrFn];
+      const valueB = b[keyOrFn];
+      if (valueA < valueB) return -1;
+      if (valueA > valueB) return 1;
       return 0;
     });
   }

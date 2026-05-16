@@ -43,11 +43,11 @@ const LEVEL_STYLES = {
 };
 
 function timestamp() {
-  const d = new Date();
-  const h = String(d.getHours()).padStart(2, "0");
-  const m = String(d.getMinutes()).padStart(2, "0");
-  const s = String(d.getSeconds()).padStart(2, "0");
-  return `${h}:${m}:${s}`;
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+  return `${hours}:${minutes}:${seconds}`;
 }
 
 /**
@@ -83,21 +83,21 @@ function createLogger(opts) {
    * Format a log line with optional ANSI colors.
    */
   function formatLine(level, message) {
-    const ts = timestamp();
+    const time = timestamp();
     const style = LEVEL_STYLES[level];
 
     if (!useColor) {
       const tag = service ? ` [${service}]` : "";
-      return `[${ts}] ${style.label}${tag} ${message}`;
+      return `[${time}] ${style.label}${tag} ${message}`;
     }
 
-    const tsFormatted = `${DIM}[${ts}]${RESET}`;
+    const timeFormatted = `${DIM}[${time}]${RESET}`;
     const levelFormatted = `${BOLD}${style.color}${style.label}${RESET}`;
     const tag = service
       ? ` ${FG.cyan}[${service}]${RESET}`
       : "";
 
-    return `${tsFormatted} ${levelFormatted}${tag} ${message}`;
+    return `${timeFormatted} ${levelFormatted}${tag} ${message}`;
   }
 
   return {
@@ -131,15 +131,15 @@ function createLogger(opts) {
      */
     request(method, path, status, timing, sizeTag) {
       const size = sizeTag ? ` ${sizeTag}` : "";
-      const ts = timestamp();
+      const time = timestamp();
 
       if (!useColor) {
         const tag = service ? ` [${service}]` : "";
-        console.log(`[${ts}] ${status}${tag} ${method} ${path} — ${timing}${size}`);
+        console.log(`[${time}] ${status}${tag} ${method} ${path} — ${timing}${size}`);
         return;
       }
 
-      const tsFormatted = `${DIM}[${ts}]${RESET}`;
+      const timeFormatted = `${DIM}[${time}]${RESET}`;
       const tag = service ? ` ${FG.cyan}[${service}]${RESET}` : "";
 
       // Color status code by class
@@ -153,7 +153,7 @@ function createLogger(opts) {
       const timingFormatted = `${DIM}${timing}${size}${RESET}`;
 
       console.log(
-        `${tsFormatted} ${statusFormatted}${tag} ${methodFormatted} ${path} — ${timingFormatted}`,
+        `${timeFormatted} ${statusFormatted}${tag} ${methodFormatted} ${path} — ${timingFormatted}`,
       );
     },
   };

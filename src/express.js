@@ -27,22 +27,22 @@ export function asyncHandler(fn, label, errorStatusOrOpts = 502) {
       const result = await fn(req, res, next);
       if (health) health.markSuccess();
       if (result !== undefined && !res.headersSent) res.json(result);
-    } catch (err) {
-      if (health) health.markError(err);
+    } catch (error) {
+      if (health) health.markError(error);
       
       if (next) {
-        if (!err.status) err.status = errorStatus;
-        return next(err);
+        if (!error.status) error.status = errorStatus;
+        return next(error);
       }
 
-      const msg = label ? `${label} failed` : "Internal server error";
+      const fallbackMessage = label ? `${label} failed` : "Internal server error";
       if (typeof console !== "undefined") {
-        console.error(`[asyncHandler] ${msg}:`, err.message || err);
+        console.error(`[asyncHandler] ${fallbackMessage}:`, error.message || error);
       }
-      res.status(err.status || errorStatus).json({ 
+      res.status(error.status || errorStatus).json({ 
         error: true, 
-        message: err.message || msg, 
-        statusCode: err.status || errorStatus 
+        message: error.message || fallbackMessage, 
+        statusCode: error.status || errorStatus 
       });
     }
   };
@@ -148,9 +148,9 @@ export function lazyImport(specifier, extract = (m) => m.default) {
  * @returns {Error}
  */
 export function httpError(status, message) {
-  const err = new Error(message);
-  err.status = status;
-  return err;
+  const httpErr = new Error(message);
+  httpErr.status = status;
+  return httpErr;
 }
 
 /**

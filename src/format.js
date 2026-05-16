@@ -145,14 +145,14 @@ export function formatElapsedTime(seconds) {
  * @returns {string|null}
  */
 export function formatFileSize(bytes, { compact = false } = {}) {
-  const sp = compact ? "" : " ";
+  const spacer = compact ? "" : " ";
   if (compact) {
     if (bytes === 0) return "0B";
     if (bytes < 1024) return `${bytes}B`;
-    if (bytes < 1_048_576) return `${(bytes / 1024).toFixed(1)}${sp}KB`;
+    if (bytes < 1_048_576) return `${(bytes / 1024).toFixed(1)}${spacer}KB`;
     if (bytes < 1_073_741_824)
-      return `${(bytes / 1_048_576).toFixed(1)}${sp}MB`;
-    return `${(bytes / 1_073_741_824).toFixed(1)}${sp}GB`;
+      return `${(bytes / 1_048_576).toFixed(1)}${spacer}MB`;
+    return `${(bytes / 1_073_741_824).toFixed(1)}${spacer}GB`;
   }
   if (!bytes) return null;
   if (bytes >= 1_073_741_824) return `${(bytes / 1_073_741_824).toFixed(1)} GB`;
@@ -177,8 +177,8 @@ export function formatBytes(bytes) {
   if (!bytes || bytes === 0) return "0 B";
   const units = ["B", "KB", "MB", "GB", "TB"];
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  const val = bytes / Math.pow(1024, i);
-  return `${val < 10 ? val.toFixed(2) : val < 100 ? val.toFixed(1) : Math.round(val)} ${units[i]}`;
+  const scaledValue = bytes / Math.pow(1024, i);
+  return `${scaledValue < 10 ? scaledValue.toFixed(2) : scaledValue < 100 ? scaledValue.toFixed(1) : Math.round(scaledValue)} ${units[i]}`;
 }
 
 /**
@@ -274,9 +274,9 @@ export function formatPercent(value, decimals = 1) {
  */
 export function formatMediaTimestamp(seconds) {
   if (!seconds || seconds <= 0) return "0:00";
-  const h = Math.floor(seconds / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  const s = Math.floor(seconds % 60);
-  if (h > 0) return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
-  return `${m}:${String(s).padStart(2, "0")}`;
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = Math.floor(seconds % 60);
+  if (hours > 0) return `${hours}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+  return `${minutes}:${String(secs).padStart(2, "0")}`;
 }
