@@ -18,7 +18,7 @@
  * @returns {string}
  */
 export function rewritePrivateUrls(text, internalUrl) {
-  const base = internalUrl || process.env.MINIO_INTERNAL_URL || "http://localhost:9000";
+  const base = internalUrl || process.env.MINIO_INTERNAL_URL;
   return text.replaceAll(base, "/api/media");
 }
 
