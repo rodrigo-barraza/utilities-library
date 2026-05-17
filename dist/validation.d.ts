@@ -1,0 +1,42 @@
+/**
+ * Parse an integer query param with a default fallback and optional max clamp.
+ */
+export declare function parseIntParam(value: string | undefined | null, defaultValue: number, max?: number): number;
+/**
+ * Safely parse a price string like "$29.99" or "29.99" into a number.
+ */
+export declare function parsePrice(priceStr: string | null | undefined): number | null;
+/**
+ * Validate that a string value does not exceed a maximum length.
+ * Returns an error message string if exceeded, or null if valid.
+ */
+export declare function validateMaxLength(value: string | null | undefined, maxLength: number, label: string): string | null;
+/**
+ * Safely parse a JSON string, returning a fallback on failure.
+ */
+export declare function parseJsonSafe<T = unknown>(str: string | null | undefined, fallback?: T | null): T | null;
+/**
+ * Parse JSON from an LLM response, handling markdown code blocks.
+ * Many LLMs wrap JSON in ```json ... ``` — this strips that before parsing.
+ */
+export declare function parseJsonFromLlmResponse(text: string | null | undefined): Record<string, unknown> | unknown[] | null;
+/**
+ * Check if a string is a valid email address.
+ * Uses a practical regex covering 99.9% of real-world addresses
+ * (not the full RFC 5322 grammar, which is deliberately over-broad).
+ */
+export declare function isEmail(str: string | null | undefined): boolean;
+/**
+ * Check if a string is a valid HTTP(S) URL.
+ * Uses the URL constructor for spec-compliant parsing.
+ */
+export interface IsUrlOptions {
+    requireHttps?: boolean;
+}
+export declare function isUrl(str: string | null | undefined, { requireHttps }?: IsUrlOptions): boolean;
+/**
+ * Check if a value is numeric (finite number or numeric string).
+ * e.g. isNumeric("3.14") → true, isNumeric("abc") → false, isNumeric(NaN) → false
+ */
+export declare function isNumeric(value: unknown): boolean;
+//# sourceMappingURL=validation.d.ts.map
