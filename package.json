@@ -7,63 +7,63 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./src/index.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
     "./node": {
-      "types": "./src/node.ts",
+      "types": "./dist/node.d.ts",
       "import": "./dist/node.js"
     },
     "./vault": {
-      "types": "./src/vault.ts",
+      "types": "./dist/vault.d.ts",
       "import": "./dist/vault.js"
     },
     "./mongo": {
-      "types": "./src/mongo.ts",
+      "types": "./dist/mongo.d.ts",
       "import": "./dist/mongo.js"
     },
     "./eslint": {
-      "types": "./src/config/eslint.ts",
+      "types": "./dist/config/eslint.d.ts",
       "import": "./dist/config/eslint.js"
     },
     "./vitest": {
-      "types": "./src/config/vitest.ts",
+      "types": "./dist/config/vitest.d.ts",
       "import": "./dist/config/vitest.js"
     },
     "./express": {
-      "types": "./src/express.ts",
+      "types": "./dist/express.d.ts",
       "import": "./dist/express.js"
     },
     "./nextjs": {
-      "types": "./src/nextjs.ts",
+      "types": "./dist/nextjs.d.ts",
       "import": "./dist/nextjs.js"
     },
     "./taxonomy": {
-      "types": "./src/taxonomy.ts",
+      "types": "./dist/taxonomy.d.ts",
       "import": "./dist/taxonomy.js"
     },
     "./media": {
-      "types": "./src/media.ts",
+      "types": "./dist/media.d.ts",
       "import": "./dist/media.js"
     },
     "./effects": {
-      "types": "./src/effects.ts",
+      "types": "./dist/effects.d.ts",
       "import": "./dist/effects.js"
     },
     "./rate": {
-      "types": "./src/rate.ts",
+      "types": "./dist/rate.d.ts",
       "import": "./dist/rate.js"
     },
     "./color": {
-      "types": "./src/color.ts",
+      "types": "./dist/color.d.ts",
       "import": "./dist/color.js"
     },
     "./schemas": {
-      "types": "./src/schemas.ts",
+      "types": "./dist/schemas.d.ts",
       "import": "./dist/schemas.js"
     },
     "./testing": {
-      "types": "./src/testing.ts",
+      "types": "./dist/testing.d.ts",
       "import": "./dist/testing.js"
     }
   },
