@@ -61,6 +61,10 @@
     "./schemas": {
       "types": "./src/schemas.ts",
       "import": "./dist/schemas.js"
+    },
+    "./testing": {
+      "types": "./src/testing.ts",
+      "import": "./dist/testing.js"
     }
   },
   "files": [

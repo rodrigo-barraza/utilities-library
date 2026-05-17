@@ -6,7 +6,7 @@ export declare function chunk<T>(array: T[], size: number): T[][];
  * Shuffle an array using the Fisher–Yates algorithm.
  * Returns a new shuffled copy — does not mutate the original.
  */
-export declare function shuffleArray<T>(arr: T[]): T[];
+export declare function shuffleArray<T>(array: T[]): T[];
 /**
  * Pick a random element from an array.
  */
@@ -15,7 +15,7 @@ export declare function pickRandom<T>(array: T[]): T;
  * Filter out null/undefined values from a payload object.
  * Keeps falsy values like 0, false, and empty strings.
  */
-export declare function compactPayload(obj: Record<string, unknown>): Record<string, unknown>;
+export declare function compactPayload(object: Record<string, unknown>): Record<string, unknown>;
 /**
  * Group array elements by a key derived from each element.
  * Returns an object whose keys are group identifiers and values are arrays.

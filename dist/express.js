@@ -30,18 +30,18 @@ export function asyncHandler(fn, label = "", errorStatusOrOpts = 502) {
         catch (error) {
             if (health)
                 health.markError(error);
-            const err = error;
+            const typedError = error;
             if (next) {
-                if (!err.status)
-                    err.status = errorStatus;
-                return next(err);
+                if (!typedError.status)
+                    typedError.status = errorStatus;
+                return next(typedError);
             }
             const fallbackMessage = label ? `${label} failed` : "Internal server error";
-            console.error(`[asyncHandler] ${fallbackMessage}:`, err.message || err);
-            res.status(err.status || errorStatus).json({
+            console.error(`[asyncHandler] ${fallbackMessage}:`, typedError.message || typedError);
+            res.status(typedError.status || errorStatus).json({
                 error: true,
-                message: err.message || fallbackMessage,
-                statusCode: err.status || errorStatus,
+                message: typedError.message || fallbackMessage,
+                statusCode: typedError.status || errorStatus,
             });
         }
     };
@@ -58,8 +58,8 @@ export class HealthTracker {
         this.#state.lastChecked = new Date();
         this.#state.error = null;
     }
-    markError(err) {
-        this.#state.error = typeof err === "string" ? err : err.message;
+    markError(error) {
+        this.#state.error = typeof error === "string" ? error : error.message;
     }
 }
 /**
@@ -128,7 +128,7 @@ export function createRequestLoggerMiddleware(logger) {
         const originalEnd = res.end;
         let size = 0;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        res.end = function (chunk, encoding, cb) {
+        res.end = function (chunk, encoding, callback) {
             if (chunk)
                 size += Buffer.byteLength(chunk);
             const timing = `${Date.now() - start}ms`;
@@ -136,7 +136,7 @@ export function createRequestLoggerMiddleware(logger) {
                 ? `${(size / 1024).toFixed(1)}KB`
                 : `${size}B`;
             logger.request(req.method, req.originalUrl || req.url, res.statusCode, timing, sizeTag);
-            return originalEnd.call(res, chunk, encoding, cb);
+            return originalEnd.call(res, chunk, encoding, callback);
         };
         next();
     };

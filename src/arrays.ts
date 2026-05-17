@@ -17,8 +17,8 @@ export function chunk<T>(array: T[], size: number): T[][] {
  * Shuffle an array using the Fisher–Yates algorithm.
  * Returns a new shuffled copy — does not mutate the original.
  */
-export function shuffleArray<T>(arr: T[]): T[] {
-  const shuffled = [...arr];
+export function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const swapIndex = Math.floor(Math.random() * (i + 1));
     [shuffled[i], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[i]];
@@ -37,9 +37,9 @@ export function pickRandom<T>(array: T[]): T {
  * Filter out null/undefined values from a payload object.
  * Keeps falsy values like 0, false, and empty strings.
  */
-export function compactPayload(obj: Record<string, unknown>): Record<string, unknown> {
+export function compactPayload(object: Record<string, unknown>): Record<string, unknown> {
   return Object.fromEntries(
-    Object.entries(obj).filter(
+    Object.entries(object).filter(
       ([, value]) => value !== null && value !== undefined,
     ),
   );

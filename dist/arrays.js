@@ -15,8 +15,8 @@ export function chunk(array, size) {
  * Shuffle an array using the Fisher–Yates algorithm.
  * Returns a new shuffled copy — does not mutate the original.
  */
-export function shuffleArray(arr) {
-    const shuffled = [...arr];
+export function shuffleArray(array) {
+    const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
         const swapIndex = Math.floor(Math.random() * (i + 1));
         [shuffled[i], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[i]];
@@ -33,8 +33,8 @@ export function pickRandom(array) {
  * Filter out null/undefined values from a payload object.
  * Keeps falsy values like 0, false, and empty strings.
  */
-export function compactPayload(obj) {
-    return Object.fromEntries(Object.entries(obj).filter(([, value]) => value !== null && value !== undefined));
+export function compactPayload(object) {
+    return Object.fromEntries(Object.entries(object).filter(([, value]) => value !== null && value !== undefined));
 }
 /**
  * Group array elements by a key derived from each element.

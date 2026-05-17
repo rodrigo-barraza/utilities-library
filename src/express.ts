@@ -34,18 +34,18 @@ export function asyncHandler(
     } catch (error: unknown) {
       if (health) health.markError(error);
 
-      const err = error as Error & { status?: number };
+      const typedError = error as Error & { status?: number };
       if (next) {
-        if (!err.status) err.status = errorStatus;
-        return next(err);
+        if (!typedError.status) typedError.status = errorStatus;
+        return next(typedError);
       }
 
       const fallbackMessage = label ? `${label} failed` : "Internal server error";
-      console.error(`[asyncHandler] ${fallbackMessage}:`, err.message || err);
-      res.status(err.status || errorStatus).json({
+      console.error(`[asyncHandler] ${fallbackMessage}:`, typedError.message || typedError);
+      res.status(typedError.status || errorStatus).json({
         error: true,
-        message: err.message || fallbackMessage,
-        statusCode: err.status || errorStatus,
+        message: typedError.message || fallbackMessage,
+        statusCode: typedError.status || errorStatus,
       });
     }
   };
@@ -66,8 +66,8 @@ export class HealthTracker {
     this.#state.error = null;
   }
 
-  markError(err: unknown) {
-    this.#state.error = typeof err === "string" ? err : (err as Error).message;
+  markError(error: unknown) {
+    this.#state.error = typeof error === "string" ? error : (error as Error).message;
   }
 }
 
@@ -144,7 +144,7 @@ export function createRequestLoggerMiddleware(logger: Logger) {
     let size = 0;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (res as any).end = function (chunk?: any, encoding?: any, cb?: any) {
+    (res as any).end = function (chunk?: any, encoding?: any, callback?: any) {
       if (chunk) size += Buffer.byteLength(chunk);
       const timing = `${Date.now() - start}ms`;
       const sizeTag = size > 1024
@@ -153,7 +153,7 @@ export function createRequestLoggerMiddleware(logger: Logger) {
 
       logger.request(req.method, req.originalUrl || req.url, res.statusCode, timing, sizeTag);
 
-      return originalEnd.call(res, chunk, encoding, cb);
+      return originalEnd.call(res, chunk, encoding, callback);
     };
 
     next();

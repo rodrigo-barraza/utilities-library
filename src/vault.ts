@@ -139,16 +139,16 @@ export function createVaultClient(options: VaultClientOptions = {}): VaultClient
           const queryString = params.toString();
           const url = `${_vaultUrl}/secrets${queryString ? "?" + queryString : ""}`;
 
-          const res = await globalThis.fetch(url, {
+          const response = await globalThis.fetch(url, {
             headers: { Authorization: `Bearer ${_vaultToken}` },
             signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
           });
 
-          if (!res.ok) {
-            throw new Error(`HTTP ${res.status} — ${res.statusText}`);
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status} — ${response.statusText}`);
           }
 
-          const secrets = await res.json();
+          const secrets = await response.json();
 
           for (const [key, value] of Object.entries(secrets as Record<string, string>)) {
             if (merged[key] === undefined) {
@@ -201,16 +201,16 @@ export function createVaultClient(options: VaultClientOptions = {}): VaultClient
 
       try {
         const url = `${_vaultUrl}/registry`;
-        const res = await globalThis.fetch(url, {
+        const response = await globalThis.fetch(url, {
           headers: { Authorization: `Bearer ${_vaultToken}` },
           signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
         });
 
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status} — ${res.statusText}`);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status} — ${response.statusText}`);
         }
 
-        _cachedRegistry = await res.json() as Registry;
+        _cachedRegistry = await response.json() as Registry;
         console.warn(
           `📋 Registry → ${_cachedRegistry.projects?.length || 0} projects, ${_cachedRegistry.infrastructure?.length || 0} infrastructure`,
         );

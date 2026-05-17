@@ -17,10 +17,10 @@ export function debounce(fn, wait, { leading = false } = {}) {
     let lastThis = null;
     function invoke() {
         const args = lastArgs;
-        const ctx = lastThis;
+        const context = lastThis;
         lastArgs = null;
         lastThis = null;
-        fn.apply(ctx, args);
+        fn.apply(context, args);
     }
     const debounced = function (...args) {
         lastArgs = args;
@@ -70,10 +70,10 @@ export function throttle(fn, wait) {
     function invoke() {
         lastInvoke = Date.now();
         const args = lastArgs;
-        const ctx = lastThis;
+        const context = lastThis;
         lastArgs = null;
         lastThis = null;
-        fn.apply(ctx, args);
+        fn.apply(context, args);
     }
     const throttled = function (...args) {
         lastArgs = args;

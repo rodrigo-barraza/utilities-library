@@ -55,11 +55,11 @@ export function withTimeout<T>(promise: Promise<T>, ms: number, message = "Opera
  */
 export async function fetchWithTimeout<T = unknown>(url: string, timeoutMs = 5000, fallback: T | null = null): Promise<T | null> {
   try {
-    const res = await fetch(url, {
+    const response = await fetch(url, {
       signal: AbortSignal.timeout(timeoutMs),
     });
-    if (!res.ok) return fallback;
-    return await res.json() as T;
+    if (!response.ok) return fallback;
+    return await response.json() as T;
   } catch {
     return fallback;
   }

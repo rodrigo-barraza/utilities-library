@@ -134,8 +134,8 @@ export function createNextjsProxy({
       if (!isJson) {
         const headers = new Headers();
         for (const key of PASSTHROUGH_HEADERS) {
-          const val = response.headers.get(key);
-          if (val) headers.set(key, val);
+          const value = response.headers.get(key);
+          if (value) headers.set(key, value);
         }
         return new Response(response.body, {
           status: response.status,

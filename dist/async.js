@@ -38,12 +38,12 @@ export function withTimeout(promise, ms, message = "Operation timed out") {
  */
 export async function fetchWithTimeout(url, timeoutMs = 5000, fallback = null) {
     try {
-        const res = await fetch(url, {
+        const response = await fetch(url, {
             signal: AbortSignal.timeout(timeoutMs),
         });
-        if (!res.ok)
+        if (!response.ok)
             return fallback;
-        return await res.json();
+        return await response.json();
     }
     catch {
         return fallback;

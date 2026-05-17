@@ -62,17 +62,17 @@ export function remap(value: number, inMin: number, inMax: number, outMin: numbe
 /**
  * Sum all numbers in an array.
  */
-export function sum(arr: number[] | null): number {
-  if (!arr || arr.length === 0) return 0;
-  return arr.reduce((acc, n) => acc + n, 0);
+export function sum(array: number[] | null): number {
+  if (!array || array.length === 0) return 0;
+  return array.reduce((acc, n) => acc + n, 0);
 }
 
 /**
  * Compute the arithmetic mean of a numeric array.
  */
-export function average(arr: number[] | null): number {
-  if (!arr || arr.length === 0) return 0;
-  return sum(arr) / arr.length;
+export function average(array: number[] | null): number {
+  if (!array || array.length === 0) return 0;
+  return sum(array) / array.length;
 }
 
 /**
@@ -80,9 +80,9 @@ export function average(arr: number[] | null): number {
  * Returns the middle value for odd-length arrays, or the average
  * of the two middle values for even-length arrays.
  */
-export function median(arr: number[] | null): number {
-  if (!arr || arr.length === 0) return 0;
-  const sorted = [...arr].sort((a, b) => a - b);
+export function median(array: number[] | null): number {
+  if (!array || array.length === 0) return 0;
+  const sorted = [...array].sort((a, b) => a - b);
   const mid = Math.floor(sorted.length / 2);
   return sorted.length % 2 !== 0
     ? sorted[mid]

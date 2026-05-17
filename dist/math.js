@@ -54,28 +54,28 @@ export function remap(value, inMin, inMax, outMin, outMax) {
 /**
  * Sum all numbers in an array.
  */
-export function sum(arr) {
-    if (!arr || arr.length === 0)
+export function sum(array) {
+    if (!array || array.length === 0)
         return 0;
-    return arr.reduce((acc, n) => acc + n, 0);
+    return array.reduce((acc, n) => acc + n, 0);
 }
 /**
  * Compute the arithmetic mean of a numeric array.
  */
-export function average(arr) {
-    if (!arr || arr.length === 0)
+export function average(array) {
+    if (!array || array.length === 0)
         return 0;
-    return sum(arr) / arr.length;
+    return sum(array) / array.length;
 }
 /**
  * Compute the median of a numeric array.
  * Returns the middle value for odd-length arrays, or the average
  * of the two middle values for even-length arrays.
  */
-export function median(arr) {
-    if (!arr || arr.length === 0)
+export function median(array) {
+    if (!array || array.length === 0)
         return 0;
-    const sorted = [...arr].sort((a, b) => a - b);
+    const sorted = [...array].sort((a, b) => a - b);
     const mid = Math.floor(sorted.length / 2);
     return sorted.length % 2 !== 0
         ? sorted[mid]

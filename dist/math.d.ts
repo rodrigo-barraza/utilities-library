@@ -30,17 +30,17 @@ export declare function remap(value: number, inMin: number, inMax: number, outMi
 /**
  * Sum all numbers in an array.
  */
-export declare function sum(arr: number[] | null): number;
+export declare function sum(array: number[] | null): number;
 /**
  * Compute the arithmetic mean of a numeric array.
  */
-export declare function average(arr: number[] | null): number;
+export declare function average(array: number[] | null): number;
 /**
  * Compute the median of a numeric array.
  * Returns the middle value for odd-length arrays, or the average
  * of the two middle values for even-length arrays.
  */
-export declare function median(arr: number[] | null): number;
+export declare function median(array: number[] | null): number;
 /**
  * Round a number to a specific number of decimal places.
  * More precise than `Number.toFixed()` for arithmetic (returns a number, not a string).

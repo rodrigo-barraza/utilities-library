@@ -18,7 +18,7 @@ export declare class HealthTracker {
         error: string | null;
     };
     markSuccess(): void;
-    markError(err: unknown): void;
+    markError(error: unknown): void;
 }
 /**
  * Set up a Server-Sent Events response with proper headers.

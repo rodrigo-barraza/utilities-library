@@ -9,18 +9,18 @@
  */
 export function deepMerge<T extends Record<string, unknown>>(target: T, source: Record<string, unknown>): T {
   const out = { ...target } as Record<string, unknown>;
-  for (const [key, val] of Object.entries(source)) {
+  for (const [key, value] of Object.entries(source)) {
     if (
-      val !== null &&
-      typeof val === "object" &&
-      !Array.isArray(val) &&
+      value !== null &&
+      typeof value === "object" &&
+      !Array.isArray(value) &&
       target[key] !== null &&
       typeof target[key] === "object" &&
       !Array.isArray(target[key])
     ) {
-      out[key] = deepMerge(target[key] as Record<string, unknown>, val as Record<string, unknown>);
+      out[key] = deepMerge(target[key] as Record<string, unknown>, value as Record<string, unknown>);
     } else {
-      out[key] = val;
+      out[key] = value;
     }
   }
   return out as T;
@@ -29,10 +29,10 @@ export function deepMerge<T extends Record<string, unknown>>(target: T, source: 
 /**
  * Create a new object with only the specified keys from `obj`.
  */
-export function pick<T extends Record<string, unknown>, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
+export function pick<T extends Record<string, unknown>, K extends keyof T>(object: T, keys: K[]): Pick<T, K> {
   const out = {} as Pick<T, K>;
   for (const k of keys) {
-    if (k in obj) (out as Record<string, unknown>)[k as string] = obj[k];
+    if (k in object) (out as Record<string, unknown>)[k as string] = object[k];
   }
   return out;
 }
@@ -40,28 +40,28 @@ export function pick<T extends Record<string, unknown>, K extends keyof T>(obj: 
 /**
  * Create a new object with all keys from `obj` except those listed.
  */
-export function omit<T extends Record<string, unknown>, K extends keyof T>(obj: T, keys: K[]): Omit<T, K> {
+export function omit<T extends Record<string, unknown>, K extends keyof T>(object: T, keys: K[]): Omit<T, K> {
   const exclude = new Set<string>(keys as string[]);
   return Object.fromEntries(
-    Object.entries(obj).filter(([k]) => !exclude.has(k)),
+    Object.entries(object).filter(([k]) => !exclude.has(k)),
   ) as Omit<T, K>;
 }
 
 /**
  * Create a new object with the same keys but values transformed by `fn`.
  */
-export function mapValues<T extends Record<string, unknown>, R>(obj: T, fn: (value: unknown, key: string) => R): Record<string, R> {
+export function mapValues<T extends Record<string, unknown>, R>(object: T, fn: (value: unknown, key: string) => R): Record<string, R> {
   return Object.fromEntries(
-    Object.entries(obj).map(([k, v]) => [k, fn(v, k)]),
+    Object.entries(object).map(([k, v]) => [k, fn(v, k)]),
   );
 }
 
 /**
  * Create a new object with keys transformed by `fn`, values unchanged.
  */
-export function mapKeys(obj: Record<string, unknown>, fn: (key: string, value: unknown) => string): Record<string, unknown> {
+export function mapKeys(object: Record<string, unknown>, fn: (key: string, value: unknown) => string): Record<string, unknown> {
   return Object.fromEntries(
-    Object.entries(obj).map(([k, v]) => [fn(k, v), v]),
+    Object.entries(object).map(([k, v]) => [fn(k, v), v]),
   );
 }
 
@@ -69,9 +69,9 @@ export function mapKeys(obj: Record<string, unknown>, fn: (key: string, value: u
  * Swap keys and values in an object.
  * e.g. { a: "1", b: "2" } → { "1": "a", "2": "b" }
  */
-export function invert(obj: Record<string, string>): Record<string, string> {
+export function invert(object: Record<string, string>): Record<string, string> {
   return Object.fromEntries(
-    Object.entries(obj).map(([k, v]) => [v, k]),
+    Object.entries(object).map(([k, v]) => [v, k]),
   );
 }
 
@@ -104,7 +104,7 @@ export function deepEqual(a: unknown, b: unknown): boolean {
   if (typeof a !== typeof b) return false;
   if (Array.isArray(a)) {
     if (!Array.isArray(b) || a.length !== b.length) return false;
-    return a.every((val, i) => deepEqual(val, b[i]));
+    return a.every((value, i) => deepEqual(value, b[i]));
   }
   if (typeof a === "object") {
     const keysA = Object.keys(a as Record<string, unknown>);

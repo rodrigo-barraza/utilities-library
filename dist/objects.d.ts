@@ -7,24 +7,24 @@ export declare function deepMerge<T extends Record<string, unknown>>(target: T, 
 /**
  * Create a new object with only the specified keys from `obj`.
  */
-export declare function pick<T extends Record<string, unknown>, K extends keyof T>(obj: T, keys: K[]): Pick<T, K>;
+export declare function pick<T extends Record<string, unknown>, K extends keyof T>(object: T, keys: K[]): Pick<T, K>;
 /**
  * Create a new object with all keys from `obj` except those listed.
  */
-export declare function omit<T extends Record<string, unknown>, K extends keyof T>(obj: T, keys: K[]): Omit<T, K>;
+export declare function omit<T extends Record<string, unknown>, K extends keyof T>(object: T, keys: K[]): Omit<T, K>;
 /**
  * Create a new object with the same keys but values transformed by `fn`.
  */
-export declare function mapValues<T extends Record<string, unknown>, R>(obj: T, fn: (value: unknown, key: string) => R): Record<string, R>;
+export declare function mapValues<T extends Record<string, unknown>, R>(object: T, fn: (value: unknown, key: string) => R): Record<string, R>;
 /**
  * Create a new object with keys transformed by `fn`, values unchanged.
  */
-export declare function mapKeys(obj: Record<string, unknown>, fn: (key: string, value: unknown) => string): Record<string, unknown>;
+export declare function mapKeys(object: Record<string, unknown>, fn: (key: string, value: unknown) => string): Record<string, unknown>;
 /**
  * Swap keys and values in an object.
  * e.g. { a: "1", b: "2" } → { "1": "a", "2": "b" }
  */
-export declare function invert(obj: Record<string, string>): Record<string, string>;
+export declare function invert(object: Record<string, string>): Record<string, string>;
 /**
  * Check if a value is "empty":
  * - `null` or `undefined` → true

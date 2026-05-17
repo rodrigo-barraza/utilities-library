@@ -34,10 +34,10 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
 
   function invoke() {
     const args = lastArgs!;
-    const ctx = lastThis;
+    const context = lastThis;
     lastArgs = null;
     lastThis = null;
-    fn.apply(ctx, args);
+    fn.apply(context, args);
   }
 
   const debounced = function (this: unknown, ...args: Parameters<T>) {
@@ -99,10 +99,10 @@ export function throttle<T extends (...args: unknown[]) => unknown>(
   function invoke() {
     lastInvoke = Date.now();
     const args = lastArgs!;
-    const ctx = lastThis;
+    const context = lastThis;
     lastArgs = null;
     lastThis = null;
-    fn.apply(ctx, args);
+    fn.apply(context, args);
   }
 
   const throttled = function (this: unknown, ...args: Parameters<T>) {

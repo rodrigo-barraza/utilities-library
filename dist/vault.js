@@ -78,14 +78,14 @@ export function createVaultClient(options = {}) {
                         params.set("exclude", exclude);
                     const queryString = params.toString();
                     const url = `${_vaultUrl}/secrets${queryString ? "?" + queryString : ""}`;
-                    const res = await globalThis.fetch(url, {
+                    const response = await globalThis.fetch(url, {
                         headers: { Authorization: `Bearer ${_vaultToken}` },
                         signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
                     });
-                    if (!res.ok) {
-                        throw new Error(`HTTP ${res.status} — ${res.statusText}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status} — ${response.statusText}`);
                     }
-                    const secrets = await res.json();
+                    const secrets = await response.json();
                     for (const [key, value] of Object.entries(secrets)) {
                         if (merged[key] === undefined) {
                             merged[key] = value;
@@ -130,14 +130,14 @@ export function createVaultClient(options = {}) {
             }
             try {
                 const url = `${_vaultUrl}/registry`;
-                const res = await globalThis.fetch(url, {
+                const response = await globalThis.fetch(url, {
                     headers: { Authorization: `Bearer ${_vaultToken}` },
                     signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
                 });
-                if (!res.ok) {
-                    throw new Error(`HTTP ${res.status} — ${res.statusText}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status} — ${response.statusText}`);
                 }
-                _cachedRegistry = await res.json();
+                _cachedRegistry = await response.json();
                 console.warn(`📋 Registry → ${_cachedRegistry.projects?.length || 0} projects, ${_cachedRegistry.infrastructure?.length || 0} infrastructure`);
                 return _cachedRegistry;
             }
