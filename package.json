@@ -57,6 +57,10 @@
     "./color": {
       "types": "./src/color.ts",
       "import": "./dist/color.js"
+    },
+    "./schemas": {
+      "types": "./src/schemas.ts",
+      "import": "./dist/schemas.js"
     }
   },
   "files": [
@@ -102,6 +106,7 @@
     "access": "public"
   },
   "dependencies": {
-    "mongodb": "^7.2.0"
+    "mongodb": "^7.2.0",
+    "zod": "^4.4.3"
   }
 }
