@@ -12,7 +12,8 @@
     },
     "./node": {
       "types": "./dist/node.d.ts",
-      "import": "./dist/node.js"
+      "import": "./dist/node.js",
+      "default": "./dist/node.js"
     },
     "./vault": {
       "types": "./dist/vault.d.ts",
