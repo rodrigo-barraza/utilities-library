@@ -4,7 +4,7 @@ export interface AuthMiddlewareConfig {
     auth: (request: Request) => Response | Promise<Response>;
     authEnabled: boolean;
 }
-export declare function createAuthMiddleware({ auth, authEnabled }: AuthMiddlewareConfig): (request: Request) => Promise<any>;
+export declare function createAuthMiddleware({ auth, authEnabled }: AuthMiddlewareConfig): (request: Request) => Promise<Response>;
 export interface NextjsProxyConfig {
     port: number;
     serviceName: string;
