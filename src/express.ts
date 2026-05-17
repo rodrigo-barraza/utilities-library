@@ -15,7 +15,7 @@ export interface AsyncHandlerOptions {
  */
 export function asyncHandler(
   fn: (req: Request, res: Response, next: NextFunction) => Promise<unknown>,
-  label: string,
+  label: string = "",
   errorStatusOrOpts: number | AsyncHandlerOptions = 502,
 ) {
   const errorStatus =

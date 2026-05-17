@@ -12,7 +12,7 @@ var __rewriteRelativeImportExtension = (this && this.__rewriteRelativeImportExte
 /**
  * Wrap an async route handler with standard error catching.
  */
-export function asyncHandler(fn, label, errorStatusOrOpts = 502) {
+export function asyncHandler(fn, label = "", errorStatusOrOpts = 502) {
     const errorStatus = typeof errorStatusOrOpts === "number"
         ? errorStatusOrOpts
         : errorStatusOrOpts.errorStatus || 502;
