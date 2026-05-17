@@ -7,16 +7,13 @@
 // "next" installed as a dependency. The import is left untyped here
 // to avoid requiring next as a dependency of utilities-library itself.
 
-// Lazy-loaded to avoid requiring next as a dependency of this library.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let _NextResponse: any = null;
+// Static import — required for edge runtime compatibility.
+// Dynamic import(/* webpackIgnore: true */) causes
+// ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING in the edge VM.
+import { NextResponse } from "next/server";
 
-async function getNextResponse() {
-  if (!_NextResponse) {
-    const mod = await import(/* webpackIgnore: true */ "next/server");
-    _NextResponse = mod.NextResponse;
-  }
-  return _NextResponse;
+function getNextResponse() {
+  return NextResponse;
 }
 
 // ── Private Network Detection ───────────────────────────────
