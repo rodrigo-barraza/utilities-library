@@ -25,8 +25,8 @@ export {
   formatContextTokens,
   formatPercent,
   roundMs,
-} from "./format.ts";
-export type { FormatFileSizeOptions } from "./format.ts";
+} from "./format.js";
+export type { FormatFileSizeOptions } from "./format.js";
 
 // Text — String manipulation, sanitization, and case conversion
 export {
@@ -46,14 +46,14 @@ export {
   toSnakeCase,
   pluralize,
   wordCount,
-} from "./text.ts";
+} from "./text.js";
 
 // Date — Date formatting and relative time
-export { toISODate, timeAgo, daysSinceIso, formatDateTime, daysAgo, toLocalDateString } from "./date.ts";
+export { toISODate, timeAgo, daysSinceIso, formatDateTime, daysAgo, toLocalDateString } from "./date.js";
 
 // Async — Promise-based timing, concurrency, and control
-export { sleep, retry, withTimeout, withTimeoutFallback, fetchWithTimeout, pMap, defer } from "./async.ts";
-export type { RetryOptions, PMapOptions, Deferred } from "./async.ts";
+export { sleep, retry, withTimeout, withTimeoutFallback, fetchWithTimeout, pMap, defer } from "./async.js";
+export type { RetryOptions, PMapOptions, Deferred } from "./async.js";
 
 // Time — Duration constants, converters, and polling intervals
 export {
@@ -73,7 +73,7 @@ export {
   POLL_MODERATE,
   POLL_SLOW,
   POLL_LAZY,
-} from "./time.ts";
+} from "./time.js";
 
 // Arrays — Array manipulation
 export {
@@ -88,14 +88,14 @@ export {
   difference,
   sortBy,
   flatten,
-} from "./arrays.ts";
-export type { SortByOptions } from "./arrays.ts";
+} from "./arrays.js";
+export type { SortByOptions } from "./arrays.js";
 
 // Objects — Plain-object manipulation
-export { deepMerge, pick, omit, mapValues, mapKeys, invert, isEmpty, deepEqual } from "./objects.ts";
+export { deepMerge, pick, omit, mapValues, mapKeys, invert, isEmpty, deepEqual } from "./objects.js";
 
 // Math — Numeric utilities
-export { clamp, roundCents, randomInt, cosineSimilarity, lerp, remap, sum, average, median, roundTo } from "./math.ts";
+export { clamp, roundCents, randomInt, cosineSimilarity, lerp, remap, sum, average, median, roundTo } from "./math.js";
 
 // Validation — Input parsing and constraint checking
 export {
@@ -107,19 +107,19 @@ export {
   isEmail,
   isUrl,
   isNumeric,
-} from "./validation.ts";
-export type { IsUrlOptions } from "./validation.ts";
+} from "./validation.js";
+export type { IsUrlOptions } from "./validation.js";
 
 // Crypto — Browser-safe cryptographic utilities
-export { generateUUID } from "./crypto.ts";
+export { generateUUID } from "./crypto.js";
 
 // Phone — Phone number formatting
-export { formatPhone } from "./phone.ts";
+export { formatPhone } from "./phone.js";
 
 // Rate — Debounce and throttle
-export { debounce, throttle } from "./rate.ts";
-export type { DebouncedFunction, ThrottledFunction, DebounceOptions } from "./rate.ts";
+export { debounce, throttle } from "./rate.js";
+export type { DebouncedFunction, ThrottledFunction, DebounceOptions } from "./rate.js";
 
 // Color — Color manipulation and interpolation
-export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness } from "./color.ts";
-export type { RGB, RGBA, HSL } from "./color.ts";
+export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness } from "./color.js";
+export type { RGB, RGBA, HSL } from "./color.js";

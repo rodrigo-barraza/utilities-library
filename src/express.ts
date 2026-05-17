@@ -3,7 +3,7 @@
 // ─────────────────────────────────────────────────────────────
 
 import type { Request, Response, NextFunction } from "express";
-import type { Logger } from "./logger.ts";
+import type { Logger } from "./logger.js";
 
 export interface AsyncHandlerOptions {
   errorStatus?: number;
