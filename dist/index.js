@@ -13,7 +13,7 @@ export { toISODate, timeAgo, daysSinceIso, formatDateTime, daysAgo, toLocalDateS
 // Async — Promise-based timing, concurrency, and control
 export { sleep, retry, withTimeout, withTimeoutFallback, fetchWithTimeout, pMap, defer } from "./async.js";
 // Time — Duration constants, converters, and polling intervals
-export { MS_PER_SECOND, MS_PER_MINUTE, MS_PER_HOUR, MS_PER_DAY, SECONDS_PER_DAY, MS_PER_WEEK, seconds, minutes, hours, days, weeks, POLL_FAST, POLL_STANDARD, POLL_MODERATE, POLL_SLOW, POLL_LAZY, } from "./time.js";
+export { MS_PER_SECOND, MS_PER_MINUTE, MS_PER_HOUR, MS_PER_DAY, SECONDS_PER_DAY, MS_PER_WEEK, seconds, minutes, hours, days, weeks, POLL_FAST, POLL_STANDARD, POLL_MODERATE, POLL_SLOW, POLL_LAZY, FEEDBACK_BRIEF_MS, FEEDBACK_STANDARD_MS, TOAST_DURATION_MS, ACTION_COOLDOWN_MS, ACTION_COOLDOWN_LONG_MS, HIGHLIGHT_DURATION_MS, } from "./time.js";
 // Arrays — Array manipulation
 export { chunk, shuffleArray, pickRandom, compactPayload, groupBy, uniqueBy, partition, intersection, difference, sortBy, flatten, } from "./arrays.js";
 // Objects — Plain-object manipulation

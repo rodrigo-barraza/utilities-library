@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── Comprehensive unit tests for utilities-library ──
 
 import { describe, it, expect } from "vitest";

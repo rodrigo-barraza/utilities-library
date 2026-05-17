@@ -40,4 +40,16 @@ export declare const POLL_MODERATE = 15000;
 export declare const POLL_SLOW = 30000;
 /** 60 s — Dashboard-level refreshes. */
 export declare const POLL_LAZY = 60000;
+/** 1.5 s — Brief feedback flash (e.g. JSON copy confirmation). */
+export declare const FEEDBACK_BRIEF_MS = 1500;
+/** 2 s — Standard feedback flash (e.g. "Copied!" badge, saved indicator). */
+export declare const FEEDBACK_STANDARD_MS = 2000;
+/** 5 s — Toast notification auto-dismiss. */
+export declare const TOAST_DURATION_MS = 5000;
+/** 5 s — Action button cooldown (stop/start/restart). */
+export declare const ACTION_COOLDOWN_MS = 5000;
+/** 8 s — Extended action cooldown (rollback). */
+export declare const ACTION_COOLDOWN_LONG_MS = 8000;
+/** 6 s — Highlight duration for newly-added items. */
+export declare const HIGHLIGHT_DURATION_MS = 6000;
 //# sourceMappingURL=time.d.ts.map
