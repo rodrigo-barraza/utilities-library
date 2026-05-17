@@ -1,6 +1,6 @@
 # @rodrigo-barraza/utilities-library
 
-Shared JavaScript utility functions used across all projects. Zero runtime dependencies, isomorphic design — browser-safe by default with a dedicated Node.js entry point for server-only utilities.
+Shared TypeScript utility functions used across all projects. Zero runtime dependencies, isomorphic design — browser-safe by default with a dedicated Node.js entry point for server-only utilities.
 
 ## Installation
 
@@ -20,7 +20,7 @@ utilities-library/
 
 ### Browser-safe imports (works everywhere)
 
-```js
+```ts
 import { sleep, formatCompact, stripHtml, timeAgo, chunk } from "@rodrigo-barraza/utilities-library";
 
 await sleep(1000);
@@ -32,7 +32,7 @@ chunk([1,2,3,4,5], 2);     // [[1,2], [3,4], [5]]
 
 ### Node.js-only imports (backend services)
 
-```js
+```ts
 import { logger, createLogger, asyncHandler, HealthTracker, createVaultClient } from "@rodrigo-barraza/utilities-library/node";
 
 logger.info("Server starting...");  // [2026-04-29T18:37:24.123Z] INFO  Server starting...
@@ -51,7 +51,7 @@ router.get("/api/data", asyncHandler(async (req) => {
 
 ### Vault client (dedicated entry point)
 
-```js
+```ts
 import { createVaultClient } from "@rodrigo-barraza/utilities-library/vault";
 
 const vault = createVaultClient({
@@ -69,12 +69,12 @@ const mongoUrl = await vault.resolveInfraUrl("mongodb");
 
 ```json
 {
-  ".":         "./src/index.js",
-  "./node":    "./src/node.js",
-  "./vault":   "./src/vault.js",
-  "./effects": "./src/effects.js",
-  "./rate":    "./src/rate.js",
-  "./color":   "./src/color.js"
+  ".":         "./src/index.ts",
+  "./node":    "./src/node.ts",
+  "./vault":   "./src/vault.ts",
+  "./effects": "./src/effects.ts",
+  "./rate":    "./src/rate.ts",
+  "./color":   "./src/color.ts"
 }
 ```
 
@@ -113,7 +113,7 @@ const mongoUrl = await vault.resolveInfraUrl("mongodb");
 | `applyCRT` | Composite CRT effect (scanlines + vignette + static) |
 | `composeEffects` | Chain multiple effects, returns single cleanup |
 
-```js
+```ts
 import { applyStatic, applyChromaticAberration, applyCRT, composeEffects } from "@rodrigo-barraza/utilities-library/effects";
 
 // Single effect
@@ -141,7 +141,7 @@ cleanupAll();
 | `debounce` | Classic debounce with `.cancel()` / `.flush()` + optional leading edge |
 | `throttle` | Leading-edge throttle with trailing replay and `.cancel()` |
 
-```js
+```ts
 import { debounce, throttle } from "@rodrigo-barraza/utilities-library/rate";
 
 const search = debounce((query) => fetchResults(query), 300);
@@ -158,7 +158,7 @@ const resize = throttle(() => recalcLayout(), 100);
 | `rgbToHsl` / `hslToRgb` | Color space conversion |
 | `adjustBrightness` | Lighten or darken a hex color by percentage |
 
-```js
+```ts
 import { lerpColor, adjustBrightness } from "@rodrigo-barraza/utilities-library/color";
 
 lerpColor("#ff0000", "#0000ff", 0.5); // midpoint purple
