@@ -29,6 +29,7 @@ export interface VaultClientOptions {
 }
 export interface VaultClient {
     fetch(): Promise<Record<string, string>>;
+    fetchSync(): Record<string, string>;
     fetchRegistry(): Promise<Registry>;
     resolveServiceUrl(serviceId: string): Promise<string | null>;
     resolveInfraUrl(infraId: string): Promise<string | null>;

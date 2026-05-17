@@ -2,6 +2,7 @@
 // Vault Client — Secret + Registry Bootstrap Utility
 // ============================================================
 import { readFileSync, existsSync } from "fs";
+import { execFileSync } from "child_process";
 import { resolve } from "path";
 const DEFAULT_VAULT_SERVICE_URL = "http://localhost:5599";
 const FETCH_TIMEOUT_MS = 5_000;
@@ -100,6 +101,72 @@ export function createVaultClient(options = {}) {
             else {
                 console.warn("⚠️  No VAULT_SERVICE_TOKEN set — skipping Vault");
             }
+            if (fallbackEnvFile) {
+                const fallback = parseEnvFile(fallbackEnvFile);
+                if (fallback) {
+                    let filled = 0;
+                    for (const [key, value] of Object.entries(fallback)) {
+                        if (merged[key] === undefined) {
+                            merged[key] = value;
+                            filled++;
+                        }
+                    }
+                    if (filled > 0) {
+                        console.warn(`📄 Fallback .env → filled ${filled} remaining vars`);
+                    }
+                }
+            }
+            if (Object.keys(merged).length === 0) {
+                console.warn("⚠️  No secrets loaded from any source");
+            }
+            return merged;
+        },
+        fetchSync() {
+            const merged = {};
+            // Layer 1: Local .env file
+            if (localEnvFile) {
+                const local = parseEnvFile(localEnvFile);
+                if (local) {
+                    Object.assign(merged, local);
+                    _localOverrides = local;
+                    console.warn(`📋 Local .env → loaded ${Object.keys(local).length} overrides`);
+                }
+            }
+            // Layer 2: Vault HTTP (synchronous via curl)
+            resolveVaultConnection();
+            if (_vaultToken) {
+                try {
+                    const params = new URLSearchParams();
+                    if (keys?.length)
+                        params.set("keys", keys.join(","));
+                    if (prefix)
+                        params.set("prefix", prefix);
+                    if (exclude)
+                        params.set("exclude", exclude);
+                    const queryString = params.toString();
+                    const url = `${_vaultUrl}/secrets${queryString ? "?" + queryString : ""}`;
+                    const stdout = execFileSync("curl", [
+                        "-sf",
+                        "--max-time", String(FETCH_TIMEOUT_MS / 1000),
+                        "-H", `Authorization: Bearer ${_vaultToken}`,
+                        url,
+                    ], { encoding: "utf-8", timeout: FETCH_TIMEOUT_MS + 1000 });
+                    const secrets = JSON.parse(stdout);
+                    for (const [key, value] of Object.entries(secrets)) {
+                        if (merged[key] === undefined) {
+                            merged[key] = value;
+                        }
+                    }
+                    console.warn(`🔐 Vault → loaded ${Object.keys(secrets).length} secrets`);
+                }
+                catch (error) {
+                    console.warn(`⚠️  Vault unreachable (${error.message})`);
+                }
+            }
+            else {
+                console.warn("⚠️  No VAULT_SERVICE_TOKEN set — skipping Vault");
+            }
+            // Layer 3: Fallback .env file
             if (fallbackEnvFile) {
                 const fallback = parseEnvFile(fallbackEnvFile);
                 if (fallback) {
