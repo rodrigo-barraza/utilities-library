@@ -19,10 +19,8 @@ export interface Registry {
     infrastructure: RegistryInfrastructure[];
 }
 export interface VaultClientOptions {
-    localEnvFile?: string;
     vaultUrl?: string;
     vaultToken?: string;
-    fallbackEnvFile?: string;
     keys?: string[];
     prefix?: string;
     exclude?: string;
@@ -37,14 +35,15 @@ export interface VaultClient {
 }
 /**
  * Create a Vault client instance.
+ *
+ * All secrets are served by the Vault HTTP API from projects.json.
+ * Connection is resolved from: options → process.env → localhost fallback.
  */
 export declare function createVaultClient(options?: VaultClientOptions): VaultClient;
-export interface BootstrapEnvOptions {
-    localEnvFile?: string;
-    fallbackEnvFile?: string;
-}
 /**
- * Helper to bootstrap environment variables from Vault.
+ * Bootstrap environment variables from Vault.
+ * Fetches all secrets from the Vault HTTP API and injects them
+ * into process.env (without overwriting existing values).
  */
-export declare function bootstrapEnv(options?: BootstrapEnvOptions): Promise<void>;
+export declare function bootstrapEnv(): Promise<void>;
 //# sourceMappingURL=vault.d.ts.map
