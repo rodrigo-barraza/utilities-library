@@ -46,7 +46,6 @@ export function formatZodErrors(error, prefix) {
  * ```
  */
 export function validate(schemas) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (req, res, next) => {
         const errors = [];
         if (schemas.body) {
@@ -64,7 +63,7 @@ export function validate(schemas) {
                 errors.push(...formatZodErrors(result.error, "query"));
             }
             else {
-                req.query = result.data;
+                Object.assign(req.query, result.data);
             }
         }
         if (schemas.params) {
@@ -73,7 +72,7 @@ export function validate(schemas) {
                 errors.push(...formatZodErrors(result.error, "params"));
             }
             else {
-                req.params = result.data;
+                Object.assign(req.params, result.data);
             }
         }
         if (errors.length > 0) {

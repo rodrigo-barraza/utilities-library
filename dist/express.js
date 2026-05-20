@@ -127,8 +127,9 @@ export function createRequestLoggerMiddleware(logger) {
         const start = Date.now();
         const originalEnd = res.end;
         let size = 0;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        res.end = function (chunk, encoding, callback) {
+        // Node's res.end has 3 overloaded signatures — monkey-patching requires a cast
+        res.end = function (...args) {
+            const chunk = args[0];
             if (chunk)
                 size += Buffer.byteLength(chunk);
             const timing = `${Date.now() - start}ms`;
@@ -136,7 +137,7 @@ export function createRequestLoggerMiddleware(logger) {
                 ? `${(size / 1024).toFixed(1)}KB`
                 : `${size}B`;
             logger.request(req.method, req.originalUrl || req.url, res.statusCode, timing, sizeTag);
-            return originalEnd.call(res, chunk, encoding, callback);
+            return Function.prototype.apply.call(originalEnd, res, args);
         };
         next();
     };

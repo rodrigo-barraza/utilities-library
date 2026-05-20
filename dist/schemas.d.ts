@@ -1,4 +1,5 @@
 import { z, type ZodSchema, type ZodError, type ZodIssue } from "zod";
+import type { Request, Response, NextFunction } from "express";
 export { z };
 export type { ZodSchema, ZodError, ZodIssue };
 /**
@@ -38,7 +39,7 @@ export interface ValidateOptions<TBody extends ZodSchema = ZodSchema, TQuery ext
  * }));
  * ```
  */
-export declare function validate<TBody extends ZodSchema = ZodSchema, TQuery extends ZodSchema = ZodSchema, TParams extends ZodSchema = ZodSchema>(schemas: ValidateOptions<TBody, TQuery, TParams>): (req: any, res: any, next: any) => any;
+export declare function validate<TBody extends ZodSchema = ZodSchema, TQuery extends ZodSchema = ZodSchema, TParams extends ZodSchema = ZodSchema>(schemas: ValidateOptions<TBody, TQuery, TParams>): (req: Request, res: Response, next: NextFunction) => Response<any, Record<string, any>> | undefined;
 /** MongoDB ObjectId-shaped string (24 hex chars). */
 export declare const objectIdString: z.ZodString;
 /** Pagination query params — reuse across list endpoints. */
