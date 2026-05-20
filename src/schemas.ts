@@ -6,6 +6,7 @@
 // ─────────────────────────────────────────────────────────────
 
 import { z, type ZodSchema, type ZodError, type ZodIssue } from "zod";
+import type { Request, Response, NextFunction } from "express";
 
 // ─── Re-exports ───────────────────────────────────────────────────────
 // Allow consumers to `import { z } from "@rodrigo-barraza/utilities-library/schemas"`
@@ -71,8 +72,7 @@ export function validate<
   TQuery extends ZodSchema = ZodSchema,
   TParams extends ZodSchema = ZodSchema,
 >(schemas: ValidateOptions<TBody, TQuery, TParams>) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (req: any, res: any, next: any) => {
+  return (req: Request, res: Response, next: NextFunction) => {
     const errors: string[] = [];
 
     if (schemas.body) {
@@ -89,7 +89,7 @@ export function validate<
       if (!result.success) {
         errors.push(...formatZodErrors(result.error, "query"));
       } else {
-        req.query = result.data;
+        Object.assign(req.query, result.data);
       }
     }
 
@@ -98,7 +98,7 @@ export function validate<
       if (!result.success) {
         errors.push(...formatZodErrors(result.error, "params"));
       } else {
-        req.params = result.data;
+        Object.assign(req.params, result.data);
       }
     }
 
