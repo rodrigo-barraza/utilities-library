@@ -89,7 +89,15 @@ export function validate<
       if (!result.success) {
         errors.push(...formatZodErrors(result.error, "query"));
       } else {
-        Object.assign(req.query, result.data);
+        // Express 5 defines req.query as a getter that recomputes from the raw
+        // URL on every access — Object.assign silently fails because the getter
+        // immediately recalculates string values. Override with a value property
+        // so downstream handlers receive coerced/defaulted Zod output.
+        Object.defineProperty(req, "query", {
+          value: result.data,
+          writable: true,
+          configurable: true,
+        });
       }
     }
 
@@ -98,7 +106,12 @@ export function validate<
       if (!result.success) {
         errors.push(...formatZodErrors(result.error, "params"));
       } else {
-        Object.assign(req.params, result.data);
+        // Same Express 5 getter issue applies to req.params.
+        Object.defineProperty(req, "params", {
+          value: result.data,
+          writable: true,
+          configurable: true,
+        });
       }
     }
 
