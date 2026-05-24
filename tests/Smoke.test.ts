@@ -182,6 +182,10 @@ describe("text.js", () => {
     it("strips mcp__ prefix", () => {
       expect(txt.renderToolName("mcp__github__list_repos")).toBe("List Repos");
     });
+    it("strips mcp__ prefix with hyphens or dots in server names", () => {
+      expect(txt.renderToolName("mcp__lazy-tool-service__get_market_data")).toBe("Get Market Data");
+      expect(txt.renderToolName("mcp__my.api.server__fetch_items")).toBe("Fetch Items");
+    });
   });
 
   describe("truncate", () => {
