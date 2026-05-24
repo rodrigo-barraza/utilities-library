@@ -18,8 +18,8 @@ export function parseIntParam(value: string | undefined | null, defaultValue: nu
 export function parsePrice(priceStr: string | null | undefined): number | null {
   if (!priceStr) return null;
   const cleaned = String(priceStr).replace(/[^0-9.]/g, "");
-  const num = parseFloat(cleaned);
-  return isNaN(num) ? null : num;
+  const parsedPrice = parseFloat(cleaned);
+  return isNaN(parsedPrice) ? null : parsedPrice;
 }
 
 /**
