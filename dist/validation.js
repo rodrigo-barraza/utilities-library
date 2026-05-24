@@ -18,8 +18,8 @@ export function parsePrice(priceStr) {
     if (!priceStr)
         return null;
     const cleaned = String(priceStr).replace(/[^0-9.]/g, "");
-    const num = parseFloat(cleaned);
-    return isNaN(num) ? null : num;
+    const parsedPrice = parseFloat(cleaned);
+    return isNaN(parsedPrice) ? null : parsedPrice;
 }
 /**
  * Validate that a string value does not exceed a maximum length.
