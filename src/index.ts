@@ -129,3 +129,6 @@ export type { DebouncedFunction, ThrottledFunction, DebounceOptions } from "./ra
 // Color — Color manipulation and interpolation
 export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness } from "./color.js";
 export type { RGB, RGBA, HSL } from "./color.js";
+
+// Errors — Type-safe error handling utilities
+export { errorMessage } from "./errors.js";

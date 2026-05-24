@@ -30,4 +30,6 @@ export { formatPhone } from "./phone.js";
 export { debounce, throttle } from "./rate.js";
 // Color — Color manipulation and interpolation
 export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness } from "./color.js";
+// Errors — Type-safe error handling utilities
+export { errorMessage } from "./errors.js";
 //# sourceMappingURL=index.js.map
