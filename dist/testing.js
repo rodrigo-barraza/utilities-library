@@ -14,18 +14,18 @@ export function mockRes() {
         _status: null,
         _json: null,
         status(code) {
-            res._status = code;
-            return res;
+            responsePayload._status = code;
+            return responsePayload;
         },
         json(data) {
-            res._json = data;
-            return res;
+            responsePayload._json = data;
+            return responsePayload;
         },
         sendStatus(code) {
-            res._status = code;
-            return res;
+            responsePayload._status = code;
+            return responsePayload;
         },
     };
-    return res;
+    return responsePayload;
 }
 //# sourceMappingURL=testing.js.map

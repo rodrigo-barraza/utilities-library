@@ -6,5 +6,5 @@ export declare function mockReq(overrides?: Record<string, unknown>): {
     ip: string;
     path: string;
 };
-export declare function mockRes(): any;
+export declare function mockRes(): Record<string, unknown>;
 //# sourceMappingURL=testing.d.ts.map

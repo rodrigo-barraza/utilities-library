@@ -15,17 +15,17 @@ export function mockRes() {
     _status: null,
     _json: null,
     status(code: number) {
-      res._status = code;
-      return res;
+      responsePayload._status = code;
+      return responsePayload;
     },
     json(data: unknown) {
-      res._json = data;
-      return res;
+      responsePayload._json = data;
+      return responsePayload;
     },
     sendStatus(code: number) {
-      res._status = code;
-      return res;
+      responsePayload._status = code;
+      return responsePayload;
     },
   };
-  return res;
+  return responsePayload;
 }
