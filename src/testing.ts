@@ -11,7 +11,7 @@ export function mockReq(overrides: Record<string, unknown> = {}) {
 }
 
 export function mockRes() {
-  const res: Record<string, unknown> = {
+  const responsePayload: Record<string, unknown> = {
     _status: null,
     _json: null,
     status(code: number) {
