@@ -10,7 +10,7 @@ export function mockReq(overrides = {}) {
     };
 }
 export function mockRes() {
-    const res = {
+    const responsePayload = {
         _status: null,
         _json: null,
         status(code) {
