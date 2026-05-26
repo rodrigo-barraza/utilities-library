@@ -116,8 +116,8 @@ export function createNextjsProxy({ port, serviceName, publicUrlEnv, internalUrl
     };
     if (methods) {
         const filtered = {};
-        for (const m of methods)
-            filtered[m] = proxyRequest;
+        for (const method of methods)
+            filtered[method] = proxyRequest;
         return filtered;
     }
     return allMethods;

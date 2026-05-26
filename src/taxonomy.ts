@@ -78,10 +78,10 @@ export const DOMAINS = {
 export type DomainKey = keyof typeof DOMAINS;
 export type DomainValue = (typeof DOMAINS)[DomainKey];
 
-export const L = Object.fromEntries(
-  Object.entries(LABELS).map(([k, v]) => [k, `label:${v}`]),
+export const LABEL_TAGS = Object.fromEntries(
+  Object.entries(LABELS).map(([key, value]) => [key, `label:${value}`]),
 ) as Record<LabelKey, `label:${LabelValue}`>;
 
-export const D = Object.fromEntries(
-  Object.entries(DOMAINS).map(([k, v]) => [k, `domain:${v}`]),
+export const DOMAIN_TAGS = Object.fromEntries(
+  Object.entries(DOMAINS).map(([key, value]) => [key, `domain:${value}`]),
 ) as Record<DomainKey, `domain:${DomainValue}`>;

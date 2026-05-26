@@ -69,6 +69,6 @@ export const DOMAINS = {
     AGENTIC_TASK_MGMT: "Agentic: Task Management",
     TORRENT: "Torrent",
 };
-export const L = Object.fromEntries(Object.entries(LABELS).map(([k, v]) => [k, `label:${v}`]));
-export const D = Object.fromEntries(Object.entries(DOMAINS).map(([k, v]) => [k, `domain:${v}`]));
+export const LABEL_TAGS = Object.fromEntries(Object.entries(LABELS).map(([key, value]) => [key, `label:${value}`]));
+export const DOMAIN_TAGS = Object.fromEntries(Object.entries(DOMAINS).map(([key, value]) => [key, `domain:${value}`]));
 //# sourceMappingURL=taxonomy.js.map

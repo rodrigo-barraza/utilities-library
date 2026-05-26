@@ -116,8 +116,8 @@ export class TokenManager {
 /**
  * Create a lazy-loading async getter for an ES module.
  */
-export function lazyImport<T>(specifier: string, extract: (m: Record<string, unknown>) => T = (m) => m.default as T): () => Promise<T> {
-  let cached: T;
+export function lazyImport<ImportedModule>(specifier: string, extract: (moduleObject: Record<string, unknown>) => ImportedModule = (moduleObject) => moduleObject.default as ImportedModule): () => Promise<ImportedModule> {
+  let cached: ImportedModule;
   return async () => {
     if (!cached) cached = extract(await import(specifier));
     return cached;

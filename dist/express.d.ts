@@ -39,7 +39,7 @@ export declare class TokenManager {
 /**
  * Create a lazy-loading async getter for an ES module.
  */
-export declare function lazyImport<T>(specifier: string, extract?: (m: Record<string, unknown>) => T): () => Promise<T>;
+export declare function lazyImport<ImportedModule>(specifier: string, extract?: (moduleObject: Record<string, unknown>) => ImportedModule): () => Promise<ImportedModule>;
 /**
  * Create an HTTP error with a status code.
  */

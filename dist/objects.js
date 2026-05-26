@@ -28,9 +28,9 @@ export function deepMerge(target, source) {
  */
 export function pick(object, keys) {
     const out = {};
-    for (const k of keys) {
-        if (k in object)
-            out[k] = object[k];
+    for (const key of keys) {
+        if (key in object)
+            out[key] = object[key];
     }
     return out;
 }
@@ -39,26 +39,26 @@ export function pick(object, keys) {
  */
 export function omit(object, keys) {
     const exclude = new Set(keys);
-    return Object.fromEntries(Object.entries(object).filter(([k]) => !exclude.has(k)));
+    return Object.fromEntries(Object.entries(object).filter(([key]) => !exclude.has(key)));
 }
 /**
  * Create a new object with the same keys but values transformed by `fn`.
  */
 export function mapValues(object, fn) {
-    return Object.fromEntries(Object.entries(object).map(([k, v]) => [k, fn(v, k)]));
+    return Object.fromEntries(Object.entries(object).map(([key, value]) => [key, fn(value, key)]));
 }
 /**
  * Create a new object with keys transformed by `fn`, values unchanged.
  */
 export function mapKeys(object, fn) {
-    return Object.fromEntries(Object.entries(object).map(([k, v]) => [fn(k, v), v]));
+    return Object.fromEntries(Object.entries(object).map(([key, value]) => [fn(key, value), value]));
 }
 /**
  * Swap keys and values in an object.
  * e.g. { a: "1", b: "2" } → { "1": "a", "2": "b" }
  */
 export function invert(object) {
-    return Object.fromEntries(Object.entries(object).map(([k, v]) => [v, k]));
+    return Object.fromEntries(Object.entries(object).map(([key, value]) => [value, key]));
 }
 /**
  * Check if a value is "empty":
@@ -87,24 +87,24 @@ export function isEmpty(value) {
  * Compares primitives, plain objects, and arrays recursively.
  * Does not handle circular references, Dates, RegExps, etc.
  */
-export function deepEqual(a, b) {
-    if (a === b)
+export function deepEqual(valueA, valueB) {
+    if (valueA === valueB)
         return true;
-    if (a == null || b == null)
+    if (valueA == null || valueB == null)
         return false;
-    if (typeof a !== typeof b)
+    if (typeof valueA !== typeof valueB)
         return false;
-    if (Array.isArray(a)) {
-        if (!Array.isArray(b) || a.length !== b.length)
+    if (Array.isArray(valueA)) {
+        if (!Array.isArray(valueB) || valueA.length !== valueB.length)
             return false;
-        return a.every((value, i) => deepEqual(value, b[i]));
+        return valueA.every((item, itemIndex) => deepEqual(item, valueB[itemIndex]));
     }
-    if (typeof a === "object") {
-        const keysA = Object.keys(a);
-        const keysB = Object.keys(b);
+    if (typeof valueA === "object") {
+        const keysA = Object.keys(valueA);
+        const keysB = Object.keys(valueB);
         if (keysA.length !== keysB.length)
             return false;
-        return keysA.every((k) => deepEqual(a[k], b[k]));
+        return keysA.every((key) => deepEqual(valueA[key], valueB[key]));
     }
     return false;
 }

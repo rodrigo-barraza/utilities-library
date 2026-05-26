@@ -5,8 +5,8 @@
 /**
  * Batch an array into chunks of a given size.
  */
-export function chunk<T>(array: T[], size: number): T[][] {
-  const chunks: T[][] = [];
+export function chunk<ArrayItem>(array: ArrayItem[], size: number): ArrayItem[][] {
+  const chunks: ArrayItem[][] = [];
   for (let i = 0; i < array.length; i += size) {
     chunks.push(array.slice(i, i + size));
   }
@@ -17,7 +17,7 @@ export function chunk<T>(array: T[], size: number): T[][] {
  * Shuffle an array using the Fisher–Yates algorithm.
  * Returns a new shuffled copy — does not mutate the original.
  */
-export function shuffleArray<T>(array: T[]): T[] {
+export function shuffleArray<ArrayItem>(array: ArrayItem[]): ArrayItem[] {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const swapIndex = Math.floor(Math.random() * (i + 1));
@@ -29,7 +29,7 @@ export function shuffleArray<T>(array: T[]): T[] {
 /**
  * Pick a random element from an array.
  */
-export function pickRandom<T>(array: T[]): T {
+export function pickRandom<ArrayItem>(array: ArrayItem[]): ArrayItem {
   return array[Math.floor(Math.random() * array.length)];
 }
 
@@ -49,8 +49,8 @@ export function compactPayload(object: Record<string, unknown>): Record<string, 
  * Group array elements by a key derived from each element.
  * Returns an object whose keys are group identifiers and values are arrays.
  */
-export function groupBy<T>(array: T[], keyFn: string | ((item: T) => string)): Record<string, T[]> {
-  const groups: Record<string, T[]> = {};
+export function groupBy<ArrayItem>(array: ArrayItem[], keyFn: string | ((item: ArrayItem) => string)): Record<string, ArrayItem[]> {
+  const groups: Record<string, ArrayItem[]> = {};
   for (const item of array) {
     const key = typeof keyFn === "function" ? keyFn(item) : (item as Record<string, unknown>)[keyFn] as string;
     (groups[key] ??= []).push(item);
@@ -62,7 +62,7 @@ export function groupBy<T>(array: T[], keyFn: string | ((item: T) => string)): R
  * Deduplicate an array by a key derived from each element.
  * Keeps the first occurrence of each unique key.
  */
-export function uniqueBy<T>(array: T[], keyFn: string | ((item: T) => unknown)): T[] {
+export function uniqueBy<ArrayItem>(array: ArrayItem[], keyFn: string | ((item: ArrayItem) => unknown)): ArrayItem[] {
   const seen = new Set<unknown>();
   return array.filter((item) => {
     const key = typeof keyFn === "function" ? keyFn(item) : (item as Record<string, unknown>)[keyFn];
@@ -77,9 +77,9 @@ export function uniqueBy<T>(array: T[], keyFn: string | ((item: T) => unknown)):
  * The first array contains items where `fn` returns true,
  * the second contains the rest.
  */
-export function partition<T>(array: T[], fn: (item: T) => boolean): [T[], T[]] {
-  const pass: T[] = [];
-  const fail: T[] = [];
+export function partition<ArrayItem>(array: ArrayItem[], fn: (item: ArrayItem) => boolean): [ArrayItem[], ArrayItem[]] {
+  const pass: ArrayItem[] = [];
+  const fail: ArrayItem[] = [];
   for (const item of array) {
     (fn(item) ? pass : fail).push(item);
   }
@@ -90,18 +90,18 @@ export function partition<T>(array: T[], fn: (item: T) => boolean): [T[], T[]] {
  * Return elements present in both arrays.
  * Uses strict equality. Preserves order from the first array.
  */
-export function intersection<T>(a: T[], b: T[]): T[] {
-  const set = new Set(b);
-  return a.filter((item) => set.has(item));
+export function intersection<ArrayItem>(firstArray: ArrayItem[], secondArray: ArrayItem[]): ArrayItem[] {
+  const set = new Set(secondArray);
+  return firstArray.filter((item) => set.has(item));
 }
 
 /**
  * Return elements in `a` that are not in `b`.
  * Uses strict equality. Preserves order from `a`.
  */
-export function difference<T>(a: T[], b: T[]): T[] {
-  const set = new Set(b);
-  return a.filter((item) => !set.has(item));
+export function difference<ArrayItem>(firstArray: ArrayItem[], secondArray: ArrayItem[]): ArrayItem[] {
+  const set = new Set(secondArray);
+  return firstArray.filter((item) => !set.has(item));
 }
 
 /**
@@ -112,14 +112,14 @@ export interface SortByOptions {
   descending?: boolean;
 }
 
-export function sortBy<T>(array: T[], keyOrFn: string | ((a: T, b: T) => number), { descending = false }: SortByOptions = {}): T[] {
+export function sortBy<ArrayItem>(array: ArrayItem[], keyOrFn: string | ((firstItem: ArrayItem, secondItem: ArrayItem) => number), { descending = false }: SortByOptions = {}): ArrayItem[] {
   const copy = [...array];
   if (typeof keyOrFn === "function") {
     copy.sort(keyOrFn);
   } else {
-    copy.sort((a, b) => {
-      const valueA = (a as Record<string, unknown>)[keyOrFn] as string | number;
-      const valueB = (b as Record<string, unknown>)[keyOrFn] as string | number;
+    copy.sort((firstItem, secondItem) => {
+      const valueA = (firstItem as Record<string, unknown>)[keyOrFn] as string | number;
+      const valueB = (secondItem as Record<string, unknown>)[keyOrFn] as string | number;
       if (valueA < valueB) return -1;
       if (valueA > valueB) return 1;
       return 0;
@@ -132,6 +132,6 @@ export function sortBy<T>(array: T[], keyOrFn: string | ((a: T, b: T) => number)
  * Flatten a nested array to a given depth.
  * Wrapper around Array.flat() with a clearer API for shared usage.
  */
-export function flatten<T>(array: T[], depth = 1): T[] {
-  return (array as unknown[]).flat(depth) as T[];
+export function flatten<ArrayItem>(array: ArrayItem[], depth = 1): ArrayItem[] {
+  return (array as unknown[]).flat(depth) as ArrayItem[];
 }

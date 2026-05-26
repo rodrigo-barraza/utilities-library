@@ -40,5 +40,5 @@ export declare function isEmpty(value: unknown): boolean;
  * Compares primitives, plain objects, and arrays recursively.
  * Does not handle circular references, Dates, RegExps, etc.
  */
-export declare function deepEqual(a: unknown, b: unknown): boolean;
+export declare function deepEqual(valueA: unknown, valueB: unknown): boolean;
 //# sourceMappingURL=objects.d.ts.map

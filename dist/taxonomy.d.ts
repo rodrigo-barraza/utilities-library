@@ -70,6 +70,6 @@ export declare const DOMAINS: {
 };
 export type DomainKey = keyof typeof DOMAINS;
 export type DomainValue = (typeof DOMAINS)[DomainKey];
-export declare const L: Record<LabelKey, `label:${LabelValue}`>;
-export declare const D: Record<DomainKey, `domain:${DomainValue}`>;
+export declare const LABEL_TAGS: Record<LabelKey, `label:${LabelValue}`>;
+export declare const DOMAIN_TAGS: Record<DomainKey, `domain:${DomainValue}`>;
 //# sourceMappingURL=taxonomy.d.ts.map

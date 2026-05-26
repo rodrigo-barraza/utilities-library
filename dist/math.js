@@ -12,8 +12,8 @@ export function clamp(value, min, max) {
  * Round to 2 decimal places using banker's rounding.
  * Standard for financial calculations — avoids floating-point drift.
  */
-export function roundCents(n) {
-    return Math.round((n + Number.EPSILON) * 100) / 100;
+export function roundCents(value) {
+    return Math.round((value + Number.EPSILON) * 100) / 100;
 }
 /**
  * Return a random integer between min and max (inclusive).
@@ -25,14 +25,14 @@ export function randomInt(min, max) {
  * Compute cosine similarity between two vectors.
  * Returns a value between -1 and 1, where 1 means identical direction.
  */
-export function cosineSimilarity(a, b) {
-    if (!a || !b || a.length !== b.length)
+export function cosineSimilarity(vectorA, vectorB) {
+    if (!vectorA || !vectorB || vectorA.length !== vectorB.length)
         return 0;
     let dot = 0, magA = 0, magB = 0;
-    for (let i = 0; i < a.length; i++) {
-        dot += a[i] * b[i];
-        magA += a[i] * a[i];
-        magB += b[i] * b[i];
+    for (let i = 0; i < vectorA.length; i++) {
+        dot += vectorA[i] * vectorB[i];
+        magA += vectorA[i] * vectorA[i];
+        magB += vectorB[i] * vectorB[i];
     }
     const denom = Math.sqrt(magA) * Math.sqrt(magB);
     return denom === 0 ? 0 : dot / denom;
@@ -41,8 +41,8 @@ export function cosineSimilarity(a, b) {
  * Linearly interpolate between two numbers.
  * Standard lerp function — returns `a` when `t=0`, `b` when `t=1`.
  */
-export function lerp(a, b, t) {
-    return a + (b - a) * t;
+export function lerp(startValue, endValue, interpolationFactor) {
+    return startValue + (endValue - startValue) * interpolationFactor;
 }
 /**
  * Remap a value from one range to another (linear mapping).
@@ -57,7 +57,7 @@ export function remap(value, inMin, inMax, outMin, outMax) {
 export function sum(array) {
     if (!array || array.length === 0)
         return 0;
-    return array.reduce((acc, n) => acc + n, 0);
+    return array.reduce((acc, currentValue) => acc + currentValue, 0);
 }
 /**
  * Compute the arithmetic mean of a numeric array.
@@ -75,7 +75,7 @@ export function average(array) {
 export function median(array) {
     if (!array || array.length === 0)
         return 0;
-    const sorted = [...array].sort((a, b) => a - b);
+    const sorted = [...array].sort((firstValue, secondValue) => firstValue - secondValue);
     const mid = Math.floor(sorted.length / 2);
     return sorted.length % 2 !== 0
         ? sorted[mid]

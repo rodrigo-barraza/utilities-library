@@ -20,8 +20,8 @@ function _injectCSS(name: string, css: string): void {
 }
 
 function _applyClasses(element: HTMLElement, classes: string[]): () => void {
-  classes.forEach((c) => element.classList.add(c));
-  return () => classes.forEach((c) => element.classList.remove(c));
+  classes.forEach((className) => element.classList.add(className));
+  return () => classes.forEach((className) => element.classList.remove(className));
 }
 
 // ── 1. Static / Noise ──────────────────────────────────────
@@ -280,12 +280,12 @@ export function applyCRT(element: HTMLElement, { scanIntensity = 0.06, vignetteI
     applyVignette(element, { intensity: vignetteIntensity }),
     applyStatic(element, { intensity: noiseIntensity }),
   ];
-  return () => cleanups.forEach((fn) => fn());
+  return () => cleanups.forEach((cleanupFunction) => cleanupFunction());
 }
 
 // ── 12. Compose ──────────────────────────────────────────
 
 export function composeEffects(element: HTMLElement, fns: Array<(element: HTMLElement) => () => void>): () => void {
-  const cleanups = fns.map((fn) => fn(element));
-  return () => cleanups.forEach((fn) => fn());
+  const cleanups = fns.map((effectFunction) => effectFunction(element));
+  return () => cleanups.forEach((cleanupFunction) => cleanupFunction());
 }

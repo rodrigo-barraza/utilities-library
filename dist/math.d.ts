@@ -7,7 +7,7 @@ export declare function clamp(value: number, min: number, max: number): number;
  * Round to 2 decimal places using banker's rounding.
  * Standard for financial calculations — avoids floating-point drift.
  */
-export declare function roundCents(n: number): number;
+export declare function roundCents(value: number): number;
 /**
  * Return a random integer between min and max (inclusive).
  */
@@ -16,12 +16,12 @@ export declare function randomInt(min: number, max: number): number;
  * Compute cosine similarity between two vectors.
  * Returns a value between -1 and 1, where 1 means identical direction.
  */
-export declare function cosineSimilarity(a: number[] | null, b: number[] | null): number;
+export declare function cosineSimilarity(vectorA: number[] | null, vectorB: number[] | null): number;
 /**
  * Linearly interpolate between two numbers.
  * Standard lerp function — returns `a` when `t=0`, `b` when `t=1`.
  */
-export declare function lerp(a: number, b: number, t: number): number;
+export declare function lerp(startValue: number, endValue: number, interpolationFactor: number): number;
 /**
  * Remap a value from one range to another (linear mapping).
  * e.g. remap(50, 0, 100, 0, 1) → 0.5

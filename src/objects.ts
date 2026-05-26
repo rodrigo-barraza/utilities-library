@@ -31,8 +31,8 @@ export function deepMerge<T extends Record<string, unknown>>(target: T, source: 
  */
 export function pick<T extends Record<string, unknown>, K extends keyof T>(object: T, keys: K[]): Pick<T, K> {
   const out = {} as Pick<T, K>;
-  for (const k of keys) {
-    if (k in object) (out as Record<string, unknown>)[k as string] = object[k];
+  for (const key of keys) {
+    if (key in object) (out as Record<string, unknown>)[key as string] = object[key];
   }
   return out;
 }
@@ -43,7 +43,7 @@ export function pick<T extends Record<string, unknown>, K extends keyof T>(objec
 export function omit<T extends Record<string, unknown>, K extends keyof T>(object: T, keys: K[]): Omit<T, K> {
   const exclude = new Set<string>(keys as string[]);
   return Object.fromEntries(
-    Object.entries(object).filter(([k]) => !exclude.has(k)),
+    Object.entries(object).filter(([key]) => !exclude.has(key)),
   ) as Omit<T, K>;
 }
 
@@ -52,7 +52,7 @@ export function omit<T extends Record<string, unknown>, K extends keyof T>(objec
  */
 export function mapValues<T extends Record<string, unknown>, R>(object: T, fn: (value: unknown, key: string) => R): Record<string, R> {
   return Object.fromEntries(
-    Object.entries(object).map(([k, v]) => [k, fn(v, k)]),
+    Object.entries(object).map(([key, value]) => [key, fn(value, key)]),
   );
 }
 
@@ -61,7 +61,7 @@ export function mapValues<T extends Record<string, unknown>, R>(object: T, fn: (
  */
 export function mapKeys(object: Record<string, unknown>, fn: (key: string, value: unknown) => string): Record<string, unknown> {
   return Object.fromEntries(
-    Object.entries(object).map(([k, v]) => [fn(k, v), v]),
+    Object.entries(object).map(([key, value]) => [fn(key, value), value]),
   );
 }
 
@@ -71,7 +71,7 @@ export function mapKeys(object: Record<string, unknown>, fn: (key: string, value
  */
 export function invert(object: Record<string, string>): Record<string, string> {
   return Object.fromEntries(
-    Object.entries(object).map(([k, v]) => [v, k]),
+    Object.entries(object).map(([key, value]) => [value, key]),
   );
 }
 
@@ -98,19 +98,19 @@ export function isEmpty(value: unknown): boolean {
  * Compares primitives, plain objects, and arrays recursively.
  * Does not handle circular references, Dates, RegExps, etc.
  */
-export function deepEqual(a: unknown, b: unknown): boolean {
-  if (a === b) return true;
-  if (a == null || b == null) return false;
-  if (typeof a !== typeof b) return false;
-  if (Array.isArray(a)) {
-    if (!Array.isArray(b) || a.length !== b.length) return false;
-    return a.every((value, i) => deepEqual(value, b[i]));
+export function deepEqual(valueA: unknown, valueB: unknown): boolean {
+  if (valueA === valueB) return true;
+  if (valueA == null || valueB == null) return false;
+  if (typeof valueA !== typeof valueB) return false;
+  if (Array.isArray(valueA)) {
+    if (!Array.isArray(valueB) || valueA.length !== valueB.length) return false;
+    return valueA.every((item, itemIndex) => deepEqual(item, valueB[itemIndex]));
   }
-  if (typeof a === "object") {
-    const keysA = Object.keys(a as Record<string, unknown>);
-    const keysB = Object.keys(b as Record<string, unknown>);
+  if (typeof valueA === "object") {
+    const keysA = Object.keys(valueA as Record<string, unknown>);
+    const keysB = Object.keys(valueB as Record<string, unknown>);
     if (keysA.length !== keysB.length) return false;
-    return keysA.every((k) => deepEqual((a as Record<string, unknown>)[k], (b as Record<string, unknown>)[k]));
+    return keysA.every((key) => deepEqual((valueA as Record<string, unknown>)[key], (valueB as Record<string, unknown>)[key]));
   }
   return false;
 }

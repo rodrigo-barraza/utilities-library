@@ -79,17 +79,17 @@ export function partition(array, fn) {
  * Return elements present in both arrays.
  * Uses strict equality. Preserves order from the first array.
  */
-export function intersection(a, b) {
-    const set = new Set(b);
-    return a.filter((item) => set.has(item));
+export function intersection(firstArray, secondArray) {
+    const set = new Set(secondArray);
+    return firstArray.filter((item) => set.has(item));
 }
 /**
  * Return elements in `a` that are not in `b`.
  * Uses strict equality. Preserves order from `a`.
  */
-export function difference(a, b) {
-    const set = new Set(b);
-    return a.filter((item) => !set.has(item));
+export function difference(firstArray, secondArray) {
+    const set = new Set(secondArray);
+    return firstArray.filter((item) => !set.has(item));
 }
 export function sortBy(array, keyOrFn, { descending = false } = {}) {
     const copy = [...array];
@@ -97,9 +97,9 @@ export function sortBy(array, keyOrFn, { descending = false } = {}) {
         copy.sort(keyOrFn);
     }
     else {
-        copy.sort((a, b) => {
-            const valueA = a[keyOrFn];
-            const valueB = b[keyOrFn];
+        copy.sort((firstItem, secondItem) => {
+            const valueA = firstItem[keyOrFn];
+            const valueB = secondItem[keyOrFn];
             if (valueA < valueB)
                 return -1;
             if (valueA > valueB)

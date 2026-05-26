@@ -14,8 +14,8 @@ export function clamp(value: number, min: number, max: number): number {
  * Round to 2 decimal places using banker's rounding.
  * Standard for financial calculations — avoids floating-point drift.
  */
-export function roundCents(n: number): number {
-  return Math.round((n + Number.EPSILON) * 100) / 100;
+export function roundCents(value: number): number {
+  return Math.round((value + Number.EPSILON) * 100) / 100;
 }
 
 /**
@@ -29,15 +29,15 @@ export function randomInt(min: number, max: number): number {
  * Compute cosine similarity between two vectors.
  * Returns a value between -1 and 1, where 1 means identical direction.
  */
-export function cosineSimilarity(a: number[] | null, b: number[] | null): number {
-  if (!a || !b || a.length !== b.length) return 0;
+export function cosineSimilarity(vectorA: number[] | null, vectorB: number[] | null): number {
+  if (!vectorA || !vectorB || vectorA.length !== vectorB.length) return 0;
   let dot = 0,
     magA = 0,
     magB = 0;
-  for (let i = 0; i < a.length; i++) {
-    dot += a[i] * b[i];
-    magA += a[i] * a[i];
-    magB += b[i] * b[i];
+  for (let i = 0; i < vectorA.length; i++) {
+    dot += vectorA[i] * vectorB[i];
+    magA += vectorA[i] * vectorA[i];
+    magB += vectorB[i] * vectorB[i];
   }
   const denom = Math.sqrt(magA) * Math.sqrt(magB);
   return denom === 0 ? 0 : dot / denom;
@@ -47,8 +47,8 @@ export function cosineSimilarity(a: number[] | null, b: number[] | null): number
  * Linearly interpolate between two numbers.
  * Standard lerp function — returns `a` when `t=0`, `b` when `t=1`.
  */
-export function lerp(a: number, b: number, t: number): number {
-  return a + (b - a) * t;
+export function lerp(startValue: number, endValue: number, interpolationFactor: number): number {
+  return startValue + (endValue - startValue) * interpolationFactor;
 }
 
 /**
@@ -64,7 +64,7 @@ export function remap(value: number, inMin: number, inMax: number, outMin: numbe
  */
 export function sum(array: number[] | null): number {
   if (!array || array.length === 0) return 0;
-  return array.reduce((acc, n) => acc + n, 0);
+  return array.reduce((acc, currentValue) => acc + currentValue, 0);
 }
 
 /**
@@ -82,7 +82,7 @@ export function average(array: number[] | null): number {
  */
 export function median(array: number[] | null): number {
   if (!array || array.length === 0) return 0;
-  const sorted = [...array].sort((a, b) => a - b);
+  const sorted = [...array].sort((firstValue, secondValue) => firstValue - secondValue);
   const mid = Math.floor(sorted.length / 2);
   return sorted.length % 2 !== 0
     ? sorted[mid]

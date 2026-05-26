@@ -168,7 +168,7 @@ export function createNextjsProxy({
 
   if (methods) {
     const filtered: Record<string, RouteHandler> = {};
-    for (const m of methods) filtered[m] = proxyRequest;
+    for (const method of methods) filtered[method] = proxyRequest;
     return filtered;
   }
 

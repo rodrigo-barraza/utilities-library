@@ -103,7 +103,7 @@ export class TokenManager {
 /**
  * Create a lazy-loading async getter for an ES module.
  */
-export function lazyImport(specifier, extract = (m) => m.default) {
+export function lazyImport(specifier, extract = (moduleObject) => moduleObject.default) {
     let cached;
     return async () => {
         if (!cached)

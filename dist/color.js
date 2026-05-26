@@ -9,7 +9,7 @@
 export function parseHex(hex) {
     let normalizedHex = hex.replace(/^#/, "");
     if (normalizedHex.length === 3 || normalizedHex.length === 4) {
-        normalizedHex = [...normalizedHex].map((c) => c + c).join("");
+        normalizedHex = [...normalizedHex].map((hexChar) => hexChar + hexChar).join("");
     }
     const int = parseInt(normalizedHex, 16);
     if (normalizedHex.length === 8) {
@@ -33,7 +33,7 @@ export function parseHex(hex) {
 export function toHex({ r, g, b }) {
     return ("#" +
         [r, g, b]
-            .map((c) => Math.round(c).toString(16).padStart(2, "0"))
+            .map((channelValue) => Math.round(channelValue).toString(16).padStart(2, "0"))
             .join(""));
 }
 /**
@@ -82,25 +82,25 @@ export function hslToRgb({ h: hIn, s: sIn, l: lIn }) {
         const grayscaleValue = Math.round(l * 255);
         return { r: grayscaleValue, g: grayscaleValue, b: grayscaleValue };
     }
-    const hue2rgb = (p, q, t) => {
-        if (t < 0)
-            t += 1;
-        if (t > 1)
-            t -= 1;
-        if (t < 1 / 6)
-            return p + (q - p) * 6 * t;
-        if (t < 1 / 2)
-            return q;
-        if (t < 2 / 3)
-            return p + (q - p) * (2 / 3 - t) * 6;
-        return p;
+    const hue2rgb = (tempColorVal1, tempColorVal2, tempColorVal3) => {
+        if (tempColorVal3 < 0)
+            tempColorVal3 += 1;
+        if (tempColorVal3 > 1)
+            tempColorVal3 -= 1;
+        if (tempColorVal3 < 1 / 6)
+            return tempColorVal1 + (tempColorVal2 - tempColorVal1) * 6 * tempColorVal3;
+        if (tempColorVal3 < 1 / 2)
+            return tempColorVal2;
+        if (tempColorVal3 < 2 / 3)
+            return tempColorVal1 + (tempColorVal2 - tempColorVal1) * (2 / 3 - tempColorVal3) * 6;
+        return tempColorVal1;
     };
-    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    const p = 2 * l - q;
+    const tempColorVal2 = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const tempColorVal1 = 2 * l - tempColorVal2;
     return {
-        r: Math.round(hue2rgb(p, q, h + 1 / 3) * 255),
-        g: Math.round(hue2rgb(p, q, h) * 255),
-        b: Math.round(hue2rgb(p, q, h - 1 / 3) * 255),
+        r: Math.round(hue2rgb(tempColorVal1, tempColorVal2, h + 1 / 3) * 255),
+        g: Math.round(hue2rgb(tempColorVal1, tempColorVal2, h) * 255),
+        b: Math.round(hue2rgb(tempColorVal1, tempColorVal2, h - 1 / 3) * 255),
     };
 }
 /**
