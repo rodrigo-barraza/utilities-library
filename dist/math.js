@@ -28,14 +28,14 @@ export function randomInt(min, max) {
 export function cosineSimilarity(vectorA, vectorB) {
     if (!vectorA || !vectorB || vectorA.length !== vectorB.length)
         return 0;
-    let dot = 0, magA = 0, magB = 0;
+    let dotProduct = 0, magnitudeA = 0, magnitudeB = 0;
     for (let i = 0; i < vectorA.length; i++) {
-        dot += vectorA[i] * vectorB[i];
-        magA += vectorA[i] * vectorA[i];
-        magB += vectorB[i] * vectorB[i];
+        dotProduct += vectorA[i] * vectorB[i];
+        magnitudeA += vectorA[i] * vectorA[i];
+        magnitudeB += vectorB[i] * vectorB[i];
     }
-    const denom = Math.sqrt(magA) * Math.sqrt(magB);
-    return denom === 0 ? 0 : dot / denom;
+    const denominator = Math.sqrt(magnitudeA) * Math.sqrt(magnitudeB);
+    return denominator === 0 ? 0 : dotProduct / denominator;
 }
 /**
  * Linearly interpolate between two numbers.
@@ -76,10 +76,10 @@ export function median(array) {
     if (!array || array.length === 0)
         return 0;
     const sorted = [...array].sort((firstValue, secondValue) => firstValue - secondValue);
-    const mid = Math.floor(sorted.length / 2);
+    const middleIndex = Math.floor(sorted.length / 2);
     return sorted.length % 2 !== 0
-        ? sorted[mid]
-        : (sorted[mid - 1] + sorted[mid]) / 2;
+        ? sorted[middleIndex]
+        : (sorted[middleIndex - 1] + sorted[middleIndex]) / 2;
 }
 /**
  * Round a number to a specific number of decimal places.

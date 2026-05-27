@@ -8,7 +8,7 @@
  * are replaced outright. Neither input is mutated.
  */
 export function deepMerge<T extends Record<string, unknown>>(target: T, source: Record<string, unknown>): T {
-  const out = { ...target } as Record<string, unknown>;
+  const result = { ...target } as Record<string, unknown>;
   for (const [key, value] of Object.entries(source)) {
     if (
       value !== null &&
@@ -18,23 +18,23 @@ export function deepMerge<T extends Record<string, unknown>>(target: T, source: 
       typeof target[key] === "object" &&
       !Array.isArray(target[key])
     ) {
-      out[key] = deepMerge(target[key] as Record<string, unknown>, value as Record<string, unknown>);
+      result[key] = deepMerge(target[key] as Record<string, unknown>, value as Record<string, unknown>);
     } else {
-      out[key] = value;
+      result[key] = value;
     }
   }
-  return out as T;
+  return result as T;
 }
 
 /**
  * Create a new object with only the specified keys from `obj`.
  */
 export function pick<T extends Record<string, unknown>, K extends keyof T>(object: T, keys: K[]): Pick<T, K> {
-  const out = {} as Pick<T, K>;
+  const result = {} as Pick<T, K>;
   for (const key of keys) {
-    if (key in object) (out as Record<string, unknown>)[key as string] = object[key];
+    if (key in object) (result as Record<string, unknown>)[key as string] = object[key];
   }
-  return out;
+  return result;
 }
 
 /**

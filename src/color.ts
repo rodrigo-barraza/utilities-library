@@ -28,19 +28,19 @@ export function parseHex(hex: string): RGBA {
   if (normalizedHex.length === 3 || normalizedHex.length === 4) {
     normalizedHex = [...normalizedHex].map((hexChar) => hexChar + hexChar).join("");
   }
-  const int = parseInt(normalizedHex, 16);
+  const parsedInteger = parseInt(normalizedHex, 16);
   if (normalizedHex.length === 8) {
     return {
-      r: (int >>> 24) & 0xff,
-      g: (int >>> 16) & 0xff,
-      b: (int >>> 8) & 0xff,
-      a: (int & 0xff) / 255,
+      r: (parsedInteger >>> 24) & 0xff,
+      g: (parsedInteger >>> 16) & 0xff,
+      b: (parsedInteger >>> 8) & 0xff,
+      a: (parsedInteger & 0xff) / 255,
     };
   }
   return {
-    r: (int >> 16) & 0xff,
-    g: (int >> 8) & 0xff,
-    b: int & 0xff,
+    r: (parsedInteger >> 16) & 0xff,
+    g: (parsedInteger >> 8) & 0xff,
+    b: parsedInteger & 0xff,
     a: 1,
   };
 }

@@ -7,7 +7,7 @@
  * are replaced outright. Neither input is mutated.
  */
 export function deepMerge(target, source) {
-    const out = { ...target };
+    const result = { ...target };
     for (const [key, value] of Object.entries(source)) {
         if (value !== null &&
             typeof value === "object" &&
@@ -15,24 +15,24 @@ export function deepMerge(target, source) {
             target[key] !== null &&
             typeof target[key] === "object" &&
             !Array.isArray(target[key])) {
-            out[key] = deepMerge(target[key], value);
+            result[key] = deepMerge(target[key], value);
         }
         else {
-            out[key] = value;
+            result[key] = value;
         }
     }
-    return out;
+    return result;
 }
 /**
  * Create a new object with only the specified keys from `obj`.
  */
 export function pick(object, keys) {
-    const out = {};
+    const result = {};
     for (const key of keys) {
         if (key in object)
-            out[key] = object[key];
+            result[key] = object[key];
     }
-    return out;
+    return result;
 }
 /**
  * Create a new object with all keys from `obj` except those listed.

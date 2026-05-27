@@ -152,9 +152,9 @@ export function formatBytes(bytes) {
     if (!bytes || bytes === 0)
         return "0 B";
     const units = ["B", "KB", "MB", "GB", "TB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(1024));
-    const scaledValue = bytes / Math.pow(1024, i);
-    return `${scaledValue < 10 ? scaledValue.toFixed(2) : scaledValue < 100 ? scaledValue.toFixed(1) : Math.round(scaledValue)} ${units[i]}`;
+    const unitIndex = Math.floor(Math.log(bytes) / Math.log(1024));
+    const scaledValue = bytes / Math.pow(1024, unitIndex);
+    return `${scaledValue < 10 ? scaledValue.toFixed(2) : scaledValue < 100 ? scaledValue.toFixed(1) : Math.round(scaledValue)} ${units[unitIndex]}`;
 }
 /**
  * Format tokens-per-second with consistent precision.
