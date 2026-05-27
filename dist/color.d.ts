@@ -37,4 +37,13 @@ export declare function hslToRgb({ h: hueInput, s: saturationInput, l: lightness
  * Lighten or darken a hex color by a percentage.
  */
 export declare function adjustBrightness(hex: string, amount: number): string;
+export type RgbTriplet = [number, number, number];
+/**
+ * Linearly interpolate between two RGB triplets.
+ */
+export declare function lerpRgb(colorA: RgbTriplet, colorB: RgbTriplet, interpolationValue: number): RgbTriplet;
+/**
+ * Sample the rainbow palette at a normalized position.
+ */
+export declare function paletteAt(colors: RgbTriplet[], position: number): RgbTriplet;
 //# sourceMappingURL=color.d.ts.map

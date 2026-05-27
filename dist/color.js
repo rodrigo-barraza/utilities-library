@@ -112,4 +112,23 @@ export function adjustBrightness(hex, amount) {
     hsl.l = Math.max(0, Math.min(100, hsl.l + amount));
     return toHex(hslToRgb(hsl));
 }
+/**
+ * Linearly interpolate between two RGB triplets.
+ */
+export function lerpRgb(colorA, colorB, interpolationValue) {
+    return [
+        colorA[0] + (colorB[0] - colorA[0]) * interpolationValue,
+        colorA[1] + (colorB[1] - colorA[1]) * interpolationValue,
+        colorA[2] + (colorB[2] - colorA[2]) * interpolationValue,
+    ];
+}
+/**
+ * Sample the rainbow palette at a normalized position.
+ */
+export function paletteAt(colors, position) {
+    const scaledPosition = (((position % 1) + 1) % 1) * colors.length;
+    const currentIndex = Math.floor(scaledPosition);
+    const fractionalPart = scaledPosition - currentIndex;
+    return lerpRgb(colors[currentIndex % colors.length], colors[(currentIndex + 1) % colors.length], fractionalPart);
+}
 //# sourceMappingURL=color.js.map

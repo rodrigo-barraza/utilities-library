@@ -1197,4 +1197,25 @@ describe("color.js", () => {
       expect(parsed.r).toBeLessThan(255);
     });
   });
+
+  describe("lerpRgb", () => {
+    it("interpolates between two rgb triplets", () => {
+      const colorA = [0, 100, 200];
+      const colorB = [100, 200, 255];
+      const result = color.lerpRgb(colorA, colorB, 0.5);
+      expect(result).toEqual([50, 150, 227.5]);
+    });
+  });
+
+  describe("paletteAt", () => {
+    it("samples a palette of triplets at dynamic positions", () => {
+      const palette = [
+        [255, 0, 0],
+        [0, 255, 0],
+        [0, 0, 255],
+      ];
+      const midpoint = color.paletteAt(palette, 0.5);
+      expect(midpoint).toEqual([0, 127.5, 127.5]);
+    });
+  });
 });

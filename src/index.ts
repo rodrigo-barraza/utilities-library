@@ -127,8 +127,8 @@ export { debounce, throttle } from "./rate.js";
 export type { DebouncedFunction, ThrottledFunction, DebounceOptions } from "./rate.js";
 
 // Color — Color manipulation and interpolation
-export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness } from "./color.js";
-export type { RGB, RGBA, HSL } from "./color.js";
+export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness, lerpRgb, paletteAt } from "./color.js";
+export type { RGB, RGBA, HSL, RgbTriplet } from "./color.js";
 
 // Errors — Type-safe error handling utilities
 export { errorMessage } from "./errors.js";

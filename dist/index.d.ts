@@ -15,7 +15,7 @@ export { generateUUID } from "./crypto.js";
 export { formatPhone } from "./phone.js";
 export { debounce, throttle } from "./rate.js";
 export type { DebouncedFunction, ThrottledFunction, DebounceOptions } from "./rate.js";
-export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness } from "./color.js";
-export type { RGB, RGBA, HSL } from "./color.js";
+export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness, lerpRgb, paletteAt } from "./color.js";
+export type { RGB, RGBA, HSL, RgbTriplet } from "./color.js";
 export { errorMessage } from "./errors.js";
 //# sourceMappingURL=index.d.ts.map
