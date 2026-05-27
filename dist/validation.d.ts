@@ -5,7 +5,7 @@ export declare function parseIntParam(value: string | undefined | null, defaultV
 /**
  * Safely parse a price string like "$29.99" or "29.99" into a number.
  */
-export declare function parsePrice(priceStr: string | null | undefined): number | null;
+export declare function parsePrice(priceString: string | null | undefined): number | null;
 /**
  * Validate that a string value does not exceed a maximum length.
  * Returns an error message string if exceeded, or null if valid.
@@ -14,7 +14,7 @@ export declare function validateMaxLength(value: string | null | undefined, maxL
 /**
  * Safely parse a JSON string, returning a fallback on failure.
  */
-export declare function parseJsonSafe<T = unknown>(str: string | null | undefined, fallback?: T | null): T | null;
+export declare function parseJsonSafe<T = unknown>(jsonString: string | null | undefined, fallback?: T | null): T | null;
 /**
  * Parse JSON from an LLM response, handling markdown code blocks.
  * Many LLMs wrap JSON in ```json ... ``` — this strips that before parsing.
@@ -25,7 +25,7 @@ export declare function parseJsonFromLlmResponse(text: string | null | undefined
  * Uses a practical regex covering 99.9% of real-world addresses
  * (not the full RFC 5322 grammar, which is deliberately over-broad).
  */
-export declare function isEmail(str: string | null | undefined): boolean;
+export declare function isEmail(text: string | null | undefined): boolean;
 /**
  * Check if a string is a valid HTTP(S) URL.
  * Uses the URL constructor for spec-compliant parsing.
@@ -33,7 +33,7 @@ export declare function isEmail(str: string | null | undefined): boolean;
 export interface IsUrlOptions {
     requireHttps?: boolean;
 }
-export declare function isUrl(str: string | null | undefined, { requireHttps }?: IsUrlOptions): boolean;
+export declare function isUrl(text: string | null | undefined, { requireHttps }?: IsUrlOptions): boolean;
 /**
  * Check if a value is numeric (finite number or numeric string).
  * e.g. isNumeric("3.14") → true, isNumeric("abc") → false, isNumeric(NaN) → false

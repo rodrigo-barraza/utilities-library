@@ -23,9 +23,9 @@ export function stripHtml(html: string | null | undefined): string {
  * Normalize a name/title for deduplication and matching.
  * Strips non-alphanumeric chars, lowercases, collapses whitespace.
  */
-export function normalizeName(str: string | null | undefined): string {
-  if (!str) return "";
-  return str
+export function normalizeName(text: string | null | undefined): string {
+  if (!text) return "";
+  return text
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, "")
     .trim()
@@ -41,7 +41,7 @@ export function renderToolName(name: string): string {
   return name
     .replace(/^(get_|mcp__[\w\.-]+__)/, "")
     .replace(/_/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+    .replace(/\b\w/g, (character) => character.toUpperCase());
 }
 
 /**
@@ -57,23 +57,23 @@ export function humanizeToolName(name: string): string {
       "",
     )
     .replace(/_/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+    .replace(/\b\w/g, (character) => character.toUpperCase());
 }
 
 /**
  * Truncate a string to a maximum length, appending a suffix.
  */
-export function truncate(str: string | null | undefined, maxLen = 80, suffix = "…"): string {
-  if (!str || str.length <= maxLen) return str || "";
-  return str.slice(0, maxLen - suffix.length) + suffix;
+export function truncate(text: string | null | undefined, maximumLength = 80, suffix = "…"): string {
+  if (!text || text.length <= maximumLength) return text || "";
+  return text.slice(0, maximumLength - suffix.length) + suffix;
 }
 
 /**
  * Escape special RegExp characters in a string so it can be used
  * as a literal pattern inside `new RegExp(...)`.
  */
-export function escapeRegex(str: string): string {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+export function escapeRegex(text: string): string {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 /**
@@ -100,9 +100,9 @@ export function getSubdomain(fqdn: string | null | undefined): string {
  * Capitalize the first character of a string.
  * e.g. "hello" → "Hello", "HELLO" → "HELLO"
  */
-export function capitalize(str: string | null | undefined): string {
-  if (!str) return "";
-  return str.charAt(0).toUpperCase() + str.slice(1);
+export function capitalize(text: string | null | undefined): string {
+  if (!text) return "";
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 /**
@@ -112,9 +112,9 @@ export function capitalize(str: string | null | undefined): string {
  *
  * e.g. "Hello World! Foo" → "hello-world-foo"
  */
-export function slugify(str: string | null | undefined): string {
-  if (!str) return "";
-  return str
+export function slugify(text: string | null | undefined): string {
+  if (!text) return "";
+  return text
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -127,9 +127,9 @@ export function slugify(str: string | null | undefined): string {
  * Convert a string to kebab-case.
  * e.g. "helloWorld" → "hello-world", "Hello World" → "hello-world"
  */
-export function toKebabCase(str: string | null | undefined): string {
-  if (!str) return "";
-  return str
+export function toKebabCase(text: string | null | undefined): string {
+  if (!text) return "";
+  return text
     .replace(/([a-z])([A-Z])/g, "$1-$2")
     .replace(/[\s_]+/g, "-")
     .toLowerCase();
@@ -139,20 +139,20 @@ export function toKebabCase(str: string | null | undefined): string {
  * Convert a string to camelCase.
  * e.g. "hello-world" → "helloWorld", "Hello World" → "helloWorld"
  */
-export function toCamelCase(str: string | null | undefined): string {
-  if (!str) return "";
-  return str
-    .replace(/[-_\s]+(.)?/g, (_, c: string | undefined) => (c ? c.toUpperCase() : ""))
-    .replace(/^[A-Z]/, (c) => c.toLowerCase());
+export function toCamelCase(text: string | null | undefined): string {
+  if (!text) return "";
+  return text
+    .replace(/[-_\s]+(.)?/g, (_, character: string | undefined) => (character ? character.toUpperCase() : ""))
+    .replace(/^[A-Z]/, (character) => character.toLowerCase());
 }
 
 /**
  * Convert a string to PascalCase.
  * e.g. "hello-world" → "HelloWorld", "hello world" → "HelloWorld"
  */
-export function toPascalCase(str: string | null | undefined): string {
-  if (!str) return "";
-  const camel = toCamelCase(str);
+export function toPascalCase(text: string | null | undefined): string {
+  if (!text) return "";
+  const camel = toCamelCase(text);
   return camel.charAt(0).toUpperCase() + camel.slice(1);
 }
 
@@ -160,9 +160,9 @@ export function toPascalCase(str: string | null | undefined): string {
  * Convert a string to snake_case.
  * e.g. "helloWorld" → "hello_world", "Hello World" → "hello_world"
  */
-export function toSnakeCase(str: string | null | undefined): string {
-  if (!str) return "";
-  return str
+export function toSnakeCase(text: string | null | undefined): string {
+  if (!text) return "";
+  return text
     .replace(/([a-z])([A-Z])/g, "$1_$2")
     .replace(/[-\s]+/g, "_")
     .toLowerCase();
@@ -182,7 +182,7 @@ export function pluralize(word: string, count: number, plural?: string): string 
  * Count words in a string.
  * Splits on whitespace and filters empty tokens.
  */
-export function wordCount(str: string | null | undefined): number {
-  if (!str) return 0;
-  return str.trim().split(/\s+/).filter(Boolean).length;
+export function wordCount(text: string | null | undefined): number {
+  if (!text) return 0;
+  return text.trim().split(/\s+/).filter(Boolean).length;
 }

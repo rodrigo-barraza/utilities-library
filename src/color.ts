@@ -73,10 +73,10 @@ export function lerpColor(colorA: string, colorB: string, t: number): string {
 /**
  * Convert an `{ r, g, b }` object (0–255) to an HSL object.
  */
-export function rgbToHsl({ r: rIn, g: gIn, b: bIn }: RGB): HSL {
-  const r = rIn / 255;
-  const g = gIn / 255;
-  const b = bIn / 255;
+export function rgbToHsl({ r: redInput, g: greenInput, b: blueInput }: RGB): HSL {
+  const r = redInput / 255;
+  const g = greenInput / 255;
+  const b = blueInput / 255;
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
   const l = (max + min) / 2;
@@ -93,10 +93,10 @@ export function rgbToHsl({ r: rIn, g: gIn, b: bIn }: RGB): HSL {
 /**
  * Convert an HSL object to `{ r, g, b }` (0–255).
  */
-export function hslToRgb({ h: hIn, s: sIn, l: lIn }: HSL): RGB {
-  const h = hIn / 360;
-  const s = sIn / 100;
-  const l = lIn / 100;
+export function hslToRgb({ h: hueInput, s: saturationInput, l: lightnessInput }: HSL): RGB {
+  const h = hueInput / 360;
+  const s = saturationInput / 100;
+  const l = lightnessInput / 100;
   if (s === 0) {
     const grayscaleValue = Math.round(l * 255);
     return { r: grayscaleValue, g: grayscaleValue, b: grayscaleValue };

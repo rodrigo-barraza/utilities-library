@@ -2,21 +2,21 @@
  * Format a number with compact notation and adaptive decimal precision.
  * e.g. 10000000 → "10M", 3500 → "3.5K", 42 → "42"
  */
-export declare function formatCompact(n: number | null | undefined): string;
+export declare function formatCompact(value: number | null | undefined): string;
 /**
  * Format a number with K/M abbreviation (truncated, no decimals).
  */
-export declare function formatNumber(n: number | null | undefined): string;
+export declare function formatNumber(value: number | null | undefined): string;
 /**
  * Format a token count as full value with thousands separators.
  * Unlike formatNumber, this never abbreviates to K/M.
  * e.g. 1234567 → "1,234,567"
  */
-export declare function formatTokenCount(n: number | null | undefined): string;
+export declare function formatTokenCount(value: number | null | undefined): string;
 /**
  * Format a USD cost with fixed 5-decimal precision.
  */
-export declare function formatCost(n: number | null | undefined): string;
+export declare function formatCost(value: number | null | undefined): string;
 /**
  * Format a USD cost with adaptive precision.
  * Costs < $0.01 show 4 decimals, otherwise 2.
@@ -83,7 +83,7 @@ export declare function formatContextTokens(tokens: number | null | undefined): 
  * Round a floating-point seconds value to millisecond precision (3 decimals).
  * Standard precision for all timing metrics stored in the database.
  */
-export declare function roundMs(sec: number): number;
+export declare function roundMs(seconds: number): number;
 /**
  * Format a monetary amount with its currency symbol.
  * Uses Intl.NumberFormat to correctly place thousands separators and

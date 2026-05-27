@@ -15,9 +15,9 @@ export function parseIntParam(value: string | undefined | null, defaultValue: nu
 /**
  * Safely parse a price string like "$29.99" or "29.99" into a number.
  */
-export function parsePrice(priceStr: string | null | undefined): number | null {
-  if (!priceStr) return null;
-  const cleaned = String(priceStr).replace(/[^0-9.]/g, "");
+export function parsePrice(priceString: string | null | undefined): number | null {
+  if (!priceString) return null;
+  const cleaned = String(priceString).replace(/[^0-9.]/g, "");
   const parsedPrice = parseFloat(cleaned);
   return isNaN(parsedPrice) ? null : parsedPrice;
 }
@@ -36,10 +36,10 @@ export function validateMaxLength(value: string | null | undefined, maxLength: n
 /**
  * Safely parse a JSON string, returning a fallback on failure.
  */
-export function parseJsonSafe<T = unknown>(str: string | null | undefined, fallback: T | null = null): T | null {
-  if (!str) return fallback;
+export function parseJsonSafe<T = unknown>(jsonString: string | null | undefined, fallback: T | null = null): T | null {
+  if (!jsonString) return fallback;
   try {
-    return JSON.parse(str) as T;
+    return JSON.parse(jsonString) as T;
   } catch {
     return fallback;
   }
@@ -65,32 +65,32 @@ export function parseJsonFromLlmResponse(text: string | null | undefined): Recor
   }
 
   // 3. Fallback: extract first top-level JSON object via brace matching
-  const objStart = jsonText.indexOf("{");
-  if (objStart !== -1) {
+  const objectStart = jsonText.indexOf("{");
+  if (objectStart !== -1) {
     let depth = 0;
     let inString = false;
     let escape = false;
-    for (let i = objStart; i < jsonText.length; i++) {
-      const ch = jsonText[i];
+    for (let i = objectStart; i < jsonText.length; i++) {
+      const character = jsonText[i];
       if (escape) {
         escape = false;
         continue;
       }
-      if (ch === "\\") {
+      if (character === "\\") {
         escape = true;
         continue;
       }
-      if (ch === '"') {
+      if (character === '"') {
         inString = !inString;
         continue;
       }
       if (inString) continue;
-      if (ch === "{") depth++;
-      else if (ch === "}") {
+      if (character === "{") depth++;
+      else if (character === "}") {
         depth--;
         if (depth === 0) {
           try {
-            return JSON.parse(jsonText.slice(objStart, i + 1));
+            return JSON.parse(jsonText.slice(objectStart, i + 1));
           } catch {
             break;
           }
@@ -100,32 +100,32 @@ export function parseJsonFromLlmResponse(text: string | null | undefined): Recor
   }
 
   // 4. Fallback: extract first top-level JSON array via bracket matching
-  const arrStart = jsonText.indexOf("[");
-  if (arrStart !== -1) {
+  const arrayStart = jsonText.indexOf("[");
+  if (arrayStart !== -1) {
     let depth = 0;
     let inString = false;
     let escape = false;
-    for (let i = arrStart; i < jsonText.length; i++) {
-      const ch = jsonText[i];
+    for (let i = arrayStart; i < jsonText.length; i++) {
+      const character = jsonText[i];
       if (escape) {
         escape = false;
         continue;
       }
-      if (ch === "\\") {
+      if (character === "\\") {
         escape = true;
         continue;
       }
-      if (ch === '"') {
+      if (character === '"') {
         inString = !inString;
         continue;
       }
       if (inString) continue;
-      if (ch === "[") depth++;
-      else if (ch === "]") {
+      if (character === "[") depth++;
+      else if (character === "]") {
         depth--;
         if (depth === 0) {
           try {
-            return JSON.parse(jsonText.slice(arrStart, i + 1));
+            return JSON.parse(jsonText.slice(arrayStart, i + 1));
           } catch {
             break;
           }
@@ -142,9 +142,9 @@ export function parseJsonFromLlmResponse(text: string | null | undefined): Recor
  * Uses a practical regex covering 99.9% of real-world addresses
  * (not the full RFC 5322 grammar, which is deliberately over-broad).
  */
-export function isEmail(str: string | null | undefined): boolean {
-  if (!str) return false;
-  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(str);
+export function isEmail(text: string | null | undefined): boolean {
+  if (!text) return false;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(text);
 }
 
 /**
@@ -155,10 +155,10 @@ export interface IsUrlOptions {
   requireHttps?: boolean;
 }
 
-export function isUrl(str: string | null | undefined, { requireHttps = false }: IsUrlOptions = {}): boolean {
-  if (!str) return false;
+export function isUrl(text: string | null | undefined, { requireHttps = false }: IsUrlOptions = {}): boolean {
+  if (!text) return false;
   try {
-    const url = new URL(str);
+    const url = new URL(text);
     if (requireHttps) return url.protocol === "https:";
     return url.protocol === "http:" || url.protocol === "https:";
   } catch {

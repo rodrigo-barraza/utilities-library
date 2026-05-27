@@ -5,44 +5,44 @@
  * Format a number with compact notation and adaptive decimal precision.
  * e.g. 10000000 → "10M", 3500 → "3.5K", 42 → "42"
  */
-export function formatCompact(n) {
-    if (n == null)
+export function formatCompact(value) {
+    if (value == null)
         return "—";
-    if (n >= 1_000_000)
-        return `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M`;
-    if (n >= 1_000)
-        return `${(n / 1_000).toFixed(n % 1_000 === 0 ? 0 : 1)}K`;
-    return n.toLocaleString();
+    if (value >= 1_000_000)
+        return `${(value / 1_000_000).toFixed(value % 1_000_000 === 0 ? 0 : 1)}M`;
+    if (value >= 1_000)
+        return `${(value / 1_000).toFixed(value % 1_000 === 0 ? 0 : 1)}K`;
+    return value.toLocaleString();
 }
 /**
  * Format a number with K/M abbreviation (truncated, no decimals).
  */
-export function formatNumber(n) {
-    if (n === null || n === undefined)
+export function formatNumber(value) {
+    if (value === null || value === undefined)
         return "0";
-    if (n >= 1_000_000)
-        return `${(n / 1_000_000).toFixed(0)}M`;
-    if (n >= 1_000)
-        return `${(n / 1_000).toFixed(0)}K`;
-    return n.toLocaleString();
+    if (value >= 1_000_000)
+        return `${(value / 1_000_000).toFixed(0)}M`;
+    if (value >= 1_000)
+        return `${(value / 1_000).toFixed(0)}K`;
+    return value.toLocaleString();
 }
 /**
  * Format a token count as full value with thousands separators.
  * Unlike formatNumber, this never abbreviates to K/M.
  * e.g. 1234567 → "1,234,567"
  */
-export function formatTokenCount(n) {
-    if (n === null || n === undefined || n === 0)
+export function formatTokenCount(value) {
+    if (value === null || value === undefined || value === 0)
         return "0";
-    return Number(n).toLocaleString();
+    return Number(value).toLocaleString();
 }
 /**
  * Format a USD cost with fixed 5-decimal precision.
  */
-export function formatCost(n) {
-    if (n === null || n === undefined)
+export function formatCost(value) {
+    if (value === null || value === undefined)
         return "$0.00";
-    return `$${n.toFixed(5)}`;
+    return `$${value.toFixed(5)}`;
 }
 /**
  * Format a USD cost with adaptive precision.
@@ -96,13 +96,13 @@ export function formatDuration(ms) {
         return `${ms}ms`;
     if (ms < 60_000)
         return `${(ms / 1000).toFixed(1)}s`;
-    const mins = Math.floor(ms / 60_000);
-    const secs = Math.floor((ms % 60_000) / 1000);
-    if (mins < 60)
-        return secs > 0 ? `${mins}m ${secs}s` : `${mins}m`;
-    const hrs = Math.floor(mins / 60);
-    const remMins = mins % 60;
-    return remMins > 0 ? `${hrs}h ${remMins}m` : `${hrs}h`;
+    const totalMinutes = Math.floor(ms / 60_000);
+    const remainingSeconds = Math.floor((ms % 60_000) / 1000);
+    if (totalMinutes < 60)
+        return remainingSeconds > 0 ? `${totalMinutes}m ${remainingSeconds}s` : `${totalMinutes}m`;
+    const totalHours = Math.floor(totalMinutes / 60);
+    const remainingMinutes = totalMinutes % 60;
+    return remainingMinutes > 0 ? `${totalHours}h ${remainingMinutes}m` : `${totalHours}h`;
 }
 /**
  * Format an elapsed duration (in seconds) into a human-readable string.
@@ -178,8 +178,8 @@ export function formatContextTokens(tokens) {
  * Round a floating-point seconds value to millisecond precision (3 decimals).
  * Standard precision for all timing metrics stored in the database.
  */
-export function roundMs(sec) {
-    return parseFloat(sec.toFixed(3));
+export function roundMs(seconds) {
+    return parseFloat(seconds.toFixed(3));
 }
 /**
  * Format a monetary amount with its currency symbol.

@@ -28,11 +28,11 @@ export declare function lerpColor(colorA: string, colorB: string, t: number): st
 /**
  * Convert an `{ r, g, b }` object (0–255) to an HSL object.
  */
-export declare function rgbToHsl({ r: rIn, g: gIn, b: bIn }: RGB): HSL;
+export declare function rgbToHsl({ r: redInput, g: greenInput, b: blueInput }: RGB): HSL;
 /**
  * Convert an HSL object to `{ r, g, b }` (0–255).
  */
-export declare function hslToRgb({ h: hIn, s: sIn, l: lIn }: HSL): RGB;
+export declare function hslToRgb({ h: hueInput, s: saturationInput, l: lightnessInput }: HSL): RGB;
 /**
  * Lighten or darken a hex color by a percentage.
  */

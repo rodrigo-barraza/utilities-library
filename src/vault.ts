@@ -189,7 +189,7 @@ export function createVaultClient(options: VaultClientOptions = {}): VaultClient
 
       // Fall back to registry
       const registry = await this.fetchRegistry();
-      const service = (registry.projects || []).find((s) => s.id === serviceId);
+      const service = (registry.projects || []).find((project) => project.id === serviceId);
 
       if (!service) {
         console.warn(`⚠️  Service "${serviceId}" not found in registry`);
@@ -205,7 +205,7 @@ export function createVaultClient(options: VaultClientOptions = {}): VaultClient
     async resolveInfraUrl(infraId: string): Promise<string | null> {
       const registry = await this.fetchRegistry();
       const infra = (registry.infrastructure || []).find(
-        (i) => i.id === infraId,
+        (infrastructureItem) => infrastructureItem.id === infraId,
       );
 
       if (!infra) {

@@ -8,5 +8,5 @@
  * The only acceptable `unknown` in TypeScript is in catch blocks —
  * this utility provides the canonical narrowing.
  */
-export const errorMessage = (err) => err instanceof Error ? err.message : String(err);
+export const errorMessage = (error) => error instanceof Error ? error.message : String(error);
 //# sourceMappingURL=errors.js.map

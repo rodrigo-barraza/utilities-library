@@ -120,7 +120,7 @@ export function createVaultClient(options = {}) {
                 return process.env[urlEnv];
             // Fall back to registry
             const registry = await this.fetchRegistry();
-            const service = (registry.projects || []).find((s) => s.id === serviceId);
+            const service = (registry.projects || []).find((project) => project.id === serviceId);
             if (!service) {
                 console.warn(`⚠️  Service "${serviceId}" not found in registry`);
                 return null;
@@ -133,7 +133,7 @@ export function createVaultClient(options = {}) {
         },
         async resolveInfraUrl(infraId) {
             const registry = await this.fetchRegistry();
-            const infra = (registry.infrastructure || []).find((i) => i.id === infraId);
+            const infra = (registry.infrastructure || []).find((infrastructureItem) => infrastructureItem.id === infraId);
             if (!infra) {
                 console.warn(`⚠️  Infrastructure "${infraId}" not found in registry`);
                 return null;
