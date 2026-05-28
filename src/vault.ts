@@ -3,6 +3,8 @@
 // ============================================================
 
 import { execFileSync } from "child_process";
+import fs from "fs";
+import path from "path";
 
 const DEFAULT_VAULT_SERVICE_URL = "http://localhost:5599";
 const FETCH_TIMEOUT_MS = 5_000;
@@ -72,6 +74,29 @@ export function createVaultClient(options: VaultClientOptions = {}): VaultClient
       options.vaultToken ||
       process.env.VAULT_SERVICE_TOKEN ||
       "";
+
+    if (!_vaultToken) {
+      try {
+        let currentDir = process.cwd();
+        for (let i = 0; i < 6; i++) {
+          const keyPath = path.join(currentDir, "vault-service", "vault.key");
+          if (fs.existsSync(keyPath)) {
+            _vaultToken = fs.readFileSync(keyPath, "utf-8").trim();
+            break;
+          }
+          const directKeyPath = path.join(currentDir, "vault.key");
+          if (fs.existsSync(directKeyPath)) {
+            _vaultToken = fs.readFileSync(directKeyPath, "utf-8").trim();
+            break;
+          }
+          const parentDir = path.dirname(currentDir);
+          if (parentDir === currentDir) break;
+          currentDir = parentDir;
+        }
+      } catch {
+        // ignore
+      }
+    }
   }
 
   function buildQueryString(): string {
