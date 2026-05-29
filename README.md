@@ -84,17 +84,19 @@ const mongoUrl = await vault.resolveInfraUrl("mongodb");
 
 | Module | Exports |
 |--------|---------|
-| **format** | `formatCompact`, `formatNumber`, `formatTokenCount`, `formatCost`, `formatCostAdaptive`, `formatCostTag`, `formatCurrency`, `formatLatency`, `formatLatencyMs`, `formatDuration`, `formatElapsedTime`, `formatFileSize`, `formatBytes`, `formatTokensPerSec`, `formatContextTokens`, `formatPercent`, `roundMs` |
+| **format** | `formatCompact`, `formatNumber`, `formatTokenCount`, `formatCost`, `formatCostAdaptive`, `formatCostTag`, `formatCurrency`, `formatLatency`, `formatLatencyMs`, `formatDuration`, `formatElapsedTime`, `formatFileSize`, `formatBytes`, `formatMediaTimestamp`, `formatTokensPerSec`, `formatContextTokens`, `formatPercent`, `roundMs` |
 | **text** | `stripHtml`, `normalizeName`, `renderToolName`, `humanizeToolName`, `truncate`, `escapeRegex`, `getRootDomain`, `getSubdomain`, `capitalize`, `slugify`, `toKebabCase`, `toCamelCase`, `toPascalCase`, `toSnakeCase`, `pluralize`, `wordCount` |
 | **date** | `toISODate`, `timeAgo`, `daysSinceIso`, `formatDateTime`, `daysAgo`, `toLocalDateString` |
 | **async** | `sleep`, `retry`, `withTimeout`, `withTimeoutFallback`, `fetchWithTimeout`, `pMap`, `defer` |
-| **time** | `MS_PER_SECOND`, `MS_PER_MINUTE`, `MS_PER_HOUR`, `MS_PER_DAY`, `SECONDS_PER_DAY`, `MS_PER_WEEK`, `seconds`, `minutes`, `hours`, `days`, `weeks`, `POLL_FAST`, `POLL_STANDARD`, `POLL_MODERATE`, `POLL_SLOW`, `POLL_LAZY` |
+| **time** | `MS_PER_SECOND`, `MS_PER_MINUTE`, `MS_PER_HOUR`, `MS_PER_DAY`, `SECONDS_PER_DAY`, `MS_PER_WEEK`, `seconds`, `minutes`, `hours`, `days`, `weeks`, `POLL_FAST`, `POLL_STANDARD`, `POLL_MODERATE`, `POLL_SLOW`, `POLL_LAZY`, `FEEDBACK_BRIEF_MS`, `FEEDBACK_STANDARD_MS`, `TOAST_DURATION_MS`, `ACTION_COOLDOWN_MS`, `ACTION_COOLDOWN_LONG_MS`, `HIGHLIGHT_DURATION_MS` |
 | **arrays** | `chunk`, `shuffleArray`, `pickRandom`, `compactPayload`, `groupBy`, `uniqueBy`, `partition`, `intersection`, `difference`, `sortBy`, `flatten` |
 | **objects** | `deepMerge`, `pick`, `omit`, `mapValues`, `mapKeys`, `invert`, `isEmpty`, `deepEqual` |
 | **math** | `clamp`, `roundCents`, `randomInt`, `cosineSimilarity`, `lerp`, `remap`, `sum`, `average`, `median`, `roundTo` |
 | **validation** | `parseIntParam`, `parsePrice`, `validateMaxLength`, `parseJsonSafe`, `parseJsonFromLlmResponse`, `isEmail`, `isUrl`, `isNumeric` |
 | **crypto** | `generateUUID` |
 | **phone** | `formatPhone` |
+| **color** | `parseHex`, `toHex`, `lerpColor`, `rgbToHsl`, `hslToRgb`, `adjustBrightness`, `lerpRgb`, `paletteAt` |
+| **errors** | `errorMessage` |
 
 ### Browser-only (`@rodrigo-barraza/utilities-library/effects`)
 
@@ -171,7 +173,7 @@ adjustBrightness("#3366cc", -15);      // darken by 15%
 | Module | Exports |
 |--------|---------|
 | **logger** | `logger` (default instance), `createLogger` (scoped) |
-| **express** | `asyncHandler`, `HealthTracker`, `setupStreamingSSE`, `TokenManager`, `lazyImport`, `httpError` |
+| **express** | `asyncHandler`, `HealthTracker`, `setupStreamingSSE`, `TokenManager`, `lazyImport`, `httpError`, `createRequestLoggerMiddleware` |
 
 ### Vault (`@rodrigo-barraza/utilities-library/vault`)
 

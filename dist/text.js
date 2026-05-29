@@ -38,7 +38,7 @@ export function normalizeName(text) {
  */
 export function renderToolName(name) {
     return name
-        .replace(/^(get_|mcp__[\w\.-]+__)/, "")
+        .replace(/^(get_|mcp__[\w.-]+__)/, "")
         .replace(/_/g, " ")
         .replace(/\b\w/g, (character) => character.toUpperCase());
 }
