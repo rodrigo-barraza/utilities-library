@@ -58,7 +58,8 @@ export declare const DOMAINS: {
     readonly AGENTIC_AGENTS: "Agentic: Agent Management";
     readonly AGENTIC_TOOLS: "Agentic: Tool Management";
     readonly AGENTIC_META: "Agentic: Meta";
-    readonly AGENTIC_SCHEDULING: "Agentic: Scheduling";
+    readonly CRON_JOBS: "Cron Jobs";
+    readonly CONVERSATION_TIMERS: "Timers";
     readonly REASONING: "Reasoning";
     readonly COORDINATOR: "Coordinator";
     readonly AGENTIC_SKILLS: "Agentic: Skills";
