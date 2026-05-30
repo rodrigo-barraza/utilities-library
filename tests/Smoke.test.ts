@@ -186,6 +186,14 @@ describe("text.js", () => {
       expect(txt.renderToolName("mcp__lazy-tool-service__get_market_data")).toBe("Get Market Data");
       expect(txt.renderToolName("mcp__my.api.server__fetch_items")).toBe("Fetch Items");
     });
+    it("applies action-oriented display overrides correctly", () => {
+      expect(txt.renderToolName("task_get")).toBe("Get Task");
+      expect(txt.renderToolName("task_create")).toBe("Create Task");
+      expect(txt.renderToolName("task_list")).toBe("List Tasks");
+      expect(txt.renderToolName("task_update")).toBe("Update Task");
+      expect(txt.renderToolName("file_info")).toBe("Get File Info");
+      expect(txt.renderToolName("file_diff")).toBe("Compare Files");
+    });
   });
 
   describe("truncate", () => {
