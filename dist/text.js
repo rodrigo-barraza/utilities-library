@@ -32,11 +32,43 @@ export function normalizeName(text) {
         .replace(/\s+/g, " ");
 }
 /**
+ * Display-name overrides for tools whose algorithmically generated
+ * titles are too vague (single word, ambiguous, or non-descriptive).
+ * renderToolName checks this map first before falling back to the
+ * strip-prefix + title-case heuristic.
+ */
+const TOOL_DISPLAY_OVERRIDES = {
+    get_events: "Search Local Events",
+    get_commodities: "Fetch Commodity Prices",
+    get_trends: "Fetch Trending Topics",
+    get_stock: "Lookup Stock Quote",
+    get_macro: "Fetch Macro Indicators",
+    get_anime: "Search Anime Database",
+    get_country: "Lookup Country Info",
+    get_element: "Lookup Periodic Element",
+    get_exoplanet: "Search Exoplanet Catalog",
+    get_dota: "Lookup Dota 2 Stats",
+    get_music: "Search Music Catalog",
+    get_tides: "Fetch Tide Forecasts",
+    get_weather: "Fetch Weather Report",
+    get_wildfires: "Track Active Wildfires",
+    get_next_bus: "Check Next Bus Arrival",
+    get_ip_info: "Lookup IP Address",
+    think: "Think Step-by-Step",
+    sleep: "Delay Execution",
+    git: "Run Git Command",
+    read_url: "Read Web URL",
+    read_pdf: "Read PDF Document",
+};
+/**
  * Convert a snake_case function name to a human-readable title.
- * Strips common prefixes: get_, mcp__<server>__
+ * Checks display overrides first, then strips common prefixes:
+ * get_, mcp__<server>__
  * e.g. "get_stock_price" → "Stock Price", "mcp__github__list_repos" → "List Repos"
  */
 export function renderToolName(name) {
+    if (TOOL_DISPLAY_OVERRIDES[name])
+        return TOOL_DISPLAY_OVERRIDES[name];
     return name
         .replace(/^(get_|mcp__[\w.-]+__)/, "")
         .replace(/_/g, " ")

@@ -9,7 +9,8 @@ export declare function stripHtml(html: string | null | undefined): string;
 export declare function normalizeName(text: string | null | undefined): string;
 /**
  * Convert a snake_case function name to a human-readable title.
- * Strips common prefixes: get_, mcp__<server>__
+ * Checks display overrides first, then strips common prefixes:
+ * get_, mcp__<server>__
  * e.g. "get_stock_price" → "Stock Price", "mcp__github__list_repos" → "List Repos"
  */
 export declare function renderToolName(name: string): string;
