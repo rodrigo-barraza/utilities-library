@@ -39,10 +39,20 @@ export function normalizeName(text) {
  */
 const TOOL_DISPLAY_OVERRIDES = {
     // Task Management
+    get_task: "Get Task",
+    create_task: "Create Task",
+    list_tasks: "List Tasks",
+    update_task: "Update Task",
+    get_task_output: "Get Task Output",
+    write_todo: "Write Todo",
+    // TODO(cleanup): Remove legacy pre-action-first names below once historical
+    // MongoDB sessions containing old tool names have aged out.
     task_get: "Get Task",
     task_create: "Create Task",
     task_list: "List Tasks",
     task_update: "Update Task",
+    task_output: "Get Task Output",
+    todo_write: "Write Todo",
     // File Operations
     file_info: "Get File Info",
     file_diff: "Compare Files",
@@ -65,7 +75,7 @@ const TOOL_DISPLAY_OVERRIDES = {
     read_spreadsheet: "Read Spreadsheet",
     read_pdf_url: "Read PDF from URL",
     read_rss_feed: "Read RSS Feed",
-    web_search: "Search Web",
+    search_web: "Search Web",
     fetch_url: "Fetch URL Content",
     // Command Execution
     run_command: "Run Terminal Command",
@@ -80,8 +90,20 @@ const TOOL_DISPLAY_OVERRIDES = {
     create_custom_agent: "Create Custom Agent",
     tool_search: "Search Available Tools",
     // Cron Jobs
-    cron_create: "Create Cron Job",
+    create_cron: "Create Cron Job",
     remote_trigger: "Trigger Remote Job",
+    create_cron_job: "Create Cron Job",
+    list_cron_jobs: "List Cron Jobs",
+    delete_cron_job: "Delete Cron Job",
+    trigger_cron_job: "Trigger Cron Job",
+    // Skills
+    create_skill: "Create Skill",
+    execute_skill: "Execute Skill",
+    list_skills: "List Skills",
+    delete_skill: "Delete Skill",
+    // Coordinator
+    create_team: "Create Team",
+    delete_team: "Delete Team",
     // Notebook Editing
     notebook_edit: "Edit Jupyter Notebook",
     // Twilio Communication
