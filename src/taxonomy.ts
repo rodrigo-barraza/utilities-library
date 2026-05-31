@@ -76,6 +76,7 @@ export const DOMAINS = {
   TASK_MGMT: "Task Management",
   TORRENT: "Torrent",
   MCP: "Model Context Protocol",
+  CORE: "Core Tools",
 } as const;
 
 export type DomainKey = keyof typeof DOMAINS;

@@ -70,6 +70,7 @@ export declare const DOMAINS: {
     readonly TASK_MGMT: "Task Management";
     readonly TORRENT: "Torrent";
     readonly MCP: "Model Context Protocol";
+    readonly CORE: "Core Tools";
 };
 export type DomainKey = keyof typeof DOMAINS;
 export type DomainValue = (typeof DOMAINS)[DomainKey];

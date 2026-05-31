@@ -71,6 +71,7 @@ export const DOMAINS = {
     TASK_MGMT: "Task Management",
     TORRENT: "Torrent",
     MCP: "Model Context Protocol",
+    CORE: "Core Tools",
 };
 export const LABEL_TAGS = Object.fromEntries(Object.entries(LABELS).map(([key, value]) => [key, `label:${value}`]));
 export const DOMAIN_TAGS = Object.fromEntries(Object.entries(DOMAINS).map(([key, value]) => [key, `domain:${value}`]));
