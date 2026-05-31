@@ -214,7 +214,7 @@ export const TOOL_NAMES = {
   LIST_CUSTOM_AGENTS: "list_custom_agents",
   UPDATE_CUSTOM_AGENT: "update_custom_agent",
 
-  // ── Compaction (provider-agnostic aliases) ──
+  // ── Compaction (provider-agnostic aliases matching upstream API names) ──
   WEB_CONTENT: "web_content",
   WEB_SEARCH: "web_search",
   SEARCH_FILES: "search_files",
@@ -226,9 +226,119 @@ export const TOOL_NAMES = {
   GENERATE_AUDIO: "generate_audio",
 
   // ── Modality Detection ──
+  // TODO(cleanup): Remove WEB_SEARCH_PREVIEW once historical sessions have aged out
   WEB_SEARCH_PREVIEW: "web_search_preview",
   SEARCH_WEB_PREVIEW: "search_web_preview",
   CODE_EXECUTION: "code_execution",
 } as const;
 
 export type ToolName = (typeof TOOL_NAMES)[keyof typeof TOOL_NAMES];
+
+// ─────────────────────────────────────────────────────────────
+// SSE Event Types — cross-service streaming contract between
+// prism-service (producer) and prism-client (consumer).
+//
+// IMPORTANT: Adding/removing/renaming an event type here will
+// surface compile errors on BOTH sides of the contract.
+// ─────────────────────────────────────────────────────────────
+
+export const SSE_EVENT_TYPES = {
+  CHUNK: "chunk",
+  THINKING: "thinking",
+  IMAGE: "image",
+  AUDIO: "audio",
+  TOOL_CALL: "toolCall",
+  TOOL_EXECUTION: "tool_execution",
+  TOOL_OUTPUT: "tool_output",
+  USAGE_UPDATE: "usage_update",
+  STATUS: "status",
+  DONE: "done",
+  ERROR: "error",
+  TODO_UPDATE: "todo_update",
+  BRIEF_UPDATE: "brief_update",
+  TEXT: "text",
+  WORKER_STATUS: "worker_status",
+  PLAN_PROPOSAL: "plan_proposal",
+  APPROVAL_REQUIRED: "approval_required",
+  EXECUTABLE_CODE: "executableCode",
+  CODE_EXECUTION_RESULT: "codeExecutionResult",
+  WEB_SEARCH_RESULT: "webSearchResult",
+} as const;
+
+export type SseEventType = (typeof SSE_EVENT_TYPES)[keyof typeof SSE_EVENT_TYPES];
+
+// ─────────────────────────────────────────────────────────────
+// Status Messages — the `{ type: "status", message: "..." }`
+// sub-protocol used to trigger UI panel refreshes and display
+// state transitions in prism-client.
+// ─────────────────────────────────────────────────────────────
+
+export const STATUS_MESSAGES = {
+  // ── Panel Refreshes ──
+  TASKS_UPDATED: "tasks_updated",
+  WORKERS_UPDATED: "workers_updated",
+  MEMORIES_UPDATED: "memories_updated",
+  CUSTOM_TOOLS_UPDATED: "custom_tools_updated",
+
+  // ── Compaction Lifecycle ──
+  COMPACTION_STARTED: "compaction_started",
+  COMPACTION_COMPLETE: "compaction_complete",
+  COMPACTION_FAILED: "compaction_failed",
+
+  // ── Plan Mode ──
+  PLAN_MODE_ENTERED: "plan_mode_entered",
+  PLAN_MODE_EXITED: "plan_mode_exited",
+
+  // ── Agentic Loop ──
+  ITERATION_LIMIT_REACHED: "iteration_limit_reached",
+  ITERATION_PROGRESS: "iteration_progress",
+  CONTEXT_TRUNCATED: "context_truncated",
+  SKILLS_INJECTED: "skills_injected",
+  VALIDATION_ERRORS_DETECTED: "validation_errors_detected",
+
+  // ── Image Generation ──
+  GENERATION_STARTED: "generation_started",
+  GENERATION_PROGRESS: "generation_progress",
+
+  // ── Tree-of-Thought Branching ──
+  BRANCHING_STARTED: "branching_started",
+  BRANCH_SELECTED: "branch_selected",
+  BRANCH_BACKTRACKED: "branch_backtracked",
+
+  // ── Worktree ──
+  WORKTREE_ENTERED: "worktree_entered",
+  WORKTREE_EXITED: "worktree_exited",
+
+  // ── Coordinator ──
+  SPAWNED: "spawned",
+  PHASE: "phase",
+  COMPLETE: "complete",
+  FAILED: "failed",
+} as const;
+
+export type StatusMessage = (typeof STATUS_MESSAGES)[keyof typeof STATUS_MESSAGES];
+
+// ─────────────────────────────────────────────────────────────
+// Agent / Persona IDs — canonical identifiers for built-in
+// agent personas. Used as registry keys, default fallbacks,
+// and special-case conditionals across prism-service and
+// prism-client.
+// ─────────────────────────────────────────────────────────────
+
+export const AGENT_IDS = {
+  CODING: "CODING",
+  LUPOS: "LUPOS",
+  IMAGE: "IMAGE",
+  STICKERS: "STICKERS",
+  LIGHTS: "LIGHTS",
+  OOG: "OOG",
+  DIGEST: "DIGEST",
+  META: "META",
+  OMNI: "OMNI",
+  MEEPO: "MEEPO",
+  NONE: "NONE",
+  ALL: "ALL",
+} as const;
+
+export type AgentId = (typeof AGENT_IDS)[keyof typeof AGENT_IDS];
+
