@@ -10,7 +10,11 @@ export async function connectDB(uri, dbName) {
         return database;
     client = new MongoClient(uri);
     await client.connect();
-    database = client.db(dbName);
+    const dbInstance = client.db(dbName);
+    if (dbInstance.databaseName === "test") {
+        throw new Error("utilities-library: Connecting to the 'test' database is forbidden. Please specify a dbName explicitly.");
+    }
+    database = dbInstance;
     console.log(`📡 Connected to MongoDB: ${database.databaseName}`);
     return database;
 }
