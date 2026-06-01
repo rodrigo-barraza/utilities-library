@@ -10,6 +10,7 @@
 // Dynamic import(/* webpackIgnore: true */) causes
 // ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING in the edge VM.
 import { NextResponse } from "next/server";
+import { errorMessage } from "./errors.js";
 
 function getNextResponse() {
   return NextResponse;
@@ -145,14 +146,14 @@ export function createNextjsProxy({
       const data = await response.json();
       const NR = await getNextResponse();
       return NR.json(data, { status: response.status });
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(
         `[API Proxy] ${request.method} /${segments} → ${targetUrl} failed:`,
-        (error as Error).message,
+        errorMessage(error),
       );
       const NR = await getNextResponse();
       return NR.json(
-        { error: `Failed to reach ${serviceName} service: ${(error as Error).message}` },
+        { error: `Failed to reach ${serviceName} service: ${errorMessage(error)}` },
         { status: 502 },
       );
     }

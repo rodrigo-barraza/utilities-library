@@ -40,12 +40,14 @@ export declare class TokenManager {
  * Create a lazy-loading async getter for an ES module.
  */
 export declare function lazyImport<ImportedModule>(specifier: string, extract?: (moduleObject: Record<string, unknown>) => ImportedModule): () => Promise<ImportedModule>;
+export declare class HttpError extends Error {
+    status: number;
+    constructor(status: number, message: string);
+}
 /**
  * Create an HTTP error with a status code.
  */
-export declare function httpError(status: number, message: string): Error & {
-    status: number;
-};
+export declare function httpError(status: number, message: string): HttpError;
 /**
  * Standard request logger middleware.
  */

@@ -9,6 +9,7 @@ var __rewriteRelativeImportExtension = (this && this.__rewriteRelativeImportExte
     }
     return path;
 };
+import { errorMessage } from "./errors.js";
 /**
  * Wrap an async route handler with standard error catching.
  */
@@ -30,18 +31,34 @@ export function asyncHandler(fn, label = "", errorStatusOrOpts = 502) {
         catch (error) {
             if (health)
                 health.markError(error);
-            const typedError = error;
+            let errorStatusToUse = errorStatus;
+            let errorMessageString = label ? `${label} failed` : "Internal server error";
+            if (error && typeof error === "object") {
+                if ("status" in error && typeof error.status === "number") {
+                    errorStatusToUse = error.status;
+                }
+                if ("message" in error && typeof error.message === "string") {
+                    errorMessageString = error.message;
+                }
+            }
             if (next) {
-                if (!typedError.status)
-                    typedError.status = errorStatus;
-                return next(typedError);
+                const nextError = error instanceof Error ? error : new Error(String(error));
+                if (!("status" in nextError)) {
+                    Object.defineProperty(nextError, "status", {
+                        value: errorStatusToUse,
+                        writable: true,
+                        configurable: true,
+                        enumerable: true,
+                    });
+                }
+                return next(nextError);
             }
             const fallbackMessage = label ? `${label} failed` : "Internal server error";
-            console.error(`[asyncHandler] ${fallbackMessage}:`, typedError.message || typedError);
-            res.status(typedError.status || errorStatus).json({
+            console.error(`[asyncHandler] ${fallbackMessage}:`, errorMessage(error));
+            res.status(errorStatusToUse).json({
                 error: true,
-                message: typedError.message || fallbackMessage,
-                statusCode: typedError.status || errorStatus,
+                message: errorMessageString,
+                statusCode: errorStatusToUse,
             });
         }
     };
@@ -59,7 +76,7 @@ export class HealthTracker {
         this.#state.error = null;
     }
     markError(error) {
-        this.#state.error = typeof error === "string" ? error : error.message;
+        this.#state.error = typeof error === "string" ? error : errorMessage(error);
     }
 }
 /**
@@ -111,13 +128,18 @@ export function lazyImport(specifier, extract = (moduleObject) => moduleObject.d
         return cached;
     };
 }
+export class HttpError extends Error {
+    status;
+    constructor(status, message) {
+        super(message);
+        this.status = status;
+    }
+}
 /**
  * Create an HTTP error with a status code.
  */
 export function httpError(status, message) {
-    const httpErr = new Error(message);
-    httpErr.status = status;
-    return httpErr;
+    return new HttpError(status, message);
 }
 /**
  * Standard request logger middleware.

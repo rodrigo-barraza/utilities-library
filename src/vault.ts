@@ -5,6 +5,7 @@
 import { execFileSync } from "child_process";
 import fs from "fs";
 import path from "path";
+import { errorMessage } from "./errors.js";
 
 const DEFAULT_VAULT_SERVICE_URL = "http://localhost:5599";
 const FETCH_TIMEOUT_MS = 5_000;
@@ -136,8 +137,8 @@ export function createVaultClient(options: VaultClientOptions = {}): VaultClient
         );
 
         return secrets;
-      } catch (error) {
-        console.warn(`⚠️  Vault unreachable (${(error as Error).message})`);
+      } catch (error: unknown) {
+        console.warn(`⚠️  Vault unreachable (${errorMessage(error)})`);
         return {};
       }
     },
@@ -168,8 +169,8 @@ export function createVaultClient(options: VaultClientOptions = {}): VaultClient
         );
 
         return secrets;
-      } catch (error) {
-        console.warn(`⚠️  Vault unreachable (${(error as Error).message})`);
+      } catch (error: unknown) {
+        console.warn(`⚠️  Vault unreachable (${errorMessage(error)})`);
         return {};
       }
     },
@@ -200,8 +201,8 @@ export function createVaultClient(options: VaultClientOptions = {}): VaultClient
           `📋 Registry → ${_cachedRegistry.projects?.length || 0} projects, ${_cachedRegistry.infrastructure?.length || 0} infrastructure`,
         );
         return _cachedRegistry;
-      } catch (error) {
-        console.warn(`⚠️  Registry unreachable (${(error as Error).message})`);
+      } catch (error: unknown) {
+        console.warn(`⚠️  Registry unreachable (${errorMessage(error)})`);
         return { version: 0, projects: [], infrastructure: [] };
       }
     },

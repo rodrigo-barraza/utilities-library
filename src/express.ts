@@ -4,6 +4,7 @@
 
 import type { Request, Response, NextFunction } from "express";
 import type { Logger } from "./logger.js";
+import { errorMessage } from "./errors.js";
 
 export interface AsyncHandlerOptions {
   errorStatus?: number;
@@ -34,18 +35,37 @@ export function asyncHandler(
     } catch (error: unknown) {
       if (health) health.markError(error);
 
-      const typedError = error as Error & { status?: number };
+      let errorStatusToUse = errorStatus;
+      let errorMessageString = label ? `${label} failed` : "Internal server error";
+
+      if (error && typeof error === "object") {
+        if ("status" in error && typeof error.status === "number") {
+          errorStatusToUse = error.status;
+        }
+        if ("message" in error && typeof error.message === "string") {
+          errorMessageString = error.message;
+        }
+      }
+
       if (next) {
-        if (!typedError.status) typedError.status = errorStatus;
-        return next(typedError);
+        const nextError = error instanceof Error ? error : new Error(String(error));
+        if (!("status" in nextError)) {
+          Object.defineProperty(nextError, "status", {
+            value: errorStatusToUse,
+            writable: true,
+            configurable: true,
+            enumerable: true,
+          });
+        }
+        return next(nextError);
       }
 
       const fallbackMessage = label ? `${label} failed` : "Internal server error";
-      console.error(`[asyncHandler] ${fallbackMessage}:`, typedError.message || typedError);
-      res.status(typedError.status || errorStatus).json({
+      console.error(`[asyncHandler] ${fallbackMessage}:`, errorMessage(error));
+      res.status(errorStatusToUse).json({
         error: true,
-        message: typedError.message || fallbackMessage,
-        statusCode: typedError.status || errorStatus,
+        message: errorMessageString,
+        statusCode: errorStatusToUse,
       });
     }
   };
@@ -67,7 +87,7 @@ export class HealthTracker {
   }
 
   markError(error: unknown) {
-    this.#state.error = typeof error === "string" ? error : (error as Error).message;
+    this.#state.error = typeof error === "string" ? error : errorMessage(error);
   }
 }
 
@@ -124,13 +144,19 @@ export function lazyImport<ImportedModule>(specifier: string, extract: (moduleOb
   };
 }
 
+export class HttpError extends Error {
+  status: number;
+  constructor(status: number, message: string) {
+    super(message);
+    this.status = status;
+  }
+}
+
 /**
  * Create an HTTP error with a status code.
  */
-export function httpError(status: number, message: string): Error & { status: number } {
-  const httpErr = new Error(message) as Error & { status: number };
-  httpErr.status = status;
-  return httpErr;
+export function httpError(status: number, message: string): HttpError {
+  return new HttpError(status, message);
 }
 
 /**
