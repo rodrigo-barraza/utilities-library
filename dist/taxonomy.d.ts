@@ -327,6 +327,7 @@ export declare const STATUS_MESSAGES: {
     readonly ITERATION_LIMIT_REACHED: "iteration_limit_reached";
     readonly ITERATION_PROGRESS: "iteration_progress";
     readonly CONTEXT_TRUNCATED: "context_truncated";
+    readonly MAX_TOKENS_TRUNCATED: "max_tokens_truncated";
     readonly SKILLS_INJECTED: "skills_injected";
     readonly VALIDATION_ERRORS_DETECTED: "validation_errors_detected";
     readonly GENERATION_STARTED: "generation_started";

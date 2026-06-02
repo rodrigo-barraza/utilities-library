@@ -300,6 +300,7 @@ export const STATUS_MESSAGES = {
   ITERATION_LIMIT_REACHED: "iteration_limit_reached",
   ITERATION_PROGRESS: "iteration_progress",
   CONTEXT_TRUNCATED: "context_truncated",
+  MAX_TOKENS_TRUNCATED: "max_tokens_truncated",
   SKILLS_INJECTED: "skills_injected",
   VALIDATION_ERRORS_DETECTED: "validation_errors_detected",
 
