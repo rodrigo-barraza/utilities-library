@@ -80,24 +80,25 @@ export function formatLatency(seconds) {
  * Format a latency value given in milliseconds.
  * Thin wrapper over formatLatency(seconds).
  */
-export function formatLatencyMs(ms) {
-    if (!ms)
+export function formatLatencyMs(milliseconds) {
+    if (!milliseconds)
         return "—";
-    return formatLatency(ms / 1000);
+    return formatLatency(milliseconds / 1000);
 }
 /**
  * Format a duration in milliseconds to a human-readable string.
  * e.g. 500 → "500ms", 5000 → "5.0s", 90000 → "1m 30s"
  */
-export function formatDuration(ms) {
-    if (ms == null)
+export function formatDuration(milliseconds) {
+    if (milliseconds == null)
         return "—";
-    if (ms < 1000)
-        return `${ms}ms`;
-    if (ms < 60_000)
-        return `${(ms / 1000).toFixed(1)}s`;
-    const totalMinutes = Math.floor(ms / 60_000);
-    const remainingSeconds = Math.floor((ms % 60_000) / 1000);
+    const roundedMilliseconds = Math.round(milliseconds);
+    if (roundedMilliseconds < 1000)
+        return `${roundedMilliseconds}ms`;
+    if (roundedMilliseconds < 60_000)
+        return `${(roundedMilliseconds / 1000).toFixed(1)}s`;
+    const totalMinutes = Math.floor(roundedMilliseconds / 60_000);
+    const remainingSeconds = Math.floor((roundedMilliseconds % 60_000) / 1000);
     if (totalMinutes < 60)
         return remainingSeconds > 0 ? `${totalMinutes}m ${remainingSeconds}s` : `${totalMinutes}m`;
     const totalHours = Math.floor(totalMinutes / 60);
@@ -234,9 +235,9 @@ export function formatMediaTimestamp(seconds) {
         return "0:00";
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = Math.floor(seconds % 60);
+    const remainingSeconds = Math.floor(seconds % 60);
     if (hours > 0)
-        return `${hours}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-    return `${minutes}:${String(secs).padStart(2, "0")}`;
+        return `${hours}:${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
+    return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
 }
 //# sourceMappingURL=format.js.map

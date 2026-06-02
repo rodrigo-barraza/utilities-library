@@ -37,12 +37,12 @@ export declare function formatLatency(seconds: number | null | undefined): strin
  * Format a latency value given in milliseconds.
  * Thin wrapper over formatLatency(seconds).
  */
-export declare function formatLatencyMs(ms: number | null | undefined): string;
+export declare function formatLatencyMs(milliseconds: number | null | undefined): string;
 /**
  * Format a duration in milliseconds to a human-readable string.
  * e.g. 500 → "500ms", 5000 → "5.0s", 90000 → "1m 30s"
  */
-export declare function formatDuration(ms: number | null | undefined): string;
+export declare function formatDuration(milliseconds: number | null | undefined): string;
 /**
  * Format an elapsed duration (in seconds) into a human-readable string.
  * Delegates to `formatDuration(ms)` internally.
