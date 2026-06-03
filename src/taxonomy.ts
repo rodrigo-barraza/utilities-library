@@ -103,6 +103,7 @@ export const CORE_AGENTIC_TOOLS = [
   "update_task",
   "calculate_precise",
   "execute_javascript",
+  "execute_python",
   "search_tools",
   "search_web",
   "read_url",

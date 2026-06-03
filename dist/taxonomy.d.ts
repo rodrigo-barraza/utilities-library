@@ -214,7 +214,7 @@ export type DomainDisplayName = DomainEntry["displayName"];
 export declare const LABEL_TAGS: Record<LabelKey, `label:${LabelValue}`>;
 export declare const DOMAIN_TAGS: Record<DomainConstantKey, `domain:${DomainDisplayName}`>;
 export declare const DOMAIN_KEY_TAGS: Record<DomainConstantKey, `domainKey:${DomainKey}`>;
-export declare const CORE_AGENTIC_TOOLS: readonly ["upsert_memory", "create_task", "list_tasks", "update_task", "calculate_precise", "execute_javascript", "search_tools", "search_web", "read_url", "get_web_content", "enter_plan_mode", "exit_plan_mode", "ask_user_question", "write_todo", "brief", "enter_worktree", "exit_worktree", "create_skill", "execute_skill", "list_skills", "delete_skill", "create_team", "send_message", "stop_agent", "get_task_output", "delete_team"];
+export declare const CORE_AGENTIC_TOOLS: readonly ["upsert_memory", "create_task", "list_tasks", "update_task", "calculate_precise", "execute_javascript", "execute_python", "search_tools", "search_web", "read_url", "get_web_content", "enter_plan_mode", "exit_plan_mode", "ask_user_question", "write_todo", "brief", "enter_worktree", "exit_worktree", "create_skill", "execute_skill", "list_skills", "delete_skill", "create_team", "send_message", "stop_agent", "get_task_output", "delete_team"];
 export declare const TOOL_NAMES: {
     readonly GENERATE_IMAGE: "generate_image";
     readonly DESCRIBE_IMAGE: "describe_image";
