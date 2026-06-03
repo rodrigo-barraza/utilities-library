@@ -15,7 +15,7 @@ export interface AsyncHandlerOptions {
  * Wrap an async route handler with standard error catching.
  */
 export function asyncHandler(
-  fn: (req: Request, res: Response, next: NextFunction) => Promise<unknown>,
+  handlerFunction: (req: Request, res: Response, next: NextFunction) => Promise<unknown>,
   label: string = "",
   errorStatusOrOpts: number | AsyncHandlerOptions = 502,
 ) {
@@ -29,7 +29,7 @@ export function asyncHandler(
       : undefined;
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const result = await fn(req, res, next);
+      const result = await handlerFunction(req, res, next);
       if (health) health.markSuccess();
       if (result !== undefined && !res.headersSent) res.json(result);
     } catch (error: unknown) {
@@ -113,15 +113,15 @@ export function setupStreamingSSE(res: Response): (event: unknown) => void {
 export class TokenManager {
   #token: string | null = null;
   #expiry = 0;
-  #fetchFn: () => Promise<{ token: string; expiresInMs: number }>;
+  #fetchTokenFunction: () => Promise<{ token: string; expiresInMs: number }>;
 
-  constructor(fetchFn: () => Promise<{ token: string; expiresInMs: number }>) {
-    this.#fetchFn = fetchFn;
+  constructor(fetchTokenFunction: () => Promise<{ token: string; expiresInMs: number }>) {
+    this.#fetchTokenFunction = fetchTokenFunction;
   }
 
   async getToken(): Promise<string> {
     if (this.#token && Date.now() < this.#expiry) return this.#token;
-    const { token, expiresInMs } = await this.#fetchFn();
+    const { token, expiresInMs } = await this.#fetchTokenFunction();
     this.#token = token;
     this.#expiry = Date.now() + expiresInMs;
     return this.#token;

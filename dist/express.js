@@ -13,7 +13,7 @@ import { errorMessage } from "./errors.js";
 /**
  * Wrap an async route handler with standard error catching.
  */
-export function asyncHandler(fn, label = "", errorStatusOrOpts = 502) {
+export function asyncHandler(handlerFunction, label = "", errorStatusOrOpts = 502) {
     const errorStatus = typeof errorStatusOrOpts === "number"
         ? errorStatusOrOpts
         : errorStatusOrOpts.errorStatus || 502;
@@ -22,7 +22,7 @@ export function asyncHandler(fn, label = "", errorStatusOrOpts = 502) {
         : undefined;
     return async (req, res, next) => {
         try {
-            const result = await fn(req, res, next);
+            const result = await handlerFunction(req, res, next);
             if (health)
                 health.markSuccess();
             if (result !== undefined && !res.headersSent)
@@ -100,14 +100,14 @@ export function setupStreamingSSE(res) {
 export class TokenManager {
     #token = null;
     #expiry = 0;
-    #fetchFn;
-    constructor(fetchFn) {
-        this.#fetchFn = fetchFn;
+    #fetchTokenFunction;
+    constructor(fetchTokenFunction) {
+        this.#fetchTokenFunction = fetchTokenFunction;
     }
     async getToken() {
         if (this.#token && Date.now() < this.#expiry)
             return this.#token;
-        const { token, expiresInMs } = await this.#fetchFn();
+        const { token, expiresInMs } = await this.#fetchTokenFunction();
         this.#token = token;
         this.#expiry = Date.now() + expiresInMs;
         return this.#token;

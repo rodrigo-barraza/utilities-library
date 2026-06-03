@@ -5,146 +5,146 @@ import { describe, it, expect } from "vitest";
 // ─── Format ─────────────────────────────────────────────────────
 
 describe("format.js", () => {
-  let fmt;
+  let formatUtilities;
   beforeAll(async () => {
-    fmt = await import("../dist/format.js");
+    formatUtilities = await import("../dist/format.js");
   });
 
   describe("formatCompact", () => {
     it("returns em-dash for null/undefined", () => {
-      expect(fmt.formatCompact(null)).toBe("—");
-      expect(fmt.formatCompact(undefined)).toBe("—");
+      expect(formatUtilities.formatCompact(null)).toBe("—");
+      expect(formatUtilities.formatCompact(undefined)).toBe("—");
     });
     it("formats millions", () => {
-      expect(fmt.formatCompact(10_000_000)).toBe("10M");
-      expect(fmt.formatCompact(3_500_000)).toBe("3.5M");
+      expect(formatUtilities.formatCompact(10_000_000)).toBe("10M");
+      expect(formatUtilities.formatCompact(3_500_000)).toBe("3.5M");
     });
     it("formats thousands", () => {
-      expect(fmt.formatCompact(3500)).toBe("3.5K");
-      expect(fmt.formatCompact(1000)).toBe("1K");
+      expect(formatUtilities.formatCompact(3500)).toBe("3.5K");
+      expect(formatUtilities.formatCompact(1000)).toBe("1K");
     });
     it("passes through small numbers", () => {
-      expect(fmt.formatCompact(42)).toBe("42");
+      expect(formatUtilities.formatCompact(42)).toBe("42");
     });
   });
 
   describe("formatNumber", () => {
     it("returns 0 for null/undefined", () => {
-      expect(fmt.formatNumber(null)).toBe("0");
+      expect(formatUtilities.formatNumber(null)).toBe("0");
     });
     it("truncates decimals", () => {
-      expect(fmt.formatNumber(3500)).toBe("4K");
+      expect(formatUtilities.formatNumber(3500)).toBe("4K");
     });
   });
 
   describe("formatCost", () => {
     it("formats with 5 decimals", () => {
-      expect(fmt.formatCost(0.001)).toBe("$0.00100");
+      expect(formatUtilities.formatCost(0.001)).toBe("$0.00100");
     });
     it("handles null", () => {
-      expect(fmt.formatCost(null)).toBe("$0.00");
+      expect(formatUtilities.formatCost(null)).toBe("$0.00");
     });
   });
 
   describe("formatCostAdaptive", () => {
     it("uses 4 decimals for tiny costs", () => {
-      expect(fmt.formatCostAdaptive(0.0034)).toBe("$0.0034");
+      expect(formatUtilities.formatCostAdaptive(0.0034)).toBe("$0.0034");
     });
     it("uses 2 decimals for normal costs", () => {
-      expect(fmt.formatCostAdaptive(1.5)).toBe("$1.50");
+      expect(formatUtilities.formatCostAdaptive(1.5)).toBe("$1.50");
     });
     it("returns $0.00 for zero", () => {
-      expect(fmt.formatCostAdaptive(0)).toBe("$0.00");
+      expect(formatUtilities.formatCostAdaptive(0)).toBe("$0.00");
     });
   });
 
   describe("formatLatency", () => {
     it("formats sub-second as ms", () => {
-      expect(fmt.formatLatency(0.3)).toBe("300ms");
+      expect(formatUtilities.formatLatency(0.3)).toBe("300ms");
     });
     it("formats seconds", () => {
-      expect(fmt.formatLatency(5.2)).toBe("5.2s");
+      expect(formatUtilities.formatLatency(5.2)).toBe("5.2s");
     });
     it("formats minutes", () => {
-      expect(fmt.formatLatency(90)).toBe("1.5m");
+      expect(formatUtilities.formatLatency(90)).toBe("1.5m");
     });
   });
 
   describe("formatDuration", () => {
     it("formats milliseconds", () => {
-      expect(fmt.formatDuration(500)).toBe("500ms");
+      expect(formatUtilities.formatDuration(500)).toBe("500ms");
     });
     it("formats seconds", () => {
-      expect(fmt.formatDuration(5000)).toBe("5.0s");
+      expect(formatUtilities.formatDuration(5000)).toBe("5.0s");
     });
     it("formats minutes + seconds", () => {
-      expect(fmt.formatDuration(90_000)).toBe("1m 30s");
+      expect(formatUtilities.formatDuration(90_000)).toBe("1m 30s");
     });
     it("formats hours", () => {
-      expect(fmt.formatDuration(3_660_000)).toBe("1h 1m");
+      expect(formatUtilities.formatDuration(3_660_000)).toBe("1h 1m");
     });
     it("returns em-dash for null", () => {
-      expect(fmt.formatDuration(null)).toBe("—");
+      expect(formatUtilities.formatDuration(null)).toBe("—");
     });
   });
 
   describe("formatElapsedTime", () => {
     it("delegates to formatDuration", () => {
-      expect(fmt.formatElapsedTime(65)).toBe("1m 5s");
+      expect(formatUtilities.formatElapsedTime(65)).toBe("1m 5s");
     });
     it("returns 0s for null/zero/negative", () => {
-      expect(fmt.formatElapsedTime(null)).toBe("0s");
-      expect(fmt.formatElapsedTime(0)).toBe("0s");
-      expect(fmt.formatElapsedTime(-1)).toBe("0s");
+      expect(formatUtilities.formatElapsedTime(null)).toBe("0s");
+      expect(formatUtilities.formatElapsedTime(0)).toBe("0s");
+      expect(formatUtilities.formatElapsedTime(-1)).toBe("0s");
     });
   });
 
   describe("formatFileSize", () => {
     it("formats KB", () => {
-      expect(fmt.formatFileSize(2048)).toBe("2 KB");
+      expect(formatUtilities.formatFileSize(2048)).toBe("2 KB");
     });
     it("formats MB", () => {
-      expect(fmt.formatFileSize(1_048_576)).toBe("1.0 MB");
+      expect(formatUtilities.formatFileSize(1_048_576)).toBe("1.0 MB");
     });
     it("compact mode", () => {
-      expect(fmt.formatFileSize(0, { compact: true })).toBe("0B");
-      expect(fmt.formatFileSize(512, { compact: true })).toBe("512B");
+      expect(formatUtilities.formatFileSize(0, { compact: true })).toBe("0B");
+      expect(formatUtilities.formatFileSize(512, { compact: true })).toBe("512B");
     });
     it("returns null for falsy in normal mode", () => {
-      expect(fmt.formatFileSize(0)).toBeNull();
+      expect(formatUtilities.formatFileSize(0)).toBeNull();
     });
   });
 
   describe("formatPercent", () => {
     it("formats with default precision", () => {
-      expect(fmt.formatPercent(85.456)).toBe("85.5%");
+      expect(formatUtilities.formatPercent(85.456)).toBe("85.5%");
     });
     it("returns em-dash for null", () => {
-      expect(fmt.formatPercent(null)).toBe("—");
+      expect(formatUtilities.formatPercent(null)).toBe("—");
     });
   });
 
   describe("formatContextTokens", () => {
     it("delegates to formatCompact", () => {
-      expect(fmt.formatContextTokens(128_000)).toBe("128K");
+      expect(formatUtilities.formatContextTokens(128_000)).toBe("128K");
     });
     it("returns null for falsy", () => {
-      expect(fmt.formatContextTokens(0)).toBeNull();
+      expect(formatUtilities.formatContextTokens(0)).toBeNull();
     });
   });
 
   describe("formatCurrency", () => {
     it("formats USD", () => {
-      expect(fmt.formatCurrency(1500)).toBe("$1,500.00");
+      expect(formatUtilities.formatCurrency(1500)).toBe("$1,500.00");
     });
     it("uses 4 decimals for tiny amounts", () => {
-      expect(fmt.formatCurrency(0.005)).toBe("$0.0050");
+      expect(formatUtilities.formatCurrency(0.005)).toBe("$0.0050");
     });
   });
 
   describe("roundMs", () => {
     it("rounds to 3 decimal places", () => {
-      expect(fmt.roundMs(1.23456789)).toBe(1.235);
+      expect(formatUtilities.roundMs(1.23456789)).toBe(1.235);
     });
   });
 });
@@ -152,94 +152,94 @@ describe("format.js", () => {
 // ─── Text ───────────────────────────────────────────────────────
 
 describe("text.js", () => {
-  let txt;
+  let textUtilities;
   beforeAll(async () => {
-    txt = await import("../dist/text.js");
+    textUtilities = await import("../dist/text.js");
   });
 
   describe("stripHtml", () => {
     it("removes tags", () => {
-      expect(txt.stripHtml("<b>Hello</b>")).toBe("Hello");
+      expect(textUtilities.stripHtml("<b>Hello</b>")).toBe("Hello");
     });
     it("decodes entities", () => {
-      expect(txt.stripHtml("&amp; &lt; &gt;")).toBe("& < >");
+      expect(textUtilities.stripHtml("&amp; &lt; &gt;")).toBe("& < >");
     });
     it("handles null", () => {
-      expect(txt.stripHtml(null)).toBe("");
+      expect(textUtilities.stripHtml(null)).toBe("");
     });
   });
 
   describe("normalizeName", () => {
     it("lowercases and strips special chars", () => {
-      expect(txt.normalizeName("Hello, World!")).toBe("hello world");
+      expect(textUtilities.normalizeName("Hello, World!")).toBe("hello world");
     });
   });
 
   describe("renderToolName", () => {
     it("strips get_ prefix and title-cases", () => {
-      expect(txt.renderToolName("get_stock_price")).toBe("Stock Price");
+      expect(textUtilities.renderToolName("get_stock_price")).toBe("Stock Price");
     });
     it("strips mcp__ prefix", () => {
-      expect(txt.renderToolName("mcp__github__list_repos")).toBe("List Repos");
+      expect(textUtilities.renderToolName("mcp__github__list_repos")).toBe("List Repos");
     });
     it("strips mcp__ prefix with hyphens or dots in server names", () => {
-      expect(txt.renderToolName("mcp__lazy-tool-service__get_market_data")).toBe("Get Market Data");
-      expect(txt.renderToolName("mcp__my.api.server__fetch_items")).toBe("Fetch Items");
+      expect(textUtilities.renderToolName("mcp__lazy-tool-service__get_market_data")).toBe("Get Market Data");
+      expect(textUtilities.renderToolName("mcp__my.api.server__fetch_items")).toBe("Fetch Items");
     });
     it("applies action-oriented display overrides correctly", () => {
-      expect(txt.renderToolName("task_get")).toBe("Get Task");
-      expect(txt.renderToolName("task_create")).toBe("Create Task");
-      expect(txt.renderToolName("task_list")).toBe("List Tasks");
-      expect(txt.renderToolName("task_update")).toBe("Update Task");
-      expect(txt.renderToolName("file_info")).toBe("Get File Info");
-      expect(txt.renderToolName("file_diff")).toBe("Compare Files");
+      expect(textUtilities.renderToolName("task_get")).toBe("Get Task");
+      expect(textUtilities.renderToolName("task_create")).toBe("Create Task");
+      expect(textUtilities.renderToolName("task_list")).toBe("List Tasks");
+      expect(textUtilities.renderToolName("task_update")).toBe("Update Task");
+      expect(textUtilities.renderToolName("file_info")).toBe("Get File Info");
+      expect(textUtilities.renderToolName("file_diff")).toBe("Compare Files");
     });
   });
 
   describe("truncate", () => {
     it("returns full string if within limit", () => {
-      expect(txt.truncate("short", 80)).toBe("short");
+      expect(textUtilities.truncate("short", 80)).toBe("short");
     });
     it("truncates with ellipsis", () => {
-      const result = txt.truncate("This is a long string", 10);
+      const result = textUtilities.truncate("This is a long string", 10);
       expect(result.length).toBeLessThanOrEqual(10);
       expect(result.endsWith("…")).toBe(true);
     });
     it("handles null/empty", () => {
-      expect(txt.truncate(null)).toBe("");
-      expect(txt.truncate("")).toBe("");
+      expect(textUtilities.truncate(null)).toBe("");
+      expect(textUtilities.truncate("")).toBe("");
     });
   });
 
   describe("escapeRegex", () => {
     it("escapes special characters", () => {
-      expect(txt.escapeRegex("file.txt")).toBe("file\\.txt");
-      expect(txt.escapeRegex("a+b*c")).toBe("a\\+b\\*c");
+      expect(textUtilities.escapeRegex("file.txt")).toBe("file\\.txt");
+      expect(textUtilities.escapeRegex("a+b*c")).toBe("a\\+b\\*c");
     });
   });
 
   describe("getRootDomain / getSubdomain", () => {
     it("extracts root domain", () => {
-      expect(txt.getRootDomain("api.prism.rod.dev")).toBe("rod.dev");
+      expect(textUtilities.getRootDomain("api.prism.rod.dev")).toBe("rod.dev");
     });
     it("extracts subdomain", () => {
-      expect(txt.getSubdomain("api.prism.rod.dev")).toBe("api.prism");
+      expect(textUtilities.getSubdomain("api.prism.rod.dev")).toBe("api.prism");
     });
     it("returns empty subdomain for bare domains", () => {
-      expect(txt.getSubdomain("rod.dev")).toBe("");
+      expect(textUtilities.getSubdomain("rod.dev")).toBe("");
     });
   });
 
   describe("capitalize", () => {
     it("capitalizes first char", () => {
-      expect(txt.capitalize("hello")).toBe("Hello");
+      expect(textUtilities.capitalize("hello")).toBe("Hello");
     });
     it("leaves already-capitalized strings alone", () => {
-      expect(txt.capitalize("HELLO")).toBe("HELLO");
+      expect(textUtilities.capitalize("HELLO")).toBe("HELLO");
     });
     it("handles null/empty", () => {
-      expect(txt.capitalize(null)).toBe("");
-      expect(txt.capitalize("")).toBe("");
+      expect(textUtilities.capitalize(null)).toBe("");
+      expect(textUtilities.capitalize("")).toBe("");
     });
   });
 });
@@ -247,60 +247,60 @@ describe("text.js", () => {
 // ─── Date ───────────────────────────────────────────────────────
 
 describe("date.js", () => {
-  let date;
+  let dateUtilities;
   beforeAll(async () => {
-    date = await import("../dist/date.js");
+    dateUtilities = await import("../dist/date.js");
   });
 
   describe("toISODate", () => {
     it("formats as YYYY-MM-DD", () => {
-      const d = new Date("2026-05-08T12:00:00Z");
-      expect(date.toISODate(d)).toBe("2026-05-08");
+      const dateInstance = new Date("2026-05-08T12:00:00Z");
+      expect(dateUtilities.toISODate(dateInstance)).toBe("2026-05-08");
     });
   });
 
   describe("timeAgo", () => {
     it("returns em-dash for null", () => {
-      expect(date.timeAgo(null)).toBe("—");
+      expect(dateUtilities.timeAgo(null)).toBe("—");
     });
     it("returns 'just now' for recent dates", () => {
-      expect(date.timeAgo(new Date())).toBe("just now");
+      expect(dateUtilities.timeAgo(new Date())).toBe("just now");
     });
     it("returns seconds ago", () => {
-      const d = new Date(Date.now() - 30_000);
-      expect(date.timeAgo(d)).toBe("30s ago");
+      const dateInstance = new Date(Date.now() - 30_000);
+      expect(dateUtilities.timeAgo(dateInstance)).toBe("30s ago");
     });
     it("returns minutes ago", () => {
-      const d = new Date(Date.now() - 5 * 60_000);
-      expect(date.timeAgo(d)).toBe("5m ago");
+      const dateInstance = new Date(Date.now() - 5 * 60_000);
+      expect(dateUtilities.timeAgo(dateInstance)).toBe("5m ago");
     });
     it("returns hours ago", () => {
-      const d = new Date(Date.now() - 3 * 3_600_000);
-      expect(date.timeAgo(d)).toBe("3h ago");
+      const dateInstance = new Date(Date.now() - 3 * 3_600_000);
+      expect(dateUtilities.timeAgo(dateInstance)).toBe("3h ago");
     });
     it("returns days ago", () => {
-      const d = new Date(Date.now() - 5 * 86_400_000);
-      expect(date.timeAgo(d)).toBe("5d ago");
+      const dateInstance = new Date(Date.now() - 5 * 86_400_000);
+      expect(dateUtilities.timeAgo(dateInstance)).toBe("5d ago");
     });
   });
 
   describe("daysSinceIso", () => {
     it("returns 0 for today", () => {
-      expect(date.daysSinceIso(new Date().toISOString())).toBe(0);
+      expect(dateUtilities.daysSinceIso(new Date().toISOString())).toBe(0);
     });
   });
 
   describe("daysAgo", () => {
     it("returns a Date in the past", () => {
-      const d = date.daysAgo(7);
-      const diff = Date.now() - d.getTime();
+      const dateInstance = dateUtilities.daysAgo(7);
+      const diff = Date.now() - dateInstance.getTime();
       expect(Math.floor(diff / 86_400_000)).toBe(7);
     });
   });
 
   describe("toLocalDateString", () => {
     it("returns YYYY-MM-DD in local time", () => {
-      const result = date.toLocalDateString();
+      const result = dateUtilities.toLocalDateString();
       expect(result).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     });
   });
@@ -309,15 +309,15 @@ describe("date.js", () => {
 // ─── Async ──────────────────────────────────────────────────────
 
 describe("async.js", () => {
-  let async;
+  let asyncUtilities;
   beforeAll(async () => {
-    async = await import("../dist/async.js");
+    asyncUtilities = await import("../dist/async.js");
   });
 
   describe("sleep", () => {
     it("resolves after delay", async () => {
       const start = Date.now();
-      await async.sleep(50);
+      await asyncUtilities.sleep(50);
       expect(Date.now() - start).toBeGreaterThanOrEqual(40);
     });
   });
@@ -325,7 +325,7 @@ describe("async.js", () => {
   describe("retry", () => {
     it("retries on failure", async () => {
       let attempts = 0;
-      const result = await async.retry(
+      const result = await asyncUtilities.retry(
         () => {
           attempts++;
           if (attempts < 3) throw new Error("fail");
@@ -338,19 +338,19 @@ describe("async.js", () => {
     });
     it("throws after max retries", async () => {
       await expect(
-        async.retry(() => { throw new Error("always"); }, { retries: 2, delay: 10 }),
+        asyncUtilities.retry(() => { throw new Error("always"); }, { retries: 2, delay: 10 }),
       ).rejects.toThrow("always");
     });
   });
 
   describe("withTimeout", () => {
     it("resolves if promise is fast", async () => {
-      const result = await async.withTimeout(Promise.resolve("ok"), 1000);
+      const result = await asyncUtilities.withTimeout(Promise.resolve("ok"), 1000);
       expect(result).toBe("ok");
     });
     it("rejects on timeout", async () => {
       await expect(
-        async.withTimeout(new Promise(() => {}), 50, "timed out"),
+        asyncUtilities.withTimeout(new Promise(() => {}), 50, "timed out"),
       ).rejects.toThrow("timed out");
     });
   });
@@ -359,54 +359,54 @@ describe("async.js", () => {
 // ─── Time ───────────────────────────────────────────────────────
 
 describe("time.js", () => {
-  let time;
+  let timeUtilities;
   beforeAll(async () => {
-    time = await import("../dist/time.js");
+    timeUtilities = await import("../dist/time.js");
   });
 
   it("defines MS constants", () => {
-    expect(time.MS_PER_SECOND).toBe(1_000);
-    expect(time.MS_PER_MINUTE).toBe(60_000);
-    expect(time.MS_PER_HOUR).toBe(3_600_000);
-    expect(time.MS_PER_DAY).toBe(86_400_000);
+    expect(timeUtilities.MS_PER_SECOND).toBe(1_000);
+    expect(timeUtilities.MS_PER_MINUTE).toBe(60_000);
+    expect(timeUtilities.MS_PER_HOUR).toBe(3_600_000);
+    expect(timeUtilities.MS_PER_DAY).toBe(86_400_000);
   });
 
   it("converter functions work", () => {
-    expect(time.seconds(5)).toBe(5_000);
-    expect(time.minutes(2)).toBe(120_000);
-    expect(time.hours(1)).toBe(3_600_000);
-    expect(time.days(1)).toBe(86_400_000);
-    expect(time.weeks(1)).toBe(604_800_000);
+    expect(timeUtilities.seconds(5)).toBe(5_000);
+    expect(timeUtilities.minutes(2)).toBe(120_000);
+    expect(timeUtilities.hours(1)).toBe(3_600_000);
+    expect(timeUtilities.days(1)).toBe(86_400_000);
+    expect(timeUtilities.weeks(1)).toBe(604_800_000);
   });
 });
 
 // ─── Arrays ─────────────────────────────────────────────────────
 
 describe("arrays.js", () => {
-  let arr;
+  let arrayUtilities;
   beforeAll(async () => {
-    arr = await import("../dist/arrays.js");
+    arrayUtilities = await import("../dist/arrays.js");
   });
 
   describe("chunk", () => {
     it("splits into chunks", () => {
-      expect(arr.chunk([1, 2, 3, 4, 5], 2)).toEqual([[1, 2], [3, 4], [5]]);
+      expect(arrayUtilities.chunk([1, 2, 3, 4, 5], 2)).toEqual([[1, 2], [3, 4], [5]]);
     });
     it("handles empty array", () => {
-      expect(arr.chunk([], 3)).toEqual([]);
+      expect(arrayUtilities.chunk([], 3)).toEqual([]);
     });
   });
 
   describe("shuffleArray", () => {
     it("returns same length", () => {
       const input = [1, 2, 3, 4, 5];
-      const result = arr.shuffleArray(input);
+      const result = arrayUtilities.shuffleArray(input);
       expect(result).toHaveLength(5);
       expect(result.sort()).toEqual([1, 2, 3, 4, 5]);
     });
     it("does not mutate original", () => {
       const input = [1, 2, 3];
-      arr.shuffleArray(input);
+      arrayUtilities.shuffleArray(input);
       expect(input).toEqual([1, 2, 3]);
     });
   });
@@ -414,26 +414,26 @@ describe("arrays.js", () => {
   describe("pickRandom", () => {
     it("returns an element from the array", () => {
       const input = [1, 2, 3];
-      expect(input).toContain(arr.pickRandom(input));
+      expect(input).toContain(arrayUtilities.pickRandom(input));
     });
   });
 
   describe("compactPayload", () => {
     it("strips null/undefined but keeps falsy values", () => {
-      const result = arr.compactPayload({ a: 1, b: null, c: 0, d: undefined, e: false, f: "" });
+      const result = arrayUtilities.compactPayload({ a: 1, b: null, c: 0, d: undefined, e: false, f: "" });
       expect(result).toEqual({ a: 1, c: 0, e: false, f: "" });
     });
   });
 
   describe("groupBy", () => {
     it("groups by string key", () => {
-      const items = [{ type: "a", v: 1 }, { type: "b", v: 2 }, { type: "a", v: 3 }];
-      const result = arr.groupBy(items, "type");
+      const items = [{ type: "a", value: 1 }, { type: "b", value: 2 }, { type: "a", value: 3 }];
+      const result = arrayUtilities.groupBy(items, "type");
       expect(result.a).toHaveLength(2);
       expect(result.b).toHaveLength(1);
     });
     it("groups by function", () => {
-      const result = arr.groupBy([1, 2, 3, 4], (n) => (n % 2 === 0 ? "even" : "odd"));
+      const result = arrayUtilities.groupBy([1, 2, 3, 4], (numberValue) => (numberValue % 2 === 0 ? "even" : "odd"));
       expect(result.even).toEqual([2, 4]);
       expect(result.odd).toEqual([1, 3]);
     });
@@ -442,7 +442,7 @@ describe("arrays.js", () => {
   describe("uniqueBy", () => {
     it("deduplicates by key", () => {
       const items = [{ id: 1, name: "a" }, { id: 2, name: "b" }, { id: 1, name: "c" }];
-      const result = arr.uniqueBy(items, "id");
+      const result = arrayUtilities.uniqueBy(items, "id");
       expect(result).toHaveLength(2);
       expect(result[0].name).toBe("a"); // keeps first
     });
@@ -452,40 +452,40 @@ describe("arrays.js", () => {
 // ─── Objects ────────────────────────────────────────────────────
 
 describe("objects.js", () => {
-  let obj;
+  let objectUtilities;
   beforeAll(async () => {
-    obj = await import("../dist/objects.js");
+    objectUtilities = await import("../dist/objects.js");
   });
 
   describe("deepMerge", () => {
     it("merges nested objects", () => {
-      const result = obj.deepMerge({ a: { x: 1, y: 2 } }, { a: { y: 3, z: 4 } });
+      const result = objectUtilities.deepMerge({ a: { x: 1, y: 2 } }, { a: { y: 3, z: 4 } });
       expect(result).toEqual({ a: { x: 1, y: 3, z: 4 } });
     });
     it("replaces arrays outright", () => {
-      const result = obj.deepMerge({ a: [1, 2] }, { a: [3] });
+      const result = objectUtilities.deepMerge({ a: [1, 2] }, { a: [3] });
       expect(result.a).toEqual([3]);
     });
     it("does not mutate inputs", () => {
       const target = { a: { x: 1 } };
       const source = { a: { y: 2 } };
-      obj.deepMerge(target, source);
+      objectUtilities.deepMerge(target, source);
       expect(target).toEqual({ a: { x: 1 } });
     });
   });
 
   describe("pick", () => {
     it("picks specified keys", () => {
-      expect(obj.pick({ a: 1, b: 2, c: 3 }, ["a", "c"])).toEqual({ a: 1, c: 3 });
+      expect(objectUtilities.pick({ a: 1, b: 2, c: 3 }, ["a", "c"])).toEqual({ a: 1, c: 3 });
     });
     it("ignores missing keys", () => {
-      expect(obj.pick({ a: 1 }, ["a", "z"])).toEqual({ a: 1 });
+      expect(objectUtilities.pick({ a: 1 }, ["a", "z"])).toEqual({ a: 1 });
     });
   });
 
   describe("omit", () => {
     it("omits specified keys", () => {
-      expect(obj.omit({ a: 1, b: 2, c: 3 }, ["b"])).toEqual({ a: 1, c: 3 });
+      expect(objectUtilities.omit({ a: 1, b: 2, c: 3 }, ["b"])).toEqual({ a: 1, c: 3 });
     });
   });
 });
@@ -493,55 +493,55 @@ describe("objects.js", () => {
 // ─── Math ───────────────────────────────────────────────────────
 
 describe("math.js", () => {
-  let math;
+  let mathUtilities;
   beforeAll(async () => {
-    math = await import("../dist/math.js");
+    mathUtilities = await import("../dist/math.js");
   });
 
   describe("clamp", () => {
     it("clamps below min", () => {
-      expect(math.clamp(-5, 0, 10)).toBe(0);
+      expect(mathUtilities.clamp(-5, 0, 10)).toBe(0);
     });
     it("clamps above max", () => {
-      expect(math.clamp(15, 0, 10)).toBe(10);
+      expect(mathUtilities.clamp(15, 0, 10)).toBe(10);
     });
     it("passes through in range", () => {
-      expect(math.clamp(5, 0, 10)).toBe(5);
+      expect(mathUtilities.clamp(5, 0, 10)).toBe(5);
     });
   });
 
   describe("roundCents", () => {
     it("rounds to 2 decimal places", () => {
-      expect(math.roundCents(1.005)).toBe(1.01);
-      expect(math.roundCents(1.004)).toBe(1.0);
-      expect(math.roundCents(99.999)).toBe(100);
+      expect(mathUtilities.roundCents(1.005)).toBe(1.01);
+      expect(mathUtilities.roundCents(1.004)).toBe(1.0);
+      expect(mathUtilities.roundCents(99.999)).toBe(100);
     });
   });
 
   describe("randomInt", () => {
     it("returns value within bounds", () => {
       for (let i = 0; i < 100; i++) {
-        const val = math.randomInt(5, 10);
-        expect(val).toBeGreaterThanOrEqual(5);
-        expect(val).toBeLessThanOrEqual(10);
-        expect(Number.isInteger(val)).toBe(true);
+        const randomValue = mathUtilities.randomInt(5, 10);
+        expect(randomValue).toBeGreaterThanOrEqual(5);
+        expect(randomValue).toBeLessThanOrEqual(10);
+        expect(Number.isInteger(randomValue)).toBe(true);
       }
     });
   });
 
   describe("cosineSimilarity", () => {
     it("returns 1 for identical vectors", () => {
-      expect(math.cosineSimilarity([1, 0], [1, 0])).toBeCloseTo(1);
+      expect(mathUtilities.cosineSimilarity([1, 0], [1, 0])).toBeCloseTo(1);
     });
     it("returns 0 for orthogonal vectors", () => {
-      expect(math.cosineSimilarity([1, 0], [0, 1])).toBeCloseTo(0);
+      expect(mathUtilities.cosineSimilarity([1, 0], [0, 1])).toBeCloseTo(0);
     });
     it("returns -1 for opposite vectors", () => {
-      expect(math.cosineSimilarity([1, 0], [-1, 0])).toBeCloseTo(-1);
+      expect(mathUtilities.cosineSimilarity([1, 0], [-1, 0])).toBeCloseTo(-1);
     });
     it("returns 0 for invalid input", () => {
-      expect(math.cosineSimilarity(null, [1])).toBe(0);
-      expect(math.cosineSimilarity([1], [1, 2])).toBe(0);
+      expect(mathUtilities.cosineSimilarity(null, [1])).toBe(0);
+      expect(mathUtilities.cosineSimilarity([1], [1, 2])).toBe(0);
     });
   });
 });
@@ -549,68 +549,68 @@ describe("math.js", () => {
 // ─── Validation ─────────────────────────────────────────────────
 
 describe("validation.js", () => {
-  let val;
+  let validationUtilities;
   beforeAll(async () => {
-    val = await import("../dist/validation.js");
+    validationUtilities = await import("../dist/validation.js");
   });
 
   describe("parseIntParam", () => {
     it("uses default for null", () => {
-      expect(val.parseIntParam(undefined, 10)).toBe(10);
+      expect(validationUtilities.parseIntParam(undefined, 10)).toBe(10);
     });
     it("parses valid string", () => {
-      expect(val.parseIntParam("25", 10)).toBe(25);
+      expect(validationUtilities.parseIntParam("25", 10)).toBe(25);
     });
     it("clamps to max", () => {
-      expect(val.parseIntParam("100", 10, 50)).toBe(50);
+      expect(validationUtilities.parseIntParam("100", 10, 50)).toBe(50);
     });
     it("uses default for NaN", () => {
-      expect(val.parseIntParam("abc", 10)).toBe(10);
+      expect(validationUtilities.parseIntParam("abc", 10)).toBe(10);
     });
   });
 
   describe("parsePrice", () => {
     it("parses dollar string", () => {
-      expect(val.parsePrice("$29.99")).toBe(29.99);
+      expect(validationUtilities.parsePrice("$29.99")).toBe(29.99);
     });
     it("returns null for empty", () => {
-      expect(val.parsePrice("")).toBeNull();
+      expect(validationUtilities.parsePrice("")).toBeNull();
     });
   });
 
   describe("parseJsonSafe", () => {
     it("parses valid JSON", () => {
-      expect(val.parseJsonSafe('{"a":1}')).toEqual({ a: 1 });
+      expect(validationUtilities.parseJsonSafe('{"a":1}')).toEqual({ a: 1 });
     });
     it("returns fallback for invalid JSON", () => {
-      expect(val.parseJsonSafe("not json", "default")).toBe("default");
+      expect(validationUtilities.parseJsonSafe("not json", "default")).toBe("default");
     });
     it("returns fallback for null", () => {
-      expect(val.parseJsonSafe(null)).toBeNull();
+      expect(validationUtilities.parseJsonSafe(null)).toBeNull();
     });
   });
 
   describe("parseJsonFromLlmResponse", () => {
     it("extracts from markdown fence", () => {
-      const result = val.parseJsonFromLlmResponse('```json\n{"a":1}\n```');
+      const result = validationUtilities.parseJsonFromLlmResponse('```json\n{"a":1}\n```');
       expect(result).toEqual({ a: 1 });
     });
     it("handles bare JSON", () => {
-      expect(val.parseJsonFromLlmResponse('{"a":1}')).toEqual({ a: 1 });
+      expect(validationUtilities.parseJsonFromLlmResponse('{"a":1}')).toEqual({ a: 1 });
     });
     it("extracts from surrounding text", () => {
-      const result = val.parseJsonFromLlmResponse('Here is the result: {"a":1} done');
+      const result = validationUtilities.parseJsonFromLlmResponse('Here is the result: {"a":1} done');
       expect(result).toEqual({ a: 1 });
     });
     it("handles arrays", () => {
-      expect(val.parseJsonFromLlmResponse("[1,2,3]")).toEqual([1, 2, 3]);
+      expect(validationUtilities.parseJsonFromLlmResponse("[1,2,3]")).toEqual([1, 2, 3]);
     });
     it("returns null for unparseable", () => {
-      expect(val.parseJsonFromLlmResponse("just text")).toBeNull();
+      expect(validationUtilities.parseJsonFromLlmResponse("just text")).toBeNull();
     });
     it("returns null for null/empty", () => {
-      expect(val.parseJsonFromLlmResponse(null)).toBeNull();
-      expect(val.parseJsonFromLlmResponse("")).toBeNull();
+      expect(validationUtilities.parseJsonFromLlmResponse(null)).toBeNull();
+      expect(validationUtilities.parseJsonFromLlmResponse("")).toBeNull();
     });
   });
 });
@@ -618,22 +618,22 @@ describe("validation.js", () => {
 // ─── Crypto ─────────────────────────────────────────────────────
 
 describe("crypto.js", () => {
-  let crypto;
+  let cryptoUtilities;
   beforeAll(async () => {
-    crypto = await import("../dist/crypto.js");
+    cryptoUtilities = await import("../dist/crypto.js");
   });
 
   describe("generateUUID", () => {
     it("returns a valid UUID format", () => {
-      const uuid = crypto.generateUUID();
-      expect(uuid).toMatch(
+      const uuidValue = cryptoUtilities.generateUUID();
+      expect(uuidValue).toMatch(
         /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
       );
     });
     it("generates unique values", () => {
-      const a = crypto.generateUUID();
-      const b = crypto.generateUUID();
-      expect(a).not.toBe(b);
+      const uuidValue = cryptoUtilities.generateUUID();
+      const secondUuidValue = cryptoUtilities.generateUUID();
+      expect(uuidValue).not.toBe(secondUuidValue);
     });
   });
 });
@@ -641,23 +641,23 @@ describe("crypto.js", () => {
 // ─── Phone ──────────────────────────────────────────────────────
 
 describe("phone.js", () => {
-  let phone;
+  let phoneUtilities;
   beforeAll(async () => {
-    phone = await import("../dist/phone.js");
+    phoneUtilities = await import("../dist/phone.js");
   });
 
   describe("formatPhone", () => {
     it("formats 11-digit NANP", () => {
-      expect(phone.formatPhone("16045551234")).toBe("+1 (604) 555-1234");
+      expect(phoneUtilities.formatPhone("16045551234")).toBe("+1 (604) 555-1234");
     });
     it("formats 10-digit", () => {
-      expect(phone.formatPhone("6045551234")).toBe("(604) 555-1234");
+      expect(phoneUtilities.formatPhone("6045551234")).toBe("(604) 555-1234");
     });
     it("returns Unknown for null", () => {
-      expect(phone.formatPhone(null)).toBe("Unknown");
+      expect(phoneUtilities.formatPhone(null)).toBe("Unknown");
     });
     it("passes through other formats", () => {
-      expect(phone.formatPhone("+44 20 7946 0958")).toBe("+44 20 7946 0958");
+      expect(phoneUtilities.formatPhone("+44 20 7946 0958")).toBe("+44 20 7946 0958");
     });
   });
 });
@@ -665,86 +665,86 @@ describe("phone.js", () => {
 // ─── New Text Utilities ─────────────────────────────────────────
 
 describe("text.js — new utilities", () => {
-  let txt;
+  let textUtilities;
   beforeAll(async () => {
-    txt = await import("../dist/text.js");
+    textUtilities = await import("../dist/text.js");
   });
 
   describe("slugify", () => {
     it("converts to URL-safe slug", () => {
-      expect(txt.slugify("Hello World! Foo")).toBe("hello-world-foo");
+      expect(textUtilities.slugify("Hello World! Foo")).toBe("hello-world-foo");
     });
     it("strips diacritics", () => {
-      expect(txt.slugify("Café Résumé")).toBe("cafe-resume");
+      expect(textUtilities.slugify("Café Résumé")).toBe("cafe-resume");
     });
     it("collapses multiple separators", () => {
-      expect(txt.slugify("hello   ---   world")).toBe("hello-world");
+      expect(textUtilities.slugify("hello   ---   world")).toBe("hello-world");
     });
     it("handles null/empty", () => {
-      expect(txt.slugify(null)).toBe("");
-      expect(txt.slugify("")).toBe("");
+      expect(textUtilities.slugify(null)).toBe("");
+      expect(textUtilities.slugify("")).toBe("");
     });
   });
 
   describe("toKebabCase", () => {
     it("converts camelCase", () => {
-      expect(txt.toKebabCase("helloWorld")).toBe("hello-world");
+      expect(textUtilities.toKebabCase("helloWorld")).toBe("hello-world");
     });
     it("converts spaces and underscores", () => {
-      expect(txt.toKebabCase("Hello World_Test")).toBe("hello-world-test");
+      expect(textUtilities.toKebabCase("Hello World_Test")).toBe("hello-world-test");
     });
   });
 
   describe("toCamelCase", () => {
     it("converts kebab-case", () => {
-      expect(txt.toCamelCase("hello-world")).toBe("helloWorld");
+      expect(textUtilities.toCamelCase("hello-world")).toBe("helloWorld");
     });
     it("converts snake_case", () => {
-      expect(txt.toCamelCase("hello_world")).toBe("helloWorld");
+      expect(textUtilities.toCamelCase("hello_world")).toBe("helloWorld");
     });
     it("converts from PascalCase", () => {
-      expect(txt.toCamelCase("HelloWorld")).toBe("helloWorld");
+      expect(textUtilities.toCamelCase("HelloWorld")).toBe("helloWorld");
     });
   });
 
   describe("toPascalCase", () => {
     it("converts from kebab-case", () => {
-      expect(txt.toPascalCase("hello-world")).toBe("HelloWorld");
+      expect(textUtilities.toPascalCase("hello-world")).toBe("HelloWorld");
     });
   });
 
   describe("toSnakeCase", () => {
     it("converts camelCase", () => {
-      expect(txt.toSnakeCase("helloWorld")).toBe("hello_world");
+      expect(textUtilities.toSnakeCase("helloWorld")).toBe("hello_world");
     });
     it("converts spaces", () => {
-      expect(txt.toSnakeCase("Hello World")).toBe("hello_world");
+      expect(textUtilities.toSnakeCase("Hello World")).toBe("hello_world");
     });
   });
 
   describe("pluralize", () => {
     it("returns singular for count 1", () => {
-      expect(txt.pluralize("item", 1)).toBe("item");
+      expect(textUtilities.pluralize("item", 1)).toBe("item");
     });
     it("appends s for other counts", () => {
-      expect(txt.pluralize("item", 0)).toBe("items");
-      expect(txt.pluralize("item", 5)).toBe("items");
+      expect(textUtilities.pluralize("item", 0)).toBe("items");
+      expect(textUtilities.pluralize("item", 5)).toBe("items");
     });
     it("uses custom plural form", () => {
-      expect(txt.pluralize("child", 3, "children")).toBe("children");
+      expect(textUtilities.pluralize("child", 3, "children")).toBe("children");
     });
   });
 
   describe("wordCount", () => {
     it("counts words", () => {
-      expect(txt.wordCount("hello world foo")).toBe(3);
+      expect(textUtilities.wordCount("hello world foo")).toBe(3);
     });
     it("handles extra whitespace", () => {
-      expect(txt.wordCount("  hello   world  ")).toBe(2);
+      expect(textUtilities.wordCount("  hello   world  ")).toBe(2);
     });
     it("returns 0 for null/empty", () => {
-      expect(txt.wordCount(null)).toBe(0);
-      expect(txt.wordCount("")).toBe(0);
+      expect(textUtilities.wordCount(null)).toBe(0);
+      expect(textUtilities.wordCount("")).toBe(0);
     });
   });
 });
@@ -752,74 +752,74 @@ describe("text.js — new utilities", () => {
 // ─── New Math Utilities ─────────────────────────────────────────
 
 describe("math.js — new utilities", () => {
-  let math;
+  let mathUtilities;
   beforeAll(async () => {
-    math = await import("../dist/math.js");
+    mathUtilities = await import("../dist/math.js");
   });
 
   describe("lerp", () => {
     it("returns a when t=0", () => {
-      expect(math.lerp(0, 100, 0)).toBe(0);
+      expect(mathUtilities.lerp(0, 100, 0)).toBe(0);
     });
     it("returns b when t=1", () => {
-      expect(math.lerp(0, 100, 1)).toBe(100);
+      expect(mathUtilities.lerp(0, 100, 1)).toBe(100);
     });
     it("interpolates at midpoint", () => {
-      expect(math.lerp(0, 100, 0.5)).toBe(50);
+      expect(mathUtilities.lerp(0, 100, 0.5)).toBe(50);
     });
   });
 
   describe("remap", () => {
     it("remaps value between ranges", () => {
-      expect(math.remap(50, 0, 100, 0, 1)).toBe(0.5);
+      expect(mathUtilities.remap(50, 0, 100, 0, 1)).toBe(0.5);
     });
     it("handles negative output ranges", () => {
-      expect(math.remap(75, 0, 100, -10, 10)).toBe(5);
+      expect(mathUtilities.remap(75, 0, 100, -10, 10)).toBe(5);
     });
   });
 
   describe("sum", () => {
     it("sums numbers", () => {
-      expect(math.sum([1, 2, 3, 4])).toBe(10);
+      expect(mathUtilities.sum([1, 2, 3, 4])).toBe(10);
     });
     it("returns 0 for empty/null", () => {
-      expect(math.sum([])).toBe(0);
-      expect(math.sum(null)).toBe(0);
+      expect(mathUtilities.sum([])).toBe(0);
+      expect(mathUtilities.sum(null)).toBe(0);
     });
   });
 
   describe("average", () => {
     it("computes arithmetic mean", () => {
-      expect(math.average([10, 20, 30])).toBe(20);
+      expect(mathUtilities.average([10, 20, 30])).toBe(20);
     });
     it("returns 0 for empty", () => {
-      expect(math.average([])).toBe(0);
+      expect(mathUtilities.average([])).toBe(0);
     });
   });
 
   describe("median", () => {
     it("returns middle for odd-length", () => {
-      expect(math.median([3, 1, 2])).toBe(2);
+      expect(mathUtilities.median([3, 1, 2])).toBe(2);
     });
     it("returns average of middle two for even-length", () => {
-      expect(math.median([1, 2, 3, 4])).toBe(2.5);
+      expect(mathUtilities.median([1, 2, 3, 4])).toBe(2.5);
     });
     it("returns 0 for empty", () => {
-      expect(math.median([])).toBe(0);
+      expect(mathUtilities.median([])).toBe(0);
     });
     it("does not mutate input", () => {
       const input = [3, 1, 2];
-      math.median(input);
+      mathUtilities.median(input);
       expect(input).toEqual([3, 1, 2]);
     });
   });
 
   describe("roundTo", () => {
     it("rounds to specified decimals", () => {
-      expect(math.roundTo(1.23456, 3)).toBe(1.235);
+      expect(mathUtilities.roundTo(1.23456, 3)).toBe(1.235);
     });
     it("defaults to 2 decimals", () => {
-      expect(math.roundTo(1.005)).toBe(1.01);
+      expect(mathUtilities.roundTo(1.005)).toBe(1.01);
     });
   });
 });
@@ -827,79 +827,79 @@ describe("math.js — new utilities", () => {
 // ─── New Object Utilities ───────────────────────────────────────
 
 describe("objects.js — new utilities", () => {
-  let obj;
+  let objectUtilities;
   beforeAll(async () => {
-    obj = await import("../dist/objects.js");
+    objectUtilities = await import("../dist/objects.js");
   });
 
   describe("mapValues", () => {
     it("transforms values", () => {
-      expect(obj.mapValues({ a: 1, b: 2 }, (v) => v * 2)).toEqual({ a: 2, b: 4 });
+      expect(objectUtilities.mapValues({ a: 1, b: 2 }, (value) => value * 2)).toEqual({ a: 2, b: 4 });
     });
     it("passes key as second arg", () => {
-      const result = obj.mapValues({ x: 1 }, (v, k) => `${k}=${v}`);
+      const result = objectUtilities.mapValues({ x: 1 }, (value, key) => `${key}=${value}`);
       expect(result.x).toBe("x=1");
     });
   });
 
   describe("mapKeys", () => {
     it("transforms keys", () => {
-      expect(obj.mapKeys({ a: 1, b: 2 }, (k) => k.toUpperCase())).toEqual({ A: 1, B: 2 });
+      expect(objectUtilities.mapKeys({ a: 1, b: 2 }, (k) => k.toUpperCase())).toEqual({ A: 1, B: 2 });
     });
   });
 
   describe("invert", () => {
     it("swaps keys and values", () => {
-      expect(obj.invert({ a: "1", b: "2" })).toEqual({ "1": "a", "2": "b" });
+      expect(objectUtilities.invert({ a: "1", b: "2" })).toEqual({ "1": "a", "2": "b" });
     });
   });
 
   describe("isEmpty", () => {
     it("returns true for null/undefined", () => {
-      expect(obj.isEmpty(null)).toBe(true);
-      expect(obj.isEmpty(undefined)).toBe(true);
+      expect(objectUtilities.isEmpty(null)).toBe(true);
+      expect(objectUtilities.isEmpty(undefined)).toBe(true);
     });
     it("returns true for empty string", () => {
-      expect(obj.isEmpty("")).toBe(true);
+      expect(objectUtilities.isEmpty("")).toBe(true);
     });
     it("returns true for empty array", () => {
-      expect(obj.isEmpty([])).toBe(true);
+      expect(objectUtilities.isEmpty([])).toBe(true);
     });
     it("returns true for empty object", () => {
-      expect(obj.isEmpty({})).toBe(true);
+      expect(objectUtilities.isEmpty({})).toBe(true);
     });
     it("returns true for empty Map/Set", () => {
-      expect(obj.isEmpty(new Map())).toBe(true);
-      expect(obj.isEmpty(new Set())).toBe(true);
+      expect(objectUtilities.isEmpty(new Map())).toBe(true);
+      expect(objectUtilities.isEmpty(new Set())).toBe(true);
     });
     it("returns false for non-empty values", () => {
-      expect(obj.isEmpty("hi")).toBe(false);
-      expect(obj.isEmpty([1])).toBe(false);
-      expect(obj.isEmpty({ a: 1 })).toBe(false);
-      expect(obj.isEmpty(0)).toBe(false);
-      expect(obj.isEmpty(false)).toBe(false);
+      expect(objectUtilities.isEmpty("hi")).toBe(false);
+      expect(objectUtilities.isEmpty([1])).toBe(false);
+      expect(objectUtilities.isEmpty({ a: 1 })).toBe(false);
+      expect(objectUtilities.isEmpty(0)).toBe(false);
+      expect(objectUtilities.isEmpty(false)).toBe(false);
     });
   });
 
   describe("deepEqual", () => {
     it("returns true for identical primitives", () => {
-      expect(obj.deepEqual(1, 1)).toBe(true);
-      expect(obj.deepEqual("a", "a")).toBe(true);
+      expect(objectUtilities.deepEqual(1, 1)).toBe(true);
+      expect(objectUtilities.deepEqual("a", "a")).toBe(true);
     });
     it("returns false for different primitives", () => {
-      expect(obj.deepEqual(1, 2)).toBe(false);
+      expect(objectUtilities.deepEqual(1, 2)).toBe(false);
     });
     it("deeply compares objects", () => {
-      expect(obj.deepEqual({ a: { b: 1 } }, { a: { b: 1 } })).toBe(true);
-      expect(obj.deepEqual({ a: { b: 1 } }, { a: { b: 2 } })).toBe(false);
+      expect(objectUtilities.deepEqual({ a: { b: 1 } }, { a: { b: 1 } })).toBe(true);
+      expect(objectUtilities.deepEqual({ a: { b: 1 } }, { a: { b: 2 } })).toBe(false);
     });
     it("deeply compares arrays", () => {
-      expect(obj.deepEqual([1, [2, 3]], [1, [2, 3]])).toBe(true);
-      expect(obj.deepEqual([1, 2], [1, 3])).toBe(false);
+      expect(objectUtilities.deepEqual([1, [2, 3]], [1, [2, 3]])).toBe(true);
+      expect(objectUtilities.deepEqual([1, 2], [1, 3])).toBe(false);
     });
     it("handles null comparison", () => {
-      expect(obj.deepEqual(null, null)).toBe(true);
-      expect(obj.deepEqual(null, {})).toBe(false);
+      expect(objectUtilities.deepEqual(null, null)).toBe(true);
+      expect(objectUtilities.deepEqual(null, {})).toBe(false);
     });
   });
 });
@@ -907,14 +907,14 @@ describe("objects.js — new utilities", () => {
 // ─── New Array Utilities ────────────────────────────────────────
 
 describe("arrays.js — new utilities", () => {
-  let arr;
+  let arrayUtilities;
   beforeAll(async () => {
-    arr = await import("../dist/arrays.js");
+    arrayUtilities = await import("../dist/arrays.js");
   });
 
   describe("partition", () => {
     it("splits by predicate", () => {
-      const [evens, odds] = arr.partition([1, 2, 3, 4, 5], (n) => n % 2 === 0);
+      const [evens, odds] = arrayUtilities.partition([1, 2, 3, 4, 5], (numberValue) => numberValue % 2 === 0);
       expect(evens).toEqual([2, 4]);
       expect(odds).toEqual([1, 3, 5]);
     });
@@ -922,45 +922,45 @@ describe("arrays.js — new utilities", () => {
 
   describe("intersection", () => {
     it("returns shared elements", () => {
-      expect(arr.intersection([1, 2, 3], [2, 3, 4])).toEqual([2, 3]);
+      expect(arrayUtilities.intersection([1, 2, 3], [2, 3, 4])).toEqual([2, 3]);
     });
     it("preserves order from first array", () => {
-      expect(arr.intersection([3, 1, 2], [2, 3])).toEqual([3, 2]);
+      expect(arrayUtilities.intersection([3, 1, 2], [2, 3])).toEqual([3, 2]);
     });
   });
 
   describe("difference", () => {
     it("returns elements only in first array", () => {
-      expect(arr.difference([1, 2, 3], [2, 4])).toEqual([1, 3]);
+      expect(arrayUtilities.difference([1, 2, 3], [2, 4])).toEqual([1, 3]);
     });
   });
 
   describe("sortBy", () => {
     it("sorts by string key", () => {
       const items = [{ name: "c" }, { name: "a" }, { name: "b" }];
-      expect(arr.sortBy(items, "name").map((i) => i.name)).toEqual(["a", "b", "c"]);
+      expect(arrayUtilities.sortBy(items, "name").map((i) => i.name)).toEqual(["a", "b", "c"]);
     });
     it("sorts descending", () => {
-      const items = [{ v: 1 }, { v: 3 }, { v: 2 }];
-      expect(arr.sortBy(items, "v", { descending: true }).map((i) => i.v)).toEqual([3, 2, 1]);
+      const items = [{ value: 1 }, { value: 3 }, { value: 2 }];
+      expect(arrayUtilities.sortBy(items, "value", { descending: true }).map((i) => i.value)).toEqual([3, 2, 1]);
     });
     it("does not mutate original", () => {
-      const items = [{ v: 3 }, { v: 1 }];
-      arr.sortBy(items, "v");
-      expect(items[0].v).toBe(3);
+      const items = [{ value: 3 }, { value: 1 }];
+      arrayUtilities.sortBy(items, "value");
+      expect(items[0].value).toBe(3);
     });
     it("accepts comparator function", () => {
-      const result = arr.sortBy([3, 1, 2], (a, b) => a - b);
+      const result = arrayUtilities.sortBy([3, 1, 2], (itemA, itemB) => itemA - itemB);
       expect(result).toEqual([1, 2, 3]);
     });
   });
 
   describe("flatten", () => {
     it("flattens one level by default", () => {
-      expect(arr.flatten([[1, 2], [3, [4]]])).toEqual([1, 2, 3, [4]]);
+      expect(arrayUtilities.flatten([[1, 2], [3, [4]]])).toEqual([1, 2, 3, [4]]);
     });
     it("fully flattens with Infinity", () => {
-      expect(arr.flatten([[1, [2, [3, [4]]]]], Infinity)).toEqual([1, 2, 3, 4]);
+      expect(arrayUtilities.flatten([[1, [2, [3, [4]]]]], Infinity)).toEqual([1, 2, 3, 4]);
     });
   });
 });
@@ -968,27 +968,27 @@ describe("arrays.js — new utilities", () => {
 // ─── New Async Utilities ────────────────────────────────────────
 
 describe("async.js — new utilities", () => {
-  let asyncMod;
+  let asyncModule;
   beforeAll(async () => {
-    asyncMod = await import("../dist/async.js");
+    asyncModule = await import("../dist/async.js");
   });
 
   describe("pMap", () => {
     it("maps concurrently", async () => {
-      const results = await asyncMod.pMap([1, 2, 3], async (n) => n * 2);
+      const results = await asyncModule.pMap([1, 2, 3], async (numberValue) => numberValue * 2);
       expect(results).toEqual([2, 4, 6]);
     });
     it("respects concurrency limit", async () => {
       let active = 0;
       let maxActive = 0;
-      const results = await asyncMod.pMap(
+      const results = await asyncModule.pMap(
         [1, 2, 3, 4, 5],
-        async (n) => {
+        async (numberValue) => {
           active++;
           maxActive = Math.max(maxActive, active);
-          await asyncMod.sleep(10);
+          await asyncModule.sleep(10);
           active--;
-          return n;
+          return numberValue;
         },
         { concurrency: 2 },
       );
@@ -996,10 +996,10 @@ describe("async.js — new utilities", () => {
       expect(maxActive).toBeLessThanOrEqual(2);
     });
     it("preserves order", async () => {
-      const results = await asyncMod.pMap(
+      const results = await asyncModule.pMap(
         [30, 10, 20],
         async (ms) => {
-          await asyncMod.sleep(ms);
+          await asyncModule.sleep(ms);
           return ms;
         },
         { concurrency: 3 },
@@ -1010,13 +1010,13 @@ describe("async.js — new utilities", () => {
 
   describe("defer", () => {
     it("resolves externally", async () => {
-      const { promise, resolve } = asyncMod.defer();
+      const { promise, resolve } = asyncModule.defer();
       setTimeout(() => resolve("done"), 10);
       const result = await promise;
       expect(result).toBe("done");
     });
     it("rejects externally", async () => {
-      const { promise, reject } = asyncMod.defer();
+      const { promise, reject } = asyncModule.defer();
       setTimeout(() => reject(new Error("fail")), 10);
       await expect(promise).rejects.toThrow("fail");
     });
@@ -1026,56 +1026,56 @@ describe("async.js — new utilities", () => {
 // ─── New Validation Utilities ───────────────────────────────────
 
 describe("validation.js — new utilities", () => {
-  let val;
+  let validationUtilities;
   beforeAll(async () => {
-    val = await import("../dist/validation.js");
+    validationUtilities = await import("../dist/validation.js");
   });
 
   describe("isEmail", () => {
     it("validates correct emails", () => {
-      expect(val.isEmail("user@example.com")).toBe(true);
-      expect(val.isEmail("hello@rod.dev")).toBe(true);
+      expect(validationUtilities.isEmail("user@example.com")).toBe(true);
+      expect(validationUtilities.isEmail("hello@rod.dev")).toBe(true);
     });
     it("rejects invalid emails", () => {
-      expect(val.isEmail("not-an-email")).toBe(false);
-      expect(val.isEmail("@nope.com")).toBe(false);
-      expect(val.isEmail("user@x.y")).toBe(false); // 1-char TLD rejected
-      expect(val.isEmail(null)).toBe(false);
-      expect(val.isEmail("")).toBe(false);
+      expect(validationUtilities.isEmail("not-an-email")).toBe(false);
+      expect(validationUtilities.isEmail("@nope.com")).toBe(false);
+      expect(validationUtilities.isEmail("user@x.y")).toBe(false); // 1-char TLD rejected
+      expect(validationUtilities.isEmail(null)).toBe(false);
+      expect(validationUtilities.isEmail("")).toBe(false);
     });
   });
 
   describe("isUrl", () => {
     it("validates HTTP URLs", () => {
-      expect(val.isUrl("http://example.com")).toBe(true);
-      expect(val.isUrl("https://rod.dev/page")).toBe(true);
+      expect(validationUtilities.isUrl("http://example.com")).toBe(true);
+      expect(validationUtilities.isUrl("https://rod.dev/page")).toBe(true);
     });
     it("rejects non-HTTP protocols", () => {
-      expect(val.isUrl("ftp://files.com")).toBe(false);
+      expect(validationUtilities.isUrl("ftp://files.com")).toBe(false);
     });
     it("enforces HTTPS when required", () => {
-      expect(val.isUrl("http://example.com", { requireHttps: true })).toBe(false);
-      expect(val.isUrl("https://example.com", { requireHttps: true })).toBe(true);
+      expect(validationUtilities.isUrl("http://example.com", { requireHttps: true })).toBe(false);
+      expect(validationUtilities.isUrl("https://example.com", { requireHttps: true })).toBe(true);
     });
     it("rejects invalid URLs", () => {
-      expect(val.isUrl("not a url")).toBe(false);
-      expect(val.isUrl(null)).toBe(false);
+      expect(validationUtilities.isUrl("not a url")).toBe(false);
+      expect(validationUtilities.isUrl(null)).toBe(false);
     });
   });
 
   describe("isNumeric", () => {
     it("validates numbers", () => {
-      expect(val.isNumeric(42)).toBe(true);
-      expect(val.isNumeric(3.14)).toBe(true);
-      expect(val.isNumeric("100")).toBe(true);
-      expect(val.isNumeric("-5.5")).toBe(true);
+      expect(validationUtilities.isNumeric(42)).toBe(true);
+      expect(validationUtilities.isNumeric(3.14)).toBe(true);
+      expect(validationUtilities.isNumeric("100")).toBe(true);
+      expect(validationUtilities.isNumeric("-5.5")).toBe(true);
     });
     it("rejects non-numeric", () => {
-      expect(val.isNumeric("abc")).toBe(false);
-      expect(val.isNumeric(NaN)).toBe(false);
-      expect(val.isNumeric(Infinity)).toBe(false);
-      expect(val.isNumeric("")).toBe(false);
-      expect(val.isNumeric("  ")).toBe(false);
+      expect(validationUtilities.isNumeric("abc")).toBe(false);
+      expect(validationUtilities.isNumeric(NaN)).toBe(false);
+      expect(validationUtilities.isNumeric(Infinity)).toBe(false);
+      expect(validationUtilities.isNumeric("")).toBe(false);
+      expect(validationUtilities.isNumeric("  ")).toBe(false);
     });
   });
 });

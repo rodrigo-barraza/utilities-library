@@ -7,7 +7,7 @@ export interface AsyncHandlerOptions {
 /**
  * Wrap an async route handler with standard error catching.
  */
-export declare function asyncHandler(fn: (req: Request, res: Response, next: NextFunction) => Promise<unknown>, label?: string, errorStatusOrOpts?: number | AsyncHandlerOptions): (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare function asyncHandler(handlerFunction: (req: Request, res: Response, next: NextFunction) => Promise<unknown>, label?: string, errorStatusOrOpts?: number | AsyncHandlerOptions): (req: Request, res: Response, next: NextFunction) => Promise<void>;
 /**
  * Reusable health-state tracker for route domains.
  */
@@ -29,7 +29,7 @@ export declare function setupStreamingSSE(res: Response): (event: unknown) => vo
  */
 export declare class TokenManager {
     #private;
-    constructor(fetchFn: () => Promise<{
+    constructor(fetchTokenFunction: () => Promise<{
         token: string;
         expiresInMs: number;
     }>);
