@@ -291,6 +291,15 @@ export declare const TOOL_NAMES: {
     readonly CODE_EXECUTION: "code_execution";
 };
 export type ToolName = (typeof TOOL_NAMES)[keyof typeof TOOL_NAMES];
+export declare const INPUT_MODALITIES: {
+    readonly IMAGE: "image";
+    readonly AUDIO: "audio";
+    readonly VIDEO: "video";
+    readonly PDF: "pdf";
+    readonly DOCUMENT: "document";
+};
+export type InputModality = (typeof INPUT_MODALITIES)[keyof typeof INPUT_MODALITIES];
+export declare const TOOL_INPUT_MODALITIES: Readonly<Record<string, readonly InputModality[]>>;
 export declare const SSE_EVENT_TYPES: {
     readonly CHUNK: "chunk";
     readonly THINKING: "thinking";

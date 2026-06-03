@@ -242,6 +242,42 @@ export const TOOL_NAMES = {
 export type ToolName = (typeof TOOL_NAMES)[keyof typeof TOOL_NAMES];
 
 // ─────────────────────────────────────────────────────────────
+// Tool Input Modalities — maps tools to the file types they can
+// consume from user-uploaded attachments. Used by prism-client
+// to dynamically show the correct upload button icons and accept
+// filters, and by prism-service to enrich client-facing schemas.
+//
+// Modalities:
+//   image    → image/* files (JPEG, PNG, WebP, GIF, etc.)
+//   audio    → audio/* files (MP3, WAV, M4A, WEBM, etc.)
+//   video    → video/* files (MP4, WebM, MOV, etc.)
+//   pdf      → PDF documents
+//   document → Office/tabular documents (DOCX, XLSX, CSV, TSV)
+// ─────────────────────────────────────────────────────────────
+
+export const INPUT_MODALITIES = {
+  IMAGE: "image",
+  AUDIO: "audio",
+  VIDEO: "video",
+  PDF: "pdf",
+  DOCUMENT: "document",
+} as const;
+
+export type InputModality = (typeof INPUT_MODALITIES)[keyof typeof INPUT_MODALITIES];
+
+export const TOOL_INPUT_MODALITIES: Readonly<Record<string, readonly InputModality[]>> = {
+  generate_image: [INPUT_MODALITIES.IMAGE],
+  manipulate_image: [INPUT_MODALITIES.IMAGE],
+  convert_image_to_ascii: [INPUT_MODALITIES.IMAGE],
+  describe_image: [INPUT_MODALITIES.IMAGE],
+  speech_to_text: [INPUT_MODALITIES.AUDIO],
+  read_pdf: [INPUT_MODALITIES.PDF],
+  read_docx: [INPUT_MODALITIES.DOCUMENT],
+  read_spreadsheet: [INPUT_MODALITIES.DOCUMENT],
+  convert_video_to_gif: [INPUT_MODALITIES.VIDEO],
+} as const;
+
+// ─────────────────────────────────────────────────────────────
 // SSE Event Types — cross-service streaming contract between
 // prism-service (producer) and prism-client (consumer).
 //
