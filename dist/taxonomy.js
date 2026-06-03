@@ -227,6 +227,8 @@ export const TOOL_INPUT_MODALITIES = {
     manipulate_image: [INPUT_MODALITIES.IMAGE],
     convert_image_to_ascii: [INPUT_MODALITIES.IMAGE],
     describe_image: [INPUT_MODALITIES.IMAGE],
+    create_3d_model: [INPUT_MODALITIES.IMAGE],
+    create_3d_scene: [INPUT_MODALITIES.IMAGE],
     speech_to_text: [INPUT_MODALITIES.AUDIO],
     read_pdf: [INPUT_MODALITIES.PDF],
     read_docx: [INPUT_MODALITIES.DOCUMENT],
