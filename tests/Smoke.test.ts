@@ -1227,3 +1227,34 @@ describe("color.js", () => {
     });
   });
 });
+
+// ─── Taxonomy ───────────────────────────────────────────────────
+
+describe("taxonomy.js", () => {
+  let taxonomyModule;
+  beforeAll(async () => {
+    taxonomyModule = await import("../dist/taxonomy.js");
+  });
+
+  describe("INPUT_MODALITIES", () => {
+    it("defines the expected modality categories", () => {
+      expect(taxonomyModule.INPUT_MODALITIES.IMAGE).toBe("image");
+      expect(taxonomyModule.INPUT_MODALITIES.AUDIO).toBe("audio");
+      expect(taxonomyModule.INPUT_MODALITIES.VIDEO).toBe("video");
+      expect(taxonomyModule.INPUT_MODALITIES.PDF).toBe("pdf");
+      expect(taxonomyModule.INPUT_MODALITIES.DOCUMENT).toBe("document");
+    });
+  });
+
+  describe("TOOL_INPUT_MODALITIES", () => {
+    it("maps tools to their correct input modalities", () => {
+      expect(taxonomyModule.TOOL_INPUT_MODALITIES.generate_image).toContain("image");
+      expect(taxonomyModule.TOOL_INPUT_MODALITIES.speech_to_text).toContain("audio");
+      expect(taxonomyModule.TOOL_INPUT_MODALITIES.read_pdf).toContain("pdf");
+      expect(taxonomyModule.TOOL_INPUT_MODALITIES.read_docx).toContain("document");
+      expect(taxonomyModule.TOOL_INPUT_MODALITIES.read_spreadsheet).toContain("document");
+      expect(taxonomyModule.TOOL_INPUT_MODALITIES.convert_video_to_gif).toContain("video");
+    });
+  });
+});
+
