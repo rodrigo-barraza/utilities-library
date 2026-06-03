@@ -234,6 +234,7 @@ export const TOOL_INPUT_MODALITIES = {
     read_docx: [INPUT_MODALITIES.DOCUMENT],
     read_spreadsheet: [INPUT_MODALITIES.DOCUMENT],
     convert_video_to_gif: [INPUT_MODALITIES.VIDEO],
+    create_vector_animation: [INPUT_MODALITIES.IMAGE],
 };
 // ─────────────────────────────────────────────────────────────
 // SSE Event Types — cross-service streaming contract between
