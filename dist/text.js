@@ -157,6 +157,7 @@ const TOOL_DISPLAY_OVERRIDES = {
     get_trends: "Get Trending Topics",
     search_products: "Search Products",
     get_trending_products: "Get Trending Products",
+    search_amazon_products: "Search Amazon Products",
     get_product_availability: "Get Product Availability",
     check_product_availability: "Check Product Availability",
     get_costco_us_products: "Search Costco US Products",
