@@ -206,6 +206,10 @@ export declare const DOMAINS: {
         readonly key: "core";
         readonly displayName: "Core Tools";
     };
+    readonly REDDIT: {
+        readonly key: "reddit";
+        readonly displayName: "Reddit";
+    };
 };
 export type DomainConstantKey = keyof typeof DOMAINS;
 export type DomainEntry = (typeof DOMAINS)[DomainConstantKey];

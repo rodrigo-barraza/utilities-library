@@ -72,10 +72,17 @@ export const DOMAINS = {
     TORRENT: { key: "torrent", displayName: "Torrent" },
     MCP: { key: "mcp", displayName: "Model Context Protocol" },
     CORE: { key: "core", displayName: "Core Tools" },
+    REDDIT: { key: "reddit", displayName: "Reddit" },
 };
 export const LABEL_TAGS = Object.fromEntries(Object.entries(LABELS).map(([key, value]) => [key, `label:${value}`]));
-export const DOMAIN_TAGS = Object.fromEntries(Object.entries(DOMAINS).map(([constantKey, entry]) => [constantKey, `domain:${entry.displayName}`]));
-export const DOMAIN_KEY_TAGS = Object.fromEntries(Object.entries(DOMAINS).map(([constantKey, entry]) => [constantKey, `domainKey:${entry.key}`]));
+export const DOMAIN_TAGS = Object.fromEntries(Object.entries(DOMAINS).map(([constantKey, entry]) => [
+    constantKey,
+    `domain:${entry.displayName}`,
+]));
+export const DOMAIN_KEY_TAGS = Object.fromEntries(Object.entries(DOMAINS).map(([constantKey, entry]) => [
+    constantKey,
+    `domainKey:${entry.key}`,
+]));
 export const CORE_AGENTIC_TOOLS = [
     "upsert_memory",
     "create_task",
