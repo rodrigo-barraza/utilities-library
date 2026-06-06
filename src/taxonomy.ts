@@ -68,7 +68,7 @@ export const DOMAINS = {
   CRON_JOBS: { key: "cron_jobs", displayName: "Cron Jobs" },
   CONVERSATION_TIMERS: { key: "timers", displayName: "Timers" },
   REASONING: { key: "reasoning", displayName: "Reasoning" },
-  COORDINATOR: { key: "coordinator", displayName: "Coordinator" },
+  ORCHESTRATOR: { key: "orchestrator", displayName: "Orchestrator" },
   SKILLS: { key: "skills", displayName: "Skills" },
   CONTROL: { key: "control", displayName: "Control Flow" },
   STRUCTURED: { key: "structured", displayName: "Structured Output" },
@@ -313,7 +313,7 @@ export const SSE_EVENT_TYPES = {
   TODO_UPDATE: "todo_update",
   BRIEF_UPDATE: "brief_update",
   TEXT: "text",
-  WORKER_STATUS: "worker_status",
+  SUB_AGENT_STATUS: "sub_agent_status",
   PLAN_PROPOSAL: "plan_proposal",
   APPROVAL_REQUIRED: "approval_required",
   EXECUTABLE_CODE: "executableCode",
@@ -333,7 +333,7 @@ export type SseEventType =
 export const STATUS_MESSAGES = {
   // ── Panel Refreshes ──
   TASKS_UPDATED: "tasks_updated",
-  WORKERS_UPDATED: "workers_updated",
+  SUB_AGENTS_UPDATED: "sub_agents_updated",
   MEMORIES_UPDATED: "memories_updated",
   CUSTOM_TOOLS_UPDATED: "custom_tools_updated",
 
@@ -367,7 +367,7 @@ export const STATUS_MESSAGES = {
   WORKTREE_ENTERED: "worktree_entered",
   WORKTREE_EXITED: "worktree_exited",
 
-  // ── Coordinator ──
+  // ── Orchestrator ──
   SPAWNED: "spawned",
   PHASE: "phase",
   COMPLETE: "complete",

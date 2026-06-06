@@ -170,9 +170,9 @@ export declare const DOMAINS: {
         readonly key: "reasoning";
         readonly displayName: "Reasoning";
     };
-    readonly COORDINATOR: {
-        readonly key: "coordinator";
-        readonly displayName: "Coordinator";
+    readonly ORCHESTRATOR: {
+        readonly key: "orchestrator";
+        readonly displayName: "Orchestrator";
     };
     readonly SKILLS: {
         readonly key: "skills";
@@ -319,7 +319,7 @@ export declare const SSE_EVENT_TYPES: {
     readonly TODO_UPDATE: "todo_update";
     readonly BRIEF_UPDATE: "brief_update";
     readonly TEXT: "text";
-    readonly WORKER_STATUS: "worker_status";
+    readonly SUB_AGENT_STATUS: "sub_agent_status";
     readonly PLAN_PROPOSAL: "plan_proposal";
     readonly APPROVAL_REQUIRED: "approval_required";
     readonly EXECUTABLE_CODE: "executableCode";
@@ -329,7 +329,7 @@ export declare const SSE_EVENT_TYPES: {
 export type SseEventType = (typeof SSE_EVENT_TYPES)[keyof typeof SSE_EVENT_TYPES];
 export declare const STATUS_MESSAGES: {
     readonly TASKS_UPDATED: "tasks_updated";
-    readonly WORKERS_UPDATED: "workers_updated";
+    readonly SUB_AGENTS_UPDATED: "sub_agents_updated";
     readonly MEMORIES_UPDATED: "memories_updated";
     readonly CUSTOM_TOOLS_UPDATED: "custom_tools_updated";
     readonly COMPACTION_STARTED: "compaction_started";
