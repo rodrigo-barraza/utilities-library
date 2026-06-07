@@ -83,37 +83,8 @@ export const DOMAIN_KEY_TAGS = Object.fromEntries(Object.entries(DOMAINS).map(([
     constantKey,
     `domainKey:${entry.key}`,
 ]));
-export const CORE_AGENTIC_TOOLS = [
-    "upsert_memory",
-    "create_task",
-    "list_tasks",
-    "update_task",
-    "evaluate_expression",
-    "execute_javascript",
-    "execute_python",
-    "search_tools",
-    "search_web",
-    "read_url",
-    "get_web_content",
-    "enter_plan_mode",
-    "exit_plan_mode",
-    "ask_user",
-    "write_todo",
-    "summarize_conversation",
-    "enter_worktree",
-    "exit_worktree",
-    "create_skill",
-    "execute_skill",
-    "list_skills",
-    "delete_skill",
-];
-export const CORE_ORCHESTRATOR_TOOLS = [
-    "create_team",
-    "send_message",
-    "stop_agent",
-    "get_task_output",
-    "delete_team",
-];
+// Defer CORE_AGENTIC_TOOLS / CORE_ORCHESTRATOR_TOOLS to after TOOL_NAMES
+// so they can reference constants instead of duplicating raw strings.
 // ─────────────────────────────────────────────────────────────
 // Tool Name Constants — single source of truth for programmatic
 // tool name references across all services.
@@ -211,7 +182,94 @@ export const TOOL_NAMES = {
     WEB_SEARCH_PREVIEW: "web_search_preview",
     SEARCH_WEB_PREVIEW: "search_web_preview",
     CODE_EXECUTION: "code_execution",
+    // ── Internal / Prism-Local Tools ──
+    ENTER_PLAN_MODE: "enter_plan_mode",
+    EXIT_PLAN_MODE: "exit_plan_mode",
+    ASK_USER: "ask_user",
+    WRITE_TODO: "write_todo",
+    SUMMARIZE_CONVERSATION: "summarize_conversation",
+    ENTER_WORKTREE: "enter_worktree",
+    EXIT_WORKTREE: "exit_worktree",
+    CREATE_SKILL: "create_skill",
+    EXECUTE_SKILL: "execute_skill",
+    LIST_SKILLS: "list_skills",
+    DELETE_SKILL: "delete_skill",
+    SET_TIMER: "set_timer",
+    LIST_TIMERS: "list_timers",
+    CANCEL_TIMER: "cancel_timer",
+    LIST_MCP_RESOURCES: "list_mcp_resources",
+    READ_MCP_RESOURCE: "read_mcp_resource",
+    AUTHENTICATE_MCP_SERVER: "authenticate_mcp_server",
+    // ── Orchestrator Tools ──
+    CREATE_TEAM: "create_team",
+    SEND_MESSAGE: "send_message",
+    STOP_AGENT: "stop_agent",
+    GET_TASK_OUTPUT: "get_task_output",
+    DELETE_TEAM: "delete_team",
+    // ── Approval Engine Aliases ──
+    // Keys matching the tool's own snake_case name for intuitive lookups
+    // in AutoApprovalEngine, ToolCallBadge, etc.
+    SEARCH_FILE_CONTENTS: "search_file_contents",
+    FIND_FILES: "find_files",
+    READ_WEB_PAGE: "read_web_page",
+    READ_FILES: "read_files",
+    GET_FILE_INFO: "get_file_info",
+    DIFF_FILES: "diff_files",
+    GIT_STATUS: "git_status",
+    GIT_DIFF: "git_diff",
+    GIT_LOG: "git_log",
+    SUMMARIZE_PROJECT: "summarize_project",
+    REPLACE_IN_FILE: "replace_in_file",
+    CONTROL_BROWSER: "control_browser",
+    EXECUTE_COMMAND: "execute_command",
+    GET_TASK: "get_task",
+    SLEEP: "sleep",
+    EMIT_STRUCTURED_OUTPUT: "emit_structured_output",
+    // ── Scheduling / Notebook ──
+    CREATE_CRON: "create_cron",
+    REMOTE_TRIGGER: "remote_trigger",
+    CREATE_CRON_JOB: "create_cron_job",
+    LIST_CRON_JOBS: "list_cron_jobs",
+    DELETE_CRON_JOB: "delete_cron_job",
+    TRIGGER_CRON_JOB: "trigger_cron_job",
+    EDIT_NOTEBOOK: "edit_notebook",
 };
+// ─────────────────────────────────────────────────────────────
+// Core Tool Sets — built from TOOL_NAMES to guarantee a single
+// source of truth. Renaming a tool in TOOL_NAMES automatically
+// propagates to these arrays.
+// ─────────────────────────────────────────────────────────────
+export const CORE_AGENTIC_TOOLS = [
+    TOOL_NAMES.UPSERT_MEMORY,
+    TOOL_NAMES.CREATE_TASK,
+    TOOL_NAMES.LIST_TASKS,
+    TOOL_NAMES.UPDATE_TASK,
+    TOOL_NAMES.CALCULATE_PRECISE,
+    TOOL_NAMES.EXECUTE_JAVASCRIPT,
+    TOOL_NAMES.EXECUTE_PYTHON,
+    TOOL_NAMES.SEARCH_TOOLS,
+    TOOL_NAMES.SEARCH_WEB,
+    TOOL_NAMES.READ_URL,
+    TOOL_NAMES.GET_WEB_CONTENT,
+    TOOL_NAMES.ENTER_PLAN_MODE,
+    TOOL_NAMES.EXIT_PLAN_MODE,
+    TOOL_NAMES.ASK_USER,
+    TOOL_NAMES.WRITE_TODO,
+    TOOL_NAMES.SUMMARIZE_CONVERSATION,
+    TOOL_NAMES.ENTER_WORKTREE,
+    TOOL_NAMES.EXIT_WORKTREE,
+    TOOL_NAMES.CREATE_SKILL,
+    TOOL_NAMES.EXECUTE_SKILL,
+    TOOL_NAMES.LIST_SKILLS,
+    TOOL_NAMES.DELETE_SKILL,
+];
+export const CORE_ORCHESTRATOR_TOOLS = [
+    TOOL_NAMES.CREATE_TEAM,
+    TOOL_NAMES.SEND_MESSAGE,
+    TOOL_NAMES.STOP_AGENT,
+    TOOL_NAMES.GET_TASK_OUTPUT,
+    TOOL_NAMES.DELETE_TEAM,
+];
 // ─────────────────────────────────────────────────────────────
 // Tool Input Modalities — maps tools to the file types they can
 // consume from user-uploaded attachments. Used by prism-client
