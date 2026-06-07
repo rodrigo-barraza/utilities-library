@@ -1249,7 +1249,7 @@ describe("taxonomy.js", () => {
   describe("TOOL_INPUT_MODALITIES", () => {
     it("maps tools to their correct input modalities", () => {
       expect(taxonomyModule.TOOL_INPUT_MODALITIES.generate_image).toContain("image");
-      expect(taxonomyModule.TOOL_INPUT_MODALITIES.speech_to_text).toContain("audio");
+      expect(taxonomyModule.TOOL_INPUT_MODALITIES.transcribe_audio).toContain("audio");
       expect(taxonomyModule.TOOL_INPUT_MODALITIES.read_pdf).toContain("pdf");
       expect(taxonomyModule.TOOL_INPUT_MODALITIES.read_docx).toContain("document");
       expect(taxonomyModule.TOOL_INPUT_MODALITIES.read_spreadsheet).toContain("document");

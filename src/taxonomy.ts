@@ -108,7 +108,7 @@ export const CORE_AGENTIC_TOOLS = [
   "create_task",
   "list_tasks",
   "update_task",
-  "calculate_precise",
+  "evaluate_expression",
   "execute_javascript",
   "execute_python",
   "search_tools",
@@ -117,9 +117,9 @@ export const CORE_AGENTIC_TOOLS = [
   "get_web_content",
   "enter_plan_mode",
   "exit_plan_mode",
-  "ask_user_question",
+  "ask_user",
   "write_todo",
-  "brief",
+  "summarize_conversation",
   "enter_worktree",
   "exit_worktree",
   "create_skill",
@@ -170,24 +170,24 @@ export const TOOL_NAMES = {
   // ── Workspace / Coding ──
   READ_FILE: "read_file",
   WRITE_FILE: "write_file",
-  STR_REPLACE_FILE: "str_replace_file",
+  STR_REPLACE_FILE: "replace_in_file",
   PATCH_FILE: "patch_file",
   MOVE_FILE: "move_file",
   DELETE_FILE: "delete_file",
-  MULTI_FILE_READ: "multi_file_read",
-  GREP_SEARCH: "grep_search",
-  PROJECT_SUMMARY: "project_summary",
-  GIT: "git",
+  MULTI_FILE_READ: "read_files",
+  GREP_SEARCH: "search_file_contents",
+  PROJECT_SUMMARY: "summarize_project",
+  GIT: "run_git",
 
   // ── Execution ──
-  RUN_COMMAND: "run_command",
+  RUN_COMMAND: "execute_command",
   EXECUTE_SHELL: "execute_shell",
   EXECUTE_PYTHON: "execute_python",
   EXECUTE_JAVASCRIPT: "execute_javascript",
   EXECUTE_CODE: "execute_code",
 
   // ── Browser ──
-  BROWSER_ACTION: "browser_action",
+  BROWSER_ACTION: "control_browser",
 
   // ── Health / Nutrition ──
   SEARCH_USDA_NUTRITION: "search_usda_nutrition",
@@ -209,11 +209,11 @@ export const TOOL_NAMES = {
   UPSERT_MEMORY: "upsert_memory",
 
   // ── Compute ──
-  CALCULATE_PRECISE: "calculate_precise",
+  CALCULATE_PRECISE: "evaluate_expression",
 
   // ── Smart Home ──
-  LIFX_BREATHE_EFFECT: "lifx_breathe_effect",
-  LIFX_PULSE_EFFECT: "lifx_pulse_effect",
+  LIFX_BREATHE_EFFECT: "start_light_breathe_effect",
+  LIFX_PULSE_EFFECT: "start_light_pulse_effect",
 
   // ── Weather & Environment ──
   GET_WEATHER: "get_weather",
@@ -285,7 +285,7 @@ export const TOOL_INPUT_MODALITIES: Readonly<
   describe_image: [INPUT_MODALITIES.IMAGE],
   create_3d_model: [INPUT_MODALITIES.IMAGE],
   create_3d_scene: [INPUT_MODALITIES.IMAGE],
-  speech_to_text: [INPUT_MODALITIES.AUDIO],
+  transcribe_audio: [INPUT_MODALITIES.AUDIO],
   read_pdf: [INPUT_MODALITIES.PDF],
   read_docx: [INPUT_MODALITIES.DOCUMENT],
   read_spreadsheet: [INPUT_MODALITIES.DOCUMENT],
