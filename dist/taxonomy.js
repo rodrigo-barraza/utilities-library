@@ -106,6 +106,8 @@ export const CORE_AGENTIC_TOOLS = [
     "execute_skill",
     "list_skills",
     "delete_skill",
+];
+export const CORE_ORCHESTRATOR_TOOLS = [
     "create_team",
     "send_message",
     "stop_agent",
