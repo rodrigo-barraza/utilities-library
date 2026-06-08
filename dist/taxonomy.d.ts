@@ -172,7 +172,7 @@ export declare const DOMAINS: {
     };
     readonly ORCHESTRATOR: {
         readonly key: "orchestrator";
-        readonly displayName: "Orchestrator";
+        readonly displayName: "Core Orchestrator Tools";
     };
     readonly SKILLS: {
         readonly key: "skills";
@@ -205,6 +205,10 @@ export declare const DOMAINS: {
     readonly CORE: {
         readonly key: "core";
         readonly displayName: "Core Tools";
+    };
+    readonly CORE_HARNESS: {
+        readonly key: "core_harness";
+        readonly displayName: "Core Harness Tools";
     };
     readonly REDDIT: {
         readonly key: "reddit";

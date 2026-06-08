@@ -63,7 +63,7 @@ export const DOMAINS = {
     CRON_JOBS: { key: "cron_jobs", displayName: "Cron Jobs" },
     CONVERSATION_TIMERS: { key: "timers", displayName: "Timers" },
     REASONING: { key: "reasoning", displayName: "Reasoning" },
-    ORCHESTRATOR: { key: "orchestrator", displayName: "Orchestrator" },
+    ORCHESTRATOR: { key: "orchestrator", displayName: "Core Orchestrator Tools" },
     SKILLS: { key: "skills", displayName: "Skills" },
     CONTROL: { key: "control", displayName: "Control Flow" },
     STRUCTURED: { key: "structured", displayName: "Structured Output" },
@@ -72,6 +72,7 @@ export const DOMAINS = {
     TORRENT: { key: "torrent", displayName: "Torrent" },
     MCP: { key: "mcp", displayName: "Model Context Protocol" },
     CORE: { key: "core", displayName: "Core Tools" },
+    CORE_HARNESS: { key: "core_harness", displayName: "Core Harness Tools" },
     REDDIT: { key: "reddit", displayName: "Reddit" },
 };
 export const LABEL_TAGS = Object.fromEntries(Object.entries(LABELS).map(([key, value]) => [key, `label:${value}`]));
