@@ -148,6 +148,9 @@ export const TOOL_NAMES = {
     LIST_TASKS: "list_tasks",
     UPDATE_TASK: "update_task",
     UPSERT_MEMORY: "upsert_memory",
+    EXTRACT_MEMORIES: "extract_memories",
+    CONSOLIDATE_MEMORIES: "consolidate_memories",
+    SEARCH_MEMORIES: "search_memories",
     // ── Compute ──
     CALCULATE_PRECISE: "evaluate_expression",
     // ── Smart Home ──
@@ -176,6 +179,8 @@ export const TOOL_NAMES = {
     PYTHON_INTERPRETER: "python_interpreter",
     JAVASCRIPT_INTERPRETER: "javascript_interpreter",
     SHELL: "shell",
+    SYNTHESIZE_SPEECH: "synthesize_speech",
+    TRANSCRIBE_AUDIO: "transcribe_audio",
     GENERATE_AUDIO: "generate_audio",
     // ── Modality Detection ──
     // TODO(cleanup): Remove WEB_SEARCH_PREVIEW once historical sessions have aged out
@@ -233,6 +238,8 @@ export const TOOL_NAMES = {
     DELETE_CRON_JOB: "delete_cron_job",
     TRIGGER_CRON_JOB: "trigger_cron_job",
     EDIT_NOTEBOOK: "edit_notebook",
+    // ── Provider-Native Tools ──
+    GOOGLE_SEARCH: "googleSearch",
 };
 // ─────────────────────────────────────────────────────────────
 // Core Tool Sets — built from TOOL_NAMES to guarantee a single

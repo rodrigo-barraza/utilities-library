@@ -265,6 +265,9 @@ export declare const TOOL_NAMES: {
     readonly LIST_TASKS: "list_tasks";
     readonly UPDATE_TASK: "update_task";
     readonly UPSERT_MEMORY: "upsert_memory";
+    readonly EXTRACT_MEMORIES: "extract_memories";
+    readonly CONSOLIDATE_MEMORIES: "consolidate_memories";
+    readonly SEARCH_MEMORIES: "search_memories";
     readonly CALCULATE_PRECISE: "evaluate_expression";
     readonly LIFX_BREATHE_EFFECT: "start_light_breathe_effect";
     readonly LIFX_PULSE_EFFECT: "start_light_pulse_effect";
@@ -288,6 +291,8 @@ export declare const TOOL_NAMES: {
     readonly PYTHON_INTERPRETER: "python_interpreter";
     readonly JAVASCRIPT_INTERPRETER: "javascript_interpreter";
     readonly SHELL: "shell";
+    readonly SYNTHESIZE_SPEECH: "synthesize_speech";
+    readonly TRANSCRIBE_AUDIO: "transcribe_audio";
     readonly GENERATE_AUDIO: "generate_audio";
     readonly WEB_SEARCH_PREVIEW: "web_search_preview";
     readonly SEARCH_WEB_PREVIEW: "search_web_preview";
@@ -337,6 +342,7 @@ export declare const TOOL_NAMES: {
     readonly DELETE_CRON_JOB: "delete_cron_job";
     readonly TRIGGER_CRON_JOB: "trigger_cron_job";
     readonly EDIT_NOTEBOOK: "edit_notebook";
+    readonly GOOGLE_SEARCH: "googleSearch";
 };
 export type ToolName = (typeof TOOL_NAMES)[keyof typeof TOOL_NAMES];
 export declare const CORE_AGENTIC_TOOLS: readonly ["upsert_memory", "create_task", "list_tasks", "update_task", "evaluate_expression", "execute_javascript", "execute_python", "search_tools", "search_web", "read_url", "get_web_content", "enter_plan_mode", "exit_plan_mode", "ask_user", "write_todo", "summarize_conversation", "enter_worktree", "exit_worktree", "create_skill", "execute_skill", "list_skills", "delete_skill"];
