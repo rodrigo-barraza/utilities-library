@@ -52,7 +52,6 @@ export const STATUS_MESSAGES = {
     SUB_AGENTS_UPDATED: "sub_agents_updated",
     WORKERS_UPDATED: "workers_updated",
     MEMORIES_UPDATED: "memories_updated",
-    CUSTOM_TOOLS_UPDATED: "custom_tools_updated",
     // ── Compaction Lifecycle ──
     COMPACTION_STARTED: "compaction_started",
     COMPACTION_COMPLETE: "compaction_complete",

@@ -37,7 +37,6 @@ export declare const STATUS_MESSAGES: {
     readonly SUB_AGENTS_UPDATED: "sub_agents_updated";
     readonly WORKERS_UPDATED: "workers_updated";
     readonly MEMORIES_UPDATED: "memories_updated";
-    readonly CUSTOM_TOOLS_UPDATED: "custom_tools_updated";
     readonly COMPACTION_STARTED: "compaction_started";
     readonly COMPACTION_COMPLETE: "compaction_complete";
     readonly COMPACTION_FAILED: "compaction_failed";
