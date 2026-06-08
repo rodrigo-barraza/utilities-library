@@ -1,32 +1,3 @@
-export const LABELS = {
-  CODING: "coding",
-  DATA: "data",
-  WEB: "web",
-  HEALTH: "health",
-  FINANCE: "finance",
-  LOCATION: "location",
-  REFERENCE: "reference",
-  MEDIA: "media",
-  SHOPPING: "shopping",
-  SPORTS: "sports",
-  MARITIME: "maritime",
-  ENERGY: "energy",
-  COMMUNICATION: "communication",
-  CREATIVE: "creative",
-  SMART_HOME: "smart_home",
-  LIFX: "lifx",
-  DISCORD: "discord",
-  GIT: "git",
-  META: "meta",
-  AUTOMATION: "automation",
-  DATA_SCIENCE: "data_science",
-  ORCHESTRATION: "orchestration",
-  DOWNLOAD: "download",
-} as const;
-
-export type LabelKey = keyof typeof LABELS;
-export type LabelValue = (typeof LABELS)[LabelKey];
-
 export const DOMAINS = {
   WEATHER: { key: "weather", displayName: "Weather & Environment" },
   EVENTS: { key: "events", displayName: "Events" },
@@ -82,9 +53,6 @@ export type DomainEntry = (typeof DOMAINS)[DomainConstantKey];
 export type DomainKey = DomainEntry["key"];
 export type DomainDisplayName = DomainEntry["displayName"];
 
-export const LABEL_TAGS = Object.fromEntries(
-  Object.entries(LABELS).map(([key, value]) => [key, `label:${value}`]),
-) as Record<LabelKey, `label:${LabelValue}`>;
 
 export const DOMAIN_TAGS = Object.fromEntries(
   Object.entries(DOMAINS).map(([constantKey, entry]) => [

@@ -1,30 +1,3 @@
-export declare const LABELS: {
-    readonly CODING: "coding";
-    readonly DATA: "data";
-    readonly WEB: "web";
-    readonly HEALTH: "health";
-    readonly FINANCE: "finance";
-    readonly LOCATION: "location";
-    readonly REFERENCE: "reference";
-    readonly MEDIA: "media";
-    readonly SHOPPING: "shopping";
-    readonly SPORTS: "sports";
-    readonly MARITIME: "maritime";
-    readonly ENERGY: "energy";
-    readonly COMMUNICATION: "communication";
-    readonly CREATIVE: "creative";
-    readonly SMART_HOME: "smart_home";
-    readonly LIFX: "lifx";
-    readonly DISCORD: "discord";
-    readonly GIT: "git";
-    readonly META: "meta";
-    readonly AUTOMATION: "automation";
-    readonly DATA_SCIENCE: "data_science";
-    readonly ORCHESTRATION: "orchestration";
-    readonly DOWNLOAD: "download";
-};
-export type LabelKey = keyof typeof LABELS;
-export type LabelValue = (typeof LABELS)[LabelKey];
 export declare const DOMAINS: {
     readonly WEATHER: {
         readonly key: "weather";
@@ -219,7 +192,6 @@ export type DomainConstantKey = keyof typeof DOMAINS;
 export type DomainEntry = (typeof DOMAINS)[DomainConstantKey];
 export type DomainKey = DomainEntry["key"];
 export type DomainDisplayName = DomainEntry["displayName"];
-export declare const LABEL_TAGS: Record<LabelKey, `label:${LabelValue}`>;
 export declare const DOMAIN_TAGS: Record<DomainConstantKey, `domain:${DomainDisplayName}`>;
 export declare const DOMAIN_KEY_TAGS: Record<DomainConstantKey, `domainKey:${DomainKey}`>;
 //# sourceMappingURL=domains.d.ts.map

@@ -1,11 +1,7 @@
 export {
-  LABELS,
   DOMAINS,
-  LABEL_TAGS,
   DOMAIN_TAGS,
   DOMAIN_KEY_TAGS,
-  type LabelKey,
-  type LabelValue,
   type DomainConstantKey,
   type DomainEntry,
   type DomainKey,
