@@ -72,7 +72,6 @@ export const DOMAINS = {
   TASK_MGMT: { key: "tasks", displayName: "Task Management" },
   TORRENT: { key: "torrent", displayName: "Torrent" },
   MCP: { key: "mcp", displayName: "Model Context Protocol" },
-  CORE: { key: "core", displayName: "Core Tools" },
   CORE_HARNESS: { key: "core_harness", displayName: "Core Harness Tools" },
   REDDIT: { key: "reddit", displayName: "Reddit" },
 } as const;

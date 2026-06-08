@@ -26,6 +26,20 @@ export const SSE_EVENT_TYPES = {
     EXECUTABLE_CODE: "executableCode",
     CODE_EXECUTION_RESULT: "codeExecutionResult",
     WEB_SEARCH_RESULT: "webSearchResult",
+    // ── Worker / Sub-Agent Tool Variants ──
+    SUB_AGENT_TOOL_EXECUTION: "sub_agent_tool_execution",
+    SUB_AGENT_TOOL_OUTPUT: "sub_agent_tool_output",
+    WORKER_TOOL_EXECUTION: "worker_tool_execution",
+    WORKER_TOOL_OUTPUT: "worker_tool_output",
+    WORKER_STATUS: "worker_status",
+    USER_QUESTION: "user_question",
+    // ── Benchmark / Workflow SSE ──
+    RUN_INFO: "run_info",
+    MODEL_START: "model_start",
+    MODEL_COMPLETE: "model_complete",
+    RUN_COMPLETE: "run_complete",
+    // ── Legacy Alias ──
+    TOKEN: "token",
 };
 // ─────────────────────────────────────────────────────────────
 // Status Messages — the `{ type: "status", message: "..." }`
@@ -36,6 +50,7 @@ export const STATUS_MESSAGES = {
     // ── Panel Refreshes ──
     TASKS_UPDATED: "tasks_updated",
     SUB_AGENTS_UPDATED: "sub_agents_updated",
+    WORKERS_UPDATED: "workers_updated",
     MEMORIES_UPDATED: "memories_updated",
     CUSTOM_TOOLS_UPDATED: "custom_tools_updated",
     // ── Compaction Lifecycle ──

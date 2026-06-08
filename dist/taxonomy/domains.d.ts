@@ -202,10 +202,6 @@ export declare const DOMAINS: {
         readonly key: "mcp";
         readonly displayName: "Model Context Protocol";
     };
-    readonly CORE: {
-        readonly key: "core";
-        readonly displayName: "Core Tools";
-    };
     readonly CORE_HARNESS: {
         readonly key: "core_harness";
         readonly displayName: "Core Harness Tools";

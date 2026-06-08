@@ -19,11 +19,23 @@ export declare const SSE_EVENT_TYPES: {
     readonly EXECUTABLE_CODE: "executableCode";
     readonly CODE_EXECUTION_RESULT: "codeExecutionResult";
     readonly WEB_SEARCH_RESULT: "webSearchResult";
+    readonly SUB_AGENT_TOOL_EXECUTION: "sub_agent_tool_execution";
+    readonly SUB_AGENT_TOOL_OUTPUT: "sub_agent_tool_output";
+    readonly WORKER_TOOL_EXECUTION: "worker_tool_execution";
+    readonly WORKER_TOOL_OUTPUT: "worker_tool_output";
+    readonly WORKER_STATUS: "worker_status";
+    readonly USER_QUESTION: "user_question";
+    readonly RUN_INFO: "run_info";
+    readonly MODEL_START: "model_start";
+    readonly MODEL_COMPLETE: "model_complete";
+    readonly RUN_COMPLETE: "run_complete";
+    readonly TOKEN: "token";
 };
 export type SseEventType = (typeof SSE_EVENT_TYPES)[keyof typeof SSE_EVENT_TYPES];
 export declare const STATUS_MESSAGES: {
     readonly TASKS_UPDATED: "tasks_updated";
     readonly SUB_AGENTS_UPDATED: "sub_agents_updated";
+    readonly WORKERS_UPDATED: "workers_updated";
     readonly MEMORIES_UPDATED: "memories_updated";
     readonly CUSTOM_TOOLS_UPDATED: "custom_tools_updated";
     readonly COMPACTION_STARTED: "compaction_started";
