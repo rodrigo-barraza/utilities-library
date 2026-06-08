@@ -1233,7 +1233,7 @@ describe("color.js", () => {
 describe("taxonomy.js", () => {
   let taxonomyModule;
   beforeAll(async () => {
-    taxonomyModule = await import("../dist/taxonomy.js");
+    taxonomyModule = await import("../dist/taxonomy/index.js");
   });
 
   describe("INPUT_MODALITIES", () => {
