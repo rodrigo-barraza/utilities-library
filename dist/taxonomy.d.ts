@@ -427,4 +427,20 @@ export declare const AGENT_IDS: {
     readonly ALL: "ALL";
 };
 export type AgentId = (typeof AGENT_IDS)[keyof typeof AGENT_IDS];
+/** Reusable synthetic "Agentless" agent object for UI agent pickers. */
+export declare const AGENTLESS_AGENT: {
+    readonly id: "NONE";
+    readonly name: "Agentless";
+};
+export declare const TOPOLOGIES: {
+    readonly HIERARCHICAL: "hierarchical";
+    readonly SEQUENTIAL: "sequential";
+    readonly PEER_TO_PEER: "peer_to_peer";
+};
+export type TopologyType = (typeof TOPOLOGIES)[keyof typeof TOPOLOGIES];
+export declare const DEFAULT_TOPOLOGY: "hierarchical";
+export declare const DEFAULT_CONVERSATION_TITLE = "New Conversation";
+export declare const DEFAULT_WORKFLOW_TITLE = "Untitled Workflow";
+export declare const DEFAULT_USERNAME = "anonymous";
+export declare const DEFAULT_PROJECT = "default";
 //# sourceMappingURL=taxonomy.d.ts.map

@@ -402,4 +402,26 @@ export const AGENT_IDS = {
     NONE: "NONE",
     ALL: "ALL",
 };
+/** Reusable synthetic "Agentless" agent object for UI agent pickers. */
+export const AGENTLESS_AGENT = {
+    id: AGENT_IDS.NONE,
+    name: "Agentless",
+};
+// ─────────────────────────────────────────────────────────────
+// Orchestrator Topologies — multi-agent execution strategies.
+// ─────────────────────────────────────────────────────────────
+export const TOPOLOGIES = {
+    HIERARCHICAL: "hierarchical",
+    SEQUENTIAL: "sequential",
+    PEER_TO_PEER: "peer_to_peer",
+};
+export const DEFAULT_TOPOLOGY = TOPOLOGIES.HIERARCHICAL;
+// ─────────────────────────────────────────────────────────────
+// Default Labels & Fallback Constants — shared across
+// prism-service and prism-client for consistency.
+// ─────────────────────────────────────────────────────────────
+export const DEFAULT_CONVERSATION_TITLE = "New Conversation";
+export const DEFAULT_WORKFLOW_TITLE = "Untitled Workflow";
+export const DEFAULT_USERNAME = "anonymous";
+export const DEFAULT_PROJECT = "default";
 //# sourceMappingURL=taxonomy.js.map
