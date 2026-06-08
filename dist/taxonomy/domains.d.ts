@@ -107,32 +107,32 @@ export declare const DOMAINS: {
         readonly displayName: "Smart Home";
     };
     readonly FILES: {
-        readonly key: "workspace";
-        readonly displayName: "Workspace";
+        readonly key: "core_workspace";
+        readonly displayName: "Core Workspace Tools";
     };
     readonly SEARCH: {
-        readonly key: "workspace";
-        readonly displayName: "Workspace";
+        readonly key: "core_workspace";
+        readonly displayName: "Core Workspace Tools";
     };
     readonly WEB: {
         readonly key: "web";
         readonly displayName: "Web";
     };
     readonly COMMAND: {
-        readonly key: "workspace";
-        readonly displayName: "Workspace";
+        readonly key: "core_workspace";
+        readonly displayName: "Core Workspace Tools";
     };
     readonly GIT: {
-        readonly key: "workspace";
-        readonly displayName: "Workspace";
+        readonly key: "core_workspace";
+        readonly displayName: "Core Workspace Tools";
     };
     readonly BROWSER: {
         readonly key: "browser";
         readonly displayName: "Browser";
     };
     readonly CODE_INTEL: {
-        readonly key: "workspace";
-        readonly displayName: "Workspace";
+        readonly key: "core_workspace";
+        readonly displayName: "Core Workspace Tools";
     };
     readonly TASKS: {
         readonly key: "tasks";
@@ -147,8 +147,8 @@ export declare const DOMAINS: {
         readonly displayName: "Agent Management";
     };
     readonly WORKSPACE: {
-        readonly key: "workspace";
-        readonly displayName: "Workspace";
+        readonly key: "core_workspace";
+        readonly displayName: "Core Workspace Tools";
     };
     readonly TOOLS: {
         readonly key: "tools";
@@ -187,8 +187,8 @@ export declare const DOMAINS: {
         readonly displayName: "Structured Output";
     };
     readonly GIT_ISOLATION: {
-        readonly key: "workspace";
-        readonly displayName: "Workspace";
+        readonly key: "core_workspace";
+        readonly displayName: "Core Workspace Tools";
     };
     readonly TASK_MGMT: {
         readonly key: "tasks";
