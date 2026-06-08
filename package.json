@@ -40,8 +40,8 @@
       "import": "./dist/nextjs.js"
     },
     "./taxonomy": {
-      "types": "./dist/taxonomy.d.ts",
-      "import": "./dist/taxonomy.js"
+      "types": "./dist/taxonomy/index.d.ts",
+      "import": "./dist/taxonomy/index.js"
     },
     "./media": {
       "types": "./dist/media.d.ts",

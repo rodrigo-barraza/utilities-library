@@ -1,0 +1,1 @@
+{"version":3,"file":"events.d.ts","sourceRoot":"","sources":["../../src/taxonomy/events.ts"],"names":[],"mappings":"AAQA,eAAO,MAAM,eAAe;;;;;;;;;;;;;;;;;;;;;CAqBlB,CAAC;AAEX,MAAM,MAAM,YAAY,GACtB,CAAC,OAAO,eAAe,CAAC,CAAC,MAAM,OAAO,eAAe,CAAC,CAAC;AAQzD,eAAO,MAAM,eAAe;;;;;;;;;;;;;;;;;;;;;;;;;;;CA0ClB,CAAC;AAEX,MAAM,MAAM,aAAa,GACvB,CAAC,OAAO,eAAe,CAAC,CAAC,MAAM,OAAO,eAAe,CAAC,CAAC"}

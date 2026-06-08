@@ -1,0 +1,71 @@
+// ─────────────────────────────────────────────────────────────
+// SSE Event Types — cross-service streaming contract between
+// prism-service (producer) and prism-client (consumer).
+//
+// IMPORTANT: Adding/removing/renaming an event type here will
+// surface compile errors on BOTH sides of the contract.
+// ─────────────────────────────────────────────────────────────
+export const SSE_EVENT_TYPES = {
+    CHUNK: "chunk",
+    THINKING: "thinking",
+    IMAGE: "image",
+    AUDIO: "audio",
+    TOOL_CALL: "toolCall",
+    TOOL_EXECUTION: "tool_execution",
+    TOOL_OUTPUT: "tool_output",
+    USAGE_UPDATE: "usage_update",
+    STATUS: "status",
+    DONE: "done",
+    ERROR: "error",
+    TODO_UPDATE: "todo_update",
+    BRIEF_UPDATE: "brief_update",
+    TEXT: "text",
+    SUB_AGENT_STATUS: "sub_agent_status",
+    PLAN_PROPOSAL: "plan_proposal",
+    APPROVAL_REQUIRED: "approval_required",
+    EXECUTABLE_CODE: "executableCode",
+    CODE_EXECUTION_RESULT: "codeExecutionResult",
+    WEB_SEARCH_RESULT: "webSearchResult",
+};
+// ─────────────────────────────────────────────────────────────
+// Status Messages — the `{ type: "status", message: "..." }`
+// sub-protocol used to trigger UI panel refreshes and display
+// state transitions in prism-client.
+// ─────────────────────────────────────────────────────────────
+export const STATUS_MESSAGES = {
+    // ── Panel Refreshes ──
+    TASKS_UPDATED: "tasks_updated",
+    SUB_AGENTS_UPDATED: "sub_agents_updated",
+    MEMORIES_UPDATED: "memories_updated",
+    CUSTOM_TOOLS_UPDATED: "custom_tools_updated",
+    // ── Compaction Lifecycle ──
+    COMPACTION_STARTED: "compaction_started",
+    COMPACTION_COMPLETE: "compaction_complete",
+    COMPACTION_FAILED: "compaction_failed",
+    // ── Plan Mode ──
+    PLAN_MODE_ENTERED: "plan_mode_entered",
+    PLAN_MODE_EXITED: "plan_mode_exited",
+    // ── Agentic Loop ──
+    ITERATION_LIMIT_REACHED: "iteration_limit_reached",
+    ITERATION_PROGRESS: "iteration_progress",
+    CONTEXT_TRUNCATED: "context_truncated",
+    MAX_TOKENS_TRUNCATED: "max_tokens_truncated",
+    SKILLS_INJECTED: "skills_injected",
+    VALIDATION_ERRORS_DETECTED: "validation_errors_detected",
+    // ── Image Generation ──
+    GENERATION_STARTED: "generation_started",
+    GENERATION_PROGRESS: "generation_progress",
+    // ── Tree-of-Thought Branching ──
+    BRANCHING_STARTED: "branching_started",
+    BRANCH_SELECTED: "branch_selected",
+    BRANCH_BACKTRACKED: "branch_backtracked",
+    // ── Worktree ──
+    WORKTREE_ENTERED: "worktree_entered",
+    WORKTREE_EXITED: "worktree_exited",
+    // ── Orchestrator ──
+    SPAWNED: "spawned",
+    PHASE: "phase",
+    COMPLETE: "complete",
+    FAILED: "failed",
+};
+//# sourceMappingURL=events.js.map
