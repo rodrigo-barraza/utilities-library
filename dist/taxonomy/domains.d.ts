@@ -206,6 +206,10 @@ export declare const DOMAINS: {
         readonly key: "core_harness";
         readonly displayName: "Core Harness Tools";
     };
+    readonly CORE_WORKSPACE: {
+        readonly key: "core_workspace";
+        readonly displayName: "Core Workspace Tools";
+    };
     readonly REDDIT: {
         readonly key: "reddit";
         readonly displayName: "Reddit";

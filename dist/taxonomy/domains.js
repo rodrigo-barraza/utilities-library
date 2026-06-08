@@ -69,6 +69,7 @@ export const DOMAINS = {
     TORRENT: { key: "torrent", displayName: "Torrent" },
     MCP: { key: "mcp", displayName: "Model Context Protocol" },
     CORE_HARNESS: { key: "core_harness", displayName: "Core Harness Tools" },
+    CORE_WORKSPACE: { key: "core_workspace", displayName: "Core Workspace Tools" },
     REDDIT: { key: "reddit", displayName: "Reddit" },
 };
 export const LABEL_TAGS = Object.fromEntries(Object.entries(LABELS).map(([key, value]) => [key, `label:${value}`]));
