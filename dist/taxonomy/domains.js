@@ -46,6 +46,9 @@ export const DOMAINS = {
     CORE_HARNESS: { key: "core_harness", displayName: "Core Harness Tools" },
     CORE_WORKSPACE: { key: "core_workspace", displayName: "Core Workspace Tools" },
     REDDIT: { key: "reddit", displayName: "Reddit" },
+    SECURITY: { key: "security", displayName: "Security" },
+    NETWORK_INTELLIGENCE: { key: "network_intelligence", displayName: "Network Intelligence" },
+    CALENDAR: { key: "calendar", displayName: "Calendar" },
 };
 export const DOMAIN_TAGS = Object.fromEntries(Object.entries(DOMAINS).map(([constantKey, entry]) => [
     constantKey,
