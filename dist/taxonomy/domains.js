@@ -35,7 +35,7 @@ export const DOMAINS = {
     CRON_JOBS: { key: "cron_jobs", displayName: "Cron Jobs" },
     CONVERSATION_TIMERS: { key: "timers", displayName: "Timers" },
     REASONING: { key: "reasoning", displayName: "Reasoning" },
-    ORCHESTRATOR: { key: "orchestrator", displayName: "Core Orchestrator Tools" },
+    CORE_ORCHESTRATOR: { key: "core_orchestrator", displayName: "Core Orchestrator Tools" },
     SKILLS: { key: "skills", displayName: "Skills" },
     CONTROL: { key: "control", displayName: "Control Flow" },
     STRUCTURED: { key: "structured", displayName: "Structured Output" },

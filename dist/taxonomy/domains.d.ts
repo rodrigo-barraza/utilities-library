@@ -143,8 +143,8 @@ export declare const DOMAINS: {
         readonly key: "reasoning";
         readonly displayName: "Reasoning";
     };
-    readonly ORCHESTRATOR: {
-        readonly key: "orchestrator";
+    readonly CORE_ORCHESTRATOR: {
+        readonly key: "core_orchestrator";
         readonly displayName: "Core Orchestrator Tools";
     };
     readonly SKILLS: {
