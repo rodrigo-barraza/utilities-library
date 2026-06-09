@@ -145,6 +145,7 @@ export const TOOL_NAMES = {
     GET_TASK: "get_task",
     SLEEP: "sleep",
     EMIT_STRUCTURED_OUTPUT: "emit_structured_output",
+    THINK: "think",
     // ── Scheduling / Notebook ──
     CREATE_CRON: "create_cron",
     REMOTE_TRIGGER: "remote_trigger",
@@ -186,6 +187,10 @@ export const CORE_AGENTIC_TOOLS = [
     TOOL_NAMES.EXECUTE_SKILL,
     TOOL_NAMES.LIST_SKILLS,
     TOOL_NAMES.DELETE_SKILL,
+    TOOL_NAMES.GET_TASK,
+    TOOL_NAMES.SLEEP,
+    TOOL_NAMES.EMIT_STRUCTURED_OUTPUT,
+    TOOL_NAMES.THINK,
 ];
 export const CORE_ORCHESTRATOR_TOOLS = [
     TOOL_NAMES.CREATE_TEAM,

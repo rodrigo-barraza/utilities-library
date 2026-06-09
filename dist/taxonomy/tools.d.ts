@@ -117,6 +117,7 @@ export declare const TOOL_NAMES: {
     readonly GET_TASK: "get_task";
     readonly SLEEP: "sleep";
     readonly EMIT_STRUCTURED_OUTPUT: "emit_structured_output";
+    readonly THINK: "think";
     readonly CREATE_CRON: "create_cron";
     readonly REMOTE_TRIGGER: "remote_trigger";
     readonly CREATE_CRON_JOB: "create_cron_job";
@@ -127,7 +128,7 @@ export declare const TOOL_NAMES: {
     readonly GOOGLE_SEARCH: "googleSearch";
 };
 export type ToolName = (typeof TOOL_NAMES)[keyof typeof TOOL_NAMES];
-export declare const CORE_AGENTIC_TOOLS: readonly ["enable_tools", "disable_tools", "upsert_memory", "create_task", "list_tasks", "update_task", "evaluate_expression", "execute_javascript", "execute_python", "search_tools", "search_web", "read_url", "get_web_content", "enter_plan_mode", "exit_plan_mode", "ask_user", "write_todo", "summarize_conversation", "enter_worktree", "exit_worktree", "create_skill", "execute_skill", "list_skills", "delete_skill"];
+export declare const CORE_AGENTIC_TOOLS: readonly ["enable_tools", "disable_tools", "upsert_memory", "create_task", "list_tasks", "update_task", "evaluate_expression", "execute_javascript", "execute_python", "search_tools", "search_web", "read_url", "get_web_content", "enter_plan_mode", "exit_plan_mode", "ask_user", "write_todo", "summarize_conversation", "enter_worktree", "exit_worktree", "create_skill", "execute_skill", "list_skills", "delete_skill", "get_task", "sleep", "emit_structured_output", "think"];
 export declare const CORE_ORCHESTRATOR_TOOLS: readonly ["create_team", "send_message", "stop_agent", "get_task_output", "delete_team"];
 export declare const INPUT_MODALITIES: {
     readonly IMAGE: "image";
