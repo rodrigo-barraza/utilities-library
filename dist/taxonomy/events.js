@@ -65,6 +65,7 @@ export const STATUS_MESSAGES = {
     CONTEXT_TRUNCATED: "context_truncated",
     MAX_TOKENS_TRUNCATED: "max_tokens_truncated",
     SKILLS_INJECTED: "skills_injected",
+    TOOL_SET_CHANGED: "tool_set_changed",
     VALIDATION_ERRORS_DETECTED: "validation_errors_detected",
     // ── Image Generation ──
     GENERATION_STARTED: "generation_started",

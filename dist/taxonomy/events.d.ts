@@ -47,6 +47,7 @@ export declare const STATUS_MESSAGES: {
     readonly CONTEXT_TRUNCATED: "context_truncated";
     readonly MAX_TOKENS_TRUNCATED: "max_tokens_truncated";
     readonly SKILLS_INJECTED: "skills_injected";
+    readonly TOOL_SET_CHANGED: "tool_set_changed";
     readonly VALIDATION_ERRORS_DETECTED: "validation_errors_detected";
     readonly GENERATION_STARTED: "generation_started";
     readonly GENERATION_PROGRESS: "generation_progress";

@@ -101,6 +101,8 @@ export const TOOL_NAMES = {
     SEARCH_WEB_PREVIEW: "search_web_preview",
     CODE_EXECUTION: "code_execution",
     // ── Internal / Prism-Local Tools ──
+    ENABLE_TOOLS: "enable_tools",
+    DISABLE_TOOLS: "disable_tools",
     ENTER_PLAN_MODE: "enter_plan_mode",
     EXIT_PLAN_MODE: "exit_plan_mode",
     ASK_USER: "ask_user",
@@ -160,6 +162,8 @@ export const TOOL_NAMES = {
 // propagates to these arrays.
 // ─────────────────────────────────────────────────────────────
 export const CORE_AGENTIC_TOOLS = [
+    TOOL_NAMES.ENABLE_TOOLS,
+    TOOL_NAMES.DISABLE_TOOLS,
     TOOL_NAMES.UPSERT_MEMORY,
     TOOL_NAMES.CREATE_TASK,
     TOOL_NAMES.LIST_TASKS,

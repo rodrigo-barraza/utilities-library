@@ -77,6 +77,8 @@ export declare const TOOL_NAMES: {
     readonly WEB_SEARCH_PREVIEW: "web_search_preview";
     readonly SEARCH_WEB_PREVIEW: "search_web_preview";
     readonly CODE_EXECUTION: "code_execution";
+    readonly ENABLE_TOOLS: "enable_tools";
+    readonly DISABLE_TOOLS: "disable_tools";
     readonly ENTER_PLAN_MODE: "enter_plan_mode";
     readonly EXIT_PLAN_MODE: "exit_plan_mode";
     readonly ASK_USER: "ask_user";
@@ -125,7 +127,7 @@ export declare const TOOL_NAMES: {
     readonly GOOGLE_SEARCH: "googleSearch";
 };
 export type ToolName = (typeof TOOL_NAMES)[keyof typeof TOOL_NAMES];
-export declare const CORE_AGENTIC_TOOLS: readonly ["upsert_memory", "create_task", "list_tasks", "update_task", "evaluate_expression", "execute_javascript", "execute_python", "search_tools", "search_web", "read_url", "get_web_content", "enter_plan_mode", "exit_plan_mode", "ask_user", "write_todo", "summarize_conversation", "enter_worktree", "exit_worktree", "create_skill", "execute_skill", "list_skills", "delete_skill"];
+export declare const CORE_AGENTIC_TOOLS: readonly ["enable_tools", "disable_tools", "upsert_memory", "create_task", "list_tasks", "update_task", "evaluate_expression", "execute_javascript", "execute_python", "search_tools", "search_web", "read_url", "get_web_content", "enter_plan_mode", "exit_plan_mode", "ask_user", "write_todo", "summarize_conversation", "enter_worktree", "exit_worktree", "create_skill", "execute_skill", "list_skills", "delete_skill"];
 export declare const CORE_ORCHESTRATOR_TOOLS: readonly ["create_team", "send_message", "stop_agent", "get_task_output", "delete_team"];
 export declare const INPUT_MODALITIES: {
     readonly IMAGE: "image";
