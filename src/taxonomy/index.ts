@@ -2,6 +2,7 @@ export {
   DOMAINS,
   DOMAIN_TAGS,
   DOMAIN_KEY_TAGS,
+  isCoreDomain,
   type DomainConstantKey,
   type DomainEntry,
   type DomainKey,

@@ -1,4 +1,4 @@
-export { DOMAINS, DOMAIN_TAGS, DOMAIN_KEY_TAGS, } from "./domains.js";
+export { DOMAINS, DOMAIN_TAGS, DOMAIN_KEY_TAGS, isCoreDomain, } from "./domains.js";
 export { TOOL_NAMES, CORE_AGENTIC_TOOLS, CORE_ORCHESTRATOR_TOOLS, INPUT_MODALITIES, TOOL_INPUT_MODALITIES, } from "./tools.js";
 export { SSE_EVENT_TYPES, STATUS_MESSAGES, } from "./events.js";
 export { AGENT_IDS, AGENTLESS_AGENT, TOPOLOGIES, DEFAULT_TOPOLOGY, } from "./agents.js";

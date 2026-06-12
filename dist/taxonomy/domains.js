@@ -37,6 +37,10 @@ export const DOMAINS = {
     MCP: { key: "mcp", displayName: "Model Context Protocol" },
     CORE_HARNESS: { key: "core_harness", displayName: "Core Harness Tools" },
     CORE_WORKSPACE: { key: "core_workspace", displayName: "Core Workspace Tools" },
+    CORE_SKILL: { key: "core_skill", displayName: "Core Skill Tools" },
+    CORE_TIMER: { key: "core_timer", displayName: "Core Timer Tools" },
+    CORE_USER: { key: "core_user", displayName: "Core User Tools" },
+    CORE_DISCOVER: { key: "core_discover", displayName: "Core Discover Tools" },
     REDDIT: { key: "reddit", displayName: "Reddit" },
     SECURITY: { key: "security", displayName: "Security" },
     NETWORK_INTELLIGENCE: { key: "network_intelligence", displayName: "Network Intelligence" },
@@ -50,4 +54,16 @@ export const DOMAIN_KEY_TAGS = Object.fromEntries(Object.entries(DOMAINS).map(([
     constantKey,
     `domainKey:${entry.key}`,
 ]));
+const CORE_DOMAIN_DISPLAY_NAMES = new Set([
+    DOMAINS.CORE_HARNESS.displayName,
+    DOMAINS.CORE_WORKSPACE.displayName,
+    DOMAINS.CORE_ORCHESTRATOR.displayName,
+    DOMAINS.CORE_SKILL.displayName,
+    DOMAINS.CORE_TIMER.displayName,
+    DOMAINS.CORE_USER.displayName,
+    DOMAINS.CORE_DISCOVER.displayName,
+]);
+export function isCoreDomain(domainDisplayName) {
+    return CORE_DOMAIN_DISPLAY_NAMES.has(domainDisplayName);
+}
 //# sourceMappingURL=domains.js.map

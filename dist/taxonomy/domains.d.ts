@@ -151,6 +151,22 @@ export declare const DOMAINS: {
         readonly key: "core_workspace";
         readonly displayName: "Core Workspace Tools";
     };
+    readonly CORE_SKILL: {
+        readonly key: "core_skill";
+        readonly displayName: "Core Skill Tools";
+    };
+    readonly CORE_TIMER: {
+        readonly key: "core_timer";
+        readonly displayName: "Core Timer Tools";
+    };
+    readonly CORE_USER: {
+        readonly key: "core_user";
+        readonly displayName: "Core User Tools";
+    };
+    readonly CORE_DISCOVER: {
+        readonly key: "core_discover";
+        readonly displayName: "Core Discover Tools";
+    };
     readonly REDDIT: {
         readonly key: "reddit";
         readonly displayName: "Reddit";
@@ -174,4 +190,5 @@ export type DomainKey = DomainEntry["key"];
 export type DomainDisplayName = DomainEntry["displayName"];
 export declare const DOMAIN_TAGS: Record<DomainConstantKey, `domain:${DomainDisplayName}`>;
 export declare const DOMAIN_KEY_TAGS: Record<DomainConstantKey, `domainKey:${DomainKey}`>;
+export declare function isCoreDomain(domainDisplayName: string): boolean;
 //# sourceMappingURL=domains.d.ts.map
