@@ -79,33 +79,13 @@ export declare const DOMAINS: {
         readonly key: "smart_home";
         readonly displayName: "Smart Home";
     };
-    readonly FILES: {
-        readonly key: "core_workspace";
-        readonly displayName: "Core Workspace Tools";
-    };
-    readonly SEARCH: {
-        readonly key: "core_workspace";
-        readonly displayName: "Core Workspace Tools";
-    };
     readonly WEB: {
         readonly key: "web";
         readonly displayName: "Web";
     };
-    readonly COMMAND: {
-        readonly key: "core_workspace";
-        readonly displayName: "Core Workspace Tools";
-    };
-    readonly GIT: {
-        readonly key: "core_workspace";
-        readonly displayName: "Core Workspace Tools";
-    };
     readonly BROWSER: {
         readonly key: "browser";
         readonly displayName: "Browser";
-    };
-    readonly CODE_INTEL: {
-        readonly key: "core_workspace";
-        readonly displayName: "Core Workspace Tools";
     };
     readonly TASKS: {
         readonly key: "tasks";
@@ -118,10 +98,6 @@ export declare const DOMAINS: {
     readonly AGENTS: {
         readonly key: "agents";
         readonly displayName: "Agent Management";
-    };
-    readonly WORKSPACE: {
-        readonly key: "core_workspace";
-        readonly displayName: "Core Workspace Tools";
     };
     readonly TOOLS: {
         readonly key: "tools";
@@ -158,14 +134,6 @@ export declare const DOMAINS: {
     readonly STRUCTURED: {
         readonly key: "structured";
         readonly displayName: "Structured Output";
-    };
-    readonly GIT_ISOLATION: {
-        readonly key: "core_workspace";
-        readonly displayName: "Core Workspace Tools";
-    };
-    readonly TASK_MGMT: {
-        readonly key: "tasks";
-        readonly displayName: "Task Management";
     };
     readonly TORRENT: {
         readonly key: "torrent";
