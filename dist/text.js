@@ -86,7 +86,7 @@ const TOOL_DISPLAY_OVERRIDES = {
     // Code Intelligence (LSP)
     query_language_server: "Query Language Server",
     // Memory Persistence
-    upsert_memory: "Save to Memory",
+    save_memory: "Save Memory",
     // Agent & Tool Management
     create_custom_agent: "Create Custom Agent",
     tool_search: "Search Available Tools",

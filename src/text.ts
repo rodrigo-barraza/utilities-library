@@ -94,7 +94,7 @@ const TOOL_DISPLAY_OVERRIDES: Record<string, string> = {
   query_language_server: "Query Language Server",
 
   // Memory Persistence
-  upsert_memory: "Save to Memory",
+  save_memory: "Save Memory",
 
   // Agent & Tool Management
   create_custom_agent: "Create Custom Agent",
