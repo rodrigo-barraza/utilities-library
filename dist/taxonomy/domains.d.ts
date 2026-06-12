@@ -107,10 +107,6 @@ export declare const DOMAINS: {
         readonly key: "meta";
         readonly displayName: "Meta";
     };
-    readonly CRON_JOBS: {
-        readonly key: "cron_jobs";
-        readonly displayName: "Cron Jobs";
-    };
     readonly CONVERSATION_TIMERS: {
         readonly key: "timers";
         readonly displayName: "Timers";
@@ -155,9 +151,9 @@ export declare const DOMAINS: {
         readonly key: "core_skill";
         readonly displayName: "Core Skill Tools";
     };
-    readonly CORE_TIMER: {
-        readonly key: "core_timer";
-        readonly displayName: "Core Timer Tools";
+    readonly CORE_SCHEDULE: {
+        readonly key: "core_schedule";
+        readonly displayName: "Core Schedule Tools";
     };
     readonly CORE_USER: {
         readonly key: "core_user";
