@@ -167,6 +167,14 @@ export declare const DOMAINS: {
         readonly key: "core_discover";
         readonly displayName: "Core Discover Tools";
     };
+    readonly CORE_TASK: {
+        readonly key: "core_task";
+        readonly displayName: "Core Task Tools";
+    };
+    readonly CORE_PLAN: {
+        readonly key: "core_plan";
+        readonly displayName: "Core Plan Tools";
+    };
     readonly REDDIT: {
         readonly key: "reddit";
         readonly displayName: "Reddit";

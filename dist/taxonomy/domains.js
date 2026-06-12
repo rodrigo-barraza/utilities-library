@@ -41,6 +41,8 @@ export const DOMAINS = {
     CORE_TIMER: { key: "core_timer", displayName: "Core Timer Tools" },
     CORE_USER: { key: "core_user", displayName: "Core User Tools" },
     CORE_DISCOVER: { key: "core_discover", displayName: "Core Discover Tools" },
+    CORE_TASK: { key: "core_task", displayName: "Core Task Tools" },
+    CORE_PLAN: { key: "core_plan", displayName: "Core Plan Tools" },
     REDDIT: { key: "reddit", displayName: "Reddit" },
     SECURITY: { key: "security", displayName: "Security" },
     NETWORK_INTELLIGENCE: { key: "network_intelligence", displayName: "Network Intelligence" },
@@ -62,6 +64,8 @@ const CORE_DOMAIN_DISPLAY_NAMES = new Set([
     DOMAINS.CORE_TIMER.displayName,
     DOMAINS.CORE_USER.displayName,
     DOMAINS.CORE_DISCOVER.displayName,
+    DOMAINS.CORE_TASK.displayName,
+    DOMAINS.CORE_PLAN.displayName,
 ]);
 export function isCoreDomain(domainDisplayName) {
     return CORE_DOMAIN_DISPLAY_NAMES.has(domainDisplayName);
