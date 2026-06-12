@@ -119,7 +119,7 @@ const TOOL_DISPLAY_OVERRIDES = {
     generate_image: "Generate AI Image",
     describe_image: "Analyze Image Contents",
     synthesize_speech: "Synthesize Speech",
-    generate_audio: "Generate AI Audio",
+    generate_audio: "Generate Audio",
     transcribe_audio: "Transcribe Audio",
     // Discord
     search_discord_messages: "Search Discord Messages",
