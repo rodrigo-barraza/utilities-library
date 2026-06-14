@@ -64,6 +64,7 @@ export const TOOL_NAMES = {
     EXTRACT_MEMORIES: "extract_memories",
     CONSOLIDATE_MEMORIES: "consolidate_memories",
     SEARCH_MEMORIES: "search_memories",
+    SEARCH_CONVERSATIONS: "search_conversations",
     // ── Compute ──
     CALCULATE_PRECISE: "evaluate_expression",
     // ── Smart Home ──
@@ -168,6 +169,7 @@ export const CORE_AGENTIC_TOOLS = [
     TOOL_NAMES.DISABLE_TOOLS,
     TOOL_NAMES.DISCOVER_AND_ENABLE_TOOLS,
     TOOL_NAMES.SAVE_MEMORY,
+    TOOL_NAMES.SEARCH_CONVERSATIONS,
     TOOL_NAMES.CREATE_TASK,
     TOOL_NAMES.LIST_TASKS,
     TOOL_NAMES.UPDATE_TASK,
