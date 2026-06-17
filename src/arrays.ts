@@ -2,6 +2,10 @@
 // Arrays — Array and object manipulation utilities
 // ─────────────────────────────────────────────────────────────
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
 /**
  * Batch an array into chunks of a given size.
  */
@@ -37,22 +41,34 @@ export function pickRandom<ArrayItem>(array: ArrayItem[]): ArrayItem {
  * Filter out null/undefined values from a payload object.
  * Keeps falsy values like 0, false, and empty strings.
  */
-export function compactPayload(object: Record<string, unknown>): Record<string, unknown> {
+export function compactPayload<Payload extends Record<string, unknown>>(object: Payload): Partial<Payload> {
   return Object.fromEntries(
     Object.entries(object).filter(
       ([, value]) => value !== null && value !== undefined,
     ),
-  );
+  ) as Partial<Payload>;
 }
 
 /**
  * Group array elements by a key derived from each element.
  * Returns an object whose keys are group identifiers and values are arrays.
  */
-export function groupBy<ArrayItem>(array: ArrayItem[], keyFn: string | ((item: ArrayItem) => string)): Record<string, ArrayItem[]> {
+export function groupBy<ArrayItem>(
+  array: ArrayItem[],
+  keySelector: string | ((item: ArrayItem) => string),
+): Record<string, ArrayItem[]> {
   const groups: Record<string, ArrayItem[]> = {};
   for (const item of array) {
-    const key = typeof keyFn === "function" ? keyFn(item) : (item as Record<string, unknown>)[keyFn] as string;
+    let key: string;
+    if (typeof keySelector === "function") {
+      key = keySelector(item);
+    } else {
+      if (isRecord(item)) {
+        key = item[keySelector] as string;
+      } else {
+        key = String(item);
+      }
+    }
     (groups[key] ??= []).push(item);
   }
   return groups;
@@ -62,10 +78,22 @@ export function groupBy<ArrayItem>(array: ArrayItem[], keyFn: string | ((item: A
  * Deduplicate an array by a key derived from each element.
  * Keeps the first occurrence of each unique key.
  */
-export function uniqueBy<ArrayItem>(array: ArrayItem[], keyFn: string | ((item: ArrayItem) => unknown)): ArrayItem[] {
+export function uniqueBy<ArrayItem>(
+  array: ArrayItem[],
+  keySelector: string | ((item: ArrayItem) => unknown),
+): ArrayItem[] {
   const seen = new Set<unknown>();
   return array.filter((item) => {
-    const key = typeof keyFn === "function" ? keyFn(item) : (item as Record<string, unknown>)[keyFn];
+    let key: unknown;
+    if (typeof keySelector === "function") {
+      key = keySelector(item);
+    } else {
+      if (isRecord(item)) {
+        key = item[keySelector];
+      } else {
+        key = item;
+      }
+    }
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -74,14 +102,17 @@ export function uniqueBy<ArrayItem>(array: ArrayItem[], keyFn: string | ((item: 
 
 /**
  * Split an array into two groups based on a predicate.
- * The first array contains items where `fn` returns true,
+ * The first array contains items where the predicate returns true,
  * the second contains the rest.
  */
-export function partition<ArrayItem>(array: ArrayItem[], fn: (item: ArrayItem) => boolean): [ArrayItem[], ArrayItem[]] {
+export function partition<ArrayItem>(
+  array: ArrayItem[],
+  predicate: (item: ArrayItem) => boolean,
+): [ArrayItem[], ArrayItem[]] {
   const pass: ArrayItem[] = [];
   const fail: ArrayItem[] = [];
   for (const item of array) {
-    (fn(item) ? pass : fail).push(item);
+    (predicate(item) ? pass : fail).push(item);
   }
   return [pass, fail];
 }
@@ -112,14 +143,24 @@ export interface SortByOptions {
   descending?: boolean;
 }
 
-export function sortBy<ArrayItem>(array: ArrayItem[], keyOrFn: string | ((firstItem: ArrayItem, secondItem: ArrayItem) => number), { descending = false }: SortByOptions = {}): ArrayItem[] {
+export function sortBy<ArrayItem>(
+  array: ArrayItem[],
+  keyOrComparator: string | ((firstItem: ArrayItem, secondItem: ArrayItem) => number),
+  { descending = false }: SortByOptions = {},
+): ArrayItem[] {
   const copy = [...array];
-  if (typeof keyOrFn === "function") {
-    copy.sort(keyOrFn);
+  if (typeof keyOrComparator === "function") {
+    copy.sort(keyOrComparator);
   } else {
     copy.sort((firstItem, secondItem) => {
-      const valueA = (firstItem as Record<string, unknown>)[keyOrFn] as string | number;
-      const valueB = (secondItem as Record<string, unknown>)[keyOrFn] as string | number;
+      let valueA: string | number = 0;
+      let valueB: string | number = 0;
+      if (isRecord(firstItem)) {
+        valueA = firstItem[keyOrComparator] as string | number;
+      }
+      if (isRecord(secondItem)) {
+        valueB = secondItem[keyOrComparator] as string | number;
+      }
       if (valueA < valueB) return -1;
       if (valueA > valueB) return 1;
       return 0;

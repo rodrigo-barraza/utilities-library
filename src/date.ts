@@ -16,8 +16,8 @@ export function toISODate(date: Date = new Date()): string {
  */
 export function timeAgo(date: string | Date | null | undefined): string {
   if (!date) return "—";
-  const diff = Date.now() - new Date(date).getTime();
-  const seconds = Math.floor(diff / 1000);
+  const differenceMilliseconds = Date.now() - new Date(date).getTime();
+  const seconds = Math.floor(differenceMilliseconds / 1000);
   if (seconds < 5) return "just now";
   if (seconds < 60) return `${seconds}s ago`;
   const minutes = Math.floor(seconds / 60);
@@ -47,7 +47,10 @@ export function daysSinceIso(isoDate: string): number {
  * Uses Intl.DateTimeFormat for locale-correct output.
  * Omits the year when the date is in the current year.
  */
-export function formatDateTime(dateInput: string | Date | null | undefined, opts: Intl.DateTimeFormatOptions = {}): string {
+export function formatDateTime(
+  dateInput: string | Date | null | undefined,
+  options: Intl.DateTimeFormatOptions = {},
+): string {
   if (!dateInput) return "—";
   const parsedDate = dateInput instanceof Date ? dateInput : new Date(dateInput);
   if (isNaN(parsedDate.getTime())) return "—";
@@ -58,16 +61,16 @@ export function formatDateTime(dateInput: string | Date | null | undefined, opts
     ...(sameYear ? {} : { year: "numeric" }),
     hour: "numeric",
     minute: "2-digit",
-    ...opts,
+    ...options,
   });
 }
 
 /**
- * Return a new Date that is `n` days in the past from now.
+ * Return a new Date that is `daysCount` days in the past from now.
  */
-export function daysAgo(n: number): Date {
+export function daysAgo(daysCount: number): Date {
   const result = new Date();
-  result.setDate(result.getDate() - n);
+  result.setDate(result.getDate() - daysCount);
   return result;
 }
 
@@ -81,3 +84,4 @@ export function toLocalDateString(date: Date = new Date()): string {
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
+//

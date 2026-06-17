@@ -6,7 +6,7 @@
 // surface compile errors on BOTH sides of the contract.
 // ─────────────────────────────────────────────────────────────
 
-export const SSE_EVENT_TYPES = {
+export const SERVER_SENT_EVENT_TYPES = {
   CHUNK: "chunk",
   THINKING: "thinking",
   IMAGE: "image",
@@ -46,8 +46,8 @@ export const SSE_EVENT_TYPES = {
   TOKEN: "token",
 } as const;
 
-export type SseEventType =
-  (typeof SSE_EVENT_TYPES)[keyof typeof SSE_EVENT_TYPES];
+export type ServerSentEventType =
+  (typeof SERVER_SENT_EVENT_TYPES)[keyof typeof SERVER_SENT_EVENT_TYPES];
 
 // ─────────────────────────────────────────────────────────────
 // Status Messages — the `{ type: "status", message: "..." }`

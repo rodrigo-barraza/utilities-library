@@ -7,7 +7,7 @@ export interface AsyncHandlerOptions {
 /**
  * Wrap an async route handler with standard error catching.
  */
-export declare function asyncHandler(handlerFunction: (req: Request, res: Response, next: NextFunction) => Promise<unknown>, label?: string, errorStatusOrOpts?: number | AsyncHandlerOptions): (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare function asyncHandler(handlerFunction: (req: Request, res: Response, next: NextFunction) => Promise<unknown>, label?: string, errorStatusOrOptions?: number | AsyncHandlerOptions): (req: Request, res: Response, next: NextFunction) => Promise<void>;
 /**
  * Reusable health-state tracker for route domains.
  */
@@ -23,7 +23,7 @@ export declare class HealthTracker {
 /**
  * Set up a Server-Sent Events response with proper headers.
  */
-export declare function setupStreamingSSE(res: Response): (event: unknown) => void;
+export declare function setupStreamingServerSentEvents(res: Response): (event: unknown) => void;
 /**
  * Reusable OAuth2 client-credentials token manager with caching.
  */
@@ -31,15 +31,19 @@ export declare class TokenManager {
     #private;
     constructor(fetchTokenFunction: () => Promise<{
         token: string;
-        expiresInMs: number;
+        expiresInMilliseconds: number;
     }>);
     getToken(): Promise<string>;
     invalidate(): void;
 }
+export interface ModuleNamespace {
+    default?: unknown;
+    [key: string]: unknown;
+}
 /**
  * Create a lazy-loading async getter for an ES module.
  */
-export declare function lazyImport<ImportedModule>(specifier: string, extract?: (moduleObject: Record<string, unknown>) => ImportedModule): () => Promise<ImportedModule>;
+export declare function lazyImport<ImportedModule>(specifier: string, extract?: (moduleObject: ModuleNamespace) => ImportedModule): () => Promise<ImportedModule>;
 export declare class HttpError extends Error {
     status: number;
     constructor(status: number, message: string);

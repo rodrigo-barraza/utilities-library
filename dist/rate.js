@@ -7,23 +7,23 @@
 // ─────────────────────────────────────────────────────────────
 /**
  * Create a debounced version of a function that delays invocation
- * until `wait` milliseconds have elapsed since the last call.
+ * until `delayMilliseconds` milliseconds have elapsed since the last call.
  *
  * The returned function exposes `.cancel()` and `.flush()` methods.
  */
-export function debounce(fn, wait, { leading = false } = {}) {
+export function debounce(targetFunction, delayMilliseconds, { leading = false } = {}) {
     let timer = null;
-    let lastArgs = null;
+    let lastParameters = null;
     let lastThis = null;
     function invoke() {
-        const args = lastArgs;
+        const parameters = lastParameters;
         const context = lastThis;
-        lastArgs = null;
+        lastParameters = null;
         lastThis = null;
-        fn.apply(context, args);
+        targetFunction.apply(context, parameters);
     }
-    const debounced = function (...args) {
-        lastArgs = args;
+    const debounced = function (...parameters) {
+        lastParameters = parameters;
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         lastThis = this;
         if (leading && timer === null) {
@@ -33,22 +33,22 @@ export function debounce(fn, wait, { leading = false } = {}) {
             clearTimeout(timer);
         timer = setTimeout(() => {
             timer = null;
-            if (!leading || lastArgs)
+            if (!leading || lastParameters)
                 invoke();
-        }, wait);
+        }, delayMilliseconds);
     };
     debounced.cancel = () => {
         if (timer !== null)
             clearTimeout(timer);
         timer = null;
-        lastArgs = null;
+        lastParameters = null;
         lastThis = null;
     };
     debounced.flush = () => {
         if (timer !== null) {
             clearTimeout(timer);
             timer = null;
-            if (lastArgs)
+            if (lastParameters)
                 invoke();
         }
     };
@@ -56,31 +56,31 @@ export function debounce(fn, wait, { leading = false } = {}) {
 }
 /**
  * Create a throttled version of a function that invokes at most
- * once every `wait` milliseconds.
+ * once every `delayMilliseconds` milliseconds.
  *
  * Uses the trailing-edge pattern by default: the last call during
  * a throttled window is replayed after the window expires.
  * The returned function exposes a `.cancel()` method.
  */
-export function throttle(fn, wait) {
+export function throttle(targetFunction, delayMilliseconds) {
     let timer = null;
-    let lastArgs = null;
+    let lastParameters = null;
     let lastThis = null;
     let lastInvoke = 0;
     function invoke() {
         lastInvoke = Date.now();
-        const args = lastArgs;
+        const parameters = lastParameters;
         const context = lastThis;
-        lastArgs = null;
+        lastParameters = null;
         lastThis = null;
-        fn.apply(context, args);
+        targetFunction.apply(context, parameters);
     }
-    const throttled = function (...args) {
-        lastArgs = args;
+    const throttled = function (...parameters) {
+        lastParameters = parameters;
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         lastThis = this;
         const elapsed = Date.now() - lastInvoke;
-        const remaining = wait - elapsed;
+        const remaining = delayMilliseconds - elapsed;
         if (remaining <= 0) {
             if (timer !== null)
                 clearTimeout(timer);
@@ -98,7 +98,7 @@ export function throttle(fn, wait) {
         if (timer !== null)
             clearTimeout(timer);
         timer = null;
-        lastArgs = null;
+        lastParameters = null;
         lastThis = null;
     };
     return throttled;

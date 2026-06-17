@@ -37,7 +37,7 @@ export declare function formatLatency(seconds: number | null | undefined): strin
  * Format a latency value given in milliseconds.
  * Thin wrapper over formatLatency(seconds).
  */
-export declare function formatLatencyMs(milliseconds: number | null | undefined): string;
+export declare function formatLatencyMilliseconds(milliseconds: number | null | undefined): string;
 /**
  * Format a duration in milliseconds to a human-readable string.
  * e.g. 500 → "500ms", 5000 → "5.0s", 90000 → "1m 30s"
@@ -83,7 +83,7 @@ export declare function formatContextTokens(tokens: number | null | undefined): 
  * Round a floating-point seconds value to millisecond precision (3 decimals).
  * Standard precision for all timing metrics stored in the database.
  */
-export declare function roundMs(seconds: number): number;
+export declare function roundMilliseconds(seconds: number): number;
 /**
  * Format a monetary amount with its currency symbol.
  * Uses Intl.NumberFormat to correctly place thousands separators and

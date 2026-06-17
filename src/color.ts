@@ -60,13 +60,13 @@ export function toHex({ r, g, b }: RGB): string {
 /**
  * Linearly interpolate between two hex colors.
  */
-export function lerpColor(colorA: string, colorB: string, t: number): string {
+export function lerpColor(colorA: string, colorB: string, interpolationFactor: number): string {
   const startColor = parseHex(colorA);
   const endColor = parseHex(colorB);
   return toHex({
-    r: startColor.r + (endColor.r - startColor.r) * t,
-    g: startColor.g + (endColor.g - startColor.g) * t,
-    b: startColor.b + (endColor.b - startColor.b) * t,
+    r: startColor.r + (endColor.r - startColor.r) * interpolationFactor,
+    g: startColor.g + (endColor.g - startColor.g) * interpolationFactor,
+    b: startColor.b + (endColor.b - startColor.b) * interpolationFactor,
   });
 }
 
@@ -101,7 +101,7 @@ export function hslToRgb({ h: hueInput, s: saturationInput, l: lightnessInput }:
     const grayscaleValue = Math.round(l * 255);
     return { r: grayscaleValue, g: grayscaleValue, b: grayscaleValue };
   }
-  const hue2rgb = (tempColorVal1: number, tempColorVal2: number, tempColorVal3: number): number => {
+  const hueToRgb = (tempColorVal1: number, tempColorVal2: number, tempColorVal3: number): number => {
     if (tempColorVal3 < 0) tempColorVal3 += 1;
     if (tempColorVal3 > 1) tempColorVal3 -= 1;
     if (tempColorVal3 < 1 / 6) return tempColorVal1 + (tempColorVal2 - tempColorVal1) * 6 * tempColorVal3;
@@ -112,9 +112,9 @@ export function hslToRgb({ h: hueInput, s: saturationInput, l: lightnessInput }:
   const tempColorVal2 = l < 0.5 ? l * (1 + s) : l + s - l * s;
   const tempColorVal1 = 2 * l - tempColorVal2;
   return {
-    r: Math.round(hue2rgb(tempColorVal1, tempColorVal2, h + 1 / 3) * 255),
-    g: Math.round(hue2rgb(tempColorVal1, tempColorVal2, h) * 255),
-    b: Math.round(hue2rgb(tempColorVal1, tempColorVal2, h - 1 / 3) * 255),
+    r: Math.round(hueToRgb(tempColorVal1, tempColorVal2, h + 1 / 3) * 255),
+    g: Math.round(hueToRgb(tempColorVal1, tempColorVal2, h) * 255),
+    b: Math.round(hueToRgb(tempColorVal1, tempColorVal2, h - 1 / 3) * 255),
   };
 }
 
@@ -122,10 +122,10 @@ export function hslToRgb({ h: hueInput, s: saturationInput, l: lightnessInput }:
  * Lighten or darken a hex color by a percentage.
  */
 export function adjustBrightness(hex: string, amount: number): string {
-  const rgb = parseHex(hex);
-  const hsl = rgbToHsl(rgb);
-  hsl.l = Math.max(0, Math.min(100, hsl.l + amount));
-  return toHex(hslToRgb(hsl));
+  const redGreenBlueColor = parseHex(hex);
+  const hueSaturationLightnessColor = rgbToHsl(redGreenBlueColor);
+  hueSaturationLightnessColor.l = Math.max(0, Math.min(100, hueSaturationLightnessColor.l + amount));
+  return toHex(hslToRgb(hueSaturationLightnessColor));
 }
 
 export type RgbTriplet = [number, number, number];
@@ -151,7 +151,6 @@ export function paletteAt(colors: RgbTriplet[], position: number): RgbTriplet {
   return lerpRgb(
     colors[currentIndex % colors.length],
     colors[(currentIndex + 1) % colors.length],
-    fractionalPart
+    fractionalPart,
   );
 }
-

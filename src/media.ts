@@ -7,8 +7,8 @@
  * public-facing `/api/media` proxy path in a string.
  */
 export function rewritePrivateUrls(text: string, internalUrl?: string): string {
-  const base = internalUrl || process.env.MINIO_INTERNAL_URL || "";
-  return text.replaceAll(base, "/api/media");
+  const baseInternalUrl = internalUrl || process.env.MINIO_INTERNAL_URL || "";
+  return text.replaceAll(baseInternalUrl, "/api/media");
 }
 
 /**
@@ -33,3 +33,4 @@ export function rewriteStream(stream: ReadableStream<Uint8Array>, internalUrl?: 
     }),
   );
 }
+//

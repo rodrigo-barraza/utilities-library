@@ -348,19 +348,19 @@ export function escapeRegex(text: string): string {
  * Extract the registrable root domain (domain + TLD) from a FQDN.
  * e.g. "api.prism.rod.dev" → "rod.dev", "clock-crew.com" → "clock-crew.com"
  */
-export function getRootDomain(fqdn: string | null | undefined): string {
-  if (!fqdn) return "";
-  const parts = fqdn.split(".");
-  return parts.length <= 2 ? fqdn : parts.slice(-2).join(".");
+export function getRootDomain(fullyQualifiedDomainName: string | null | undefined): string {
+  if (!fullyQualifiedDomainName) return "";
+  const parts = fullyQualifiedDomainName.split(".");
+  return parts.length <= 2 ? fullyQualifiedDomainName : parts.slice(-2).join(".");
 }
 
 /**
  * Extract the subdomain prefix from a FQDN.
  * e.g. "api.prism.rod.dev" → "api.prism", "rod.dev" → ""
  */
-export function getSubdomain(fqdn: string | null | undefined): string {
-  if (!fqdn) return "";
-  const parts = fqdn.split(".");
+export function getSubdomain(fullyQualifiedDomainName: string | null | undefined): string {
+  if (!fullyQualifiedDomainName) return "";
+  const parts = fullyQualifiedDomainName.split(".");
   return parts.length <= 2 ? "" : parts.slice(0, -2).join(".");
 }
 
@@ -420,8 +420,8 @@ export function toCamelCase(text: string | null | undefined): string {
  */
 export function toPascalCase(text: string | null | undefined): string {
   if (!text) return "";
-  const camel = toCamelCase(text);
-  return camel.charAt(0).toUpperCase() + camel.slice(1);
+  const camelCaseString = toCamelCase(text);
+  return camelCaseString.charAt(0).toUpperCase() + camelCaseString.slice(1);
 }
 
 /**

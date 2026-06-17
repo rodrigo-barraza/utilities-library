@@ -17,15 +17,15 @@ export interface AsyncHandlerOptions {
 export function asyncHandler(
   handlerFunction: (req: Request, res: Response, next: NextFunction) => Promise<unknown>,
   label: string = "",
-  errorStatusOrOpts: number | AsyncHandlerOptions = 502,
+  errorStatusOrOptions: number | AsyncHandlerOptions = 502,
 ) {
   const errorStatus =
-    typeof errorStatusOrOpts === "number"
-      ? errorStatusOrOpts
-      : errorStatusOrOpts.errorStatus || 502;
+    typeof errorStatusOrOptions === "number"
+      ? errorStatusOrOptions
+      : errorStatusOrOptions.errorStatus || 502;
   const health =
-    typeof errorStatusOrOpts === "object"
-      ? errorStatusOrOpts.health
+    typeof errorStatusOrOptions === "object"
+      ? errorStatusOrOptions.health
       : undefined;
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -94,7 +94,7 @@ export class HealthTracker {
 /**
  * Set up a Server-Sent Events response with proper headers.
  */
-export function setupStreamingSSE(res: Response): (event: unknown) => void {
+export function setupStreamingServerSentEvents(res: Response): (event: unknown) => void {
   res.writeHead(200, {
     "Content-Type": "text/event-stream",
     "Cache-Control": "no-cache",
@@ -113,17 +113,17 @@ export function setupStreamingSSE(res: Response): (event: unknown) => void {
 export class TokenManager {
   #token: string | null = null;
   #expiry = 0;
-  #fetchTokenFunction: () => Promise<{ token: string; expiresInMs: number }>;
+  #fetchTokenFunction: () => Promise<{ token: string; expiresInMilliseconds: number }>;
 
-  constructor(fetchTokenFunction: () => Promise<{ token: string; expiresInMs: number }>) {
+  constructor(fetchTokenFunction: () => Promise<{ token: string; expiresInMilliseconds: number }>) {
     this.#fetchTokenFunction = fetchTokenFunction;
   }
 
   async getToken(): Promise<string> {
     if (this.#token && Date.now() < this.#expiry) return this.#token;
-    const { token, expiresInMs } = await this.#fetchTokenFunction();
+    const { token, expiresInMilliseconds } = await this.#fetchTokenFunction();
     this.#token = token;
-    this.#expiry = Date.now() + expiresInMs;
+    this.#expiry = Date.now() + expiresInMilliseconds;
     return this.#token;
   }
 
@@ -133,10 +133,18 @@ export class TokenManager {
   }
 }
 
+export interface ModuleNamespace {
+  default?: unknown;
+  [key: string]: unknown;
+}
+
 /**
  * Create a lazy-loading async getter for an ES module.
  */
-export function lazyImport<ImportedModule>(specifier: string, extract: (moduleObject: Record<string, unknown>) => ImportedModule = (moduleObject) => moduleObject.default as ImportedModule): () => Promise<ImportedModule> {
+export function lazyImport<ImportedModule>(
+  specifier: string,
+  extract: (moduleObject: ModuleNamespace) => ImportedModule = (moduleObject) => moduleObject.default as ImportedModule,
+): () => Promise<ImportedModule> {
   let cached: ImportedModule;
   return async () => {
     if (!cached) cached = extract(await import(specifier));
@@ -164,23 +172,25 @@ export function httpError(status: number, message: string): HttpError {
  */
 export function createRequestLoggerMiddleware(logger: Logger) {
   return function requestLoggerMiddleware(req: Request, res: Response, next: NextFunction) {
-    const start = Date.now();
+    const startTimestamp = Date.now();
 
     const originalEnd = res.end;
     let size = 0;
 
     // Node's res.end has 3 overloaded signatures — monkey-patching requires a cast
-    res.end = function (...args: unknown[]) {
-      const chunk = args[0];
-      if (chunk) size += Buffer.byteLength(chunk as string | Buffer);
-      const timing = `${Date.now() - start}ms`;
+    res.end = function (this: unknown, ...parameters: unknown[]) {
+      const chunk = parameters[0];
+      if (typeof chunk === "string" || Buffer.isBuffer(chunk)) {
+        size += Buffer.byteLength(chunk);
+      }
+      const timing = `${Date.now() - startTimestamp}ms`;
       const sizeTag = size > 1024
         ? `${(size / 1024).toFixed(1)}KB`
         : `${size}B`;
 
       logger.request(req.method, req.originalUrl || req.url, res.statusCode, timing, sizeTag);
 
-      return Function.prototype.apply.call(originalEnd, res, args);
+      return Function.prototype.apply.call(originalEnd, this, parameters);
     } as typeof res.end;
 
     next();

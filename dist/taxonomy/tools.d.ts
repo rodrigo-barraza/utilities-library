@@ -16,7 +16,7 @@ export declare const TOOL_NAMES: {
     readonly GET_TRENDING_PRODUCTS: "get_trending_products";
     readonly READ_FILE: "read_file";
     readonly WRITE_FILE: "write_file";
-    readonly STR_REPLACE_FILE: "replace_in_file";
+    readonly STRING_REPLACE_FILE: "replace_in_file";
     readonly PATCH_FILE: "patch_file";
     readonly MOVE_FILE: "move_file";
     readonly DELETE_FILE: "delete_file";

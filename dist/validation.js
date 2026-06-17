@@ -48,7 +48,7 @@ export function parseJsonSafe(jsonString, fallback = null) {
  * Parse JSON from an LLM response, handling markdown code blocks.
  * Many LLMs wrap JSON in ```json ... ``` — this strips that before parsing.
  */
-export function parseJsonFromLlmResponse(text) {
+export function parseJsonFromLargeLanguageModelResponse(text) {
     if (!text)
         return null;
     let jsonText = text.trim();
@@ -67,23 +67,23 @@ export function parseJsonFromLlmResponse(text) {
     const objectStart = jsonText.indexOf("{");
     if (objectStart !== -1) {
         let depth = 0;
-        let inString = false;
-        let escape = false;
+        let isInString = false;
+        let isEscaped = false;
         for (let i = objectStart; i < jsonText.length; i++) {
             const character = jsonText[i];
-            if (escape) {
-                escape = false;
+            if (isEscaped) {
+                isEscaped = false;
                 continue;
             }
             if (character === "\\") {
-                escape = true;
+                isEscaped = true;
                 continue;
             }
             if (character === '"') {
-                inString = !inString;
+                isInString = !isInString;
                 continue;
             }
-            if (inString)
+            if (isInString)
                 continue;
             if (character === "{")
                 depth++;
@@ -104,23 +104,23 @@ export function parseJsonFromLlmResponse(text) {
     const arrayStart = jsonText.indexOf("[");
     if (arrayStart !== -1) {
         let depth = 0;
-        let inString = false;
-        let escape = false;
+        let isInString = false;
+        let isEscaped = false;
         for (let i = arrayStart; i < jsonText.length; i++) {
             const character = jsonText[i];
-            if (escape) {
-                escape = false;
+            if (isEscaped) {
+                isEscaped = false;
                 continue;
             }
             if (character === "\\") {
-                escape = true;
+                isEscaped = true;
                 continue;
             }
             if (character === '"') {
-                inString = !inString;
+                isInString = !isInString;
                 continue;
             }
-            if (inString)
+            if (isInString)
                 continue;
             if (character === "[")
                 depth++;

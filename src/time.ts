@@ -3,47 +3,47 @@
 // ─────────────────────────────────────────────────────────────
 
 /** One second in milliseconds. */
-export const MS_PER_SECOND = 1_000;
+export const MILLISECONDS_PER_SECOND = 1_000;
 
 /** One minute in milliseconds. */
-export const MS_PER_MINUTE = 60_000;
+export const MILLISECONDS_PER_MINUTE = 60_000;
 
 /** One hour in milliseconds. */
-export const MS_PER_HOUR = 3_600_000;
+export const MILLISECONDS_PER_HOUR = 3_600_000;
 
 /** One day in milliseconds. */
-export const MS_PER_DAY = 86_400_000;
+export const MILLISECONDS_PER_DAY = 86_400_000;
 
 /** One day in seconds. */
 export const SECONDS_PER_DAY = 86_400;
 
 /** One week in milliseconds. */
-export const MS_PER_WEEK = 604_800_000;
+export const MILLISECONDS_PER_WEEK = 604_800_000;
 
 /**
  * Convert seconds to milliseconds.
  */
-export const seconds = (n: number): number => n * MS_PER_SECOND;
+export const seconds = (secondsCount: number): number => secondsCount * MILLISECONDS_PER_SECOND;
 
 /**
  * Convert minutes to milliseconds.
  */
-export const minutes = (n: number): number => n * MS_PER_MINUTE;
+export const minutes = (minutesCount: number): number => minutesCount * MILLISECONDS_PER_MINUTE;
 
 /**
  * Convert hours to milliseconds.
  */
-export const hours = (n: number): number => n * MS_PER_HOUR;
+export const hours = (hoursCount: number): number => hoursCount * MILLISECONDS_PER_HOUR;
 
 /**
  * Convert days to milliseconds.
  */
-export const days = (n: number): number => n * MS_PER_DAY;
+export const days = (daysCount: number): number => daysCount * MILLISECONDS_PER_DAY;
 
 /**
  * Convert weeks to milliseconds.
  */
-export const weeks = (n: number): number => n * MS_PER_WEEK;
+export const weeks = (weeksCount: number): number => weeksCount * MILLISECONDS_PER_WEEK;
 
 // ── Polling Interval Tiers ──────────────────────────────────
 // Standardized intervals for UI polling across all clients.
@@ -67,19 +67,19 @@ export const POLL_LAZY = 60_000;
 // Standardized durations for transient UI states (copy badges, toasts, cooldowns).
 
 /** 1.5 s — Brief feedback flash (e.g. JSON copy confirmation). */
-export const FEEDBACK_BRIEF_MS = 1_500;
+export const FEEDBACK_BRIEF_MILLISECONDS = 1_500;
 
 /** 2 s — Standard feedback flash (e.g. "Copied!" badge, saved indicator). */
-export const FEEDBACK_STANDARD_MS = 2_000;
+export const FEEDBACK_STANDARD_MILLISECONDS = 2_000;
 
 /** 5 s — Toast notification auto-dismiss. */
-export const TOAST_DURATION_MS = 5_000;
+export const TOAST_DURATION_MILLISECONDS = 5_000;
 
 /** 5 s — Action button cooldown (stop/start/restart). */
-export const ACTION_COOLDOWN_MS = 5_000;
+export const ACTION_COOLDOWN_MILLISECONDS = 5_000;
 
 /** 8 s — Extended action cooldown (rollback). */
-export const ACTION_COOLDOWN_LONG_MS = 8_000;
+export const ACTION_COOLDOWN_LONG_MILLISECONDS = 8_000;
 
 /** 6 s — Highlight duration for newly-added items. */
-export const HIGHLIGHT_DURATION_MS = 6_000;
+export const HIGHLIGHT_DURATION_MILLISECONDS = 6_000;

@@ -6,7 +6,7 @@ import fs from "fs";
 import path from "path";
 import { errorMessage } from "./errors.js";
 const DEFAULT_VAULT_SERVICE_URL = "http://localhost:5599";
-const FETCH_TIMEOUT_MS = 5_000;
+const FETCH_TIMEOUT_MILLISECONDS = 5_000;
 /**
  * Create a Vault client instance.
  *
@@ -31,22 +31,22 @@ export function createVaultClient(options = {}) {
                 "";
         if (!_vaultToken) {
             try {
-                let currentDir = process.cwd();
+                let currentDirectory = process.cwd();
                 for (let i = 0; i < 6; i++) {
-                    const keyPath = path.join(currentDir, "vault-service", "vault.key");
+                    const keyPath = path.join(currentDirectory, "vault-service", "vault.key");
                     if (fs.existsSync(keyPath)) {
                         _vaultToken = fs.readFileSync(keyPath, "utf-8").trim();
                         break;
                     }
-                    const directKeyPath = path.join(currentDir, "vault.key");
+                    const directKeyPath = path.join(currentDirectory, "vault.key");
                     if (fs.existsSync(directKeyPath)) {
                         _vaultToken = fs.readFileSync(directKeyPath, "utf-8").trim();
                         break;
                     }
-                    const parentDir = path.dirname(currentDir);
-                    if (parentDir === currentDir)
+                    const parentDirectory = path.dirname(currentDirectory);
+                    if (parentDirectory === currentDirectory)
                         break;
-                    currentDir = parentDir;
+                    currentDirectory = parentDirectory;
                 }
             }
             catch {
@@ -76,12 +76,12 @@ export function createVaultClient(options = {}) {
                 const url = `${_vaultUrl}/secrets${queryString ? "?" + queryString : ""}`;
                 const response = await globalThis.fetch(url, {
                     headers: { Authorization: `Bearer ${_vaultToken}` },
-                    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+                    signal: AbortSignal.timeout(FETCH_TIMEOUT_MILLISECONDS),
                 });
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status} — ${response.statusText}`);
                 }
-                const secrets = await response.json();
+                const secrets = (await response.json());
                 console.warn(`🔐 Vault → loaded ${Object.keys(secrets).length} secrets`);
                 return secrets;
             }
@@ -99,13 +99,13 @@ export function createVaultClient(options = {}) {
             try {
                 const queryString = buildQueryString();
                 const url = `${_vaultUrl}/secrets${queryString ? "?" + queryString : ""}`;
-                const stdout = execFileSync("curl", [
+                const standardOutput = execFileSync("curl", [
                     "-sf",
-                    "--max-time", String(FETCH_TIMEOUT_MS / 1000),
+                    "--max-time", String(FETCH_TIMEOUT_MILLISECONDS / 1000),
                     "-H", `Authorization: Bearer ${_vaultToken}`,
                     url,
-                ], { encoding: "utf-8", timeout: FETCH_TIMEOUT_MS + 1000 });
-                const secrets = JSON.parse(stdout);
+                ], { encoding: "utf-8", timeout: FETCH_TIMEOUT_MILLISECONDS + 1000 });
+                const secrets = JSON.parse(standardOutput);
                 console.warn(`🔐 Vault → loaded ${Object.keys(secrets).length} secrets`);
                 return secrets;
             }
@@ -126,12 +126,12 @@ export function createVaultClient(options = {}) {
                 const url = `${_vaultUrl}/registry`;
                 const response = await globalThis.fetch(url, {
                     headers: { Authorization: `Bearer ${_vaultToken}` },
-                    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+                    signal: AbortSignal.timeout(FETCH_TIMEOUT_MILLISECONDS),
                 });
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status} — ${response.statusText}`);
                 }
-                _cachedRegistry = await response.json();
+                _cachedRegistry = (await response.json());
                 console.warn(`📋 Registry → ${_cachedRegistry.projects?.length || 0} projects, ${_cachedRegistry.infrastructure?.length || 0} infrastructure`);
                 return _cachedRegistry;
             }
@@ -141,10 +141,10 @@ export function createVaultClient(options = {}) {
             }
         },
         async resolveServiceUrl(serviceId) {
-            const urlEnv = `${serviceId.toUpperCase().replace(/-/g, "_")}_URL`;
-            // Check process.env first (may have been populated by bootstrapEnv)
-            if (process.env[urlEnv])
-                return process.env[urlEnv];
+            const urlEnvironmentVariable = `${serviceId.toUpperCase().replace(/-/g, "_")}_URL`;
+            // Check process.env first (may have been populated by bootstrapEnvironment)
+            if (process.env[urlEnvironmentVariable])
+                return process.env[urlEnvironmentVariable];
             // Fall back to registry
             const registry = await this.fetchRegistry();
             const service = (registry.projects || []).find((project) => project.id === serviceId);
@@ -158,15 +158,15 @@ export function createVaultClient(options = {}) {
                 return `http://localhost:${service.port}`;
             return null;
         },
-        async resolveInfraUrl(infraId) {
+        async resolveInfrastructureUrl(infrastructureId) {
             const registry = await this.fetchRegistry();
-            const infra = (registry.infrastructure || []).find((infrastructureItem) => infrastructureItem.id === infraId);
+            const infra = (registry.infrastructure || []).find((infrastructureItem) => infrastructureItem.id === infrastructureId);
             if (!infra) {
-                console.warn(`⚠️  Infrastructure "${infraId}" not found in registry`);
+                console.warn(`⚠️  Infrastructure "${infrastructureId}" not found in registry`);
                 return null;
             }
-            if (infra.urlEnv && process.env[infra.urlEnv]) {
-                return process.env[infra.urlEnv];
+            if (infra.urlEnvironmentVariable && process.env[infra.urlEnvironmentVariable]) {
+                return process.env[infra.urlEnvironmentVariable];
             }
             if (infra.url)
                 return infra.url;
@@ -182,7 +182,7 @@ export function createVaultClient(options = {}) {
  * Fetches all secrets from the Vault HTTP API and injects them
  * into process.env (without overwriting existing values).
  */
-export async function bootstrapEnv() {
+export async function bootstrapEnvironment() {
     const vault = createVaultClient();
     const secrets = await vault.fetch();
     for (const [key, value] of Object.entries(secrets)) {

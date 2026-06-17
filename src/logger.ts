@@ -6,7 +6,7 @@ const RESET = "\x1b[0m";
 const DIM = "\x1b[2m";
 const BOLD = "\x1b[1m";
 
-const FG = {
+const FOREGROUND_COLORS = {
   red: "\x1b[31m",
   green: "\x1b[32m",
   yellow: "\x1b[33m",
@@ -17,14 +17,14 @@ const FG = {
   gray: "\x1b[90m",
 } as const;
 
-type LogLevel = "INFO" | "OK" | "WARN" | "ERR" | "DBG";
+type LogLevel = "INFO" | "OK" | "WARN" | "ERROR" | "DEBUG";
 
 const LEVEL_STYLES: Record<LogLevel, { label: string; color: string }> = {
-  INFO: { label: "INFO ", color: FG.blue },
-  OK: { label: "OK   ", color: FG.green },
-  WARN: { label: "WARN ", color: FG.yellow },
-  ERR: { label: "ERR  ", color: FG.red },
-  DBG: { label: "DBG  ", color: FG.magenta },
+  INFO: { label: "INFO ", color: FOREGROUND_COLORS.blue },
+  OK: { label: "OK   ", color: FOREGROUND_COLORS.green },
+  WARN: { label: "WARN ", color: FOREGROUND_COLORS.yellow },
+  ERROR: { label: "ERROR", color: FOREGROUND_COLORS.red },
+  DEBUG: { label: "DEBUG", color: FOREGROUND_COLORS.magenta },
 };
 
 function timestamp(): string {
@@ -42,11 +42,11 @@ function shouldUseColor(): boolean {
 }
 
 export interface Logger {
-  info(message: string, ...args: unknown[]): void;
-  success(message: string, ...args: unknown[]): void;
-  warn(message: string, ...args: unknown[]): void;
-  error(message: string, ...args: unknown[]): void;
-  debug(message: string, ...args: unknown[]): void;
+  info(message: string, ...additionalData: unknown[]): void;
+  success(message: string, ...additionalData: unknown[]): void;
+  warn(message: string, ...additionalData: unknown[]): void;
+  error(message: string, ...additionalData: unknown[]): void;
+  debug(message: string, ...additionalData: unknown[]): void;
   request(method: string, path: string, status: number, timing: string, sizeTag?: string): void;
 }
 
@@ -60,15 +60,15 @@ export interface LoggerOptions {
 /**
  * Build a logger instance, optionally scoped to a service name.
  */
-function createLogger(opts?: string | LoggerOptions): Logger {
+function createLogger(options?: string | LoggerOptions): Logger {
   let service = "";
   let useColor = shouldUseColor();
 
-  if (typeof opts === "string") {
-    service = opts;
-  } else if (opts && typeof opts === "object") {
-    service = opts.service || "";
-    if (typeof opts.color === "boolean") useColor = opts.color;
+  if (typeof options === "string") {
+    service = options;
+  } else if (options && typeof options === "object") {
+    service = options.service || "";
+    if (typeof options.color === "boolean") useColor = options.color;
   }
 
   function formatLine(level: LogLevel, message: string): string {
@@ -83,31 +83,31 @@ function createLogger(opts?: string | LoggerOptions): Logger {
     const timeFormatted = `${DIM}[${time}]${RESET}`;
     const levelFormatted = `${BOLD}${style.color}${style.label}${RESET}`;
     const tag = service
-      ? ` ${FG.cyan}[${service}]${RESET}`
+      ? ` ${FOREGROUND_COLORS.cyan}[${service}]${RESET}`
       : "";
 
     return `${timeFormatted} ${levelFormatted}${tag} ${message}`;
   }
 
   return {
-    info(message: string, ...args: unknown[]) {
-      console.log(formatLine("INFO", message), ...args);
+    info(message: string, ...additionalData: unknown[]) {
+      console.log(formatLine("INFO", message), ...additionalData);
     },
 
-    success(message: string, ...args: unknown[]) {
-      console.log(formatLine("OK", message), ...args);
+    success(message: string, ...additionalData: unknown[]) {
+      console.log(formatLine("OK", message), ...additionalData);
     },
 
-    warn(message: string, ...args: unknown[]) {
-      console.warn(formatLine("WARN", message), ...args);
+    warn(message: string, ...additionalData: unknown[]) {
+      console.warn(formatLine("WARN", message), ...additionalData);
     },
 
-    error(message: string, ...args: unknown[]) {
-      console.error(formatLine("ERR", message), ...args);
+    error(message: string, ...additionalData: unknown[]) {
+      console.error(formatLine("ERROR", message), ...additionalData);
     },
 
-    debug(message: string, ...args: unknown[]) {
-      console.log(formatLine("DBG", message), ...args);
+    debug(message: string, ...additionalData: unknown[]) {
+      console.log(formatLine("DEBUG", message), ...additionalData);
     },
 
     request(method: string, path: string, status: number, timing: string, sizeTag?: string) {
@@ -121,12 +121,12 @@ function createLogger(opts?: string | LoggerOptions): Logger {
       }
 
       const timeFormatted = `${DIM}[${time}]${RESET}`;
-      const tag = service ? ` ${FG.cyan}[${service}]${RESET}` : "";
+      const tag = service ? ` ${FOREGROUND_COLORS.cyan}[${service}]${RESET}` : "";
 
-      let statusColor: string = FG.green;
-      if (status >= 500) statusColor = FG.red;
-      else if (status >= 400) statusColor = FG.yellow;
-      else if (status >= 300) statusColor = FG.blue;
+      let statusColor: string = FOREGROUND_COLORS.green;
+      if (status >= 500) statusColor = FOREGROUND_COLORS.red;
+      else if (status >= 400) statusColor = FOREGROUND_COLORS.yellow;
+      else if (status >= 300) statusColor = FOREGROUND_COLORS.blue;
 
       const statusFormatted = `${BOLD}${statusColor}${status}${RESET}`;
       const methodFormatted = `${BOLD}${method}${RESET}`;

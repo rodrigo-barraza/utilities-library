@@ -15,8 +15,8 @@ export function toISODate(date = new Date()) {
 export function timeAgo(date) {
     if (!date)
         return "—";
-    const diff = Date.now() - new Date(date).getTime();
-    const seconds = Math.floor(diff / 1000);
+    const differenceMilliseconds = Date.now() - new Date(date).getTime();
+    const seconds = Math.floor(differenceMilliseconds / 1000);
     if (seconds < 5)
         return "just now";
     if (seconds < 60)
@@ -48,7 +48,7 @@ export function daysSinceIso(isoDate) {
  * Uses Intl.DateTimeFormat for locale-correct output.
  * Omits the year when the date is in the current year.
  */
-export function formatDateTime(dateInput, opts = {}) {
+export function formatDateTime(dateInput, options = {}) {
     if (!dateInput)
         return "—";
     const parsedDate = dateInput instanceof Date ? dateInput : new Date(dateInput);
@@ -61,15 +61,15 @@ export function formatDateTime(dateInput, opts = {}) {
         ...(sameYear ? {} : { year: "numeric" }),
         hour: "numeric",
         minute: "2-digit",
-        ...opts,
+        ...options,
     });
 }
 /**
- * Return a new Date that is `n` days in the past from now.
+ * Return a new Date that is `daysCount` days in the past from now.
  */
-export function daysAgo(n) {
+export function daysAgo(daysCount) {
     const result = new Date();
-    result.setDate(result.getDate() - n);
+    result.setDate(result.getDate() - daysCount);
     return result;
 }
 /**
@@ -82,4 +82,5 @@ export function toLocalDateString(date = new Date()) {
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
 }
+//
 //# sourceMappingURL=date.js.map

@@ -28,7 +28,9 @@ export function randomInt(min, max) {
 export function cosineSimilarity(vectorA, vectorB) {
     if (!vectorA || !vectorB || vectorA.length !== vectorB.length)
         return 0;
-    let dotProduct = 0, magnitudeA = 0, magnitudeB = 0;
+    let dotProduct = 0;
+    let magnitudeA = 0;
+    let magnitudeB = 0;
     for (let i = 0; i < vectorA.length; i++) {
         dotProduct += vectorA[i] * vectorB[i];
         magnitudeA += vectorA[i] * vectorA[i];
@@ -48,8 +50,8 @@ export function lerp(startValue, endValue, interpolationFactor) {
  * Remap a value from one range to another (linear mapping).
  * e.g. remap(50, 0, 100, 0, 1) → 0.5
  */
-export function remap(value, inMin, inMax, outMin, outMax) {
-    return ((value - inMin) / (inMax - inMin)) * (outMax - outMin) + outMin;
+export function remap(value, inputMinimum, inputMaximum, outputMinimum, outputMaximum) {
+    return ((value - inputMinimum) / (inputMaximum - inputMinimum)) * (outputMaximum - outputMinimum) + outputMinimum;
 }
 /**
  * Sum all numbers in an array.
@@ -57,7 +59,7 @@ export function remap(value, inMin, inMax, outMin, outMax) {
 export function sum(array) {
     if (!array || array.length === 0)
         return 0;
-    return array.reduce((acc, currentValue) => acc + currentValue, 0);
+    return array.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 }
 /**
  * Compute the arithmetic mean of a numeric array.

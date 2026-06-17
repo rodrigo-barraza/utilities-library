@@ -26,7 +26,7 @@ export declare function lerp(startValue: number, endValue: number, interpolation
  * Remap a value from one range to another (linear mapping).
  * e.g. remap(50, 0, 100, 0, 1) → 0.5
  */
-export declare function remap(value: number, inMin: number, inMax: number, outMin: number, outMax: number): number;
+export declare function remap(value: number, inputMinimum: number, inputMaximum: number, outputMinimum: number, outputMaximum: number): number;
 /**
  * Sum all numbers in an array.
  */

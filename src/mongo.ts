@@ -7,17 +7,17 @@ let database: Db | null = null;
  * Connect to MongoDB and return the database instance.
  * Shared across all domains — single connection pool.
  */
-export async function connectDB(uri: string, dbName?: string): Promise<Db> {
+export async function connectDatabase(connectionUri: string, databaseName?: string): Promise<Db> {
   if (database) return database;
-  client = new MongoClient(uri);
+  client = new MongoClient(connectionUri);
   await client.connect();
-  const dbInstance = client.db(dbName);
-  if (dbInstance.databaseName === "test") {
+  const databaseInstance = client.db(databaseName);
+  if (databaseInstance.databaseName === "test") {
     throw new Error(
-      "utilities-library: Connecting to the 'test' database is forbidden. Please specify a dbName explicitly.",
+      "utilities-library: Connecting to the 'test' database is forbidden. Please specify a databaseName explicitly.",
     );
   }
-  database = dbInstance;
+  database = databaseInstance;
   console.log(`📡 Connected to MongoDB: ${database.databaseName}`);
   return database;
 }
@@ -25,22 +25,22 @@ export async function connectDB(uri: string, dbName?: string): Promise<Db> {
 /**
  * Get the shared database instance.
  */
-export function getDB(): Db {
-  if (!database) throw new Error("Database not connected — call connectDB() first");
+export function getDatabase(): Db {
+  if (!database) throw new Error("Database not connected — call connectDatabase() first");
   return database;
 }
 
 /**
  * Set a mock database instance for testing.
  */
-export function setDBForTesting(mockDb: Db): void {
-  database = mockDb;
+export function setDatabaseForTesting(mockDatabase: Db): void {
+  database = mockDatabase;
 }
 
 /**
  * Close the MongoDB connection and reset the singleton.
  */
-export async function disconnectDB(): Promise<void> {
+export async function disconnectDatabase(): Promise<void> {
   if (client) {
     await client.close();
     client = null;

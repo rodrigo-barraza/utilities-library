@@ -142,9 +142,9 @@ describe("format.js", () => {
     });
   });
 
-  describe("roundMs", () => {
+  describe("roundMilliseconds", () => {
     it("rounds to 3 decimal places", () => {
-      expect(formatUtilities.roundMs(1.23456789)).toBe(1.235);
+      expect(formatUtilities.roundMilliseconds(1.23456789)).toBe(1.235);
     });
   });
 });
@@ -364,11 +364,11 @@ describe("time.js", () => {
     timeUtilities = await import("../dist/time.js");
   });
 
-  it("defines MS constants", () => {
-    expect(timeUtilities.MS_PER_SECOND).toBe(1_000);
-    expect(timeUtilities.MS_PER_MINUTE).toBe(60_000);
-    expect(timeUtilities.MS_PER_HOUR).toBe(3_600_000);
-    expect(timeUtilities.MS_PER_DAY).toBe(86_400_000);
+  it("defines MILLISECONDS constants", () => {
+    expect(timeUtilities.MILLISECONDS_PER_SECOND).toBe(1_000);
+    expect(timeUtilities.MILLISECONDS_PER_MINUTE).toBe(60_000);
+    expect(timeUtilities.MILLISECONDS_PER_HOUR).toBe(3_600_000);
+    expect(timeUtilities.MILLISECONDS_PER_DAY).toBe(86_400_000);
   });
 
   it("converter functions work", () => {
@@ -590,27 +590,27 @@ describe("validation.js", () => {
     });
   });
 
-  describe("parseJsonFromLlmResponse", () => {
+  describe("parseJsonFromLargeLanguageModelResponse", () => {
     it("extracts from markdown fence", () => {
-      const result = validationUtilities.parseJsonFromLlmResponse('```json\n{"a":1}\n```');
+      const result = validationUtilities.parseJsonFromLargeLanguageModelResponse('```json\n{"a":1}\n```');
       expect(result).toEqual({ a: 1 });
     });
     it("handles bare JSON", () => {
-      expect(validationUtilities.parseJsonFromLlmResponse('{"a":1}')).toEqual({ a: 1 });
+      expect(validationUtilities.parseJsonFromLargeLanguageModelResponse('{"a":1}')).toEqual({ a: 1 });
     });
     it("extracts from surrounding text", () => {
-      const result = validationUtilities.parseJsonFromLlmResponse('Here is the result: {"a":1} done');
+      const result = validationUtilities.parseJsonFromLargeLanguageModelResponse('Here is the result: {"a":1} done');
       expect(result).toEqual({ a: 1 });
     });
     it("handles arrays", () => {
-      expect(validationUtilities.parseJsonFromLlmResponse("[1,2,3]")).toEqual([1, 2, 3]);
+      expect(validationUtilities.parseJsonFromLargeLanguageModelResponse("[1,2,3]")).toEqual([1, 2, 3]);
     });
     it("returns null for unparseable", () => {
-      expect(validationUtilities.parseJsonFromLlmResponse("just text")).toBeNull();
+      expect(validationUtilities.parseJsonFromLargeLanguageModelResponse("just text")).toBeNull();
     });
     it("returns null for null/empty", () => {
-      expect(validationUtilities.parseJsonFromLlmResponse(null)).toBeNull();
-      expect(validationUtilities.parseJsonFromLlmResponse("")).toBeNull();
+      expect(validationUtilities.parseJsonFromLargeLanguageModelResponse(null)).toBeNull();
+      expect(validationUtilities.parseJsonFromLargeLanguageModelResponse("")).toBeNull();
     });
   });
 });

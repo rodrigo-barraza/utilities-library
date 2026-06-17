@@ -17,11 +17,11 @@ export declare function daysSinceIso(isoDate: string): number;
  * Uses Intl.DateTimeFormat for locale-correct output.
  * Omits the year when the date is in the current year.
  */
-export declare function formatDateTime(dateInput: string | Date | null | undefined, opts?: Intl.DateTimeFormatOptions): string;
+export declare function formatDateTime(dateInput: string | Date | null | undefined, options?: Intl.DateTimeFormatOptions): string;
 /**
- * Return a new Date that is `n` days in the past from now.
+ * Return a new Date that is `daysCount` days in the past from now.
  */
-export declare function daysAgo(n: number): Date;
+export declare function daysAgo(daysCount: number): Date;
 /**
  * Format a Date as a local-time date string (YYYY-MM-DD).
  * Unlike `toISODate()`, this uses the local timezone rather than UTC.

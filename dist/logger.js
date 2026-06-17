@@ -4,7 +4,7 @@
 const RESET = "\x1b[0m";
 const DIM = "\x1b[2m";
 const BOLD = "\x1b[1m";
-const FG = {
+const FOREGROUND_COLORS = {
     red: "\x1b[31m",
     green: "\x1b[32m",
     yellow: "\x1b[33m",
@@ -15,11 +15,11 @@ const FG = {
     gray: "\x1b[90m",
 };
 const LEVEL_STYLES = {
-    INFO: { label: "INFO ", color: FG.blue },
-    OK: { label: "OK   ", color: FG.green },
-    WARN: { label: "WARN ", color: FG.yellow },
-    ERR: { label: "ERR  ", color: FG.red },
-    DBG: { label: "DBG  ", color: FG.magenta },
+    INFO: { label: "INFO ", color: FOREGROUND_COLORS.blue },
+    OK: { label: "OK   ", color: FOREGROUND_COLORS.green },
+    WARN: { label: "WARN ", color: FOREGROUND_COLORS.yellow },
+    ERROR: { label: "ERROR", color: FOREGROUND_COLORS.red },
+    DEBUG: { label: "DEBUG", color: FOREGROUND_COLORS.magenta },
 };
 function timestamp() {
     const now = new Date();
@@ -38,16 +38,16 @@ function shouldUseColor() {
 /**
  * Build a logger instance, optionally scoped to a service name.
  */
-function createLogger(opts) {
+function createLogger(options) {
     let service = "";
     let useColor = shouldUseColor();
-    if (typeof opts === "string") {
-        service = opts;
+    if (typeof options === "string") {
+        service = options;
     }
-    else if (opts && typeof opts === "object") {
-        service = opts.service || "";
-        if (typeof opts.color === "boolean")
-            useColor = opts.color;
+    else if (options && typeof options === "object") {
+        service = options.service || "";
+        if (typeof options.color === "boolean")
+            useColor = options.color;
     }
     function formatLine(level, message) {
         const time = timestamp();
@@ -59,25 +59,25 @@ function createLogger(opts) {
         const timeFormatted = `${DIM}[${time}]${RESET}`;
         const levelFormatted = `${BOLD}${style.color}${style.label}${RESET}`;
         const tag = service
-            ? ` ${FG.cyan}[${service}]${RESET}`
+            ? ` ${FOREGROUND_COLORS.cyan}[${service}]${RESET}`
             : "";
         return `${timeFormatted} ${levelFormatted}${tag} ${message}`;
     }
     return {
-        info(message, ...args) {
-            console.log(formatLine("INFO", message), ...args);
+        info(message, ...additionalData) {
+            console.log(formatLine("INFO", message), ...additionalData);
         },
-        success(message, ...args) {
-            console.log(formatLine("OK", message), ...args);
+        success(message, ...additionalData) {
+            console.log(formatLine("OK", message), ...additionalData);
         },
-        warn(message, ...args) {
-            console.warn(formatLine("WARN", message), ...args);
+        warn(message, ...additionalData) {
+            console.warn(formatLine("WARN", message), ...additionalData);
         },
-        error(message, ...args) {
-            console.error(formatLine("ERR", message), ...args);
+        error(message, ...additionalData) {
+            console.error(formatLine("ERROR", message), ...additionalData);
         },
-        debug(message, ...args) {
-            console.log(formatLine("DBG", message), ...args);
+        debug(message, ...additionalData) {
+            console.log(formatLine("DEBUG", message), ...additionalData);
         },
         request(method, path, status, timing, sizeTag) {
             const size = sizeTag ? ` ${sizeTag}` : "";
@@ -88,14 +88,14 @@ function createLogger(opts) {
                 return;
             }
             const timeFormatted = `${DIM}[${time}]${RESET}`;
-            const tag = service ? ` ${FG.cyan}[${service}]${RESET}` : "";
-            let statusColor = FG.green;
+            const tag = service ? ` ${FOREGROUND_COLORS.cyan}[${service}]${RESET}` : "";
+            let statusColor = FOREGROUND_COLORS.green;
             if (status >= 500)
-                statusColor = FG.red;
+                statusColor = FOREGROUND_COLORS.red;
             else if (status >= 400)
-                statusColor = FG.yellow;
+                statusColor = FOREGROUND_COLORS.yellow;
             else if (status >= 300)
-                statusColor = FG.blue;
+                statusColor = FOREGROUND_COLORS.blue;
             const statusFormatted = `${BOLD}${statusColor}${status}${RESET}`;
             const methodFormatted = `${BOLD}${method}${RESET}`;
             const timingFormatted = `${DIM}${timing}${size}${RESET}`;

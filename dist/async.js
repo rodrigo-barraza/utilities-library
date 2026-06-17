@@ -2,15 +2,15 @@
 // Async — Promise-based timing utilities
 // ─────────────────────────────────────────────────────────────
 /**
- * Resolves after `ms` milliseconds.
+ * Resolves after `milliseconds` milliseconds.
  */
-export function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+export function sleep(milliseconds) {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
-export async function retry(fn, { retries = 3, delay = 1000, backoff = 2 } = {}) {
+export async function retry(action, { retries = 3, delay = 1000, backoff = 2 } = {}) {
     for (let attempt = 0;; attempt++) {
         try {
-            return await fn(attempt);
+            return await action(attempt);
         }
         catch (error) {
             if (attempt >= retries)
@@ -21,14 +21,14 @@ export async function retry(fn, { retries = 3, delay = 1000, backoff = 2 } = {})
 }
 /**
  * Race a promise against a timeout. Rejects with an Error if
- * the promise does not settle within `ms` milliseconds.
+ * the promise does not settle within `milliseconds` milliseconds.
  */
-export function withTimeout(promise, ms, message = "Operation timed out") {
+export function withTimeout(promise, milliseconds, message = "Operation timed out") {
     let timer;
     return Promise.race([
         promise.finally(() => clearTimeout(timer)),
         new Promise((_, reject) => {
-            timer = setTimeout(() => reject(new Error(message)), ms);
+            timer = setTimeout(() => reject(new Error(message)), milliseconds);
         }),
     ]);
 }
@@ -36,14 +36,14 @@ export function withTimeout(promise, ms, message = "Operation timed out") {
  * Fetch a URL with an automatic timeout.
  * Returns parsed JSON on success, or `fallback` on failure/timeout.
  */
-export async function fetchWithTimeout(url, timeoutMs = 5000, fallback = null) {
+export async function fetchWithTimeout(url, timeoutMilliseconds = 5000, fallback = null) {
     try {
         const response = await fetch(url, {
-            signal: AbortSignal.timeout(timeoutMs),
+            signal: AbortSignal.timeout(timeoutMilliseconds),
         });
         if (!response.ok)
             return fallback;
-        return await response.json();
+        return (await response.json());
     }
     catch {
         return fallback;
@@ -53,23 +53,23 @@ export async function fetchWithTimeout(url, timeoutMs = 5000, fallback = null) {
  * Race a promise against a timeout, resolving to `fallback` on timeout.
  * Unlike `withTimeout`, this never rejects — it gracefully degrades.
  */
-export function withTimeoutFallback(promise, ms, fallback = null) {
+export function withTimeoutFallback(promise, milliseconds, fallback = null) {
     return Promise.race([
         promise,
-        new Promise((resolve) => setTimeout(() => resolve(fallback), ms)),
+        new Promise((resolve) => setTimeout(() => resolve(fallback), milliseconds)),
     ]);
 }
-export async function pMap(iterable, fn, { concurrency = Infinity } = {}) {
+export async function pMap(iterable, mapper, { concurrency = Infinity } = {}) {
     const items = [...iterable];
     const results = new Array(items.length);
     if (concurrency === Infinity) {
-        return Promise.all(items.map((item, i) => fn(item, i)));
+        return Promise.all(items.map((item, index) => mapper(item, index)));
     }
     let nextIndex = 0;
     async function worker() {
         while (nextIndex < items.length) {
-            const i = nextIndex++;
-            results[i] = await fn(items[i], i);
+            const index = nextIndex++;
+            results[index] = await mapper(items[index], index);
         }
     }
     const workers = Array.from({ length: Math.min(concurrency, items.length) }, () => worker());

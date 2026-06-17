@@ -45,11 +45,17 @@ export function parseJsonSafe<T = unknown>(jsonString: string | null | undefined
   }
 }
 
+export interface TransformedJsonObject {
+  [key: string]: unknown;
+}
+
+export type TransformedJson = TransformedJsonObject | unknown[] | null;
+
 /**
  * Parse JSON from an LLM response, handling markdown code blocks.
  * Many LLMs wrap JSON in ```json ... ``` — this strips that before parsing.
  */
-export function parseJsonFromLlmResponse(text: string | null | undefined): Record<string, unknown> | unknown[] | null {
+export function parseJsonFromLargeLanguageModelResponse(text: string | null | undefined): TransformedJson {
   if (!text) return null;
   let jsonText = text.trim();
 
@@ -59,7 +65,7 @@ export function parseJsonFromLlmResponse(text: string | null | undefined): Recor
 
   // 2. Try direct parse (works for clean JSON or fence-extracted)
   try {
-    return JSON.parse(jsonText);
+    return JSON.parse(jsonText) as TransformedJson;
   } catch {
     // continue to fallback strategies
   }
@@ -68,29 +74,29 @@ export function parseJsonFromLlmResponse(text: string | null | undefined): Recor
   const objectStart = jsonText.indexOf("{");
   if (objectStart !== -1) {
     let depth = 0;
-    let inString = false;
-    let escape = false;
+    let isInString = false;
+    let isEscaped = false;
     for (let i = objectStart; i < jsonText.length; i++) {
       const character = jsonText[i];
-      if (escape) {
-        escape = false;
+      if (isEscaped) {
+        isEscaped = false;
         continue;
       }
       if (character === "\\") {
-        escape = true;
+        isEscaped = true;
         continue;
       }
       if (character === '"') {
-        inString = !inString;
+        isInString = !isInString;
         continue;
       }
-      if (inString) continue;
+      if (isInString) continue;
       if (character === "{") depth++;
       else if (character === "}") {
         depth--;
         if (depth === 0) {
           try {
-            return JSON.parse(jsonText.slice(objectStart, i + 1));
+            return JSON.parse(jsonText.slice(objectStart, i + 1)) as TransformedJsonObject;
           } catch {
             break;
           }
@@ -103,29 +109,29 @@ export function parseJsonFromLlmResponse(text: string | null | undefined): Recor
   const arrayStart = jsonText.indexOf("[");
   if (arrayStart !== -1) {
     let depth = 0;
-    let inString = false;
-    let escape = false;
+    let isInString = false;
+    let isEscaped = false;
     for (let i = arrayStart; i < jsonText.length; i++) {
       const character = jsonText[i];
-      if (escape) {
-        escape = false;
+      if (isEscaped) {
+        isEscaped = false;
         continue;
       }
       if (character === "\\") {
-        escape = true;
+        isEscaped = true;
         continue;
       }
       if (character === '"') {
-        inString = !inString;
+        isInString = !isInString;
         continue;
       }
-      if (inString) continue;
+      if (isInString) continue;
       if (character === "[") depth++;
       else if (character === "]") {
         depth--;
         if (depth === 0) {
           try {
-            return JSON.parse(jsonText.slice(arrayStart, i + 1));
+            return JSON.parse(jsonText.slice(arrayStart, i + 1)) as unknown[];
           } catch {
             break;
           }

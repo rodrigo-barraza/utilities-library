@@ -20,9 +20,9 @@ export {
 } from "./tools.ts";
 
 export {
-  SSE_EVENT_TYPES,
+  SERVER_SENT_EVENT_TYPES,
   STATUS_MESSAGES,
-  type SseEventType,
+  type ServerSentEventType,
   type StatusMessage,
 } from "./events.ts";
 

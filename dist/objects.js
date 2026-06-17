@@ -1,6 +1,9 @@
 // ─────────────────────────────────────────────────────────────
 // Objects — Plain-object manipulation utilities
 // ─────────────────────────────────────────────────────────────
+function isRecord(value) {
+    return typeof value === "object" && value !== null;
+}
 /**
  * Recursively merge `source` into `target`, returning a new object.
  * Only plain objects are merged recursively — arrays and other types
@@ -9,13 +12,12 @@
 export function deepMerge(target, source) {
     const result = { ...target };
     for (const [key, value] of Object.entries(source)) {
-        if (value !== null &&
-            typeof value === "object" &&
+        const targetValue = target[key];
+        if (isRecord(value) &&
             !Array.isArray(value) &&
-            target[key] !== null &&
-            typeof target[key] === "object" &&
-            !Array.isArray(target[key])) {
-            result[key] = deepMerge(target[key], value);
+            isRecord(targetValue) &&
+            !Array.isArray(targetValue)) {
+            result[key] = deepMerge(targetValue, value);
         }
         else {
             result[key] = value;
@@ -29,8 +31,9 @@ export function deepMerge(target, source) {
 export function pick(object, keys) {
     const result = {};
     for (const key of keys) {
-        if (key in object)
+        if (key in object) {
             result[key] = object[key];
+        }
     }
     return result;
 }
@@ -38,20 +41,20 @@ export function pick(object, keys) {
  * Create a new object with all keys from `obj` except those listed.
  */
 export function omit(object, keys) {
-    const exclude = new Set(keys);
+    const exclude = new Set(keys.map((key) => String(key)));
     return Object.fromEntries(Object.entries(object).filter(([key]) => !exclude.has(key)));
 }
 /**
- * Create a new object with the same keys but values transformed by `fn`.
+ * Create a new object with the same keys but values transformed by `callback`.
  */
-export function mapValues(object, fn) {
-    return Object.fromEntries(Object.entries(object).map(([key, value]) => [key, fn(value, key)]));
+export function mapValues(object, callback) {
+    return Object.fromEntries(Object.entries(object).map(([key, value]) => [key, callback(value, key)]));
 }
 /**
- * Create a new object with keys transformed by `fn`, values unchanged.
+ * Create a new object with keys transformed by `callback`, values unchanged.
  */
-export function mapKeys(object, fn) {
-    return Object.fromEntries(Object.entries(object).map(([key, value]) => [fn(key, value), value]));
+export function mapKeys(object, callback) {
+    return Object.fromEntries(Object.entries(object).map(([key, value]) => [callback(key, value), value]));
 }
 /**
  * Swap keys and values in an object.
@@ -99,7 +102,7 @@ export function deepEqual(valueA, valueB) {
             return false;
         return valueA.every((item, itemIndex) => deepEqual(item, valueB[itemIndex]));
     }
-    if (typeof valueA === "object") {
+    if (isRecord(valueA) && isRecord(valueB)) {
         const keysA = Object.keys(valueA);
         const keysB = Object.keys(valueB);
         if (keysA.length !== keysB.length)

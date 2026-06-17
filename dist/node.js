@@ -4,7 +4,7 @@
 // Logger — Structured console logger
 export { default as logger, createLogger } from "./logger.js";
 // Express — Route handler wrappers and service utilities
-export { asyncHandler, HealthTracker, setupStreamingSSE, TokenManager, lazyImport, httpError, createRequestLoggerMiddleware, } from "./express.js";
+export { asyncHandler, HealthTracker, setupStreamingServerSentEvents, TokenManager, lazyImport, httpError, createRequestLoggerMiddleware, } from "./express.js";
 // Vault — Secret bootstrap client
-export { createVaultClient } from "./vault.js";
+export { createVaultClient, bootstrapEnvironment } from "./vault.js";
 //# sourceMappingURL=node.js.map

@@ -39,13 +39,13 @@ export function toHex({ r, g, b }) {
 /**
  * Linearly interpolate between two hex colors.
  */
-export function lerpColor(colorA, colorB, t) {
+export function lerpColor(colorA, colorB, interpolationFactor) {
     const startColor = parseHex(colorA);
     const endColor = parseHex(colorB);
     return toHex({
-        r: startColor.r + (endColor.r - startColor.r) * t,
-        g: startColor.g + (endColor.g - startColor.g) * t,
-        b: startColor.b + (endColor.b - startColor.b) * t,
+        r: startColor.r + (endColor.r - startColor.r) * interpolationFactor,
+        g: startColor.g + (endColor.g - startColor.g) * interpolationFactor,
+        b: startColor.b + (endColor.b - startColor.b) * interpolationFactor,
     });
 }
 /**
@@ -82,7 +82,7 @@ export function hslToRgb({ h: hueInput, s: saturationInput, l: lightnessInput })
         const grayscaleValue = Math.round(l * 255);
         return { r: grayscaleValue, g: grayscaleValue, b: grayscaleValue };
     }
-    const hue2rgb = (tempColorVal1, tempColorVal2, tempColorVal3) => {
+    const hueToRgb = (tempColorVal1, tempColorVal2, tempColorVal3) => {
         if (tempColorVal3 < 0)
             tempColorVal3 += 1;
         if (tempColorVal3 > 1)
@@ -98,19 +98,19 @@ export function hslToRgb({ h: hueInput, s: saturationInput, l: lightnessInput })
     const tempColorVal2 = l < 0.5 ? l * (1 + s) : l + s - l * s;
     const tempColorVal1 = 2 * l - tempColorVal2;
     return {
-        r: Math.round(hue2rgb(tempColorVal1, tempColorVal2, h + 1 / 3) * 255),
-        g: Math.round(hue2rgb(tempColorVal1, tempColorVal2, h) * 255),
-        b: Math.round(hue2rgb(tempColorVal1, tempColorVal2, h - 1 / 3) * 255),
+        r: Math.round(hueToRgb(tempColorVal1, tempColorVal2, h + 1 / 3) * 255),
+        g: Math.round(hueToRgb(tempColorVal1, tempColorVal2, h) * 255),
+        b: Math.round(hueToRgb(tempColorVal1, tempColorVal2, h - 1 / 3) * 255),
     };
 }
 /**
  * Lighten or darken a hex color by a percentage.
  */
 export function adjustBrightness(hex, amount) {
-    const rgb = parseHex(hex);
-    const hsl = rgbToHsl(rgb);
-    hsl.l = Math.max(0, Math.min(100, hsl.l + amount));
-    return toHex(hslToRgb(hsl));
+    const redGreenBlueColor = parseHex(hex);
+    const hueSaturationLightnessColor = rgbToHsl(redGreenBlueColor);
+    hueSaturationLightnessColor.l = Math.max(0, Math.min(100, hueSaturationLightnessColor.l + amount));
+    return toHex(hslToRgb(hueSaturationLightnessColor));
 }
 /**
  * Linearly interpolate between two RGB triplets.

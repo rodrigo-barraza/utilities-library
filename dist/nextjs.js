@@ -13,29 +13,29 @@ function getNextResponse() {
     return NextResponse;
 }
 // ── Private Network Detection ───────────────────────────────
-export const PRIVATE_HOST_RE = /^(localhost|127\.\d+\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+|192\.168\.\d+\.\d+|\[::1\])(:\d+)?$/;
+export const PRIVATE_HOST_REGEXP = /^(localhost|127\.\d+\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+|192\.168\.\d+\.\d+|\[::1\])(:\d+)?$/;
 export function isPrivateHost(request) {
     const host = request.headers.get("host") || "";
-    return PRIVATE_HOST_RE.test(host);
+    return PRIVATE_HOST_REGEXP.test(host);
 }
 export function createAuthMiddleware({ auth, authEnabled }) {
     return async function middleware(request) {
         if (!authEnabled || isPrivateHost(request)) {
-            const NR = await getNextResponse();
-            return NR.next();
+            const nextResponse = await getNextResponse();
+            return nextResponse.next();
         }
         return auth(request);
     };
 }
 // ── Passthrough Headers ─────────────────────────────────────
 const PASSTHROUGH_HEADERS = ["content-type", "content-disposition", "content-length"];
-function resolveUpstream(request, { port, publicUrlEnv, internalUrlEnv }) {
-    if (publicUrlEnv)
-        return publicUrlEnv;
-    if (internalUrlEnv &&
-        !internalUrlEnv.includes("localhost") &&
-        !internalUrlEnv.includes("127.0.0.1")) {
-        return internalUrlEnv;
+function resolveUpstream(request, { port, publicUrlEnvironmentVariable, internalUrlEnvironmentVariable }) {
+    if (publicUrlEnvironmentVariable)
+        return publicUrlEnvironmentVariable;
+    if (internalUrlEnvironmentVariable &&
+        !internalUrlEnvironmentVariable.includes("localhost") &&
+        !internalUrlEnvironmentVariable.includes("127.0.0.1")) {
+        return internalUrlEnvironmentVariable;
     }
     const host = request.headers.get("host");
     if (host) {
@@ -43,9 +43,9 @@ function resolveUpstream(request, { port, publicUrlEnv, internalUrlEnv }) {
         const protocol = request.headers.get("x-forwarded-proto") || "http";
         return `${protocol}://${hostname}:${port}`;
     }
-    return internalUrlEnv || `http://localhost:${port}`;
+    return internalUrlEnvironmentVariable || `http://localhost:${port}`;
 }
-export function createNextjsProxy({ port, serviceName, publicUrlEnv, internalUrlEnv, forwardHeaders = [], methods, }) {
+export function createNextjsProxy({ port, serviceName, publicUrlEnvironmentVariable, internalUrlEnvironmentVariable, forwardHeaders = [], methods, }) {
     function resolveEnvValue(valueOrKey) {
         if (!valueOrKey)
             return undefined;
@@ -60,20 +60,22 @@ export function createNextjsProxy({ port, serviceName, publicUrlEnv, internalUrl
         const queryString = url.search || "";
         const upstreamBase = resolveUpstream(request, {
             port,
-            publicUrlEnv: resolveEnvValue(publicUrlEnv),
-            internalUrlEnv: resolveEnvValue(internalUrlEnv),
+            publicUrlEnvironmentVariable: resolveEnvValue(publicUrlEnvironmentVariable),
+            internalUrlEnvironmentVariable: resolveEnvValue(internalUrlEnvironmentVariable),
         });
         const targetUrl = `${upstreamBase}/${segments}${queryString}`;
         try {
-            const fetchOptions = {
-                method: request.method,
-                headers: { "Content-Type": "application/json" },
-            };
+            const headersRecord = { "Content-Type": "application/json" };
             for (const name of forwardHeaders) {
                 const value = request.headers.get(name);
-                if (value)
-                    fetchOptions.headers[name] = value;
+                if (value) {
+                    headersRecord[name] = value;
+                }
             }
+            const fetchOptions = {
+                method: request.method,
+                headers: headersRecord,
+            };
             if (request.method !== "GET" && request.method !== "HEAD") {
                 try {
                     const body = await request.json();
@@ -99,13 +101,13 @@ export function createNextjsProxy({ port, serviceName, publicUrlEnv, internalUrl
                 });
             }
             const data = await response.json();
-            const NR = await getNextResponse();
-            return NR.json(data, { status: response.status });
+            const nextResponse = await getNextResponse();
+            return nextResponse.json(data, { status: response.status });
         }
         catch (error) {
             console.error(`[API Proxy] ${request.method} /${segments} → ${targetUrl} failed:`, errorMessage(error));
-            const NR = await getNextResponse();
-            return NR.json({ error: `Failed to reach ${serviceName} service: ${errorMessage(error)}` }, { status: 502 });
+            const nextResponse = await getNextResponse();
+            return nextResponse.json({ error: `Failed to reach ${serviceName} service: ${errorMessage(error)}` }, { status: 502 });
         }
     }
     const allMethods = {

@@ -34,13 +34,13 @@ export function formatZodErrors(error: ZodError, prefix?: string): string[] {
  * Validation target — which part of the request to validate.
  */
 export interface ValidateOptions<
-  TBody extends ZodSchema = ZodSchema,
-  TQuery extends ZodSchema = ZodSchema,
-  TParams extends ZodSchema = ZodSchema,
+  BodySchema extends ZodSchema = ZodSchema,
+  QuerySchema extends ZodSchema = ZodSchema,
+  ParametersSchema extends ZodSchema = ZodSchema,
 > {
-  body?: TBody;
-  query?: TQuery;
-  params?: TParams;
+  body?: BodySchema;
+  query?: QuerySchema;
+  params?: ParametersSchema;
 }
 
 /**
@@ -68,10 +68,10 @@ export interface ValidateOptions<
  * ```
  */
 export function validate<
-  TBody extends ZodSchema = ZodSchema,
-  TQuery extends ZodSchema = ZodSchema,
-  TParams extends ZodSchema = ZodSchema,
->(schemas: ValidateOptions<TBody, TQuery, TParams>) {
+  BodySchema extends ZodSchema = ZodSchema,
+  QuerySchema extends ZodSchema = ZodSchema,
+  ParametersSchema extends ZodSchema = ZodSchema,
+>(schemas: ValidateOptions<BodySchema, QuerySchema, ParametersSchema>) {
   return (req: Request, res: Response, next: NextFunction) => {
     const errors: string[] = [];
 

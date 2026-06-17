@@ -15,11 +15,15 @@ export declare function validateMaxLength(value: string | null | undefined, maxL
  * Safely parse a JSON string, returning a fallback on failure.
  */
 export declare function parseJsonSafe<T = unknown>(jsonString: string | null | undefined, fallback?: T | null): T | null;
+export interface TransformedJsonObject {
+    [key: string]: unknown;
+}
+export type TransformedJson = TransformedJsonObject | unknown[] | null;
 /**
  * Parse JSON from an LLM response, handling markdown code blocks.
  * Many LLMs wrap JSON in ```json ... ``` — this strips that before parsing.
  */
-export declare function parseJsonFromLlmResponse(text: string | null | undefined): Record<string, unknown> | unknown[] | null;
+export declare function parseJsonFromLargeLanguageModelResponse(text: string | null | undefined): TransformedJson;
 /**
  * Check if a string is a valid email address.
  * Uses a practical regex covering 99.9% of real-world addresses

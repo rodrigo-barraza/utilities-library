@@ -34,12 +34,12 @@ export declare function escapeRegex(text: string): string;
  * Extract the registrable root domain (domain + TLD) from a FQDN.
  * e.g. "api.prism.rod.dev" → "rod.dev", "clock-crew.com" → "clock-crew.com"
  */
-export declare function getRootDomain(fqdn: string | null | undefined): string;
+export declare function getRootDomain(fullyQualifiedDomainName: string | null | undefined): string;
 /**
  * Extract the subdomain prefix from a FQDN.
  * e.g. "api.prism.rod.dev" → "api.prism", "rod.dev" → ""
  */
-export declare function getSubdomain(fqdn: string | null | undefined): string;
+export declare function getSubdomain(fullyQualifiedDomainName: string | null | undefined): string;
 /**
  * Capitalize the first character of a string.
  * e.g. "hello" → "Hello", "HELLO" → "HELLO"

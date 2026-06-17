@@ -10,10 +10,10 @@ export declare function formatZodErrors(error: ZodError, prefix?: string): strin
 /**
  * Validation target — which part of the request to validate.
  */
-export interface ValidateOptions<TBody extends ZodSchema = ZodSchema, TQuery extends ZodSchema = ZodSchema, TParams extends ZodSchema = ZodSchema> {
-    body?: TBody;
-    query?: TQuery;
-    params?: TParams;
+export interface ValidateOptions<BodySchema extends ZodSchema = ZodSchema, QuerySchema extends ZodSchema = ZodSchema, ParametersSchema extends ZodSchema = ZodSchema> {
+    body?: BodySchema;
+    query?: QuerySchema;
+    params?: ParametersSchema;
 }
 /**
  * Express middleware factory that validates `req.body`, `req.query`,
@@ -39,7 +39,7 @@ export interface ValidateOptions<TBody extends ZodSchema = ZodSchema, TQuery ext
  * }));
  * ```
  */
-export declare function validate<TBody extends ZodSchema = ZodSchema, TQuery extends ZodSchema = ZodSchema, TParams extends ZodSchema = ZodSchema>(schemas: ValidateOptions<TBody, TQuery, TParams>): (req: Request, res: Response, next: NextFunction) => Response<any, Record<string, any>> | undefined;
+export declare function validate<BodySchema extends ZodSchema = ZodSchema, QuerySchema extends ZodSchema = ZodSchema, ParametersSchema extends ZodSchema = ZodSchema>(schemas: ValidateOptions<BodySchema, QuerySchema, ParametersSchema>): (req: Request, res: Response, next: NextFunction) => Response<any, Record<string, any>> | undefined;
 /** MongoDB ObjectId-shaped string (24 hex chars). */
 export declare const objectIdString: z.ZodString;
 /** Pagination query params — reuse across list endpoints. */

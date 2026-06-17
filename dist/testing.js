@@ -1,4 +1,4 @@
-export function mockReq(overrides = {}) {
+export function mockRequest(overrides = {}) {
     return {
         method: "GET",
         query: {},
@@ -9,7 +9,7 @@ export function mockReq(overrides = {}) {
         ...overrides,
     };
 }
-export function mockRes() {
+export function mockResponse() {
     const responsePayload = {
         _status: null,
         _json: null,

@@ -32,10 +32,10 @@ export declare function applyFlicker(element: HTMLElement, { duration, minOpacit
     duration?: number | undefined;
     minOpacity?: number | undefined;
 }): () => void;
-export declare function applyCRT(element: HTMLElement, { scanIntensity, vignetteIntensity, noiseIntensity }?: {
+export declare function applyCathodeRayTube(element: HTMLElement, { scanIntensity, vignetteIntensity, noiseIntensity }?: {
     scanIntensity?: number | undefined;
     vignetteIntensity?: number | undefined;
     noiseIntensity?: number | undefined;
 }): () => void;
-export declare function composeEffects(element: HTMLElement, fns: Array<(element: HTMLElement) => () => void>): () => void;
+export declare function composeEffects(element: HTMLElement, effectFunctions: Array<(element: HTMLElement) => () => void>): () => void;
 //# sourceMappingURL=effects.d.ts.map

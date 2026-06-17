@@ -6,8 +6,8 @@
 // API polling, and scroll events.
 // ─────────────────────────────────────────────────────────────
 
-export interface DebouncedFunction<T extends (...args: unknown[]) => unknown> {
-  (...args: Parameters<T>): void;
+export interface DebouncedFunction<T extends (...parameters: unknown[]) => unknown> {
+  (...parameters: Parameters<T>): void;
   cancel: () => void;
   flush: () => void;
 }
@@ -19,29 +19,29 @@ export interface DebounceOptions {
 
 /**
  * Create a debounced version of a function that delays invocation
- * until `wait` milliseconds have elapsed since the last call.
+ * until `delayMilliseconds` milliseconds have elapsed since the last call.
  *
  * The returned function exposes `.cancel()` and `.flush()` methods.
  */
-export function debounce<T extends (...args: unknown[]) => unknown>(
-  fn: T,
-  wait: number,
+export function debounce<T extends (...parameters: unknown[]) => unknown>(
+  targetFunction: T,
+  delayMilliseconds: number,
   { leading = false }: DebounceOptions = {},
 ): DebouncedFunction<T> {
   let timer: ReturnType<typeof setTimeout> | null = null;
-  let lastArgs: Parameters<T> | null = null;
+  let lastParameters: Parameters<T> | null = null;
   let lastThis: unknown = null;
 
   function invoke() {
-    const args = lastArgs!;
+    const parameters = lastParameters!;
     const context = lastThis;
-    lastArgs = null;
+    lastParameters = null;
     lastThis = null;
-    fn.apply(context, args);
+    targetFunction.apply(context, parameters);
   }
 
-  const debounced = function (this: unknown, ...args: Parameters<T>) {
-    lastArgs = args;
+  const debounced = function (this: unknown, ...parameters: Parameters<T>) {
+    lastParameters = parameters;
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     lastThis = this;
 
@@ -52,14 +52,14 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
     if (timer !== null) clearTimeout(timer);
     timer = setTimeout(() => {
       timer = null;
-      if (!leading || lastArgs) invoke();
-    }, wait);
+      if (!leading || lastParameters) invoke();
+    }, delayMilliseconds);
   } as DebouncedFunction<T>;
 
   debounced.cancel = () => {
     if (timer !== null) clearTimeout(timer);
     timer = null;
-    lastArgs = null;
+    lastParameters = null;
     lastThis = null;
   };
 
@@ -67,50 +67,50 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
     if (timer !== null) {
       clearTimeout(timer);
       timer = null;
-      if (lastArgs) invoke();
+      if (lastParameters) invoke();
     }
   };
 
   return debounced;
 }
 
-export interface ThrottledFunction<T extends (...args: unknown[]) => unknown> {
-  (...args: Parameters<T>): void;
+export interface ThrottledFunction<T extends (...parameters: unknown[]) => unknown> {
+  (...parameters: Parameters<T>): void;
   cancel: () => void;
 }
 
 /**
  * Create a throttled version of a function that invokes at most
- * once every `wait` milliseconds.
+ * once every `delayMilliseconds` milliseconds.
  *
  * Uses the trailing-edge pattern by default: the last call during
  * a throttled window is replayed after the window expires.
  * The returned function exposes a `.cancel()` method.
  */
-export function throttle<T extends (...args: unknown[]) => unknown>(
-  fn: T,
-  wait: number,
+export function throttle<T extends (...parameters: unknown[]) => unknown>(
+  targetFunction: T,
+  delayMilliseconds: number,
 ): ThrottledFunction<T> {
   let timer: ReturnType<typeof setTimeout> | null = null;
-  let lastArgs: Parameters<T> | null = null;
+  let lastParameters: Parameters<T> | null = null;
   let lastThis: unknown = null;
   let lastInvoke = 0;
 
   function invoke() {
     lastInvoke = Date.now();
-    const args = lastArgs!;
+    const parameters = lastParameters!;
     const context = lastThis;
-    lastArgs = null;
+    lastParameters = null;
     lastThis = null;
-    fn.apply(context, args);
+    targetFunction.apply(context, parameters);
   }
 
-  const throttled = function (this: unknown, ...args: Parameters<T>) {
-    lastArgs = args;
+  const throttled = function (this: unknown, ...parameters: Parameters<T>) {
+    lastParameters = parameters;
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     lastThis = this;
     const elapsed = Date.now() - lastInvoke;
-    const remaining = wait - elapsed;
+    const remaining = delayMilliseconds - elapsed;
 
     if (remaining <= 0) {
       if (timer !== null) clearTimeout(timer);
@@ -127,7 +127,7 @@ export function throttle<T extends (...args: unknown[]) => unknown>(
   throttled.cancel = () => {
     if (timer !== null) clearTimeout(timer);
     timer = null;
-    lastArgs = null;
+    lastParameters = null;
     lastThis = null;
   };
 

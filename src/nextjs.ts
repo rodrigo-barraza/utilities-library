@@ -18,12 +18,12 @@ function getNextResponse() {
 
 // ── Private Network Detection ───────────────────────────────
 
-export const PRIVATE_HOST_RE =
+export const PRIVATE_HOST_REGEXP =
   /^(localhost|127\.\d+\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+|192\.168\.\d+\.\d+|\[::1\])(:\d+)?$/;
 
 export function isPrivateHost(request: Request): boolean {
   const host = request.headers.get("host") || "";
-  return PRIVATE_HOST_RE.test(host);
+  return PRIVATE_HOST_REGEXP.test(host);
 }
 
 export interface AuthMiddlewareConfig {
@@ -34,8 +34,8 @@ export interface AuthMiddlewareConfig {
 export function createAuthMiddleware({ auth, authEnabled }: AuthMiddlewareConfig) {
   return async function middleware(request: Request) {
     if (!authEnabled || isPrivateHost(request)) {
-      const NR = await getNextResponse();
-      return NR.next();
+      const nextResponse = await getNextResponse();
+      return nextResponse.next();
     }
     return auth(request);
   };
@@ -46,16 +46,20 @@ const PASSTHROUGH_HEADERS = ["content-type", "content-disposition", "content-len
 
 function resolveUpstream(
   request: Request,
-  { port, publicUrlEnv, internalUrlEnv }: { port: number; publicUrlEnv?: string; internalUrlEnv?: string },
+  { port, publicUrlEnvironmentVariable, internalUrlEnvironmentVariable }: {
+    port: number;
+    publicUrlEnvironmentVariable?: string;
+    internalUrlEnvironmentVariable?: string;
+  },
 ): string {
-  if (publicUrlEnv) return publicUrlEnv;
+  if (publicUrlEnvironmentVariable) return publicUrlEnvironmentVariable;
 
   if (
-    internalUrlEnv &&
-    !internalUrlEnv.includes("localhost") &&
-    !internalUrlEnv.includes("127.0.0.1")
+    internalUrlEnvironmentVariable &&
+    !internalUrlEnvironmentVariable.includes("localhost") &&
+    !internalUrlEnvironmentVariable.includes("127.0.0.1")
   ) {
-    return internalUrlEnv;
+    return internalUrlEnvironmentVariable;
   }
 
   const host = request.headers.get("host");
@@ -65,28 +69,37 @@ function resolveUpstream(
     return `${protocol}://${hostname}:${port}`;
   }
 
-  return internalUrlEnv || `http://localhost:${port}`;
+  return internalUrlEnvironmentVariable || `http://localhost:${port}`;
 }
 
 export interface NextjsProxyConfig {
   port: number;
   serviceName: string;
-  publicUrlEnv?: string;
-  internalUrlEnv?: string;
+  publicUrlEnvironmentVariable?: string;
+  internalUrlEnvironmentVariable?: string;
   forwardHeaders?: string[];
   methods?: string[];
 }
 
 type RouteHandler = (request: Request, context: { params: Promise<{ path: string | string[] }> }) => Promise<Response>;
 
+export interface ProxyRouteHandlers {
+  GET?: RouteHandler;
+  POST?: RouteHandler;
+  PUT?: RouteHandler;
+  DELETE?: RouteHandler;
+  PATCH?: RouteHandler;
+  [method: string]: RouteHandler | undefined;
+}
+
 export function createNextjsProxy({
   port,
   serviceName,
-  publicUrlEnv,
-  internalUrlEnv,
+  publicUrlEnvironmentVariable,
+  internalUrlEnvironmentVariable,
   forwardHeaders = [],
   methods,
-}: NextjsProxyConfig): Record<string, RouteHandler> {
+}: NextjsProxyConfig): ProxyRouteHandlers {
   function resolveEnvValue(valueOrKey: string | undefined): string | undefined {
     if (!valueOrKey) return undefined;
     if (valueOrKey.includes("://")) return valueOrKey;
@@ -101,21 +114,25 @@ export function createNextjsProxy({
     const queryString = url.search || "";
     const upstreamBase = resolveUpstream(request, {
       port,
-      publicUrlEnv: resolveEnvValue(publicUrlEnv),
-      internalUrlEnv: resolveEnvValue(internalUrlEnv),
+      publicUrlEnvironmentVariable: resolveEnvValue(publicUrlEnvironmentVariable),
+      internalUrlEnvironmentVariable: resolveEnvValue(internalUrlEnvironmentVariable),
     });
     const targetUrl = `${upstreamBase}/${segments}${queryString}`;
 
     try {
-      const fetchOptions: RequestInit = {
-        method: request.method,
-        headers: { "Content-Type": "application/json" },
-      };
+      const headersRecord: Record<string, string> = { "Content-Type": "application/json" };
 
       for (const name of forwardHeaders) {
         const value = request.headers.get(name);
-        if (value) (fetchOptions.headers as Record<string, string>)[name] = value;
+        if (value) {
+          headersRecord[name] = value;
+        }
       }
+
+      const fetchOptions: RequestInit = {
+        method: request.method,
+        headers: headersRecord,
+      };
 
       if (request.method !== "GET" && request.method !== "HEAD") {
         try {
@@ -144,22 +161,22 @@ export function createNextjsProxy({
       }
 
       const data = await response.json();
-      const NR = await getNextResponse();
-      return NR.json(data, { status: response.status });
+      const nextResponse = await getNextResponse();
+      return nextResponse.json(data, { status: response.status });
     } catch (error: unknown) {
       console.error(
         `[API Proxy] ${request.method} /${segments} → ${targetUrl} failed:`,
         errorMessage(error),
       );
-      const NR = await getNextResponse();
-      return NR.json(
+      const nextResponse = await getNextResponse();
+      return nextResponse.json(
         { error: `Failed to reach ${serviceName} service: ${errorMessage(error)}` },
         { status: 502 },
       );
     }
   }
 
-  const allMethods: Record<string, RouteHandler> = {
+  const allMethods: ProxyRouteHandlers = {
     GET: proxyRequest,
     POST: proxyRequest,
     PUT: proxyRequest,
@@ -168,7 +185,7 @@ export function createNextjsProxy({
   };
 
   if (methods) {
-    const filtered: Record<string, RouteHandler> = {};
+    const filtered: ProxyRouteHandlers = {};
     for (const method of methods) filtered[method] = proxyRequest;
     return filtered;
   }

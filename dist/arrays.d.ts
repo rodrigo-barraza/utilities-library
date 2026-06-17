@@ -15,23 +15,23 @@ export declare function pickRandom<ArrayItem>(array: ArrayItem[]): ArrayItem;
  * Filter out null/undefined values from a payload object.
  * Keeps falsy values like 0, false, and empty strings.
  */
-export declare function compactPayload(object: Record<string, unknown>): Record<string, unknown>;
+export declare function compactPayload<Payload extends Record<string, unknown>>(object: Payload): Partial<Payload>;
 /**
  * Group array elements by a key derived from each element.
  * Returns an object whose keys are group identifiers and values are arrays.
  */
-export declare function groupBy<ArrayItem>(array: ArrayItem[], keyFn: string | ((item: ArrayItem) => string)): Record<string, ArrayItem[]>;
+export declare function groupBy<ArrayItem>(array: ArrayItem[], keySelector: string | ((item: ArrayItem) => string)): Record<string, ArrayItem[]>;
 /**
  * Deduplicate an array by a key derived from each element.
  * Keeps the first occurrence of each unique key.
  */
-export declare function uniqueBy<ArrayItem>(array: ArrayItem[], keyFn: string | ((item: ArrayItem) => unknown)): ArrayItem[];
+export declare function uniqueBy<ArrayItem>(array: ArrayItem[], keySelector: string | ((item: ArrayItem) => unknown)): ArrayItem[];
 /**
  * Split an array into two groups based on a predicate.
- * The first array contains items where `fn` returns true,
+ * The first array contains items where the predicate returns true,
  * the second contains the rest.
  */
-export declare function partition<ArrayItem>(array: ArrayItem[], fn: (item: ArrayItem) => boolean): [ArrayItem[], ArrayItem[]];
+export declare function partition<ArrayItem>(array: ArrayItem[], predicate: (item: ArrayItem) => boolean): [ArrayItem[], ArrayItem[]];
 /**
  * Return elements present in both arrays.
  * Uses strict equality. Preserves order from the first array.
@@ -49,7 +49,7 @@ export declare function difference<ArrayItem>(firstArray: ArrayItem[], secondArr
 export interface SortByOptions {
     descending?: boolean;
 }
-export declare function sortBy<ArrayItem>(array: ArrayItem[], keyOrFn: string | ((firstItem: ArrayItem, secondItem: ArrayItem) => number), { descending }?: SortByOptions): ArrayItem[];
+export declare function sortBy<ArrayItem>(array: ArrayItem[], keyOrComparator: string | ((firstItem: ArrayItem, secondItem: ArrayItem) => number), { descending }?: SortByOptions): ArrayItem[];
 /**
  * Flatten a nested array to a given depth.
  * Wrapper around Array.flat() with a clearer API for shared usage.

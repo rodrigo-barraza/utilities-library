@@ -13,12 +13,12 @@ import { errorMessage } from "./errors.js";
 /**
  * Wrap an async route handler with standard error catching.
  */
-export function asyncHandler(handlerFunction, label = "", errorStatusOrOpts = 502) {
-    const errorStatus = typeof errorStatusOrOpts === "number"
-        ? errorStatusOrOpts
-        : errorStatusOrOpts.errorStatus || 502;
-    const health = typeof errorStatusOrOpts === "object"
-        ? errorStatusOrOpts.health
+export function asyncHandler(handlerFunction, label = "", errorStatusOrOptions = 502) {
+    const errorStatus = typeof errorStatusOrOptions === "number"
+        ? errorStatusOrOptions
+        : errorStatusOrOptions.errorStatus || 502;
+    const health = typeof errorStatusOrOptions === "object"
+        ? errorStatusOrOptions.health
         : undefined;
     return async (req, res, next) => {
         try {
@@ -82,7 +82,7 @@ export class HealthTracker {
 /**
  * Set up a Server-Sent Events response with proper headers.
  */
-export function setupStreamingSSE(res) {
+export function setupStreamingServerSentEvents(res) {
     res.writeHead(200, {
         "Content-Type": "text/event-stream",
         "Cache-Control": "no-cache",
@@ -107,9 +107,9 @@ export class TokenManager {
     async getToken() {
         if (this.#token && Date.now() < this.#expiry)
             return this.#token;
-        const { token, expiresInMs } = await this.#fetchTokenFunction();
+        const { token, expiresInMilliseconds } = await this.#fetchTokenFunction();
         this.#token = token;
-        this.#expiry = Date.now() + expiresInMs;
+        this.#expiry = Date.now() + expiresInMilliseconds;
         return this.#token;
     }
     invalidate() {
@@ -146,20 +146,21 @@ export function httpError(status, message) {
  */
 export function createRequestLoggerMiddleware(logger) {
     return function requestLoggerMiddleware(req, res, next) {
-        const start = Date.now();
+        const startTimestamp = Date.now();
         const originalEnd = res.end;
         let size = 0;
         // Node's res.end has 3 overloaded signatures — monkey-patching requires a cast
-        res.end = function (...args) {
-            const chunk = args[0];
-            if (chunk)
+        res.end = function (...parameters) {
+            const chunk = parameters[0];
+            if (typeof chunk === "string" || Buffer.isBuffer(chunk)) {
                 size += Buffer.byteLength(chunk);
-            const timing = `${Date.now() - start}ms`;
+            }
+            const timing = `${Date.now() - startTimestamp}ms`;
             const sizeTag = size > 1024
                 ? `${(size / 1024).toFixed(1)}KB`
                 : `${size}B`;
             logger.request(req.method, req.originalUrl || req.url, res.statusCode, timing, sizeTag);
-            return Function.prototype.apply.call(originalEnd, res, args);
+            return Function.prototype.apply.call(originalEnd, this, parameters);
         };
         next();
     };

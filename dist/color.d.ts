@@ -24,7 +24,7 @@ export declare function toHex({ r, g, b }: RGB): string;
 /**
  * Linearly interpolate between two hex colors.
  */
-export declare function lerpColor(colorA: string, colorB: string, t: number): string;
+export declare function lerpColor(colorA: string, colorB: string, interpolationFactor: number): string;
 /**
  * Convert an `{ r, g, b }` object (0–255) to an HSL object.
  */

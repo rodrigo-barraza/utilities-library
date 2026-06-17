@@ -1,4 +1,4 @@
-export declare const SSE_EVENT_TYPES: {
+export declare const SERVER_SENT_EVENT_TYPES: {
     readonly CHUNK: "chunk";
     readonly THINKING: "thinking";
     readonly IMAGE: "image";
@@ -31,7 +31,7 @@ export declare const SSE_EVENT_TYPES: {
     readonly RUN_COMPLETE: "run_complete";
     readonly TOKEN: "token";
 };
-export type SseEventType = (typeof SSE_EVENT_TYPES)[keyof typeof SSE_EVENT_TYPES];
+export type ServerSentEventType = (typeof SERVER_SENT_EVENT_TYPES)[keyof typeof SERVER_SENT_EVENT_TYPES];
 export declare const STATUS_MESSAGES: {
     readonly TASKS_UPDATED: "tasks_updated";
     readonly SUB_AGENTS_UPDATED: "sub_agents_updated";

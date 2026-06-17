@@ -3,19 +3,41 @@
  * Accepts the dependencies as arguments to avoid the library needing
  * to have eslint packages as its own dependencies.
  *
- * When `tseslint` is provided, the config automatically enables
+ * When `typescriptEslint` is provided, the config automatically enables
  * TypeScript-aware linting rules (recommended preset, TS-specific
  * no-unused-vars, permissive `any` / `@ts-` comment rules).
  */
-export function createServiceEslintConfig({ js, prettierConfig, globals, tseslint }: {
-  js: { configs: { recommended: unknown } };
-  prettierConfig: unknown;
-  globals: { node: Record<string, string> };
-  tseslint?: {
-    config: (...args: unknown[]) => unknown[];
-    configs: { recommended: unknown[] };
+
+export interface EslintConfigItem {
+  files?: string[];
+  ignores?: string[];
+  languageOptions?: {
+    ecmaVersion?: string | number;
+    sourceType?: string;
+    globals?: Record<string, string | boolean>;
   };
-}): unknown[] {
+  rules?: Record<string, unknown>;
+}
+
+export interface JavaScriptConfigGroup {
+  configs: {
+    recommended: EslintConfigItem | EslintConfigItem[];
+  };
+}
+
+export interface TypeScriptEslintConfigGroup {
+  config: (...args: (EslintConfigItem | EslintConfigItem[])[]) => EslintConfigItem[];
+  configs: {
+    recommended: EslintConfigItem[];
+  };
+}
+
+export function createServiceEslintConfig({ javascript, prettierConfig, globals, typescriptEslint }: {
+  javascript: JavaScriptConfigGroup;
+  prettierConfig: EslintConfigItem | EslintConfigItem[];
+  globals: { node: Record<string, string> };
+  typescriptEslint?: TypeScriptEslintConfigGroup;
+}): EslintConfigItem[] {
   const baseRules: Record<string, unknown> = {
     "no-console": "off",
     "prefer-const": "error",
@@ -23,7 +45,7 @@ export function createServiceEslintConfig({ js, prettierConfig, globals, tseslin
   };
 
   // When typescript-eslint is available, swap no-unused-vars for the TS variant
-  if (tseslint) {
+  if (typescriptEslint) {
     baseRules["no-unused-vars"] = "off";
     baseRules["@typescript-eslint/no-unused-vars"] = [
       "error",
@@ -46,9 +68,9 @@ export function createServiceEslintConfig({ js, prettierConfig, globals, tseslin
     ];
   }
 
-  const configs: unknown[] = [
-    js.configs.recommended,
-    ...(tseslint ? tseslint.configs.recommended : []),
+  const configs: (EslintConfigItem | EslintConfigItem[])[] = [
+    javascript.configs.recommended,
+    ...(typescriptEslint ? [typescriptEslint.configs.recommended] : []),
     prettierConfig,
     {
       languageOptions: {
@@ -81,10 +103,10 @@ export function createServiceEslintConfig({ js, prettierConfig, globals, tseslin
     },
   ];
 
-  // When tseslint is available, wrap with tseslint.config() for proper type resolution
-  if (tseslint) {
-    return tseslint.config(...configs);
+  // When typescriptEslint is available, wrap with typescriptEslint.config() for proper type resolution
+  if (typescriptEslint) {
+    return typescriptEslint.config(...configs);
   }
 
-  return configs;
+  return configs.flat();
 }

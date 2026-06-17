@@ -28,7 +28,7 @@ export const TOOL_NAMES = {
     // ── Workspace / Coding ──
     READ_FILE: "read_file",
     WRITE_FILE: "write_file",
-    STR_REPLACE_FILE: "replace_in_file",
+    STRING_REPLACE_FILE: "replace_in_file",
     PATCH_FILE: "patch_file",
     MOVE_FILE: "move_file",
     DELETE_FILE: "delete_file",

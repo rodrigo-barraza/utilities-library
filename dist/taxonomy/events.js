@@ -5,7 +5,7 @@
 // IMPORTANT: Adding/removing/renaming an event type here will
 // surface compile errors on BOTH sides of the contract.
 // ─────────────────────────────────────────────────────────────
-export const SSE_EVENT_TYPES = {
+export const SERVER_SENT_EVENT_TYPES = {
     CHUNK: "chunk",
     THINKING: "thinking",
     IMAGE: "image",

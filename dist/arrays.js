@@ -1,6 +1,9 @@
 // ─────────────────────────────────────────────────────────────
 // Arrays — Array and object manipulation utilities
 // ─────────────────────────────────────────────────────────────
+function isRecord(value) {
+    return typeof value === "object" && value !== null;
+}
 /**
  * Batch an array into chunks of a given size.
  */
@@ -40,10 +43,21 @@ export function compactPayload(object) {
  * Group array elements by a key derived from each element.
  * Returns an object whose keys are group identifiers and values are arrays.
  */
-export function groupBy(array, keyFn) {
+export function groupBy(array, keySelector) {
     const groups = {};
     for (const item of array) {
-        const key = typeof keyFn === "function" ? keyFn(item) : item[keyFn];
+        let key;
+        if (typeof keySelector === "function") {
+            key = keySelector(item);
+        }
+        else {
+            if (isRecord(item)) {
+                key = item[keySelector];
+            }
+            else {
+                key = String(item);
+            }
+        }
         (groups[key] ??= []).push(item);
     }
     return groups;
@@ -52,10 +66,21 @@ export function groupBy(array, keyFn) {
  * Deduplicate an array by a key derived from each element.
  * Keeps the first occurrence of each unique key.
  */
-export function uniqueBy(array, keyFn) {
+export function uniqueBy(array, keySelector) {
     const seen = new Set();
     return array.filter((item) => {
-        const key = typeof keyFn === "function" ? keyFn(item) : item[keyFn];
+        let key;
+        if (typeof keySelector === "function") {
+            key = keySelector(item);
+        }
+        else {
+            if (isRecord(item)) {
+                key = item[keySelector];
+            }
+            else {
+                key = item;
+            }
+        }
         if (seen.has(key))
             return false;
         seen.add(key);
@@ -64,14 +89,14 @@ export function uniqueBy(array, keyFn) {
 }
 /**
  * Split an array into two groups based on a predicate.
- * The first array contains items where `fn` returns true,
+ * The first array contains items where the predicate returns true,
  * the second contains the rest.
  */
-export function partition(array, fn) {
+export function partition(array, predicate) {
     const pass = [];
     const fail = [];
     for (const item of array) {
-        (fn(item) ? pass : fail).push(item);
+        (predicate(item) ? pass : fail).push(item);
     }
     return [pass, fail];
 }
@@ -91,15 +116,21 @@ export function difference(firstArray, secondArray) {
     const set = new Set(secondArray);
     return firstArray.filter((item) => !set.has(item));
 }
-export function sortBy(array, keyOrFn, { descending = false } = {}) {
+export function sortBy(array, keyOrComparator, { descending = false } = {}) {
     const copy = [...array];
-    if (typeof keyOrFn === "function") {
-        copy.sort(keyOrFn);
+    if (typeof keyOrComparator === "function") {
+        copy.sort(keyOrComparator);
     }
     else {
         copy.sort((firstItem, secondItem) => {
-            const valueA = firstItem[keyOrFn];
-            const valueB = secondItem[keyOrFn];
+            let valueA = 0;
+            let valueB = 0;
+            if (isRecord(firstItem)) {
+                valueA = firstItem[keyOrComparator];
+            }
+            if (isRecord(secondItem)) {
+                valueB = secondItem[keyOrComparator];
+            }
             if (valueA < valueB)
                 return -1;
             if (valueA > valueB)

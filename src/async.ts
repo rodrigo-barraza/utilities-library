@@ -3,10 +3,10 @@
 // ─────────────────────────────────────────────────────────────
 
 /**
- * Resolves after `ms` milliseconds.
+ * Resolves after `milliseconds` milliseconds.
  */
-export function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+export function sleep(milliseconds: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
 /**
@@ -15,19 +15,19 @@ export function sleep(ms: number): Promise<void> {
 export interface RetryOptions {
   /** Maximum number of retries after the first failure. */
   retries?: number;
-  /** Base delay in ms before the first retry. */
+  /** Base delay in milliseconds before the first retry. */
   delay?: number;
   /** Multiplier applied to the delay after each retry. */
   backoff?: number;
 }
 
 export async function retry<T>(
-  fn: (attempt: number) => Promise<T> | T,
+  action: (attempt: number) => Promise<T> | T,
   { retries = 3, delay = 1000, backoff = 2 }: RetryOptions = {},
 ): Promise<T> {
   for (let attempt = 0; ; attempt++) {
     try {
-      return await fn(attempt);
+      return await action(attempt);
     } catch (error) {
       if (attempt >= retries) throw error;
       await sleep(delay * Math.pow(backoff, attempt));
@@ -37,14 +37,18 @@ export async function retry<T>(
 
 /**
  * Race a promise against a timeout. Rejects with an Error if
- * the promise does not settle within `ms` milliseconds.
+ * the promise does not settle within `milliseconds` milliseconds.
  */
-export function withTimeout<T>(promise: Promise<T>, ms: number, message = "Operation timed out"): Promise<T> {
+export function withTimeout<T>(
+  promise: Promise<T>,
+  milliseconds: number,
+  message = "Operation timed out",
+): Promise<T> {
   let timer: ReturnType<typeof setTimeout>;
   return Promise.race([
     promise.finally(() => clearTimeout(timer)),
     new Promise<never>((_, reject) => {
-      timer = setTimeout(() => reject(new Error(message)), ms);
+      timer = setTimeout(() => reject(new Error(message)), milliseconds);
     }),
   ]);
 }
@@ -53,13 +57,17 @@ export function withTimeout<T>(promise: Promise<T>, ms: number, message = "Opera
  * Fetch a URL with an automatic timeout.
  * Returns parsed JSON on success, or `fallback` on failure/timeout.
  */
-export async function fetchWithTimeout<T = unknown>(url: string, timeoutMs = 5000, fallback: T | null = null): Promise<T | null> {
+export async function fetchWithTimeout<T>(
+  url: string,
+  timeoutMilliseconds = 5000,
+  fallback: T | null = null,
+): Promise<T | null> {
   try {
     const response = await fetch(url, {
-      signal: AbortSignal.timeout(timeoutMs),
+      signal: AbortSignal.timeout(timeoutMilliseconds),
     });
     if (!response.ok) return fallback;
-    return await response.json() as T;
+    return (await response.json()) as T;
   } catch {
     return fallback;
   }
@@ -69,10 +77,14 @@ export async function fetchWithTimeout<T = unknown>(url: string, timeoutMs = 500
  * Race a promise against a timeout, resolving to `fallback` on timeout.
  * Unlike `withTimeout`, this never rejects — it gracefully degrades.
  */
-export function withTimeoutFallback<T>(promise: Promise<T>, ms: number, fallback: T | null = null): Promise<T | null> {
+export function withTimeoutFallback<T>(
+  promise: Promise<T>,
+  milliseconds: number,
+  fallback: T | null = null,
+): Promise<T | null> {
   return Promise.race([
     promise,
-    new Promise<T | null>((resolve) => setTimeout(() => resolve(fallback), ms)),
+    new Promise<T | null>((resolve) => setTimeout(() => resolve(fallback), milliseconds)),
   ]);
 }
 
@@ -86,22 +98,22 @@ export interface PMapOptions {
 
 export async function pMap<T, R>(
   iterable: Iterable<T>,
-  fn: (item: T, index: number) => Promise<R> | R,
+  mapper: (item: T, index: number) => Promise<R> | R,
   { concurrency = Infinity }: PMapOptions = {},
 ): Promise<R[]> {
   const items = [...iterable];
   const results = new Array<R>(items.length);
 
   if (concurrency === Infinity) {
-    return Promise.all(items.map((item, i) => fn(item, i)));
+    return Promise.all(items.map((item, index) => mapper(item, index)));
   }
 
   let nextIndex = 0;
 
   async function worker() {
     while (nextIndex < items.length) {
-      const i = nextIndex++;
-      results[i] = await fn(items[i], i);
+      const index = nextIndex++;
+      results[index] = await mapper(items[index], index);
     }
   }
 

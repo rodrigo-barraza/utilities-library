@@ -80,7 +80,7 @@ export function formatLatency(seconds) {
  * Format a latency value given in milliseconds.
  * Thin wrapper over formatLatency(seconds).
  */
-export function formatLatencyMs(milliseconds) {
+export function formatLatencyMilliseconds(milliseconds) {
     if (!milliseconds)
         return "—";
     return formatLatency(milliseconds / 1000);
@@ -179,7 +179,7 @@ export function formatContextTokens(tokens) {
  * Round a floating-point seconds value to millisecond precision (3 decimals).
  * Standard precision for all timing metrics stored in the database.
  */
-export function roundMs(seconds) {
+export function roundMilliseconds(seconds) {
     return parseFloat(seconds.toFixed(3));
 }
 /**
