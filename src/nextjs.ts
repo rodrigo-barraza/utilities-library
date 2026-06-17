@@ -106,6 +106,7 @@ export function createNextjsProxy({
     return process.env[valueOrKey] || undefined;
   }
 
+
   async function proxyRequest(request: Request, { params }: { params: Promise<{ path: string | string[] }> }): Promise<Response> {
     const { path } = await params;
     const segments = Array.isArray(path) ? path.join("/") : path;

@@ -49,6 +49,8 @@ export const SERVER_SENT_EVENT_TYPES = {
 export type ServerSentEventType =
   (typeof SERVER_SENT_EVENT_TYPES)[keyof typeof SERVER_SENT_EVENT_TYPES];
 
+
+
 // ─────────────────────────────────────────────────────────────
 // Status Messages — the `{ type: "status", message: "..." }`
 // sub-protocol used to trigger UI panel refreshes and display
