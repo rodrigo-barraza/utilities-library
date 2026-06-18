@@ -95,6 +95,12 @@ export const STATUS_MESSAGES = {
   PHASE: "phase",
   COMPLETE: "complete",
   FAILED: "failed",
+
+  // ── Harness Engineering ──
+  SYSTEM_REMINDER_INJECTED: "system_reminder_injected",
+  COST_LIMIT_REACHED: "cost_limit_reached",
+  SANDBOX_CHECKPOINT_CREATED: "sandbox_checkpoint_created",
+  SANDBOX_RESTORED: "sandbox_restored",
 } as const;
 
 export type StatusMessage =

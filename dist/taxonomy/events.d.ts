@@ -56,6 +56,10 @@ export declare const STATUS_MESSAGES: {
     readonly PHASE: "phase";
     readonly COMPLETE: "complete";
     readonly FAILED: "failed";
+    readonly SYSTEM_REMINDER_INJECTED: "system_reminder_injected";
+    readonly COST_LIMIT_REACHED: "cost_limit_reached";
+    readonly SANDBOX_CHECKPOINT_CREATED: "sandbox_checkpoint_created";
+    readonly SANDBOX_RESTORED: "sandbox_restored";
 };
 export type StatusMessage = (typeof STATUS_MESSAGES)[keyof typeof STATUS_MESSAGES];
 //# sourceMappingURL=events.d.ts.map
