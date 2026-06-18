@@ -31,9 +31,6 @@ export const SERVER_SENT_EVENT_TYPES = {
   // ── Worker / Sub-Agent Tool Variants ──
   SUB_AGENT_TOOL_EXECUTION: "sub_agent_tool_execution",
   SUB_AGENT_TOOL_OUTPUT: "sub_agent_tool_output",
-  WORKER_TOOL_EXECUTION: "worker_tool_execution",
-  WORKER_TOOL_OUTPUT: "worker_tool_output",
-  WORKER_STATUS: "worker_status",
   USER_QUESTION: "user_question",
 
   // ── Benchmark / Workflow SSE ──
@@ -61,7 +58,6 @@ export const STATUS_MESSAGES = {
   // ── Panel Refreshes ──
   TASKS_UPDATED: "tasks_updated",
   SUB_AGENTS_UPDATED: "sub_agents_updated",
-  WORKERS_UPDATED: "workers_updated",
   MEMORIES_UPDATED: "memories_updated",
   // ── Compaction Lifecycle ──
   COMPACTION_STARTED: "compaction_started",
