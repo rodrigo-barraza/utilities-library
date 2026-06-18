@@ -20,6 +20,7 @@ export declare const AGENTLESS_AGENT: {
 };
 export declare const TOPOLOGIES: {
     readonly HIERARCHICAL: "hierarchical";
+    readonly HIERARCHICAL_AGGREGATION: "hierarchical_aggregation";
     readonly SEQUENTIAL: "sequential";
     readonly PEER_TO_PEER: "peer_to_peer";
 };

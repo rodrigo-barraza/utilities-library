@@ -34,6 +34,7 @@ export const AGENTLESS_AGENT = {
 
 export const TOPOLOGIES = {
   HIERARCHICAL: "hierarchical",
+  HIERARCHICAL_AGGREGATION: "hierarchical_aggregation",
   SEQUENTIAL: "sequential",
   PEER_TO_PEER: "peer_to_peer",
 } as const;
