@@ -31,8 +31,11 @@ export {
   AGENTLESS_AGENT,
   TOPOLOGIES,
   DEFAULT_TOPOLOGY,
+  REASONING_STRATEGIES,
+  DEFAULT_REASONING_STRATEGY,
   type AgentId,
   type TopologyType,
+  type ReasoningStrategyType,
 } from "./agents.ts";
 
 export {

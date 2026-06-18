@@ -33,4 +33,14 @@ export const TOPOLOGIES = {
     PEER_TO_PEER: "peer_to_peer",
 };
 export const DEFAULT_TOPOLOGY = TOPOLOGIES.HIERARCHICAL;
+// ─────────────────────────────────────────────────────────────
+// Reasoning Strategies — single-agent reasoning loop modes.
+// These mirror the multi-agent topologies at the individual
+// agent level: CoT ↔ Sequential, ToT ↔ Hierarchical Parallel.
+// ─────────────────────────────────────────────────────────────
+export const REASONING_STRATEGIES = {
+    CHAIN_OF_THOUGHT: "chain_of_thought",
+    TREE_OF_THOUGHTS: "tree_of_thoughts",
+};
+export const DEFAULT_REASONING_STRATEGY = REASONING_STRATEGIES.CHAIN_OF_THOUGHT;
 //# sourceMappingURL=agents.js.map
