@@ -1,7 +1,3 @@
-/**
- * Standard service Vitest config.
- * Ready to spread into defineConfig().
- */
 export declare const serviceVitestConfig: {
     readonly test: {
         readonly globals: true;

@@ -1,13 +1,3 @@
-/**
- * Factory function to create the standard service ESLint config.
- * Accepts the dependencies as arguments to avoid the library needing
- * to have eslint packages as its own dependencies.
- *
- * When `typescriptEslint` is provided, the config automatically enables
- * TypeScript-aware linting rules (recommended preset, TS-specific
- * no-unused-vars, permissive `any` / `@ts-` comment rules).
- */
-
 export interface EslintConfigItem {
   files?: string[];
   ignores?: string[];
@@ -32,6 +22,8 @@ export interface TypeScriptEslintConfigGroup {
   };
 }
 
+// Dependencies are passed as arguments to avoid requiring eslint packages
+// as direct dependencies of utilities-library itself.
 export function createServiceEslintConfig({ javascript, prettierConfig, globals, typescriptEslint }: {
   javascript: JavaScriptConfigGroup;
   prettierConfig: EslintConfigItem | EslintConfigItem[];
@@ -44,7 +36,6 @@ export function createServiceEslintConfig({ javascript, prettierConfig, globals,
     "no-var": "error",
   };
 
-  // When typescript-eslint is available, swap no-unused-vars for the TS variant
   if (typescriptEslint) {
     baseRules["no-unused-vars"] = "off";
     baseRules["@typescript-eslint/no-unused-vars"] = [
@@ -103,7 +94,7 @@ export function createServiceEslintConfig({ javascript, prettierConfig, globals,
     },
   ];
 
-  // When typescriptEslint is available, wrap with typescriptEslint.config() for proper type resolution
+  // typescriptEslint.config() wraps configs for proper type resolution
   if (typescriptEslint) {
     return typescriptEslint.config(...configs);
   }
