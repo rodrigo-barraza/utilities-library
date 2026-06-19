@@ -46,12 +46,14 @@ export const DEFAULT_TOPOLOGY = TOPOLOGIES.HIERARCHICAL;
 // ─────────────────────────────────────────────────────────────
 // Reasoning Strategies — single-agent reasoning loop modes.
 // These mirror the multi-agent topologies at the individual
-// agent level: CoT ↔ Sequential, ToT ↔ Hierarchical Parallel.
+// agent level: CoT ↔ Sequential, ToT ↔ Hierarchical Parallel,
+// GoT ↔ Hierarchical Aggregation (branch → score → synthesize).
 // ─────────────────────────────────────────────────────────────
 
 export const REASONING_STRATEGIES = {
   CHAIN_OF_THOUGHT: "chain_of_thought",
   TREE_OF_THOUGHTS: "tree_of_thoughts",
+  GRAPH_OF_THOUGHTS: "graph_of_thoughts",
 } as const;
 
 export type ReasoningStrategyType =
