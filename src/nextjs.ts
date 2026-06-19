@@ -2,12 +2,8 @@
 // Next.js — Shared server-side utilities for Next.js App Router
 // ─────────────────────────────────────────────────────────────
 
-// NOTE: This module imports from "next/server" — consumers must have
-// "next" installed as a dependency. The import is left untyped here
-// to avoid requiring next as a dependency of utilities-library itself.
-
-// Static import — required for edge runtime compatibility.
-// Dynamic import(/* webpackIgnore: true */) causes
+// Static import required for edge runtime compatibility —
+// dynamic import(/* webpackIgnore: true */) causes
 // ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING in the edge VM.
 import { NextResponse } from "next/server";
 import { errorMessage } from "./errors.js";
@@ -147,9 +143,9 @@ export function createNextjsProxy({
       const response = await globalThis.fetch(targetUrl, fetchOptions);
 
       const contentType = response.headers.get("content-type") || "";
-      const isJson = contentType.includes("application/json");
+      const isJsonResponse = contentType.includes("application/json");
 
-      if (!isJson) {
+      if (!isJsonResponse) {
         const headers = new Headers();
         for (const key of PASSTHROUGH_HEADERS) {
           const value = response.headers.get(key);

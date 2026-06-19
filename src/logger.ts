@@ -2,9 +2,9 @@
 // Logger — Structured console logger for Node.js services
 // ─────────────────────────────────────────────────────────────
 
-const RESET = "\x1b[0m";
-const DIM = "\x1b[2m";
-const BOLD = "\x1b[1m";
+const ANSI_RESET = "\x1b[0m";
+const ANSI_DIM = "\x1b[2m";
+const ANSI_BOLD = "\x1b[1m";
 
 const FOREGROUND_COLORS = {
   red: "\x1b[31m",
@@ -51,15 +51,10 @@ export interface Logger {
 }
 
 export interface LoggerOptions {
-  /** Service identifier shown in log lines. */
   service?: string;
-  /** Enable/disable colors (default: auto-detect TTY). */
   color?: boolean;
 }
 
-/**
- * Build a logger instance, optionally scoped to a service name.
- */
 function createLogger(options?: string | LoggerOptions): Logger {
   let service = "";
   let useColor = shouldUseColor();
@@ -80,10 +75,10 @@ function createLogger(options?: string | LoggerOptions): Logger {
       return `[${time}] ${style.label}${tag} ${message}`;
     }
 
-    const timeFormatted = `${DIM}[${time}]${RESET}`;
-    const levelFormatted = `${BOLD}${style.color}${style.label}${RESET}`;
+    const timeFormatted = `${ANSI_DIM}[${time}]${ANSI_RESET}`;
+    const levelFormatted = `${ANSI_BOLD}${style.color}${style.label}${ANSI_RESET}`;
     const tag = service
-      ? ` ${FOREGROUND_COLORS.cyan}[${service}]${RESET}`
+      ? ` ${FOREGROUND_COLORS.cyan}[${service}]${ANSI_RESET}`
       : "";
 
     return `${timeFormatted} ${levelFormatted}${tag} ${message}`;
@@ -120,17 +115,17 @@ function createLogger(options?: string | LoggerOptions): Logger {
         return;
       }
 
-      const timeFormatted = `${DIM}[${time}]${RESET}`;
-      const tag = service ? ` ${FOREGROUND_COLORS.cyan}[${service}]${RESET}` : "";
+      const timeFormatted = `${ANSI_DIM}[${time}]${ANSI_RESET}`;
+      const tag = service ? ` ${FOREGROUND_COLORS.cyan}[${service}]${ANSI_RESET}` : "";
 
       let statusColor: string = FOREGROUND_COLORS.green;
       if (status >= 500) statusColor = FOREGROUND_COLORS.red;
       else if (status >= 400) statusColor = FOREGROUND_COLORS.yellow;
       else if (status >= 300) statusColor = FOREGROUND_COLORS.blue;
 
-      const statusFormatted = `${BOLD}${statusColor}${status}${RESET}`;
-      const methodFormatted = `${BOLD}${method}${RESET}`;
-      const timingFormatted = `${DIM}${timing}${size}${RESET}`;
+      const statusFormatted = `${ANSI_BOLD}${statusColor}${status}${ANSI_RESET}`;
+      const methodFormatted = `${ANSI_BOLD}${method}${ANSI_RESET}`;
+      const timingFormatted = `${ANSI_DIM}${timing}${size}${ANSI_RESET}`;
 
       console.log(
         `${timeFormatted} ${statusFormatted}${tag} ${methodFormatted} ${path} — ${timingFormatted}`,
@@ -139,7 +134,6 @@ function createLogger(options?: string | LoggerOptions): Logger {
   };
 }
 
-/** Default (unscoped) logger instance. */
 const logger: Logger = createLogger();
 
 export default logger;

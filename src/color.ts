@@ -18,11 +18,6 @@ export interface HSL {
   l: number;
 }
 
-/**
- * Parse a hex color string (#RGB, #RRGGBB, or #RRGGBBAA) into
- * an `{ r, g, b, a }` object with values in the 0–255 range
- * (alpha as 0–1).
- */
 export function parseHex(hex: string): RGBA {
   let normalizedHex = hex.replace(/^#/, "");
   if (normalizedHex.length === 3 || normalizedHex.length === 4) {
@@ -45,9 +40,6 @@ export function parseHex(hex: string): RGBA {
   };
 }
 
-/**
- * Convert an `{ r, g, b }` object (0–255) to a hex color string.
- */
 export function toHex({ r, g, b }: RGB): string {
   return (
     "#" +
@@ -57,9 +49,6 @@ export function toHex({ r, g, b }: RGB): string {
   );
 }
 
-/**
- * Linearly interpolate between two hex colors.
- */
 export function lerpColor(colorA: string, colorB: string, interpolationFactor: number): string {
   const startColor = parseHex(colorA);
   const endColor = parseHex(colorB);
@@ -70,9 +59,6 @@ export function lerpColor(colorA: string, colorB: string, interpolationFactor: n
   });
 }
 
-/**
- * Convert an `{ r, g, b }` object (0–255) to an HSL object.
- */
 export function rgbToHsl({ r: redInput, g: greenInput, b: blueInput }: RGB): HSL {
   const r = redInput / 255;
   const g = greenInput / 255;
@@ -90,9 +76,8 @@ export function rgbToHsl({ r: redInput, g: greenInput, b: blueInput }: RGB): HSL
   return { h: h * 360, s: s * 100, l: l * 100 };
 }
 
-/**
- * Convert an HSL object to `{ r, g, b }` (0–255).
- */
+// Standard HSL→RGB conversion algorithm using intermediate chroma values
+// and a hue-sector helper. Variable names follow the algorithm's notation.
 export function hslToRgb({ h: hueInput, s: saturationInput, l: lightnessInput }: HSL): RGB {
   const h = hueInput / 360;
   const s = saturationInput / 100;
@@ -101,26 +86,23 @@ export function hslToRgb({ h: hueInput, s: saturationInput, l: lightnessInput }:
     const grayscaleValue = Math.round(l * 255);
     return { r: grayscaleValue, g: grayscaleValue, b: grayscaleValue };
   }
-  const hueToRgb = (tempColorVal1: number, tempColorVal2: number, tempColorVal3: number): number => {
-    if (tempColorVal3 < 0) tempColorVal3 += 1;
-    if (tempColorVal3 > 1) tempColorVal3 -= 1;
-    if (tempColorVal3 < 1 / 6) return tempColorVal1 + (tempColorVal2 - tempColorVal1) * 6 * tempColorVal3;
-    if (tempColorVal3 < 1 / 2) return tempColorVal2;
-    if (tempColorVal3 < 2 / 3) return tempColorVal1 + (tempColorVal2 - tempColorVal1) * (2 / 3 - tempColorVal3) * 6;
-    return tempColorVal1;
+  const hueToRgbChannel = (chromaLow: number, chromaHigh: number, hueOffset: number): number => {
+    if (hueOffset < 0) hueOffset += 1;
+    if (hueOffset > 1) hueOffset -= 1;
+    if (hueOffset < 1 / 6) return chromaLow + (chromaHigh - chromaLow) * 6 * hueOffset;
+    if (hueOffset < 1 / 2) return chromaHigh;
+    if (hueOffset < 2 / 3) return chromaLow + (chromaHigh - chromaLow) * (2 / 3 - hueOffset) * 6;
+    return chromaLow;
   };
-  const tempColorVal2 = l < 0.5 ? l * (1 + s) : l + s - l * s;
-  const tempColorVal1 = 2 * l - tempColorVal2;
+  const chromaHigh = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const chromaLow = 2 * l - chromaHigh;
   return {
-    r: Math.round(hueToRgb(tempColorVal1, tempColorVal2, h + 1 / 3) * 255),
-    g: Math.round(hueToRgb(tempColorVal1, tempColorVal2, h) * 255),
-    b: Math.round(hueToRgb(tempColorVal1, tempColorVal2, h - 1 / 3) * 255),
+    r: Math.round(hueToRgbChannel(chromaLow, chromaHigh, h + 1 / 3) * 255),
+    g: Math.round(hueToRgbChannel(chromaLow, chromaHigh, h) * 255),
+    b: Math.round(hueToRgbChannel(chromaLow, chromaHigh, h - 1 / 3) * 255),
   };
 }
 
-/**
- * Lighten or darken a hex color by a percentage.
- */
 export function adjustBrightness(hex: string, amount: number): string {
   const redGreenBlueColor = parseHex(hex);
   const hueSaturationLightnessColor = rgbToHsl(redGreenBlueColor);
@@ -130,9 +112,6 @@ export function adjustBrightness(hex: string, amount: number): string {
 
 export type RgbTriplet = [number, number, number];
 
-/**
- * Linearly interpolate between two RGB triplets.
- */
 export function lerpRgb(colorA: RgbTriplet, colorB: RgbTriplet, interpolationValue: number): RgbTriplet {
   return [
     colorA[0] + (colorB[0] - colorA[0]) * interpolationValue,
@@ -141,9 +120,6 @@ export function lerpRgb(colorA: RgbTriplet, colorB: RgbTriplet, interpolationVal
   ];
 }
 
-/**
- * Sample the rainbow palette at a normalized position.
- */
 export function paletteAt(colors: RgbTriplet[], position: number): RgbTriplet {
   const scaledPosition = (((position % 1) + 1) % 1) * colors.length;
   const currentIndex = Math.floor(scaledPosition);

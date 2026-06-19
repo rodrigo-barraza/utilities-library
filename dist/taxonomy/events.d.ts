@@ -50,6 +50,7 @@ export declare const STATUS_MESSAGES: {
     readonly BRANCHING_STARTED: "branching_started";
     readonly BRANCH_SELECTED: "branch_selected";
     readonly BRANCH_BACKTRACKED: "branch_backtracked";
+    readonly SYNTHESIS_STARTED: "synthesis_started";
     readonly WORKTREE_ENTERED: "worktree_entered";
     readonly WORKTREE_EXITED: "worktree_exited";
     readonly SPAWNED: "spawned";

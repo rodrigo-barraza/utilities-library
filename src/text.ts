@@ -2,9 +2,6 @@
 // Text — String manipulation and sanitization utilities
 // ─────────────────────────────────────────────────────────────
 
-/**
- * Strip HTML tags from a string and decode common HTML entities.
- */
 export function stripHtml(html: string | null | undefined): string {
   if (!html) return "";
   return html
@@ -19,10 +16,6 @@ export function stripHtml(html: string | null | undefined): string {
     .trim();
 }
 
-/**
- * Normalize a name/title for deduplication and matching.
- * Strips non-alphanumeric chars, lowercases, collapses whitespace.
- */
 export function normalizeName(text: string | null | undefined): string {
   if (!text) return "";
   return text
@@ -32,12 +25,8 @@ export function normalizeName(text: string | null | undefined): string {
     .replace(/\s+/g, " ");
 }
 
-/**
- * Display-name overrides for tools whose algorithmically generated
- * titles are too vague (single word, ambiguous, or non-descriptive).
- * renderToolName checks this map first before falling back to the
- * strip-prefix + title-case heuristic.
- */
+// Display-name overrides for tools whose algorithmically generated
+// titles are too vague (single word, ambiguous, or non-descriptive).
 const TOOL_DISPLAY_OVERRIDES: Record<string, string> = {
   // Task Management
   get_task: "Get Task",
@@ -298,12 +287,6 @@ const TOOL_DISPLAY_OVERRIDES: Record<string, string> = {
   sleep: "Delay Execution",
 };
 
-/**
- * Convert a snake_case function name to a human-readable title.
- * Checks display overrides first, then strips common prefixes:
- * get_, mcp__<server>__
- * e.g. "get_stock_price" → "Stock Price", "mcp__github__list_repos" → "List Repos"
- */
 export function renderToolName(name: string): string {
   if (TOOL_DISPLAY_OVERRIDES[name]) return TOOL_DISPLAY_OVERRIDES[name];
   return name
@@ -312,12 +295,6 @@ export function renderToolName(name: string): string {
     .replace(/\b\w/g, (character) => character.toUpperCase());
 }
 
-/**
- * Extended tool name humanization — strips a broad set of verb prefixes
- * before title-casing. Use for display contexts where the action verb
- * is redundant (e.g. tool catalog pages).
- * e.g. "search_web_results" → "Web Results", "execute_python" → "Python"
- */
 export function humanizeToolName(name: string): string {
   return name
     .replace(
@@ -328,58 +305,32 @@ export function humanizeToolName(name: string): string {
     .replace(/\b\w/g, (character) => character.toUpperCase());
 }
 
-/**
- * Truncate a string to a maximum length, appending a suffix.
- */
 export function truncate(text: string | null | undefined, maximumLength = 80, suffix = "…"): string {
   if (!text || text.length <= maximumLength) return text || "";
   return text.slice(0, maximumLength - suffix.length) + suffix;
 }
 
-/**
- * Escape special RegExp characters in a string so it can be used
- * as a literal pattern inside `new RegExp(...)`.
- */
 export function escapeRegex(text: string): string {
   return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-/**
- * Extract the registrable root domain (domain + TLD) from a FQDN.
- * e.g. "api.prism.rod.dev" → "rod.dev", "clock-crew.com" → "clock-crew.com"
- */
 export function getRootDomain(fullyQualifiedDomainName: string | null | undefined): string {
   if (!fullyQualifiedDomainName) return "";
   const parts = fullyQualifiedDomainName.split(".");
   return parts.length <= 2 ? fullyQualifiedDomainName : parts.slice(-2).join(".");
 }
 
-/**
- * Extract the subdomain prefix from a FQDN.
- * e.g. "api.prism.rod.dev" → "api.prism", "rod.dev" → ""
- */
 export function getSubdomain(fullyQualifiedDomainName: string | null | undefined): string {
   if (!fullyQualifiedDomainName) return "";
   const parts = fullyQualifiedDomainName.split(".");
   return parts.length <= 2 ? "" : parts.slice(0, -2).join(".");
 }
 
-/**
- * Capitalize the first character of a string.
- * e.g. "hello" → "Hello", "HELLO" → "HELLO"
- */
 export function capitalize(text: string | null | undefined): string {
   if (!text) return "";
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-/**
- * Convert a string to a URL-safe slug.
- * Lowercases, strips non-alphanumeric chars (except hyphens), and
- * collapses whitespace/hyphens into single hyphens.
- *
- * e.g. "Hello World! Foo" → "hello-world-foo"
- */
 export function slugify(text: string | null | undefined): string {
   if (!text) return "";
   return text
@@ -391,10 +342,6 @@ export function slugify(text: string | null | undefined): string {
     .replace(/[\s-]+/g, "-");
 }
 
-/**
- * Convert a string to kebab-case.
- * e.g. "helloWorld" → "hello-world", "Hello World" → "hello-world"
- */
 export function toKebabCase(text: string | null | undefined): string {
   if (!text) return "";
   return text
@@ -403,10 +350,6 @@ export function toKebabCase(text: string | null | undefined): string {
     .toLowerCase();
 }
 
-/**
- * Convert a string to camelCase.
- * e.g. "hello-world" → "helloWorld", "Hello World" → "helloWorld"
- */
 export function toCamelCase(text: string | null | undefined): string {
   if (!text) return "";
   return text
@@ -414,20 +357,12 @@ export function toCamelCase(text: string | null | undefined): string {
     .replace(/^[A-Z]/, (character) => character.toLowerCase());
 }
 
-/**
- * Convert a string to PascalCase.
- * e.g. "hello-world" → "HelloWorld", "hello world" → "HelloWorld"
- */
 export function toPascalCase(text: string | null | undefined): string {
   if (!text) return "";
   const camelCaseString = toCamelCase(text);
   return camelCaseString.charAt(0).toUpperCase() + camelCaseString.slice(1);
 }
 
-/**
- * Convert a string to snake_case.
- * e.g. "helloWorld" → "hello_world", "Hello World" → "hello_world"
- */
 export function toSnakeCase(text: string | null | undefined): string {
   if (!text) return "";
   return text
@@ -436,20 +371,11 @@ export function toSnakeCase(text: string | null | undefined): string {
     .toLowerCase();
 }
 
-/**
- * Simple count-based English pluralization.
- * Appends "s" (or a custom suffix) when `count !== 1`.
- * e.g. pluralize("item", 0) → "items", pluralize("item", 1) → "item"
- */
 export function pluralize(word: string, count: number, plural?: string): string {
   if (count === 1) return word;
   return plural || word + "s";
 }
 
-/**
- * Count words in a string.
- * Splits on whitespace and filters empty tokens.
- */
 export function wordCount(text: string | null | undefined): number {
   if (!text) return 0;
   return text.trim().split(/\s+/).filter(Boolean).length;

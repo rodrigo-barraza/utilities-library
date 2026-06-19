@@ -2,22 +2,13 @@
 // Async — Promise-based timing utilities
 // ─────────────────────────────────────────────────────────────
 
-/**
- * Resolves after `milliseconds` milliseconds.
- */
 export function sleep(milliseconds: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
-/**
- * Retry an async function with exponential backoff.
- */
 export interface RetryOptions {
-  /** Maximum number of retries after the first failure. */
   retries?: number;
-  /** Base delay in milliseconds before the first retry. */
   delay?: number;
-  /** Multiplier applied to the delay after each retry. */
   backoff?: number;
 }
 
@@ -35,10 +26,6 @@ export async function retry<T>(
   }
 }
 
-/**
- * Race a promise against a timeout. Rejects with an Error if
- * the promise does not settle within `milliseconds` milliseconds.
- */
 export function withTimeout<T>(
   promise: Promise<T>,
   milliseconds: number,
@@ -53,10 +40,6 @@ export function withTimeout<T>(
   ]);
 }
 
-/**
- * Fetch a URL with an automatic timeout.
- * Returns parsed JSON on success, or `fallback` on failure/timeout.
- */
 export async function fetchWithTimeout<T>(
   url: string,
   timeoutMilliseconds = 5000,
@@ -73,10 +56,6 @@ export async function fetchWithTimeout<T>(
   }
 }
 
-/**
- * Race a promise against a timeout, resolving to `fallback` on timeout.
- * Unlike `withTimeout`, this never rejects — it gracefully degrades.
- */
 export function withTimeoutFallback<T>(
   promise: Promise<T>,
   milliseconds: number,
@@ -88,11 +67,7 @@ export function withTimeoutFallback<T>(
   ]);
 }
 
-/**
- * Map over an iterable with bounded concurrency (concurrency-limited Promise.all).
- */
 export interface PMapOptions {
-  /** Maximum concurrent promises. */
   concurrency?: number;
 }
 
@@ -125,10 +100,6 @@ export async function pMap<T, R>(
   return results;
 }
 
-/**
- * Create an externally-resolvable promise (Deferred pattern).
- * Useful for coordinating between event handlers, streams, and async flows.
- */
 export interface Deferred<T> {
   promise: Promise<T>;
   resolve: (value: T | PromiseLike<T>) => void;
@@ -138,9 +109,9 @@ export interface Deferred<T> {
 export function defer<T = void>(): Deferred<T> {
   let resolve!: (value: T | PromiseLike<T>) => void;
   let reject!: (reason?: unknown) => void;
-  const promise = new Promise<T>((res, rej) => {
-    resolve = res;
-    reject = rej;
+  const promise = new Promise<T>((resolvePromise, rejectPromise) => {
+    resolve = resolvePromise;
+    reject = rejectPromise;
   });
   return { promise, resolve, reject };
 }

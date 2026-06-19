@@ -2,11 +2,6 @@
 // Phone — Phone number formatting utilities
 // ─────────────────────────────────────────────────────────────
 
-/**
- * Format a phone number string for display.
- * Handles North American (NANP) numbers with +1 prefix.
- * Other formats are returned as-is.
- */
 export function formatPhone(phone: string | null | undefined): string {
   if (!phone) return "Unknown";
   const cleaned = phone.replace(/\D/g, "");

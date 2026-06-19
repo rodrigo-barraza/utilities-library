@@ -4,11 +4,6 @@
 function isRecord(value) {
     return typeof value === "object" && value !== null;
 }
-/**
- * Recursively merge `source` into `target`, returning a new object.
- * Only plain objects are merged recursively — arrays and other types
- * are replaced outright. Neither input is mutated.
- */
 export function deepMerge(target, source) {
     const result = { ...target };
     for (const [key, value] of Object.entries(source)) {
@@ -25,9 +20,6 @@ export function deepMerge(target, source) {
     }
     return result;
 }
-/**
- * Create a new object with only the specified keys from `obj`.
- */
 export function pick(object, keys) {
     const result = {};
     for (const key of keys) {
@@ -37,41 +29,19 @@ export function pick(object, keys) {
     }
     return result;
 }
-/**
- * Create a new object with all keys from `obj` except those listed.
- */
 export function omit(object, keys) {
     const exclude = new Set(keys.map((key) => String(key)));
     return Object.fromEntries(Object.entries(object).filter(([key]) => !exclude.has(key)));
 }
-/**
- * Create a new object with the same keys but values transformed by `callback`.
- */
 export function mapValues(object, callback) {
     return Object.fromEntries(Object.entries(object).map(([key, value]) => [key, callback(value, key)]));
 }
-/**
- * Create a new object with keys transformed by `callback`, values unchanged.
- */
 export function mapKeys(object, callback) {
     return Object.fromEntries(Object.entries(object).map(([key, value]) => [callback(key, value), value]));
 }
-/**
- * Swap keys and values in an object.
- * e.g. { a: "1", b: "2" } → { "1": "a", "2": "b" }
- */
 export function invert(object) {
     return Object.fromEntries(Object.entries(object).map(([key, value]) => [value, key]));
 }
-/**
- * Check if a value is "empty":
- * - `null` or `undefined` → true
- * - Empty string `""` → true
- * - Empty array `[]` → true
- * - Plain object with no own keys `{}` → true
- * - Map/Set with size 0 → true
- * - Everything else → false
- */
 export function isEmpty(value) {
     if (value == null)
         return true;
@@ -85,11 +55,7 @@ export function isEmpty(value) {
         return Object.keys(value).length === 0;
     return false;
 }
-/**
- * Deep structural equality check for JSON-serializable values.
- * Compares primitives, plain objects, and arrays recursively.
- * Does not handle circular references, Dates, RegExps, etc.
- */
+// Does not handle circular references, Dates, RegExps, or class instances.
 export function deepEqual(valueA, valueB) {
     if (valueA === valueB)
         return true;

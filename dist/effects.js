@@ -1,18 +1,18 @@
 // ─────────────────────────────────────────────────────────────
 // Effects — Visual Filter Effects (Browser-only)
 // ─────────────────────────────────────────────────────────────
-const STYLE_ID = "rb-effects-stylesheet";
-const _injected = new Set();
-function _injectCSS(name, css) {
+const EFFECTS_STYLESHEET_ID = "rb-effects-stylesheet";
+const injectedEffectNames = new Set();
+function injectEffectStylesheet(name, css) {
     if (typeof document === "undefined")
         return;
-    if (_injected.has(name))
+    if (injectedEffectNames.has(name))
         return;
-    _injected.add(name);
-    const sheet = document.getElementById(STYLE_ID);
+    injectedEffectNames.add(name);
+    const sheet = document.getElementById(EFFECTS_STYLESHEET_ID);
     if (!sheet) {
         const newSheet = document.createElement("style");
-        newSheet.id = STYLE_ID;
+        newSheet.id = EFFECTS_STYLESHEET_ID;
         document.head.appendChild(newSheet);
         newSheet.textContent = `\n/* ── ${name} ── */\n${css}\n`;
     }
@@ -20,7 +20,7 @@ function _injectCSS(name, css) {
         sheet.textContent += `\n/* ── ${name} ── */\n${css}\n`;
     }
 }
-function _applyClasses(element, classes) {
+function applyEffectClasses(element, classes) {
     classes.forEach((className) => element.classList.add(className));
     return () => classes.forEach((className) => element.classList.remove(className));
 }
@@ -60,9 +60,9 @@ const STATIC_CSS = `
 }
 `;
 export function applyStatic(element, { intensity = 0.12 } = {}) {
-    _injectCSS("static", STATIC_CSS);
+    injectEffectStylesheet("static", STATIC_CSS);
     element.style.setProperty("--rb-effect-static-intensity", String(intensity));
-    return _applyClasses(element, ["rb-effect-static"]);
+    return applyEffectClasses(element, ["rb-effect-static"]);
 }
 // ── 2. Chromatic Aberration (RGB Split) ────────────────────
 const CHROMATIC_CSS = `
@@ -89,10 +89,10 @@ const CHROMATIC_CSS = `
 }
 `;
 export function applyChromaticAberration(element, { offset = 2, intensity = 0.6, animated = true } = {}) {
-    _injectCSS("chromatic", CHROMATIC_CSS);
+    injectEffectStylesheet("chromatic", CHROMATIC_CSS);
     element.style.setProperty("--rb-effect-chromatic-aberration-offset", `${offset}px`);
     element.style.setProperty("--rb-effect-chromatic-aberration-intensity", String(intensity));
-    return _applyClasses(element, [animated ? "rb-effect-chromatic" : "rb-effect-chromatic-static"]);
+    return applyEffectClasses(element, [animated ? "rb-effect-chromatic" : "rb-effect-chromatic-static"]);
 }
 // ── 3. CRT Scanlines ──────────────────────────────────────
 const SCANLINE_CSS = `
@@ -121,13 +121,13 @@ const SCANLINE_CSS = `
 }
 `;
 export function applyScanlines(element, { intensity = 0.08, gap = 3, rolling = false } = {}) {
-    _injectCSS("scanlines", SCANLINE_CSS);
+    injectEffectStylesheet("scanlines", SCANLINE_CSS);
     element.style.setProperty("--rb-effect-scanlines-intensity", String(intensity));
     element.style.setProperty("--rb-effect-scanlines-gap", `${gap}px`);
     const classes = ["rb-effect-scanlines"];
     if (rolling)
         classes.push("rb-effect-scanlines-rolling");
-    return _applyClasses(element, classes);
+    return applyEffectClasses(element, classes);
 }
 // ── 4. Glitch / Jitter ────────────────────────────────────
 const GLITCH_CSS = `
@@ -154,8 +154,8 @@ const GLITCH_CSS = `
 }
 `;
 export function applyGlitch(element, { subtle = false } = {}) {
-    _injectCSS("glitch", GLITCH_CSS);
-    return _applyClasses(element, [subtle ? "rb-effect-glitch-subtle" : "rb-effect-glitch"]);
+    injectEffectStylesheet("glitch", GLITCH_CSS);
+    return applyEffectClasses(element, [subtle ? "rb-effect-glitch-subtle" : "rb-effect-glitch"]);
 }
 // ── 5. VHS Tracking ──────────────────────────────────────
 const VHS_CSS = `
@@ -169,8 +169,8 @@ const VHS_CSS = `
 .rb-effect-vhs { animation: rb-effect-vhs-track 4s linear infinite; will-change: transform, opacity; }
 `;
 export function applyVhsTracking(element) {
-    _injectCSS("vhs", VHS_CSS);
-    return _applyClasses(element, ["rb-effect-vhs"]);
+    injectEffectStylesheet("vhs", VHS_CSS);
+    return applyEffectClasses(element, ["rb-effect-vhs"]);
 }
 // ── 6. Hue Rotate ─────────────────────────────────────────
 const HUE_CSS = `
@@ -178,9 +178,9 @@ const HUE_CSS = `
 .rb-effect-hue-rotate { animation: rb-effect-hue-rotate var(--rb-effect-hue-duration, 4s) linear infinite; will-change: filter; }
 `;
 export function applyHueRotate(element, { duration = 4 } = {}) {
-    _injectCSS("hue-rotate", HUE_CSS);
+    injectEffectStylesheet("hue-rotate", HUE_CSS);
     element.style.setProperty("--rb-effect-hue-duration", `${duration}s`);
-    return _applyClasses(element, ["rb-effect-hue-rotate"]);
+    return applyEffectClasses(element, ["rb-effect-hue-rotate"]);
 }
 // ── 7. Shimmer ─────────────────────────────────────────────
 const SHIMMER_CSS = `
@@ -193,10 +193,10 @@ const SHIMMER_CSS = `
 }
 `;
 export function applyShimmer(element, { intensity = 0.06, duration = 1.5 } = {}) {
-    _injectCSS("shimmer", SHIMMER_CSS);
+    injectEffectStylesheet("shimmer", SHIMMER_CSS);
     element.style.setProperty("--rb-effect-shimmer-intensity", String(intensity));
     element.style.setProperty("--rb-effect-shimmer-duration", `${duration}s`);
-    return _applyClasses(element, ["rb-effect-shimmer"]);
+    return applyEffectClasses(element, ["rb-effect-shimmer"]);
 }
 // ── 8. Pixel Dissolve ─────────────────────────────────────
 const DISSOLVE_CSS = `
@@ -208,9 +208,9 @@ const DISSOLVE_CSS = `
 .rb-effect-dissolve { animation: rb-effect-dissolve var(--rb-effect-dissolve-duration, 1s) ease-out forwards; will-change: filter, opacity; }
 `;
 export function applyDissolve(element, { duration = 1 } = {}) {
-    _injectCSS("dissolve", DISSOLVE_CSS);
+    injectEffectStylesheet("dissolve", DISSOLVE_CSS);
     element.style.setProperty("--rb-effect-dissolve-duration", `${duration}s`);
-    return _applyClasses(element, ["rb-effect-dissolve"]);
+    return applyEffectClasses(element, ["rb-effect-dissolve"]);
 }
 // ── 9. CRT Vignette ──────────────────────────────────────
 const VIGNETTE_CSS = `
@@ -225,9 +225,9 @@ const VIGNETTE_CSS = `
 }
 `;
 export function applyVignette(element, { intensity = 0.6 } = {}) {
-    _injectCSS("vignette", VIGNETTE_CSS);
+    injectEffectStylesheet("vignette", VIGNETTE_CSS);
     element.style.setProperty("--rb-effect-vignette-intensity", String(intensity));
-    return _applyClasses(element, ["rb-effect-vignette"]);
+    return applyEffectClasses(element, ["rb-effect-vignette"]);
 }
 // ── 10. Flicker ───────────────────────────────────────────
 const FLICKER_CSS = `
@@ -238,10 +238,10 @@ const FLICKER_CSS = `
 .rb-effect-flicker { animation: rb-effect-flicker var(--rb-effect-flicker-duration, 3s) linear infinite; will-change: opacity; }
 `;
 export function applyFlicker(element, { duration = 3, minOpacity = 0.4 } = {}) {
-    _injectCSS("flicker", FLICKER_CSS);
+    injectEffectStylesheet("flicker", FLICKER_CSS);
     element.style.setProperty("--rb-effect-flicker-duration", `${duration}s`);
     element.style.setProperty("--rb-effect-flicker-minimum-opacity", String(minOpacity));
-    return _applyClasses(element, ["rb-effect-flicker"]);
+    return applyEffectClasses(element, ["rb-effect-flicker"]);
 }
 // ── 11. CRT Bundle ────────────────────────────────────────
 export function applyCathodeRayTube(element, { scanIntensity = 0.06, vignetteIntensity = 0.5, noiseIntensity = 0.08 } = {}) {

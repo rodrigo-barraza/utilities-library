@@ -66,10 +66,11 @@ export const STATUS_MESSAGES = {
     // ── Image Generation ──
     GENERATION_STARTED: "generation_started",
     GENERATION_PROGRESS: "generation_progress",
-    // ── Tree-of-Thought Branching ──
+    // ── Branching & Synthesis (ToT / GoT) ──
     BRANCHING_STARTED: "branching_started",
     BRANCH_SELECTED: "branch_selected",
     BRANCH_BACKTRACKED: "branch_backtracked",
+    SYNTHESIS_STARTED: "synthesis_started",
     // ── Worktree ──
     WORKTREE_ENTERED: "worktree_entered",
     WORKTREE_EXITED: "worktree_exited",

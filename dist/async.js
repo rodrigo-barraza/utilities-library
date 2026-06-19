@@ -1,9 +1,6 @@
 // ─────────────────────────────────────────────────────────────
 // Async — Promise-based timing utilities
 // ─────────────────────────────────────────────────────────────
-/**
- * Resolves after `milliseconds` milliseconds.
- */
 export function sleep(milliseconds) {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
@@ -19,10 +16,6 @@ export async function retry(action, { retries = 3, delay = 1000, backoff = 2 } =
         }
     }
 }
-/**
- * Race a promise against a timeout. Rejects with an Error if
- * the promise does not settle within `milliseconds` milliseconds.
- */
 export function withTimeout(promise, milliseconds, message = "Operation timed out") {
     let timer;
     return Promise.race([
@@ -32,10 +25,6 @@ export function withTimeout(promise, milliseconds, message = "Operation timed ou
         }),
     ]);
 }
-/**
- * Fetch a URL with an automatic timeout.
- * Returns parsed JSON on success, or `fallback` on failure/timeout.
- */
 export async function fetchWithTimeout(url, timeoutMilliseconds = 5000, fallback = null) {
     try {
         const response = await fetch(url, {
@@ -49,10 +38,6 @@ export async function fetchWithTimeout(url, timeoutMilliseconds = 5000, fallback
         return fallback;
     }
 }
-/**
- * Race a promise against a timeout, resolving to `fallback` on timeout.
- * Unlike `withTimeout`, this never rejects — it gracefully degrades.
- */
 export function withTimeoutFallback(promise, milliseconds, fallback = null) {
     return Promise.race([
         promise,
@@ -79,9 +64,9 @@ export async function pMap(iterable, mapper, { concurrency = Infinity } = {}) {
 export function defer() {
     let resolve;
     let reject;
-    const promise = new Promise((res, rej) => {
-        resolve = res;
-        reject = rej;
+    const promise = new Promise((resolvePromise, rejectPromise) => {
+        resolve = resolvePromise;
+        reject = rejectPromise;
     });
     return { promise, resolve, reject };
 }

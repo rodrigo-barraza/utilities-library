@@ -4,13 +4,7 @@ export interface AsyncHandlerOptions {
     errorStatus?: number;
     health?: HealthTracker;
 }
-/**
- * Wrap an async route handler with standard error catching.
- */
 export declare function asyncHandler(handlerFunction: (req: Request, res: Response, next: NextFunction) => Promise<unknown>, label?: string, errorStatusOrOptions?: number | AsyncHandlerOptions): (req: Request, res: Response, next: NextFunction) => Promise<void>;
-/**
- * Reusable health-state tracker for route domains.
- */
 export declare class HealthTracker {
     #private;
     getHealth(): {
@@ -20,13 +14,7 @@ export declare class HealthTracker {
     markSuccess(): void;
     markError(error: unknown): void;
 }
-/**
- * Set up a Server-Sent Events response with proper headers.
- */
 export declare function setupStreamingServerSentEvents(res: Response): (event: unknown) => void;
-/**
- * Reusable OAuth2 client-credentials token manager with caching.
- */
 export declare class TokenManager {
     #private;
     constructor(fetchTokenFunction: () => Promise<{
@@ -40,20 +28,11 @@ export interface ModuleNamespace {
     default?: unknown;
     [key: string]: unknown;
 }
-/**
- * Create a lazy-loading async getter for an ES module.
- */
 export declare function lazyImport<ImportedModule>(specifier: string, extract?: (moduleObject: ModuleNamespace) => ImportedModule): () => Promise<ImportedModule>;
 export declare class HttpError extends Error {
     status: number;
     constructor(status: number, message: string);
 }
-/**
- * Create an HTTP error with a status code.
- */
 export declare function httpError(status: number, message: string): HttpError;
-/**
- * Standard request logger middleware.
- */
 export declare function createRequestLoggerMiddleware(logger: Logger): (req: Request, res: Response, next: NextFunction) => void;
 //# sourceMappingURL=express.d.ts.map

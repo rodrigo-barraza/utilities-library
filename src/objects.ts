@@ -6,11 +6,6 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
-/**
- * Recursively merge `source` into `target`, returning a new object.
- * Only plain objects are merged recursively — arrays and other types
- * are replaced outright. Neither input is mutated.
- */
 export function deepMerge<T extends Record<string, unknown>>(target: T, source: Record<string, unknown>): T {
   const result: Record<string, unknown> = { ...target };
   for (const [key, value] of Object.entries(source)) {
@@ -29,9 +24,6 @@ export function deepMerge<T extends Record<string, unknown>>(target: T, source: 
   return result as T;
 }
 
-/**
- * Create a new object with only the specified keys from `obj`.
- */
 export function pick<T extends Record<string, unknown>, K extends keyof T>(object: T, keys: K[]): Pick<T, K> {
   const result: Record<string, unknown> = {};
   for (const key of keys) {
@@ -42,9 +34,6 @@ export function pick<T extends Record<string, unknown>, K extends keyof T>(objec
   return result as Pick<T, K>;
 }
 
-/**
- * Create a new object with all keys from `obj` except those listed.
- */
 export function omit<T extends Record<string, unknown>, K extends keyof T>(object: T, keys: K[]): Omit<T, K> {
   const exclude = new Set<string>(keys.map((key) => String(key)));
   return Object.fromEntries(
@@ -52,9 +41,6 @@ export function omit<T extends Record<string, unknown>, K extends keyof T>(objec
   ) as Omit<T, K>;
 }
 
-/**
- * Create a new object with the same keys but values transformed by `callback`.
- */
 export function mapValues<T extends Record<string, unknown>, R>(
   object: T,
   callback: (value: unknown, key: string) => R,
@@ -64,9 +50,6 @@ export function mapValues<T extends Record<string, unknown>, R>(
   );
 }
 
-/**
- * Create a new object with keys transformed by `callback`, values unchanged.
- */
 export function mapKeys(
   object: Record<string, unknown>,
   callback: (key: string, value: unknown) => string,
@@ -76,25 +59,12 @@ export function mapKeys(
   );
 }
 
-/**
- * Swap keys and values in an object.
- * e.g. { a: "1", b: "2" } → { "1": "a", "2": "b" }
- */
 export function invert(object: Record<string, string>): Record<string, string> {
   return Object.fromEntries(
     Object.entries(object).map(([key, value]) => [value, key]),
   );
 }
 
-/**
- * Check if a value is "empty":
- * - `null` or `undefined` → true
- * - Empty string `""` → true
- * - Empty array `[]` → true
- * - Plain object with no own keys `{}` → true
- * - Map/Set with size 0 → true
- * - Everything else → false
- */
 export function isEmpty(value: unknown): boolean {
   if (value == null) return true;
   if (typeof value === "string") return value.length === 0;
@@ -104,11 +74,7 @@ export function isEmpty(value: unknown): boolean {
   return false;
 }
 
-/**
- * Deep structural equality check for JSON-serializable values.
- * Compares primitives, plain objects, and arrays recursively.
- * Does not handle circular references, Dates, RegExps, etc.
- */
+// Does not handle circular references, Dates, RegExps, or class instances.
 export function deepEqual(valueA: unknown, valueB: unknown): boolean {
   if (valueA === valueB) return true;
   if (valueA == null || valueB == null) return false;

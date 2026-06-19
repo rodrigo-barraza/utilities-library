@@ -10,9 +10,6 @@ var __rewriteRelativeImportExtension = (this && this.__rewriteRelativeImportExte
     return path;
 };
 import { errorMessage } from "./errors.js";
-/**
- * Wrap an async route handler with standard error catching.
- */
 export function asyncHandler(handlerFunction, label = "", errorStatusOrOptions = 502) {
     const errorStatus = typeof errorStatusOrOptions === "number"
         ? errorStatusOrOptions
@@ -63,25 +60,19 @@ export function asyncHandler(handlerFunction, label = "", errorStatusOrOptions =
         }
     };
 }
-/**
- * Reusable health-state tracker for route domains.
- */
 export class HealthTracker {
-    #state = { lastChecked: null, error: null };
+    #healthState = { lastChecked: null, error: null };
     getHealth() {
-        return { ...this.#state };
+        return { ...this.#healthState };
     }
     markSuccess() {
-        this.#state.lastChecked = new Date();
-        this.#state.error = null;
+        this.#healthState.lastChecked = new Date();
+        this.#healthState.error = null;
     }
     markError(error) {
-        this.#state.error = typeof error === "string" ? error : errorMessage(error);
+        this.#healthState.error = typeof error === "string" ? error : errorMessage(error);
     }
 }
-/**
- * Set up a Server-Sent Events response with proper headers.
- */
 export function setupStreamingServerSentEvents(res) {
     res.writeHead(200, {
         "Content-Type": "text/event-stream",
@@ -94,9 +85,6 @@ export function setupStreamingServerSentEvents(res) {
     };
     return send;
 }
-/**
- * Reusable OAuth2 client-credentials token manager with caching.
- */
 export class TokenManager {
     #token = null;
     #expiry = 0;
@@ -117,9 +105,6 @@ export class TokenManager {
         this.#expiry = 0;
     }
 }
-/**
- * Create a lazy-loading async getter for an ES module.
- */
 export function lazyImport(specifier, extract = (moduleObject) => moduleObject.default) {
     let cached;
     return async () => {
@@ -135,15 +120,9 @@ export class HttpError extends Error {
         this.status = status;
     }
 }
-/**
- * Create an HTTP error with a status code.
- */
 export function httpError(status, message) {
     return new HttpError(status, message);
 }
-/**
- * Standard request logger middleware.
- */
 export function createRequestLoggerMiddleware(logger) {
     return function requestLoggerMiddleware(req, res, next) {
         const startTimestamp = Date.now();

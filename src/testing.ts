@@ -5,19 +5,20 @@ export interface MockRequest {
   headers: Record<string, unknown>;
   ip: string;
   path: string;
-  [key: string]: unknown;
+  params?: Record<string, string>;
+  originalUrl?: string;
 }
 
 export interface MockResponse {
   _status: number | null;
   _json: unknown;
+  headersSent?: boolean;
   status(code: number): MockResponse;
   json(data: unknown): MockResponse;
   sendStatus(code: number): MockResponse;
-  [key: string]: unknown;
 }
 
-export function mockRequest(overrides: Record<string, unknown> = {}): MockRequest {
+export function mockRequest(overrides: Partial<MockRequest> = {}): MockRequest {
   return {
     method: "GET",
     query: {},

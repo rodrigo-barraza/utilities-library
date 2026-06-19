@@ -1,17 +1,10 @@
 // ─────────────────────────────────────────────────────────────
 // Media — Private Network URL Sanitization
 // ─────────────────────────────────────────────────────────────
-/**
- * Replace all occurrences of the internal MinIO URL with the
- * public-facing `/api/media` proxy path in a string.
- */
 export function rewritePrivateUrls(text, internalUrl) {
     const baseInternalUrl = internalUrl || process.env.MINIO_INTERNAL_URL || "";
     return text.replaceAll(baseInternalUrl, "/api/media");
 }
-/**
- * Wrap a ReadableStream to rewrite private URLs on the fly.
- */
 export function rewriteStream(stream, internalUrl) {
     const decoder = new TextDecoder();
     const encoder = new TextEncoder();
@@ -28,5 +21,4 @@ export function rewriteStream(stream, internalUrl) {
         },
     }));
 }
-//
 //# sourceMappingURL=media.js.map

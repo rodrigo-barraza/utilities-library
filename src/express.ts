@@ -11,9 +11,6 @@ export interface AsyncHandlerOptions {
   health?: HealthTracker;
 }
 
-/**
- * Wrap an async route handler with standard error catching.
- */
 export function asyncHandler(
   handlerFunction: (req: Request, res: Response, next: NextFunction) => Promise<unknown>,
   label: string = "",
@@ -71,29 +68,23 @@ export function asyncHandler(
   };
 }
 
-/**
- * Reusable health-state tracker for route domains.
- */
 export class HealthTracker {
-  #state = { lastChecked: null as Date | null, error: null as string | null };
+  #healthState = { lastChecked: null as Date | null, error: null as string | null };
 
   getHealth() {
-    return { ...this.#state };
+    return { ...this.#healthState };
   }
 
   markSuccess() {
-    this.#state.lastChecked = new Date();
-    this.#state.error = null;
+    this.#healthState.lastChecked = new Date();
+    this.#healthState.error = null;
   }
 
   markError(error: unknown) {
-    this.#state.error = typeof error === "string" ? error : errorMessage(error);
+    this.#healthState.error = typeof error === "string" ? error : errorMessage(error);
   }
 }
 
-/**
- * Set up a Server-Sent Events response with proper headers.
- */
 export function setupStreamingServerSentEvents(res: Response): (event: unknown) => void {
   res.writeHead(200, {
     "Content-Type": "text/event-stream",
@@ -107,9 +98,6 @@ export function setupStreamingServerSentEvents(res: Response): (event: unknown) 
   return send;
 }
 
-/**
- * Reusable OAuth2 client-credentials token manager with caching.
- */
 export class TokenManager {
   #token: string | null = null;
   #expiry = 0;
@@ -138,9 +126,6 @@ export interface ModuleNamespace {
   [key: string]: unknown;
 }
 
-/**
- * Create a lazy-loading async getter for an ES module.
- */
 export function lazyImport<ImportedModule>(
   specifier: string,
   extract: (moduleObject: ModuleNamespace) => ImportedModule = (moduleObject) => moduleObject.default as ImportedModule,
@@ -160,16 +145,10 @@ export class HttpError extends Error {
   }
 }
 
-/**
- * Create an HTTP error with a status code.
- */
 export function httpError(status: number, message: string): HttpError {
   return new HttpError(status, message);
 }
 
-/**
- * Standard request logger middleware.
- */
 export function createRequestLoggerMiddleware(logger: Logger) {
   return function requestLoggerMiddleware(req: Request, res: Response, next: NextFunction) {
     const startTimestamp = Date.now();

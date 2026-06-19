@@ -15,7 +15,6 @@ export interface RegistryProject {
   label: string;
   port?: number;
   url?: string;
-  [key: string]: unknown;
 }
 
 export interface RegistryInfrastructure {
@@ -24,7 +23,6 @@ export interface RegistryInfrastructure {
   type?: string;
   url?: string;
   urlEnvironmentVariable?: string;
-  [key: string]: unknown;
 }
 
 export interface Registry {
@@ -54,44 +52,38 @@ export interface VaultClient {
   clearRegistryCache(): void;
 }
 
-/**
- * Create a Vault client instance.
- *
- * All secrets are served by the Vault HTTP API from projects.json.
- * Connection is resolved from: options → process.env → localhost fallback.
- */
 export function createVaultClient(options: VaultClientOptions = {}): VaultClient {
   const { keys, prefix, exclude } = options;
 
-  let _vaultUrl: string | null = null;
-  let _vaultToken: string | null = null;
-  let _cachedRegistry: Registry | null = null;
+  let vaultServiceUrl: string | null = null;
+  let vaultServiceToken: string | null = null;
+  let cachedRegistry: Registry | null = null;
 
   function resolveVaultConnection() {
-    if (_vaultUrl !== null) return;
+    if (vaultServiceUrl !== null) return;
 
-    _vaultUrl =
+    vaultServiceUrl =
       options.vaultUrl ||
       process.env.VAULT_SERVICE_URL ||
       DEFAULT_VAULT_SERVICE_URL;
 
-    _vaultToken =
+    vaultServiceToken =
       options.vaultToken ||
       process.env.VAULT_SERVICE_TOKEN ||
       "";
 
-    if (!_vaultToken) {
+    if (!vaultServiceToken) {
       try {
         let currentDirectory = process.cwd();
         for (let i = 0; i < 6; i++) {
           const keyPath = path.join(currentDirectory, "vault-service", "vault.key");
           if (fs.existsSync(keyPath)) {
-            _vaultToken = fs.readFileSync(keyPath, "utf-8").trim();
+            vaultServiceToken = fs.readFileSync(keyPath, "utf-8").trim();
             break;
           }
           const directKeyPath = path.join(currentDirectory, "vault.key");
           if (fs.existsSync(directKeyPath)) {
-            _vaultToken = fs.readFileSync(directKeyPath, "utf-8").trim();
+            vaultServiceToken = fs.readFileSync(directKeyPath, "utf-8").trim();
             break;
           }
           const parentDirectory = path.dirname(currentDirectory);
@@ -116,17 +108,17 @@ export function createVaultClient(options: VaultClientOptions = {}): VaultClient
     async fetch() {
       resolveVaultConnection();
 
-      if (!_vaultToken) {
+      if (!vaultServiceToken) {
         console.warn("⚠️  No VAULT_SERVICE_TOKEN set — skipping Vault");
         return {};
       }
 
       try {
         const queryString = buildQueryString();
-        const url = `${_vaultUrl}/secrets${queryString ? "?" + queryString : ""}`;
+        const url = `${vaultServiceUrl}/secrets${queryString ? "?" + queryString : ""}`;
 
         const response = await globalThis.fetch(url, {
-          headers: { Authorization: `Bearer ${_vaultToken}` },
+          headers: { Authorization: `Bearer ${vaultServiceToken}` },
           signal: AbortSignal.timeout(FETCH_TIMEOUT_MILLISECONDS),
         });
 
@@ -150,19 +142,19 @@ export function createVaultClient(options: VaultClientOptions = {}): VaultClient
     fetchSync(): DecryptedSecrets {
       resolveVaultConnection();
 
-      if (!_vaultToken) {
+      if (!vaultServiceToken) {
         console.warn("⚠️  No VAULT_SERVICE_TOKEN set — skipping Vault");
         return {};
       }
 
       try {
         const queryString = buildQueryString();
-        const url = `${_vaultUrl}/secrets${queryString ? "?" + queryString : ""}`;
+        const url = `${vaultServiceUrl}/secrets${queryString ? "?" + queryString : ""}`;
 
         const standardOutput = execFileSync("curl", [
           "-sf",
           "--max-time", String(FETCH_TIMEOUT_MILLISECONDS / 1000),
-          "-H", `Authorization: Bearer ${_vaultToken}`,
+          "-H", `Authorization: Bearer ${vaultServiceToken}`,
           url,
         ], { encoding: "utf-8", timeout: FETCH_TIMEOUT_MILLISECONDS + 1000 });
 
@@ -180,19 +172,19 @@ export function createVaultClient(options: VaultClientOptions = {}): VaultClient
     },
 
     async fetchRegistry(): Promise<Registry> {
-      if (_cachedRegistry) return _cachedRegistry;
+      if (cachedRegistry) return cachedRegistry;
 
       resolveVaultConnection();
 
-      if (!_vaultToken) {
+      if (!vaultServiceToken) {
         console.warn("⚠️  No VAULT_SERVICE_TOKEN set — cannot fetch registry");
         return { version: 0, projects: [], infrastructure: [] };
       }
 
       try {
-        const url = `${_vaultUrl}/registry`;
+        const url = `${vaultServiceUrl}/registry`;
         const response = await globalThis.fetch(url, {
-          headers: { Authorization: `Bearer ${_vaultToken}` },
+          headers: { Authorization: `Bearer ${vaultServiceToken}` },
           signal: AbortSignal.timeout(FETCH_TIMEOUT_MILLISECONDS),
         });
 
@@ -200,11 +192,11 @@ export function createVaultClient(options: VaultClientOptions = {}): VaultClient
           throw new Error(`HTTP ${response.status} — ${response.statusText}`);
         }
 
-        _cachedRegistry = (await response.json()) as Registry;
+        cachedRegistry = (await response.json()) as Registry;
         console.warn(
-          `📋 Registry → ${_cachedRegistry.projects?.length || 0} projects, ${_cachedRegistry.infrastructure?.length || 0} infrastructure`,
+          `📋 Registry → ${cachedRegistry.projects?.length || 0} projects, ${cachedRegistry.infrastructure?.length || 0} infrastructure`,
         );
-        return _cachedRegistry;
+        return cachedRegistry;
       } catch (error: unknown) {
         console.warn(`⚠️  Registry unreachable (${errorMessage(error)})`);
         return { version: 0, projects: [], infrastructure: [] };
@@ -234,35 +226,30 @@ export function createVaultClient(options: VaultClientOptions = {}): VaultClient
 
     async resolveInfrastructureUrl(infrastructureId: string): Promise<string | null> {
       const registry = await this.fetchRegistry();
-      const infra = (registry.infrastructure || []).find(
+      const infrastructureEntry = (registry.infrastructure || []).find(
         (infrastructureItem) => infrastructureItem.id === infrastructureId,
       );
 
-      if (!infra) {
+      if (!infrastructureEntry) {
         console.warn(`⚠️  Infrastructure "${infrastructureId}" not found in registry`);
         return null;
       }
 
-      if (infra.urlEnvironmentVariable && process.env[infra.urlEnvironmentVariable]) {
-        return process.env[infra.urlEnvironmentVariable]!;
+      if (infrastructureEntry.urlEnvironmentVariable && process.env[infrastructureEntry.urlEnvironmentVariable]) {
+        return process.env[infrastructureEntry.urlEnvironmentVariable]!;
       }
 
-      if (infra.url) return infra.url;
+      if (infrastructureEntry.url) return infrastructureEntry.url;
 
       return null;
     },
 
     clearRegistryCache() {
-      _cachedRegistry = null;
+      cachedRegistry = null;
     },
   };
 }
 
-/**
- * Bootstrap environment variables from Vault.
- * Fetches all secrets from the Vault HTTP API and injects them
- * into process.env (without overwriting existing values).
- */
 export async function bootstrapEnvironment(): Promise<void> {
   const vault = createVaultClient();
 
@@ -274,5 +261,3 @@ export async function bootstrapEnvironment(): Promise<void> {
     }
   }
 }
-
-
