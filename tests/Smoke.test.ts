@@ -1248,12 +1248,12 @@ describe("taxonomy.js", () => {
 
   describe("TOOL_INPUT_MODALITIES", () => {
     it("maps tools to their correct input modalities", () => {
-      expect(taxonomyModule.TOOL_INPUT_MODALITIES.generate_image).toContain("image");
-      expect(taxonomyModule.TOOL_INPUT_MODALITIES.transcribe_audio).toContain("audio");
-      expect(taxonomyModule.TOOL_INPUT_MODALITIES.read_pdf).toContain("pdf");
-      expect(taxonomyModule.TOOL_INPUT_MODALITIES.read_docx).toContain("document");
-      expect(taxonomyModule.TOOL_INPUT_MODALITIES.read_spreadsheet).toContain("document");
-      expect(taxonomyModule.TOOL_INPUT_MODALITIES.convert_video_to_gif).toContain("video");
+      expect(taxonomyModule.TOOL_INPUT_MODALITIES[taxonomyModule.TOOL_NAMES.GENERATE_IMAGE]).toContain(taxonomyModule.INPUT_MODALITIES.IMAGE);
+      expect(taxonomyModule.TOOL_INPUT_MODALITIES[taxonomyModule.TOOL_NAMES.TRANSCRIBE_AUDIO]).toContain(taxonomyModule.INPUT_MODALITIES.AUDIO);
+      expect(taxonomyModule.TOOL_INPUT_MODALITIES.read_pdf).toContain(taxonomyModule.INPUT_MODALITIES.PDF);
+      expect(taxonomyModule.TOOL_INPUT_MODALITIES.read_docx).toContain(taxonomyModule.INPUT_MODALITIES.DOCUMENT);
+      expect(taxonomyModule.TOOL_INPUT_MODALITIES.read_spreadsheet).toContain(taxonomyModule.INPUT_MODALITIES.DOCUMENT);
+      expect(taxonomyModule.TOOL_INPUT_MODALITIES.convert_video_to_gif).toContain(taxonomyModule.INPUT_MODALITIES.VIDEO);
     });
   });
 });
