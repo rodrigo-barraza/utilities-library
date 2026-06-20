@@ -25,6 +25,8 @@ export declare const TOPOLOGIES: {
     readonly PEER_TO_PEER: "peer_to_peer";
     readonly TOURNAMENT: "tournament";
     readonly CRITIC_LOOP: "critic_loop";
+    readonly DIVIDE_AND_CONQUER: "divide_and_conquer";
+    readonly MCTS: "mcts";
 };
 export type TopologyType = (typeof TOPOLOGIES)[keyof typeof TOPOLOGIES];
 export declare const DEFAULT_TOPOLOGY: "hierarchical";

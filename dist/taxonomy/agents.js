@@ -33,6 +33,8 @@ export const TOPOLOGIES = {
     PEER_TO_PEER: "peer_to_peer",
     TOURNAMENT: "tournament",
     CRITIC_LOOP: "critic_loop",
+    DIVIDE_AND_CONQUER: "divide_and_conquer",
+    MCTS: "mcts",
 };
 export const DEFAULT_TOPOLOGY = TOPOLOGIES.HIERARCHICAL;
 // ─────────────────────────────────────────────────────────────
