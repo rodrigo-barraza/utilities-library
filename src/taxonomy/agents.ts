@@ -37,6 +37,8 @@ export const TOPOLOGIES = {
   HIERARCHICAL_AGGREGATION: "hierarchical_aggregation",
   SEQUENTIAL: "sequential",
   PEER_TO_PEER: "peer_to_peer",
+  TOURNAMENT: "tournament",
+  CRITIC_LOOP: "critic_loop",
 } as const;
 
 export type TopologyType = (typeof TOPOLOGIES)[keyof typeof TOPOLOGIES];

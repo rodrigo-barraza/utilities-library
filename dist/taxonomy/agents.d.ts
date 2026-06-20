@@ -23,6 +23,8 @@ export declare const TOPOLOGIES: {
     readonly HIERARCHICAL_AGGREGATION: "hierarchical_aggregation";
     readonly SEQUENTIAL: "sequential";
     readonly PEER_TO_PEER: "peer_to_peer";
+    readonly TOURNAMENT: "tournament";
+    readonly CRITIC_LOOP: "critic_loop";
 };
 export type TopologyType = (typeof TOPOLOGIES)[keyof typeof TOPOLOGIES];
 export declare const DEFAULT_TOPOLOGY: "hierarchical";
