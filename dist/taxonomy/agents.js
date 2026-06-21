@@ -38,6 +38,22 @@ export const TOPOLOGIES = {
 };
 export const DEFAULT_TOPOLOGY = TOPOLOGIES.HIERARCHICAL;
 // ─────────────────────────────────────────────────────────────
+// Recursive Sub-Agent Spawning — cross-cutting capability that
+// allows sub-agents to spawn their own sub-agents via create_team.
+//
+// This is NOT a topology — it's a depth-gated mechanism that
+// augments any existing topology. At depth 0 (default), sub-agents
+// cannot call orchestrator tools. At depth > 0, orchestrator tools
+// are conditionally restored with scope attenuation at each hop.
+//
+// Paper alignment:
+//   THREAD (arXiv:2405.17402)  — recursive thread spawning
+//   RAH (2026)                 — recursive agent harness architecture
+//   RecursiveMAS (arXiv:2604.25917) — latent-space recursion
+// ─────────────────────────────────────────────────────────────
+export const MAXIMUM_RECURSIVE_SPAWNING_DEPTH = 3;
+export const DEFAULT_RECURSIVE_SPAWNING_DEPTH = 0;
+// ─────────────────────────────────────────────────────────────
 // Thought Structures — single-agent reasoning decomposition shapes.
 //
 // Thought Structure → Topology mapping (structures are per-agent;

@@ -30,6 +30,8 @@ export declare const TOPOLOGIES: {
 };
 export type TopologyType = (typeof TOPOLOGIES)[keyof typeof TOPOLOGIES];
 export declare const DEFAULT_TOPOLOGY: "hierarchical";
+export declare const MAXIMUM_RECURSIVE_SPAWNING_DEPTH = 3;
+export declare const DEFAULT_RECURSIVE_SPAWNING_DEPTH = 0;
 export declare const THOUGHT_STRUCTURES: {
     readonly CHAIN_OF_THOUGHT: "chain_of_thought";
     readonly TREE_OF_THOUGHTS: "tree_of_thoughts";
