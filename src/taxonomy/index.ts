@@ -31,11 +31,11 @@ export {
   AGENTLESS_AGENT,
   TOPOLOGIES,
   DEFAULT_TOPOLOGY,
-  REASONING_STRATEGIES,
-  DEFAULT_REASONING_STRATEGY,
+  THOUGHT_STRUCTURES,
+  DEFAULT_THOUGHT_STRUCTURE,
   type AgentId,
   type TopologyType,
-  type ReasoningStrategyType,
+  type ThoughtStructureType,
 } from "./agents.ts";
 
 export {

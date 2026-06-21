@@ -38,12 +38,12 @@ export const TOPOLOGIES = {
 };
 export const DEFAULT_TOPOLOGY = TOPOLOGIES.HIERARCHICAL;
 // ─────────────────────────────────────────────────────────────
-// Reasoning Strategies — single-agent reasoning loop modes.
+// Thought Structures — single-agent reasoning decomposition shapes.
 //
-// Strategy → Topology mapping (strategies are per-agent;
+// Thought Structure → Topology mapping (structures are per-agent;
 // topologies are multi-agent orchestration patterns):
 //
-// Single-agent strategies (enum values below):
+// Single-agent thought structures (enum values below):
 //   CoT   ↔ Sequential Pipeline         (linear chain)
 //   ToT   ↔ Hierarchical Parallel       (branch → select best)
 //   GoT   ↔ Graph of Thoughts           (branch → score → synthesize)
@@ -56,10 +56,10 @@ export const DEFAULT_TOPOLOGY = TOPOLOGIES.HIERARCHICAL;
 //   MAD   ↔ Peer-to-Peer Mesh           (multi-agent debate rounds)
 //   MAR   ↔ Critic Loop                 (actor–critic iterative refinement)
 // ─────────────────────────────────────────────────────────────
-export const REASONING_STRATEGIES = {
+export const THOUGHT_STRUCTURES = {
     CHAIN_OF_THOUGHT: "chain_of_thought",
     TREE_OF_THOUGHTS: "tree_of_thoughts",
     GRAPH_OF_THOUGHTS: "graph_of_thoughts",
 };
-export const DEFAULT_REASONING_STRATEGY = REASONING_STRATEGIES.CHAIN_OF_THOUGHT;
+export const DEFAULT_THOUGHT_STRUCTURE = THOUGHT_STRUCTURES.CHAIN_OF_THOUGHT;
 //# sourceMappingURL=agents.js.map
