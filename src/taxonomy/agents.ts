@@ -49,9 +49,16 @@ export const DEFAULT_TOPOLOGY = TOPOLOGIES.HIERARCHICAL;
 
 // ─────────────────────────────────────────────────────────────
 // Reasoning Strategies — single-agent reasoning loop modes.
-// These mirror the multi-agent topologies at the individual
-// agent level: CoT ↔ Sequential, ToT ↔ Hierarchical Parallel,
-// GoT ↔ Hierarchical Aggregation (branch → score → synthesize).
+//
+// Topology → Strategy mapping:
+//   CoT   ↔ Sequential Pipeline         (linear chain)
+//   ToT   ↔ Hierarchical Parallel       (branch → select best)
+//   MoA   ↔ Hierarchical Aggregation    (branch → synthesize all)
+//   GoT   ↔ Divide and Conquer          (decompose → solve → recompose)
+//   BoN   ↔ Tournament                  (bracket elimination → judge)
+//   LATS  ↔ MCTS                        (UCB tree search → backprop)
+//   MAD   ↔ Peer-to-Peer Mesh           (multi-agent debate rounds)
+//   MAR   ↔ Critic Loop                 (actor–critic iterative refinement)
 // ─────────────────────────────────────────────────────────────
 
 export const REASONING_STRATEGIES = {
