@@ -42,9 +42,13 @@ export const DEFAULT_TOPOLOGY = TOPOLOGIES.HIERARCHICAL;
 // allows sub-agents to spawn their own sub-agents via create_team.
 //
 // This is NOT a topology — it's a depth-gated mechanism that
-// augments any existing topology. At depth 0 (default), sub-agents
-// cannot call orchestrator tools. At depth > 0, orchestrator tools
-// are conditionally restored with scope attenuation at each hop.
+// augments any existing topology.
+//
+// Depth semantics (total hierarchy levels below the root):
+//   0 — Sub-agent spawning disabled entirely (root cannot use create_team)
+//   1 — Flat fan-out: root spawns Workers (no recursive delegation)
+//   2 — Root → Coordinators → Workers (one recursion level)
+//   3 — Root → Coordinators → Coordinators → Workers (two recursion levels)
 //
 // Paper alignment:
 //   THREAD (arXiv:2405.17402)  — recursive thread spawning
@@ -52,7 +56,7 @@ export const DEFAULT_TOPOLOGY = TOPOLOGIES.HIERARCHICAL;
 //   RecursiveMAS (arXiv:2604.25917) — latent-space recursion
 // ─────────────────────────────────────────────────────────────
 export const MAXIMUM_RECURSIVE_SPAWNING_DEPTH = 3;
-export const DEFAULT_RECURSIVE_SPAWNING_DEPTH = 0;
+export const DEFAULT_RECURSIVE_SPAWNING_DEPTH = 1;
 // ─────────────────────────────────────────────────────────────
 // Thought Structures — single-agent reasoning decomposition shapes.
 //
