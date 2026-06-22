@@ -35,6 +35,8 @@ export {
   DEFAULT_RECURSIVE_SPAWNING_DEPTH,
   THOUGHT_STRUCTURES,
   DEFAULT_THOUGHT_STRUCTURE,
+  MAX_TOOL_ITERATIONS,
+  DEFAULT_CODING_PROJECT,
   type AgentId,
   type TopologyType,
   type ThoughtStructureType,
@@ -46,3 +48,17 @@ export {
   DEFAULT_USERNAME,
   DEFAULT_PROJECT,
 } from "./defaults.ts";
+
+export {
+  PROVIDERS,
+  PROVIDER_LIST,
+  LOCAL_PROVIDER_TYPES,
+  PROVIDER_LABELS,
+  isLocalProvider,
+  resolveProviderBaseType,
+  type ProviderType,
+} from "./providers.ts";
+
+export {
+  THINKING_PATTERNS,
+} from "./model-patterns.ts";

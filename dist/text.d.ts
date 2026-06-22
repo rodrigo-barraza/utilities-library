@@ -14,4 +14,10 @@ export declare function toPascalCase(text: string | null | undefined): string;
 export declare function toSnakeCase(text: string | null | undefined): string;
 export declare function pluralize(word: string, count: number, plural?: string): string;
 export declare function wordCount(text: string | null | undefined): number;
+/**
+ * Derive a stable agent ID from a display name.
+ * Uppercases, strips non-alphanumeric characters, and prefixes with CUSTOM_.
+ * e.g. "My Agent" → "CUSTOM_MY_AGENT"
+ */
+export declare function deriveAgentId(name: string): string;
 //# sourceMappingURL=text.d.ts.map

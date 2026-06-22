@@ -82,4 +82,12 @@ export const THOUGHT_STRUCTURES = {
     GRAPH_OF_THOUGHTS: "graph_of_thoughts",
 };
 export const DEFAULT_THOUGHT_STRUCTURE = THOUGHT_STRUCTURES.CHAIN_OF_THOUGHT;
+// ─────────────────────────────────────────────────────────────
+// Agentic Loop Defaults — cross-cutting constants shared
+// between prism-service harnesses and prism-client settings.
+// ─────────────────────────────────────────────────────────────
+/** Default maximum tool-call iterations per agentic loop run. */
+export const MAX_TOOL_ITERATIONS = 25;
+/** Default project identifier for agent conversations and tool labels. */
+export const DEFAULT_CODING_PROJECT = "coding";
 //# sourceMappingURL=agents.js.map

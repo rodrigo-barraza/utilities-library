@@ -46,6 +46,7 @@ export {
   toSnakeCase,
   pluralize,
   wordCount,
+  deriveAgentId,
 } from "./text.ts";
 
 // Date — Date formatting and relative time

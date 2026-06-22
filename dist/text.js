@@ -348,4 +348,16 @@ export function wordCount(text) {
         return 0;
     return text.trim().split(/\s+/).filter(Boolean).length;
 }
+/**
+ * Derive a stable agent ID from a display name.
+ * Uppercases, strips non-alphanumeric characters, and prefixes with CUSTOM_.
+ * e.g. "My Agent" → "CUSTOM_MY_AGENT"
+ */
+export function deriveAgentId(name) {
+    const slug = name
+        .toUpperCase()
+        .replace(/[^A-Z0-9]+/g, "_")
+        .replace(/^_+|_+$/g, "");
+    return `CUSTOM_${slug}`;
+}
 //# sourceMappingURL=text.js.map

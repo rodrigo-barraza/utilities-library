@@ -39,4 +39,8 @@ export declare const THOUGHT_STRUCTURES: {
 };
 export type ThoughtStructureType = (typeof THOUGHT_STRUCTURES)[keyof typeof THOUGHT_STRUCTURES];
 export declare const DEFAULT_THOUGHT_STRUCTURE: "chain_of_thought";
+/** Default maximum tool-call iterations per agentic loop run. */
+export declare const MAX_TOOL_ITERATIONS = 25;
+/** Default project identifier for agent conversations and tool labels. */
+export declare const DEFAULT_CODING_PROJECT = "coding";
 //# sourceMappingURL=agents.d.ts.map
