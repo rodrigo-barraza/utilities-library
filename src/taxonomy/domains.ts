@@ -46,6 +46,7 @@ export const DOMAINS = {
   SECURITY: { key: "security", displayName: "Security" },
   NETWORK_INTELLIGENCE: { key: "network_intelligence", displayName: "Network Intelligence" },
   CALENDAR: { key: "calendar", displayName: "Calendar" },
+  INFRASTRUCTURE: { key: "infrastructure", displayName: "Infrastructure" },
 } as const;
 
 export type DomainConstantKey = keyof typeof DOMAINS;
