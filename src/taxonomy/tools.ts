@@ -95,6 +95,7 @@ export const TOOL_NAMES = {
   SEARCH_TOOLS: "search_tools",
   CREATE_CUSTOM_AGENT: "create_custom_agent",
   LIST_CUSTOM_AGENTS: "list_custom_agents",
+  LIST_AGENTS: "list_agents",
   UPDATE_CUSTOM_AGENT: "update_custom_agent",
 
   // ── Compaction (provider-agnostic aliases matching upstream API names) ──

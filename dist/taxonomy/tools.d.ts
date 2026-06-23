@@ -63,6 +63,7 @@ export declare const TOOL_NAMES: {
     readonly SEARCH_TOOLS: "search_tools";
     readonly CREATE_CUSTOM_AGENT: "create_custom_agent";
     readonly LIST_CUSTOM_AGENTS: "list_custom_agents";
+    readonly LIST_AGENTS: "list_agents";
     readonly UPDATE_CUSTOM_AGENT: "update_custom_agent";
     readonly WEB_CONTENT: "web_content";
     readonly WEB_SEARCH: "web_search";
