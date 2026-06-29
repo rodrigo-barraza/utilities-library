@@ -2,12 +2,16 @@
 // Objects — Plain-object manipulation utilities
 // ─────────────────────────────────────────────────────────────
 
-export function isRecord(value: unknown): value is Record<string, unknown> {
+export interface PlainObject {
+  [key: string]: unknown;
+}
+
+export function isRecord(value: unknown): value is PlainObject {
   return typeof value === "object" && value !== null;
 }
 
-export function deepMerge<T extends Record<string, unknown>>(target: T, source: Record<string, unknown>): T {
-  const result: Record<string, unknown> = { ...target };
+export function deepMerge<T extends PlainObject>(target: T, source: PlainObject): T {
+  const result: PlainObject = { ...target };
   for (const [key, value] of Object.entries(source)) {
     const targetValue = target[key];
     if (
@@ -24,8 +28,8 @@ export function deepMerge<T extends Record<string, unknown>>(target: T, source: 
   return result as T;
 }
 
-export function pick<T extends Record<string, unknown>, K extends keyof T>(object: T, keys: K[]): Pick<T, K> {
-  const result: Record<string, unknown> = {};
+export function pick<T extends PlainObject, K extends keyof T>(object: T, keys: K[]): Pick<T, K> {
+  const result: PlainObject = {};
   for (const key of keys) {
     if (key in object) {
       result[key as string] = object[key];
@@ -34,14 +38,14 @@ export function pick<T extends Record<string, unknown>, K extends keyof T>(objec
   return result as Pick<T, K>;
 }
 
-export function omit<T extends Record<string, unknown>, K extends keyof T>(object: T, keys: K[]): Omit<T, K> {
+export function omit<T extends PlainObject, K extends keyof T>(object: T, keys: K[]): Omit<T, K> {
   const exclude = new Set<string>(keys.map((key) => String(key)));
   return Object.fromEntries(
     Object.entries(object).filter(([key]) => !exclude.has(key)),
   ) as Omit<T, K>;
 }
 
-export function mapValues<T extends Record<string, unknown>, R>(
+export function mapValues<T extends PlainObject, R>(
   object: T,
   callback: (value: unknown, key: string) => R,
 ): Record<string, R> {
@@ -51,9 +55,9 @@ export function mapValues<T extends Record<string, unknown>, R>(
 }
 
 export function mapKeys(
-  object: Record<string, unknown>,
+  object: PlainObject,
   callback: (key: string, value: unknown) => string,
-): Record<string, unknown> {
+): PlainObject {
   return Object.fromEntries(
     Object.entries(object).map(([key, value]) => [callback(key, value), value]),
   );

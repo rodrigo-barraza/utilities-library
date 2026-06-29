@@ -102,6 +102,7 @@ export type { SortByOptions } from "./arrays.ts";
 
 // Objects — Plain-object manipulation
 export { deepMerge, pick, omit, mapValues, mapKeys, invert, isEmpty, deepEqual } from "./objects.ts";
+export type { PlainObject } from "./objects.ts";
 
 // Math — Numeric utilities
 export { clamp, roundCents, randomInt, cosineSimilarity, lerp, remap, sum, average, median, roundTo } from "./math.ts";

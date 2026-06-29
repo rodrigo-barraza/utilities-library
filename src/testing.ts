@@ -1,11 +1,27 @@
+export interface RequestQuery {
+  [key: string]: unknown;
+}
+
+export interface RequestBody {
+  [key: string]: unknown;
+}
+
+export interface RequestHeaders {
+  [key: string]: unknown;
+}
+
+export interface RequestParams {
+  [key: string]: string;
+}
+
 export interface MockRequest {
   method: string;
-  query: Record<string, unknown>;
-  body: Record<string, unknown>;
-  headers: Record<string, unknown>;
+  query: RequestQuery;
+  body: RequestBody;
+  headers: RequestHeaders;
   ip: string;
   path: string;
-  params?: Record<string, string>;
+  params?: RequestParams;
   originalUrl?: string;
 }
 

@@ -1,7 +1,8 @@
+import { type PlainObject } from "./objects.ts";
 export declare function chunk<ArrayItem>(array: ArrayItem[], size: number): ArrayItem[][];
 export declare function shuffleArray<ArrayItem>(array: ArrayItem[]): ArrayItem[];
 export declare function pickRandom<ArrayItem>(array: ArrayItem[]): ArrayItem;
-export declare function compactPayload<Payload extends Record<string, unknown>>(object: Payload): Partial<Payload>;
+export declare function compactPayload<Payload extends PlainObject>(object: Payload): Partial<Payload>;
 export declare function groupBy<ArrayItem>(array: ArrayItem[], keySelector: string | ((item: ArrayItem) => string)): Record<string, ArrayItem[]>;
 export declare function uniqueBy<ArrayItem>(array: ArrayItem[], keySelector: string | ((item: ArrayItem) => unknown)): ArrayItem[];
 export declare function partition<ArrayItem>(array: ArrayItem[], predicate: (item: ArrayItem) => boolean): [ArrayItem[], ArrayItem[]];

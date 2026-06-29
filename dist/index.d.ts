@@ -8,6 +8,7 @@ export { MILLISECONDS_PER_SECOND, MILLISECONDS_PER_MINUTE, MILLISECONDS_PER_HOUR
 export { chunk, shuffleArray, pickRandom, compactPayload, groupBy, uniqueBy, partition, intersection, difference, sortBy, flatten, } from "./arrays.ts";
 export type { SortByOptions } from "./arrays.ts";
 export { deepMerge, pick, omit, mapValues, mapKeys, invert, isEmpty, deepEqual } from "./objects.ts";
+export type { PlainObject } from "./objects.ts";
 export { clamp, roundCents, randomInt, cosineSimilarity, lerp, remap, sum, average, median, roundTo } from "./math.ts";
 export { parseIntParam, parsePrice, validateMaxLength, parseJsonSafe, parseJsonFromLargeLanguageModelResponse, isEmail, isUrl, isNumeric, } from "./validation.ts";
 export type { IsUrlOptions } from "./validation.ts";

@@ -2,7 +2,7 @@
 // Arrays — Array and object manipulation utilities
 // ─────────────────────────────────────────────────────────────
 
-import { isRecord } from "./objects.ts";
+import { isRecord, type PlainObject } from "./objects.ts";
 
 export function chunk<ArrayItem>(array: ArrayItem[], size: number): ArrayItem[][] {
   const chunks: ArrayItem[][] = [];
@@ -25,7 +25,7 @@ export function pickRandom<ArrayItem>(array: ArrayItem[]): ArrayItem {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-export function compactPayload<Payload extends Record<string, unknown>>(object: Payload): Partial<Payload> {
+export function compactPayload<Payload extends PlainObject>(object: Payload): Partial<Payload> {
   return Object.fromEntries(
     Object.entries(object).filter(
       ([, value]) => value !== null && value !== undefined,

@@ -1,3 +1,7 @@
+export interface EslintRules {
+  [ruleName: string]: unknown;
+}
+
 export interface EslintConfigItem {
   files?: string[];
   ignores?: string[];
@@ -6,7 +10,7 @@ export interface EslintConfigItem {
     sourceType?: string;
     globals?: Record<string, string | boolean>;
   };
-  rules?: Record<string, unknown>;
+  rules?: EslintRules;
 }
 
 export interface JavaScriptConfigGroup {
@@ -30,7 +34,7 @@ export function createServiceEslintConfig({ javascript, prettierConfig, globals,
   globals: { node: Record<string, string> };
   typescriptEslint?: TypeScriptEslintConfigGroup;
 }): EslintConfigItem[] {
-  const baseRules: Record<string, unknown> = {
+  const baseRules: EslintRules = {
     "no-console": "off",
     "prefer-const": "error",
     "no-var": "error",

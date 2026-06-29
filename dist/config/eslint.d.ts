@@ -1,3 +1,6 @@
+export interface EslintRules {
+    [ruleName: string]: unknown;
+}
 export interface EslintConfigItem {
     files?: string[];
     ignores?: string[];
@@ -6,7 +9,7 @@ export interface EslintConfigItem {
         sourceType?: string;
         globals?: Record<string, string | boolean>;
     };
-    rules?: Record<string, unknown>;
+    rules?: EslintRules;
 }
 export interface JavaScriptConfigGroup {
     configs: {
