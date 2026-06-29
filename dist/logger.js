@@ -21,6 +21,7 @@ const LEVEL_STYLES = {
     ERROR: { label: "ERROR", color: FOREGROUND_COLORS.red },
     DEBUG: { label: "DEBUG", color: FOREGROUND_COLORS.magenta },
 };
+import { getNoColor, getForceColor } from "./environment.js";
 function timestamp() {
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, "0");
@@ -29,9 +30,9 @@ function timestamp() {
     return `${hours}:${minutes}:${seconds}`;
 }
 function shouldUseColor() {
-    if (process.env.NO_COLOR !== undefined)
+    if (getNoColor())
         return false;
-    if (process.env.FORCE_COLOR !== undefined)
+    if (getForceColor())
         return true;
     return process.stdout.isTTY === true;
 }

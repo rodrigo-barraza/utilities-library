@@ -9,7 +9,7 @@ var __rewriteRelativeImportExtension = (this && this.__rewriteRelativeImportExte
     }
     return path;
 };
-import { errorMessage } from "./errors.js";
+import { getErrorMessage } from "./errors.js";
 export function asyncHandler(handlerFunction, label = "", errorStatusOrOptions = 502) {
     const errorStatus = typeof errorStatusOrOptions === "number"
         ? errorStatusOrOptions
@@ -51,7 +51,7 @@ export function asyncHandler(handlerFunction, label = "", errorStatusOrOptions =
                 return next(nextError);
             }
             const fallbackMessage = label ? `${label} failed` : "Internal server error";
-            console.error(`[asyncHandler] ${fallbackMessage}:`, errorMessage(error));
+            console.error(`[asyncHandler] ${fallbackMessage}:`, getErrorMessage(error));
             res.status(errorStatusToUse).json({
                 error: true,
                 message: errorMessageString,
@@ -70,7 +70,7 @@ export class HealthTracker {
         this.#healthState.error = null;
     }
     markError(error) {
-        this.#healthState.error = typeof error === "string" ? error : errorMessage(error);
+        this.#healthState.error = typeof error === "string" ? error : getErrorMessage(error);
     }
 }
 export function setupStreamingServerSentEvents(res) {

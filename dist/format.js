@@ -103,11 +103,13 @@ export function formatBytes(bytes) {
     const scaledValue = bytes / Math.pow(1024, unitIndex);
     return `${scaledValue < 10 ? scaledValue.toFixed(2) : scaledValue < 100 ? scaledValue.toFixed(1) : Math.round(scaledValue)} ${units[unitIndex]}`;
 }
-export function formatTokensPerSec(value) {
+export function formatTokensPerSecond(value) {
     if (value === null || value === undefined || value === 0)
         return "—";
     return `${Number(value).toFixed(1)}`;
 }
+/** @deprecated Use formatTokensPerSecond instead */
+export const formatTokensPerSec = formatTokensPerSecond;
 export function formatContextTokens(tokens) {
     if (!tokens)
         return null;

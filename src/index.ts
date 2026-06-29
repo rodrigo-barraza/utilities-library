@@ -21,6 +21,7 @@ export {
   formatFileSize,
   formatBytes,
   formatMediaTimestamp,
+  formatTokensPerSecond,
   formatTokensPerSec,
   formatContextTokens,
   formatPercent,
@@ -53,8 +54,8 @@ export {
 export { toISODate, timeAgo, daysSinceIso, formatDateTime, daysAgo, toLocalDateString } from "./date.ts";
 
 // Async — Promise-based timing, concurrency, and control
-export { sleep, retry, withTimeout, withTimeoutFallback, fetchWithTimeout, pMap, defer } from "./async.ts";
-export type { RetryOptions, PMapOptions, Deferred } from "./async.ts";
+export { sleep, retry, withTimeout, withTimeoutFallback, fetchWithTimeout, parallelMap, defer } from "./async.ts";
+export type { RetryOptions, ParallelMapOptions, Deferred } from "./async.ts";
 
 // Time — Duration constants, converters, and polling intervals
 export {
@@ -133,4 +134,4 @@ export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness, lerpR
 export type { RGB, RGBA, HSL, RgbTriplet } from "./color.ts";
 
 // Errors — Type-safe error handling utilities
-export { errorMessage } from "./errors.ts";
+export { getErrorMessage, errorMessage } from "./errors.ts";

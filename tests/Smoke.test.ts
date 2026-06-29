@@ -147,6 +147,15 @@ describe("format.js", () => {
       expect(formatUtilities.roundMilliseconds(1.23456789)).toBe(1.235);
     });
   });
+
+  describe("formatTokensPerSecond / formatTokensPerSec", () => {
+    it("formats tokens per second correctly", () => {
+      expect(formatUtilities.formatTokensPerSecond(15.5)).toBe("15.5");
+      expect(formatUtilities.formatTokensPerSec(15.5)).toBe("15.5");
+      expect(formatUtilities.formatTokensPerSecond(0)).toBe("—");
+      expect(formatUtilities.formatTokensPerSecond(null)).toBe("—");
+    });
+  });
 });
 
 // ─── Text ───────────────────────────────────────────────────────
@@ -973,15 +982,15 @@ describe("async.js — new utilities", () => {
     asyncModule = await import("../dist/async.js");
   });
 
-  describe("pMap", () => {
+  describe("parallelMap", () => {
     it("maps concurrently", async () => {
-      const results = await asyncModule.pMap([1, 2, 3], async (numberValue) => numberValue * 2);
+      const results = await asyncModule.parallelMap([1, 2, 3], async (numberValue) => numberValue * 2);
       expect(results).toEqual([2, 4, 6]);
     });
     it("respects concurrency limit", async () => {
       let active = 0;
       let maxActive = 0;
-      const results = await asyncModule.pMap(
+      const results = await asyncModule.parallelMap(
         [1, 2, 3, 4, 5],
         async (numberValue) => {
           active++;
@@ -996,7 +1005,7 @@ describe("async.js — new utilities", () => {
       expect(maxActive).toBeLessThanOrEqual(2);
     });
     it("preserves order", async () => {
-      const results = await asyncModule.pMap(
+      const results = await asyncModule.parallelMap(
         [30, 10, 20],
         async (ms) => {
           await asyncModule.sleep(ms);
@@ -1254,6 +1263,27 @@ describe("taxonomy.js", () => {
       expect(taxonomyModule.TOOL_INPUT_MODALITIES.read_docx).toContain(taxonomyModule.INPUT_MODALITIES.DOCUMENT);
       expect(taxonomyModule.TOOL_INPUT_MODALITIES.read_spreadsheet).toContain(taxonomyModule.INPUT_MODALITIES.DOCUMENT);
       expect(taxonomyModule.TOOL_INPUT_MODALITIES.convert_video_to_gif).toContain(taxonomyModule.INPUT_MODALITIES.VIDEO);
+    });
+  });
+});
+
+// ─── Errors ──────────────────────────────────────────────────────
+
+describe("errors.js", () => {
+  let errorsModule;
+  beforeAll(async () => {
+    errorsModule = await import("../dist/errors.js");
+  });
+
+  describe("getErrorMessage / errorMessage", () => {
+    it("handles error instances", () => {
+      const error = new Error("Test error message");
+      expect(errorsModule.getErrorMessage(error)).toBe("Test error message");
+      expect(errorsModule.errorMessage(error)).toBe("Test error message");
+    });
+    it("handles non-error objects and strings", () => {
+      expect(errorsModule.getErrorMessage("Simple string error")).toBe("Simple string error");
+      expect(errorsModule.getErrorMessage({ custom: "obj" })).toBe("[object Object]");
     });
   });
 });

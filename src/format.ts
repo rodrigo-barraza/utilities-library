@@ -95,10 +95,13 @@ export function formatBytes(bytes: number): string {
   return `${scaledValue < 10 ? scaledValue.toFixed(2) : scaledValue < 100 ? scaledValue.toFixed(1) : Math.round(scaledValue)} ${units[unitIndex]}`;
 }
 
-export function formatTokensPerSec(value: number | null | undefined): string {
+export function formatTokensPerSecond(value: number | null | undefined): string {
   if (value === null || value === undefined || value === 0) return "—";
   return `${Number(value).toFixed(1)}`;
 }
+
+/** @deprecated Use formatTokensPerSecond instead */
+export const formatTokensPerSec = formatTokensPerSecond;
 
 export function formatContextTokens(tokens: number | null | undefined): string | null {
   if (!tokens) return null;

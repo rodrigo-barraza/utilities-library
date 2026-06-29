@@ -44,7 +44,7 @@ export function withTimeoutFallback(promise, milliseconds, fallback = null) {
         new Promise((resolve) => setTimeout(() => resolve(fallback), milliseconds)),
     ]);
 }
-export async function pMap(iterable, mapper, { concurrency = Infinity } = {}) {
+export async function parallelMap(iterable, mapper, { concurrency = Infinity } = {}) {
     const items = [...iterable];
     const results = new Array(items.length);
     if (concurrency === Infinity) {

@@ -13,7 +13,9 @@ export interface FormatFileSizeOptions {
 }
 export declare function formatFileSize(bytes: number, { compact }?: FormatFileSizeOptions): string | null;
 export declare function formatBytes(bytes: number): string;
-export declare function formatTokensPerSec(value: number | null | undefined): string;
+export declare function formatTokensPerSecond(value: number | null | undefined): string;
+/** @deprecated Use formatTokensPerSecond instead */
+export declare const formatTokensPerSec: typeof formatTokensPerSecond;
 export declare function formatContextTokens(tokens: number | null | undefined): string | null;
 export declare function roundMilliseconds(seconds: number): number;
 export declare function formatCurrency(amount: number | null | undefined, currencyCode?: string): string;

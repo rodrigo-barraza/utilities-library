@@ -1,9 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 // Arrays — Array and object manipulation utilities
 // ─────────────────────────────────────────────────────────────
-function isRecord(value) {
-    return typeof value === "object" && value !== null;
-}
+import { isRecord } from "./objects.js";
 export function chunk(array, size) {
     const chunks = [];
     for (let i = 0; i < array.length; i += size) {

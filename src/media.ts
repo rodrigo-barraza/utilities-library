@@ -2,8 +2,10 @@
 // Media — Private Network URL Sanitization
 // ─────────────────────────────────────────────────────────────
 
+import { getMinioInternalUrl } from "./environment.ts";
+
 export function rewritePrivateUrls(text: string, internalUrl?: string): string {
-  const baseInternalUrl = internalUrl || process.env.MINIO_INTERNAL_URL || "";
+  const baseInternalUrl = internalUrl || getMinioInternalUrl() || "";
   return text.replaceAll(baseInternalUrl, "/api/media");
 }
 

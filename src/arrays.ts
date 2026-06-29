@@ -2,9 +2,7 @@
 // Arrays — Array and object manipulation utilities
 // ─────────────────────────────────────────────────────────────
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
-}
+import { isRecord } from "./objects.ts";
 
 export function chunk<ArrayItem>(array: ArrayItem[], size: number): ArrayItem[][] {
   const chunks: ArrayItem[][] = [];

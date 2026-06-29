@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 // Objects — Plain-object manipulation utilities
 // ─────────────────────────────────────────────────────────────
-function isRecord(value) {
+export function isRecord(value) {
     return typeof value === "object" && value !== null;
 }
 export function deepMerge(target, source) {

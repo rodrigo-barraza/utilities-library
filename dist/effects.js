@@ -237,16 +237,16 @@ const FLICKER_CSS = `
 }
 .rb-effect-flicker { animation: rb-effect-flicker var(--rb-effect-flicker-duration, 3s) linear infinite; will-change: opacity; }
 `;
-export function applyFlicker(element, { duration = 3, minOpacity = 0.4 } = {}) {
+export function applyFlicker(element, { duration = 3, minimumOpacity = 0.4 } = {}) {
     injectEffectStylesheet("flicker", FLICKER_CSS);
     element.style.setProperty("--rb-effect-flicker-duration", `${duration}s`);
-    element.style.setProperty("--rb-effect-flicker-minimum-opacity", String(minOpacity));
+    element.style.setProperty("--rb-effect-flicker-minimum-opacity", String(minimumOpacity));
     return applyEffectClasses(element, ["rb-effect-flicker"]);
 }
 // ── 11. CRT Bundle ────────────────────────────────────────
-export function applyCathodeRayTube(element, { scanIntensity = 0.06, vignetteIntensity = 0.5, noiseIntensity = 0.08 } = {}) {
+export function applyCathodeRayTube(element, { scanlineIntensity = 0.06, vignetteIntensity = 0.5, noiseIntensity = 0.08 } = {}) {
     const cleanups = [
-        applyScanlines(element, { intensity: scanIntensity, rolling: true }),
+        applyScanlines(element, { intensity: scanlineIntensity, rolling: true }),
         applyVignette(element, { intensity: vignetteIntensity }),
         applyStatic(element, { intensity: noiseIntensity }),
     ];

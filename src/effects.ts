@@ -267,10 +267,10 @@ const FLICKER_CSS = `
 .rb-effect-flicker { animation: rb-effect-flicker var(--rb-effect-flicker-duration, 3s) linear infinite; will-change: opacity; }
 `;
 
-export function applyFlicker(element: HTMLElement, { duration = 3, minOpacity = 0.4 } = {}): () => void {
+export function applyFlicker(element: HTMLElement, { duration = 3, minimumOpacity = 0.4 } = {}): () => void {
   injectEffectStylesheet("flicker", FLICKER_CSS);
   element.style.setProperty("--rb-effect-flicker-duration", `${duration}s`);
-  element.style.setProperty("--rb-effect-flicker-minimum-opacity", String(minOpacity));
+  element.style.setProperty("--rb-effect-flicker-minimum-opacity", String(minimumOpacity));
   return applyEffectClasses(element, ["rb-effect-flicker"]);
 }
 
@@ -278,10 +278,10 @@ export function applyFlicker(element: HTMLElement, { duration = 3, minOpacity = 
 
 export function applyCathodeRayTube(
   element: HTMLElement,
-  { scanIntensity = 0.06, vignetteIntensity = 0.5, noiseIntensity = 0.08 } = {},
+  { scanlineIntensity = 0.06, vignetteIntensity = 0.5, noiseIntensity = 0.08 } = {},
 ): () => void {
   const cleanups = [
-    applyScanlines(element, { intensity: scanIntensity, rolling: true }),
+    applyScanlines(element, { intensity: scanlineIntensity, rolling: true }),
     applyVignette(element, { intensity: vignetteIntensity }),
     applyStatic(element, { intensity: noiseIntensity }),
   ];

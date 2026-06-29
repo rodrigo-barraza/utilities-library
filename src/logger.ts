@@ -27,6 +27,8 @@ const LEVEL_STYLES: Record<LogLevel, { label: string; color: string }> = {
   DEBUG: { label: "DEBUG", color: FOREGROUND_COLORS.magenta },
 };
 
+import { getNoColor, getForceColor } from "./environment.ts";
+
 function timestamp(): string {
   const now = new Date();
   const hours = String(now.getHours()).padStart(2, "0");
@@ -36,8 +38,8 @@ function timestamp(): string {
 }
 
 function shouldUseColor(): boolean {
-  if (process.env.NO_COLOR !== undefined) return false;
-  if (process.env.FORCE_COLOR !== undefined) return true;
+  if (getNoColor()) return false;
+  if (getForceColor()) return true;
   return process.stdout.isTTY === true;
 }
 

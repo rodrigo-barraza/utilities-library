@@ -1,1 +1,1 @@
-{"version":3,"file":"errors.d.ts","sourceRoot":"","sources":["../src/errors.ts"],"names":[],"mappings":"AAIA,eAAO,MAAM,YAAY,GAAI,OAAO,OAAO,KAAG,MACU,CAAC"}
+{"version":3,"file":"errors.d.ts","sourceRoot":"","sources":["../src/errors.ts"],"names":[],"mappings":"AAIA,eAAO,MAAM,eAAe,GAAI,OAAO,OAAO,KAAG,MACO,CAAC;AAEzD,8CAA8C;AAC9C,eAAO,MAAM,YAAY,UAJc,OAAO,KAAG,MAIN,CAAC"}

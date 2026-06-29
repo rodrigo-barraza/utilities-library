@@ -4,7 +4,8 @@
 import { execFileSync } from "child_process";
 import fs from "fs";
 import path from "path";
-import { errorMessage } from "./errors.js";
+import { getErrorMessage } from "./errors.js";
+import { getEnvironmentVariable, setEnvironmentVariable, getVaultServiceUrl, getVaultServiceToken, } from "./environment.js";
 const DEFAULT_VAULT_SERVICE_URL = "http://localhost:5599";
 const FETCH_TIMEOUT_MILLISECONDS = 5_000;
 export function createVaultClient(options = {}) {
@@ -17,11 +18,11 @@ export function createVaultClient(options = {}) {
             return;
         vaultServiceUrl =
             options.vaultUrl ||
-                process.env.VAULT_SERVICE_URL ||
+                getVaultServiceUrl() ||
                 DEFAULT_VAULT_SERVICE_URL;
         vaultServiceToken =
             options.vaultToken ||
-                process.env.VAULT_SERVICE_TOKEN ||
+                getVaultServiceToken() ||
                 "";
         if (!vaultServiceToken) {
             try {
@@ -80,7 +81,7 @@ export function createVaultClient(options = {}) {
                 return secrets;
             }
             catch (error) {
-                console.warn(`⚠️  Vault unreachable (${errorMessage(error)})`);
+                console.warn(`⚠️  Vault unreachable (${getErrorMessage(error)})`);
                 return {};
             }
         },
@@ -104,7 +105,7 @@ export function createVaultClient(options = {}) {
                 return secrets;
             }
             catch (error) {
-                console.warn(`⚠️  Vault unreachable (${errorMessage(error)})`);
+                console.warn(`⚠️  Vault unreachable (${getErrorMessage(error)})`);
                 return {};
             }
         },
@@ -130,15 +131,16 @@ export function createVaultClient(options = {}) {
                 return cachedRegistry;
             }
             catch (error) {
-                console.warn(`⚠️  Registry unreachable (${errorMessage(error)})`);
+                console.warn(`⚠️  Registry unreachable (${getErrorMessage(error)})`);
                 return { version: 0, projects: [], infrastructure: [] };
             }
         },
         async resolveServiceUrl(serviceId) {
             const urlEnvironmentVariable = `${serviceId.toUpperCase().replace(/-/g, "_")}_URL`;
             // Check process.env first (may have been populated by bootstrapEnvironment)
-            if (process.env[urlEnvironmentVariable])
-                return process.env[urlEnvironmentVariable];
+            const envVal = getEnvironmentVariable(urlEnvironmentVariable);
+            if (envVal)
+                return envVal;
             // Fall back to registry
             const registry = await this.fetchRegistry();
             const service = (registry.projects || []).find((project) => project.id === serviceId);
@@ -159,8 +161,10 @@ export function createVaultClient(options = {}) {
                 console.warn(`⚠️  Infrastructure "${infrastructureId}" not found in registry`);
                 return null;
             }
-            if (infrastructureEntry.urlEnvironmentVariable && process.env[infrastructureEntry.urlEnvironmentVariable]) {
-                return process.env[infrastructureEntry.urlEnvironmentVariable];
+            if (infrastructureEntry.urlEnvironmentVariable) {
+                const envVal = getEnvironmentVariable(infrastructureEntry.urlEnvironmentVariable);
+                if (envVal)
+                    return envVal;
             }
             if (infrastructureEntry.url)
                 return infrastructureEntry.url;
@@ -175,8 +179,8 @@ export async function bootstrapEnvironment() {
     const vault = createVaultClient();
     const secrets = await vault.fetch();
     for (const [key, value] of Object.entries(secrets)) {
-        if (process.env[key] === undefined) {
-            process.env[key] = value;
+        if (getEnvironmentVariable(key) === undefined) {
+            setEnvironmentVariable(key, value);
         }
     }
 }

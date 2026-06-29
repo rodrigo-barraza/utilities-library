@@ -2,84 +2,88 @@
 // Rate — Debounce and throttle utilities
 // ─────────────────────────────────────────────────────────────
 export function debounce(targetFunction, delayMilliseconds, { leading = false } = {}) {
-    let timer = null;
-    let lastParameters = null;
-    let lastContext = null;
+    const state = {
+        timer: null,
+        lastParameters: null,
+        lastContext: null,
+    };
     function invoke() {
-        const parameters = lastParameters;
-        const context = lastContext;
-        lastParameters = null;
-        lastContext = null;
+        const parameters = state.lastParameters;
+        const context = state.lastContext;
+        state.lastParameters = null;
+        state.lastContext = null;
         targetFunction.apply(context, parameters);
     }
     const debounced = function (...parameters) {
-        lastParameters = parameters;
-        lastContext = this;
-        if (leading && timer === null) {
+        state.lastParameters = parameters;
+        state.lastContext = this;
+        if (leading && state.timer === null) {
             invoke();
         }
-        if (timer !== null)
-            clearTimeout(timer);
-        timer = setTimeout(() => {
-            timer = null;
-            if (!leading || lastParameters)
+        if (state.timer !== null)
+            clearTimeout(state.timer);
+        state.timer = setTimeout(() => {
+            state.timer = null;
+            if (!leading || state.lastParameters)
                 invoke();
         }, delayMilliseconds);
     };
     debounced.cancel = () => {
-        if (timer !== null)
-            clearTimeout(timer);
-        timer = null;
-        lastParameters = null;
-        lastContext = null;
+        if (state.timer !== null)
+            clearTimeout(state.timer);
+        state.timer = null;
+        state.lastParameters = null;
+        state.lastContext = null;
     };
     debounced.flush = () => {
-        if (timer !== null) {
-            clearTimeout(timer);
-            timer = null;
-            if (lastParameters)
+        if (state.timer !== null) {
+            clearTimeout(state.timer);
+            state.timer = null;
+            if (state.lastParameters)
                 invoke();
         }
     };
     return debounced;
 }
 export function throttle(targetFunction, delayMilliseconds) {
-    let timer = null;
-    let lastParameters = null;
-    let lastContext = null;
-    let lastInvoke = 0;
+    const state = {
+        timer: null,
+        lastParameters: null,
+        lastContext: null,
+        lastInvoke: 0,
+    };
     function invoke() {
-        lastInvoke = Date.now();
-        const parameters = lastParameters;
-        const context = lastContext;
-        lastParameters = null;
-        lastContext = null;
+        state.lastInvoke = Date.now();
+        const parameters = state.lastParameters;
+        const context = state.lastContext;
+        state.lastParameters = null;
+        state.lastContext = null;
         targetFunction.apply(context, parameters);
     }
     const throttled = function (...parameters) {
-        lastParameters = parameters;
-        lastContext = this;
-        const elapsed = Date.now() - lastInvoke;
+        state.lastParameters = parameters;
+        state.lastContext = this;
+        const elapsed = Date.now() - state.lastInvoke;
         const remaining = delayMilliseconds - elapsed;
         if (remaining <= 0) {
-            if (timer !== null)
-                clearTimeout(timer);
-            timer = null;
+            if (state.timer !== null)
+                clearTimeout(state.timer);
+            state.timer = null;
             invoke();
         }
-        else if (timer === null) {
-            timer = setTimeout(() => {
-                timer = null;
+        else if (state.timer === null) {
+            state.timer = setTimeout(() => {
+                state.timer = null;
                 invoke();
             }, remaining);
         }
     };
     throttled.cancel = () => {
-        if (timer !== null)
-            clearTimeout(timer);
-        timer = null;
-        lastParameters = null;
-        lastContext = null;
+        if (state.timer !== null)
+            clearTimeout(state.timer);
+        state.timer = null;
+        state.lastParameters = null;
+        state.lastContext = null;
     };
     return throttled;
 }

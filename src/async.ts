@@ -67,14 +67,14 @@ export function withTimeoutFallback<T>(
   ]);
 }
 
-export interface PMapOptions {
+export interface ParallelMapOptions {
   concurrency?: number;
 }
 
-export async function pMap<T, R>(
+export async function parallelMap<T, R>(
   iterable: Iterable<T>,
   mapper: (item: T, index: number) => Promise<R> | R,
-  { concurrency = Infinity }: PMapOptions = {},
+  { concurrency = Infinity }: ParallelMapOptions = {},
 ): Promise<R[]> {
   const items = [...iterable];
   const results = new Array<R>(items.length);

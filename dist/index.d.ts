@@ -1,9 +1,9 @@
-export { formatCompact, formatNumber, formatTokenCount, formatCost, formatCostAdaptive, formatCostTag, formatCurrency, formatLatency, formatLatencyMilliseconds, formatDuration, formatElapsedTime, formatFileSize, formatBytes, formatMediaTimestamp, formatTokensPerSec, formatContextTokens, formatPercent, roundMilliseconds, } from "./format.ts";
+export { formatCompact, formatNumber, formatTokenCount, formatCost, formatCostAdaptive, formatCostTag, formatCurrency, formatLatency, formatLatencyMilliseconds, formatDuration, formatElapsedTime, formatFileSize, formatBytes, formatMediaTimestamp, formatTokensPerSecond, formatTokensPerSec, formatContextTokens, formatPercent, roundMilliseconds, } from "./format.ts";
 export type { FormatFileSizeOptions } from "./format.ts";
 export { stripHtml, normalizeName, renderToolName, humanizeToolName, truncate, escapeRegex, getRootDomain, getSubdomain, capitalize, slugify, toKebabCase, toCamelCase, toPascalCase, toSnakeCase, pluralize, wordCount, deriveAgentId, } from "./text.ts";
 export { toISODate, timeAgo, daysSinceIso, formatDateTime, daysAgo, toLocalDateString } from "./date.ts";
-export { sleep, retry, withTimeout, withTimeoutFallback, fetchWithTimeout, pMap, defer } from "./async.ts";
-export type { RetryOptions, PMapOptions, Deferred } from "./async.ts";
+export { sleep, retry, withTimeout, withTimeoutFallback, fetchWithTimeout, parallelMap, defer } from "./async.ts";
+export type { RetryOptions, ParallelMapOptions, Deferred } from "./async.ts";
 export { MILLISECONDS_PER_SECOND, MILLISECONDS_PER_MINUTE, MILLISECONDS_PER_HOUR, MILLISECONDS_PER_DAY, SECONDS_PER_DAY, MILLISECONDS_PER_WEEK, seconds, minutes, hours, days, weeks, POLL_FAST, POLL_STANDARD, POLL_MODERATE, POLL_SLOW, POLL_LAZY, FEEDBACK_BRIEF_MILLISECONDS, FEEDBACK_STANDARD_MILLISECONDS, TOAST_DURATION_MILLISECONDS, ACTION_COOLDOWN_MILLISECONDS, ACTION_COOLDOWN_LONG_MILLISECONDS, HIGHLIGHT_DURATION_MILLISECONDS, } from "./time.ts";
 export { chunk, shuffleArray, pickRandom, compactPayload, groupBy, uniqueBy, partition, intersection, difference, sortBy, flatten, } from "./arrays.ts";
 export type { SortByOptions } from "./arrays.ts";
@@ -17,5 +17,5 @@ export { debounce, throttle } from "./rate.ts";
 export type { DebouncedFunction, ThrottledFunction, DebounceOptions } from "./rate.ts";
 export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness, lerpRgb, paletteAt } from "./color.ts";
 export type { RGB, RGBA, HSL, RgbTriplet } from "./color.ts";
-export { errorMessage } from "./errors.ts";
+export { getErrorMessage, errorMessage } from "./errors.ts";
 //# sourceMappingURL=index.d.ts.map

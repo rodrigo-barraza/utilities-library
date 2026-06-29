@@ -5,7 +5,8 @@
 // dynamic import(/* webpackIgnore: true */) causes
 // ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING in the edge VM.
 import { NextResponse } from "next/server";
-import { errorMessage } from "./errors.js";
+import { getErrorMessage } from "./errors.js";
+import { getEnvironmentVariable } from "./environment.js";
 function getNextResponse() {
     return NextResponse;
 }
@@ -48,7 +49,7 @@ export function createNextjsProxy({ port, serviceName, publicUrlEnvironmentVaria
             return undefined;
         if (valueOrKey.includes("://"))
             return valueOrKey;
-        return process.env[valueOrKey] || undefined;
+        return getEnvironmentVariable(valueOrKey) || undefined;
     }
     async function proxyRequest(request, { params }) {
         const { path } = await params;
@@ -102,9 +103,9 @@ export function createNextjsProxy({ port, serviceName, publicUrlEnvironmentVaria
             return nextResponse.json(data, { status: response.status });
         }
         catch (error) {
-            console.error(`[API Proxy] ${request.method} /${segments} → ${targetUrl} failed:`, errorMessage(error));
+            console.error(`[API Proxy] ${request.method} /${segments} → ${targetUrl} failed:`, getErrorMessage(error));
             const nextResponse = await getNextResponse();
-            return nextResponse.json({ error: `Failed to reach ${serviceName} service: ${errorMessage(error)}` }, { status: 502 });
+            return nextResponse.json({ error: `Failed to reach ${serviceName} service: ${getErrorMessage(error)}` }, { status: 502 });
         }
     }
     const allMethods = {

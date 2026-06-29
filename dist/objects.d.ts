@@ -1,3 +1,4 @@
+export declare function isRecord(value: unknown): value is Record<string, unknown>;
 export declare function deepMerge<T extends Record<string, unknown>>(target: T, source: Record<string, unknown>): T;
 export declare function pick<T extends Record<string, unknown>, K extends keyof T>(object: T, keys: K[]): Pick<T, K>;
 export declare function omit<T extends Record<string, unknown>, K extends keyof T>(object: T, keys: K[]): Omit<T, K>;

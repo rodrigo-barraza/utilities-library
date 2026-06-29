@@ -28,12 +28,12 @@ export declare function applyDissolve(element: HTMLElement, { duration }?: {
 export declare function applyVignette(element: HTMLElement, { intensity }?: {
     intensity?: number | undefined;
 }): () => void;
-export declare function applyFlicker(element: HTMLElement, { duration, minOpacity }?: {
+export declare function applyFlicker(element: HTMLElement, { duration, minimumOpacity }?: {
     duration?: number | undefined;
-    minOpacity?: number | undefined;
+    minimumOpacity?: number | undefined;
 }): () => void;
-export declare function applyCathodeRayTube(element: HTMLElement, { scanIntensity, vignetteIntensity, noiseIntensity }?: {
-    scanIntensity?: number | undefined;
+export declare function applyCathodeRayTube(element: HTMLElement, { scanlineIntensity, vignetteIntensity, noiseIntensity }?: {
+    scanlineIntensity?: number | undefined;
     vignetteIntensity?: number | undefined;
     noiseIntensity?: number | undefined;
 }): () => void;

@@ -4,7 +4,7 @@
 
 import type { Request, Response, NextFunction } from "express";
 import type { Logger } from "./logger.js";
-import { errorMessage } from "./errors.js";
+import { getErrorMessage } from "./errors.js";
 
 export interface AsyncHandlerOptions {
   errorStatus?: number;
@@ -58,7 +58,7 @@ export function asyncHandler(
       }
 
       const fallbackMessage = label ? `${label} failed` : "Internal server error";
-      console.error(`[asyncHandler] ${fallbackMessage}:`, errorMessage(error));
+      console.error(`[asyncHandler] ${fallbackMessage}:`, getErrorMessage(error));
       res.status(errorStatusToUse).json({
         error: true,
         message: errorMessageString,
@@ -69,7 +69,7 @@ export function asyncHandler(
 }
 
 export class HealthTracker {
-  #healthState = { lastChecked: null as Date | null, error: null as string | null };
+  #healthState: { lastChecked: Date | null; error: string | null } = { lastChecked: null, error: null };
 
   getHealth() {
     return { ...this.#healthState };
@@ -81,7 +81,7 @@ export class HealthTracker {
   }
 
   markError(error: unknown) {
-    this.#healthState.error = typeof error === "string" ? error : errorMessage(error);
+    this.#healthState.error = typeof error === "string" ? error : getErrorMessage(error);
   }
 }
 
