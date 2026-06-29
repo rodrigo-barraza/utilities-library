@@ -85,5 +85,6 @@ export const STATUS_MESSAGES = {
     SANDBOX_CHECKPOINT_CREATED: "sandbox_checkpoint_created",
     SANDBOX_RESTORED: "sandbox_restored",
     REPETITION_DETECTED: "repetition_detected",
+    SEMANTIC_STALL_DETECTED: "semantic_stall_detected",
 };
 //# sourceMappingURL=events.js.map

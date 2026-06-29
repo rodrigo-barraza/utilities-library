@@ -62,6 +62,7 @@ export declare const STATUS_MESSAGES: {
     readonly SANDBOX_CHECKPOINT_CREATED: "sandbox_checkpoint_created";
     readonly SANDBOX_RESTORED: "sandbox_restored";
     readonly REPETITION_DETECTED: "repetition_detected";
+    readonly SEMANTIC_STALL_DETECTED: "semantic_stall_detected";
 };
 export type StatusMessage = (typeof STATUS_MESSAGES)[keyof typeof STATUS_MESSAGES];
 //# sourceMappingURL=events.d.ts.map
