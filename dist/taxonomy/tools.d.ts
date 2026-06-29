@@ -104,6 +104,7 @@ export declare const TOOL_NAMES: {
     readonly STOP_AGENT: "stop_agent";
     readonly GET_TASK_OUTPUT: "get_task_output";
     readonly DELETE_TEAM: "delete_team";
+    readonly RESUME_AGENT: "resume_agent";
     readonly SEARCH_FILE_CONTENTS: "search_file_contents";
     readonly FIND_FILES: "find_files";
     readonly READ_WEB_PAGE: "read_web_page";
@@ -132,7 +133,7 @@ export declare const TOOL_NAMES: {
 };
 export type ToolName = (typeof TOOL_NAMES)[keyof typeof TOOL_NAMES];
 export declare const CORE_AGENTIC_TOOLS: readonly ["enable_tools", "disable_tools", "discover_and_enable_tools", "save_memory", "search_conversations", "create_task", "list_tasks", "update_task", "evaluate_expression", "execute_javascript", "execute_python", "search_tools", "search_web", "read_url", "get_web_content", "enter_plan_mode", "exit_plan_mode", "ask_user", "write_todo", "summarize_conversation", "enter_worktree", "exit_worktree", "create_skill", "execute_skill", "list_skills", "delete_skill", "get_task", "sleep", "emit_structured_output", "think"];
-export declare const CORE_ORCHESTRATOR_TOOLS: readonly ["create_team", "send_message", "stop_agent", "get_task_output", "delete_team"];
+export declare const CORE_ORCHESTRATOR_TOOLS: readonly ["create_team", "send_message", "stop_agent", "get_task_output", "delete_team", "resume_agent"];
 export declare const INPUT_MODALITIES: {
     readonly IMAGE: "image";
     readonly AUDIO: "audio";

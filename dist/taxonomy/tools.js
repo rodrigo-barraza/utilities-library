@@ -129,6 +129,7 @@ export const TOOL_NAMES = {
     STOP_AGENT: "stop_agent",
     GET_TASK_OUTPUT: "get_task_output",
     DELETE_TEAM: "delete_team",
+    RESUME_AGENT: "resume_agent",
     // ── Approval Engine Aliases ──
     // Keys matching the tool's own snake_case name for intuitive lookups
     // in AutoApprovalEngine, ToolCallBadge, etc.
@@ -203,6 +204,7 @@ export const CORE_ORCHESTRATOR_TOOLS = [
     TOOL_NAMES.STOP_AGENT,
     TOOL_NAMES.GET_TASK_OUTPUT,
     TOOL_NAMES.DELETE_TEAM,
+    TOOL_NAMES.RESUME_AGENT,
 ];
 // ─────────────────────────────────────────────────────────────
 // Tool Input Modalities — maps tools to the file types they can
