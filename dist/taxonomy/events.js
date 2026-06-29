@@ -71,6 +71,7 @@ export const STATUS_MESSAGES = {
     BRANCH_SELECTED: "branch_selected",
     BRANCH_BACKTRACKED: "branch_backtracked",
     SYNTHESIS_STARTED: "synthesis_started",
+    SYNTHESIS_COMPLETE: "synthesis_complete",
     // ── Worktree ──
     WORKTREE_ENTERED: "worktree_entered",
     WORKTREE_EXITED: "worktree_exited",
