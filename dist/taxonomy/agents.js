@@ -39,13 +39,13 @@ export const TOPOLOGIES = {
 export const DEFAULT_TOPOLOGY = TOPOLOGIES.HIERARCHICAL;
 // ─────────────────────────────────────────────────────────────
 // Recursive Sub-Agent Spawning — cross-cutting capability that
-// allows sub-agents to spawn their own sub-agents via create_team.
+// allows sub-agents to spawn their own sub-agents via create_subagents.
 //
 // This is NOT a topology — it's a depth-gated mechanism that
 // augments any existing topology.
 //
 // Depth semantics (total hierarchy levels below the root):
-//   0 — Sub-agent spawning disabled entirely (root cannot use create_team)
+//   0 — Sub-agent spawning disabled entirely (root cannot use create_subagents)
 //   1 — Flat fan-out: root spawns Workers (no recursive delegation)
 //   2 — Root → Coordinators → Workers (one recursion level)
 //   3 — Root → Coordinators → Coordinators → Workers (two recursion levels)

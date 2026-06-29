@@ -32,7 +32,7 @@ const TOOL_DISPLAY_OVERRIDES = {
     create_task: "Create Task",
     list_tasks: "List Tasks",
     update_task: "Update Task",
-    get_task_output: "Get Task Output",
+    get_subagent_output: "Get Subagent Output",
     write_todo: "Write Todo",
     // TODO(cleanup): Remove legacy pre-action-first names below once historical
     // MongoDB sessions containing old tool names have aged out.
@@ -91,9 +91,12 @@ const TOOL_DISPLAY_OVERRIDES = {
     execute_skill: "Execute Skill",
     list_skills: "List Skills",
     delete_skill: "Delete Skill",
-    // Coordinator
-    create_team: "Create Team",
-    delete_team: "Delete Team",
+    // Orchestrator (Subagent Tools)
+    create_subagents: "Create Subagents",
+    delete_subagents: "Delete Subagents",
+    send_subagent_message: "Send Subagent Message",
+    stop_subagent: "Stop Subagent",
+    resume_subagent: "Resume Subagent",
     // Notebook Editing
     edit_notebook: "Edit Notebook",
     // Twilio Communication

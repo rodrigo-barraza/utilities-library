@@ -140,12 +140,12 @@ export const TOOL_NAMES = {
   AUTHENTICATE_MCP_SERVER: "authenticate_mcp_server",
 
   // ── Orchestrator Tools ──
-  CREATE_TEAM: "create_team",
-  SEND_MESSAGE: "send_message",
-  STOP_AGENT: "stop_agent",
-  GET_TASK_OUTPUT: "get_task_output",
-  DELETE_TEAM: "delete_team",
-  RESUME_AGENT: "resume_agent",
+  CREATE_SUBAGENTS: "create_subagents",
+  SEND_SUBAGENT_MESSAGE: "send_subagent_message",
+  STOP_SUBAGENT: "stop_subagent",
+  GET_SUBAGENT_OUTPUT: "get_subagent_output",
+  DELETE_SUBAGENTS: "delete_subagents",
+  RESUME_SUBAGENT: "resume_subagent",
 
   // ── Approval Engine Aliases ──
   // Keys matching the tool's own snake_case name for intuitive lookups
@@ -223,12 +223,12 @@ export const CORE_AGENTIC_TOOLS = [
 ] as const;
 
 export const CORE_ORCHESTRATOR_TOOLS = [
-  TOOL_NAMES.CREATE_TEAM,
-  TOOL_NAMES.SEND_MESSAGE,
-  TOOL_NAMES.STOP_AGENT,
-  TOOL_NAMES.GET_TASK_OUTPUT,
-  TOOL_NAMES.DELETE_TEAM,
-  TOOL_NAMES.RESUME_AGENT,
+  TOOL_NAMES.CREATE_SUBAGENTS,
+  TOOL_NAMES.SEND_SUBAGENT_MESSAGE,
+  TOOL_NAMES.STOP_SUBAGENT,
+  TOOL_NAMES.GET_SUBAGENT_OUTPUT,
+  TOOL_NAMES.DELETE_SUBAGENTS,
+  TOOL_NAMES.RESUME_SUBAGENT,
 ] as const;
 
 // ─────────────────────────────────────────────────────────────
