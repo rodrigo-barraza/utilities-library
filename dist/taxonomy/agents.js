@@ -49,13 +49,14 @@ export const DEFAULT_TOPOLOGY = TOPOLOGIES.HIERARCHICAL;
 //   1 — Flat fan-out: root spawns Workers (no recursive delegation)
 //   2 — Root → Coordinators → Workers (one recursion level)
 //   3 — Root → Coordinators → Coordinators → Workers (two recursion levels)
+//  10 — Deep recursive hierarchies (absolute hard cap)
 //
 // Paper alignment:
 //   THREAD (arXiv:2405.17402)  — recursive thread spawning
 //   RAH (2026)                 — recursive agent harness architecture
 //   RecursiveMAS (arXiv:2604.25917) — latent-space recursion
 // ─────────────────────────────────────────────────────────────
-export const MAXIMUM_RECURSIVE_SPAWNING_DEPTH = 3;
+export const MAXIMUM_RECURSIVE_SPAWNING_DEPTH = 10;
 export const DEFAULT_RECURSIVE_SPAWNING_DEPTH = 1;
 // ─────────────────────────────────────────────────────────────
 // Thought Structures — single-agent reasoning decomposition shapes.
