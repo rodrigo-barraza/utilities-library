@@ -102,6 +102,7 @@ export const STATUS_MESSAGES = {
   COST_LIMIT_REACHED: "cost_limit_reached",
   SANDBOX_CHECKPOINT_CREATED: "sandbox_checkpoint_created",
   SANDBOX_RESTORED: "sandbox_restored",
+  REPETITION_DETECTED: "repetition_detected",
 } as const;
 
 export type StatusMessage =
