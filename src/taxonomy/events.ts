@@ -27,6 +27,7 @@ export const SERVER_SENT_EVENT_TYPES = {
   EXECUTABLE_CODE: "executableCode",
   CODE_EXECUTION_RESULT: "codeExecutionResult",
   WEB_SEARCH_RESULT: "webSearchResult",
+  CONTEXT_BUDGET: "context_budget",
 
   // ── Worker / Sub-Agent Tool Variants ──
   SUB_AGENT_TOOL_EXECUTION: "sub_agent_tool_execution",

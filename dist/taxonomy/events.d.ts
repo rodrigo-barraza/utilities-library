@@ -19,6 +19,7 @@ export declare const SERVER_SENT_EVENT_TYPES: {
     readonly EXECUTABLE_CODE: "executableCode";
     readonly CODE_EXECUTION_RESULT: "codeExecutionResult";
     readonly WEB_SEARCH_RESULT: "webSearchResult";
+    readonly CONTEXT_BUDGET: "context_budget";
     readonly SUB_AGENT_TOOL_EXECUTION: "sub_agent_tool_execution";
     readonly SUB_AGENT_TOOL_OUTPUT: "sub_agent_tool_output";
     readonly USER_QUESTION: "user_question";
