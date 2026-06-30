@@ -32,6 +32,7 @@ export const SERVER_SENT_EVENT_TYPES = {
   SUB_AGENT_TOOL_EXECUTION: "sub_agent_tool_execution",
   SUB_AGENT_TOOL_OUTPUT: "sub_agent_tool_output",
   USER_QUESTION: "user_question",
+  TASK_NOTIFICATION: "task_notification",
 
   // ── Benchmark / Workflow SSE ──
   RUN_INFO: "run_info",

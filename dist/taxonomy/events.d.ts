@@ -22,6 +22,7 @@ export declare const SERVER_SENT_EVENT_TYPES: {
     readonly SUB_AGENT_TOOL_EXECUTION: "sub_agent_tool_execution";
     readonly SUB_AGENT_TOOL_OUTPUT: "sub_agent_tool_output";
     readonly USER_QUESTION: "user_question";
+    readonly TASK_NOTIFICATION: "task_notification";
     readonly RUN_INFO: "run_info";
     readonly MODEL_START: "model_start";
     readonly MODEL_COMPLETE: "model_complete";
