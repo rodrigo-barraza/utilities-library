@@ -32,6 +32,7 @@ export const SERVER_SENT_EVENT_TYPES = {
     SUB_AGENT_TOOL_OUTPUT: "sub_agent_tool_output",
     USER_QUESTION: "user_question",
     TASK_NOTIFICATION: "task_notification",
+    CONVERSATION_STATE_UPDATE: "conversation_state_update",
     // ── Benchmark / Workflow SSE ──
     RUN_INFO: "run_info",
     MODEL_START: "model_start",
