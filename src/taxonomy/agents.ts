@@ -111,3 +111,52 @@ export const MAX_TOOL_ITERATIONS = 25;
 
 /** Default project identifier for agent conversations and tool labels. */
 export const DEFAULT_CODING_PROJECT = "coding";
+
+// ─────────────────────────────────────────────────────────────
+// System Statuses — shared execution phases across UI and backend.
+// ─────────────────────────────────────────────────────────────
+
+export const SYSTEM_STATUSES = {
+  RUNNING: "running",
+  IN_PROGRESS: "in_progress",
+  PENDING: "pending",
+  FAILED: "failed",
+  STOPPED: "stopped",
+  COMPLETE: "complete",
+  COMPLETED: "completed",
+  SUCCESS: "success",
+  DONE: "done",
+  IDLE: "idle",
+  ACTIVE: "active",
+  CANCELLED: "cancelled",
+  ERROR: "error",
+  WARNING: "warning",
+} as const;
+
+export type SystemStatus = (typeof SYSTEM_STATUSES)[keyof typeof SYSTEM_STATUSES];
+
+// ─────────────────────────────────────────────────────────────
+// Message Roles — canonical chat message roles.
+// ─────────────────────────────────────────────────────────────
+
+export const MESSAGE_ROLES = {
+  USER: "user",
+  ASSISTANT: "assistant",
+  SYSTEM: "system",
+  TOOL: "tool",
+} as const;
+
+export type MessageRole = (typeof MESSAGE_ROLES)[keyof typeof MESSAGE_ROLES];
+
+// ─────────────────────────────────────────────────────────────
+// Approval Statuses — human-in-the-loop tool approval protocol.
+// ─────────────────────────────────────────────────────────────
+
+export const APPROVAL_STATUS = {
+  PENDING: "pending",
+  APPROVED: "approved",
+  REJECTED: "rejected",
+} as const;
+
+export type ApprovalStatusType =
+  (typeof APPROVAL_STATUS)[keyof typeof APPROVAL_STATUS];

@@ -43,4 +43,34 @@ export declare const DEFAULT_THOUGHT_STRUCTURE: "chain_of_thought";
 export declare const MAX_TOOL_ITERATIONS = 25;
 /** Default project identifier for agent conversations and tool labels. */
 export declare const DEFAULT_CODING_PROJECT = "coding";
+export declare const SYSTEM_STATUSES: {
+    readonly RUNNING: "running";
+    readonly IN_PROGRESS: "in_progress";
+    readonly PENDING: "pending";
+    readonly FAILED: "failed";
+    readonly STOPPED: "stopped";
+    readonly COMPLETE: "complete";
+    readonly COMPLETED: "completed";
+    readonly SUCCESS: "success";
+    readonly DONE: "done";
+    readonly IDLE: "idle";
+    readonly ACTIVE: "active";
+    readonly CANCELLED: "cancelled";
+    readonly ERROR: "error";
+    readonly WARNING: "warning";
+};
+export type SystemStatus = (typeof SYSTEM_STATUSES)[keyof typeof SYSTEM_STATUSES];
+export declare const MESSAGE_ROLES: {
+    readonly USER: "user";
+    readonly ASSISTANT: "assistant";
+    readonly SYSTEM: "system";
+    readonly TOOL: "tool";
+};
+export type MessageRole = (typeof MESSAGE_ROLES)[keyof typeof MESSAGE_ROLES];
+export declare const APPROVAL_STATUS: {
+    readonly PENDING: "pending";
+    readonly APPROVED: "approved";
+    readonly REJECTED: "rejected";
+};
+export type ApprovalStatusType = (typeof APPROVAL_STATUS)[keyof typeof APPROVAL_STATUS];
 //# sourceMappingURL=agents.d.ts.map

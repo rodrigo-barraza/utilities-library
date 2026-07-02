@@ -37,9 +37,15 @@ export {
   DEFAULT_THOUGHT_STRUCTURE,
   MAX_TOOL_ITERATIONS,
   DEFAULT_CODING_PROJECT,
+  SYSTEM_STATUSES,
+  MESSAGE_ROLES,
+  APPROVAL_STATUS,
   type AgentId,
   type TopologyType,
   type ThoughtStructureType,
+  type SystemStatus,
+  type MessageRole,
+  type ApprovalStatusType,
 } from "./agents.ts";
 
 export {
