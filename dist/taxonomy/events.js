@@ -91,5 +91,6 @@ export const STATUS_MESSAGES = {
     SANDBOX_RESTORED: "sandbox_restored",
     REPETITION_DETECTED: "repetition_detected",
     SEMANTIC_STALL_DETECTED: "semantic_stall_detected",
+    EMPTY_OUTPUT_RECOVERY: "empty_output_recovery",
 };
 //# sourceMappingURL=events.js.map
