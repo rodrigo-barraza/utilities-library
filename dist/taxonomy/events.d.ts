@@ -48,6 +48,7 @@ export declare const STATUS_MESSAGES: {
     readonly SKILLS_INJECTED: "skills_injected";
     readonly TOOL_SET_CHANGED: "tool_set_changed";
     readonly VALIDATION_ERRORS_DETECTED: "validation_errors_detected";
+    readonly EMPTY_OUTPUT: "empty_output";
     readonly GENERATION_STARTED: "generation_started";
     readonly GENERATION_PROGRESS: "generation_progress";
     readonly BRANCHING_STARTED: "branching_started";

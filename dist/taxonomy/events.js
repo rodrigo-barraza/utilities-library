@@ -66,6 +66,7 @@ export const STATUS_MESSAGES = {
     SKILLS_INJECTED: "skills_injected",
     TOOL_SET_CHANGED: "tool_set_changed",
     VALIDATION_ERRORS_DETECTED: "validation_errors_detected",
+    EMPTY_OUTPUT: "empty_output",
     // ── Image Generation ──
     GENERATION_STARTED: "generation_started",
     GENERATION_PROGRESS: "generation_progress",
