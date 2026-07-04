@@ -124,6 +124,7 @@ export const TOOL_NAMES = {
     READ_MCP_RESOURCE: "read_mcp_resource",
     AUTHENTICATE_MCP_SERVER: "authenticate_mcp_server",
     // ── Orchestrator Tools ──
+    CREATE_SUBAGENT: "create_subagent",
     CREATE_SUBAGENTS: "create_subagents",
     SEND_SUBAGENT_MESSAGE: "send_subagent_message",
     STOP_SUBAGENT: "stop_subagent",
@@ -199,6 +200,7 @@ export const CORE_AGENTIC_TOOLS = [
     TOOL_NAMES.THINK,
 ];
 export const CORE_ORCHESTRATOR_TOOLS = [
+    TOOL_NAMES.CREATE_SUBAGENT,
     TOOL_NAMES.CREATE_SUBAGENTS,
     TOOL_NAMES.SEND_SUBAGENT_MESSAGE,
     TOOL_NAMES.STOP_SUBAGENT,
