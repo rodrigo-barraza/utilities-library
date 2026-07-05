@@ -4,6 +4,7 @@
 
 import { z, type ZodSchema, type ZodError, type ZodIssue } from "zod";
 import type { Request, Response, NextFunction } from "express";
+import { sanitizeNullBytes, isDisallowedIdentifier } from "./text.ts";
 
 // ─── Re-exports ───────────────────────────────────────────────────────
 export { z };
@@ -108,3 +109,10 @@ export const periodQuery = z.object({
 export const sortDirection = z.enum(["asc", "desc"]).default("desc");
 
 export const nonEmptyString = z.string().trim().min(1);
+
+export const sanitizedStringSchema = z
+  .string()
+  .transform(sanitizeNullBytes)
+  .refine((value) => !isDisallowedIdentifier(value), {
+    message: "String contains disallowed characters (null bytes or path traversal)",
+  });

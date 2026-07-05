@@ -26,6 +26,7 @@ export {
   formatContextTokens,
   formatPercent,
   roundMilliseconds,
+  formatRequestTime,
 } from "./format.ts";
 export type { FormatFileSizeOptions } from "./format.ts";
 
@@ -48,6 +49,8 @@ export {
   pluralize,
   wordCount,
   deriveAgentId,
+  sanitizeNullBytes,
+  isDisallowedIdentifier,
 } from "./text.ts";
 
 // Date — Date formatting and relative time
@@ -120,6 +123,8 @@ export {
 } from "./validation.ts";
 export type { IsUrlOptions } from "./validation.ts";
 
+export { sanitizedStringSchema } from "./schemas.ts";
+
 // Crypto — Browser-safe cryptographic utilities
 export { generateUUID } from "./crypto.ts";
 
@@ -136,6 +141,12 @@ export type { RGB, RGBA, HSL, RgbTriplet } from "./color.ts";
 
 // Errors — Type-safe error handling utilities
 export { getErrorMessage, errorMessage } from "./errors.ts";
+
+// Temporal — Native Temporal API Utilities
+export { TemporalHelpers } from "./temporal.ts";
+
+// IDs — Identifier generation utilities
+export { generateId, generateSortableId } from "./ids.ts";
 
 // Workspace — File operation constants and utilities
 export {

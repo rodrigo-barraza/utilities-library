@@ -146,3 +146,14 @@ export function formatMediaTimestamp(seconds: number | null | undefined): string
   if (hours > 0) return `${hours}:${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
   return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
 }
+
+/**
+ * Format execution time into a human-readable string (e.g., "2.50s" or "25ms").
+ * Commonly used in request logging.
+ */
+export function formatRequestTime(elapsedMs: number): string {
+  if (elapsedMs >= 1000) {
+    return `${(elapsedMs / 1000).toFixed(2)}s`;
+  }
+  return `${Math.round(elapsedMs)}ms`;
+}

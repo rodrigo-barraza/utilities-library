@@ -21,4 +21,9 @@ export declare function roundMilliseconds(seconds: number): number;
 export declare function formatCurrency(amount: number | null | undefined, currencyCode?: string): string;
 export declare function formatPercent(value: number | null | undefined, decimals?: number | "adaptive"): string;
 export declare function formatMediaTimestamp(seconds: number | null | undefined): string;
+/**
+ * Format execution time into a human-readable string (e.g., "2.50s" or "25ms").
+ * Commonly used in request logging.
+ */
+export declare function formatRequestTime(elapsedMs: number): string;
 //# sourceMappingURL=format.d.ts.map

@@ -22,4 +22,5 @@ export declare const sortDirection: z.ZodDefault<z.ZodEnum<{
     desc: "desc";
 }>>;
 export declare const nonEmptyString: z.ZodString;
+export declare const sanitizedStringSchema: z.ZodPipe<z.ZodString, z.ZodTransform<string, string>>;
 //# sourceMappingURL=schemas.d.ts.map

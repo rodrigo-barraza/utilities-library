@@ -396,3 +396,19 @@ export function deriveAgentId(name: string): string {
     .replace(/^_+|_+$/g, "");
   return `CUSTOM_${slug}`;
 }
+
+/**
+ * Remove null bytes from a string.
+ */
+export function sanitizeNullBytes(value: string | null | undefined): string {
+  if (!value) return "";
+  return value.split("\0").join("");
+}
+
+/**
+ * Check if a string contains disallowed characters (null bytes or path traversal).
+ */
+export function isDisallowedIdentifier(value: string | null | undefined): boolean {
+  if (!value) return false;
+  return value.includes("\0") || value.includes("../") || value.includes("..\\");
+}

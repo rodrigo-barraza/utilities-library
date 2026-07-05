@@ -2,6 +2,7 @@
 // Schemas — Zod-powered runtime validation and Express middleware
 // ─────────────────────────────────────────────────────────────
 import { z } from "zod";
+import { sanitizeNullBytes, isDisallowedIdentifier } from "./text.js";
 // ─── Re-exports ───────────────────────────────────────────────────────
 export { z };
 // ─── Error formatting ─────────────────────────────────────────────────
@@ -77,4 +78,10 @@ export const periodQuery = z.object({
 });
 export const sortDirection = z.enum(["asc", "desc"]).default("desc");
 export const nonEmptyString = z.string().trim().min(1);
+export const sanitizedStringSchema = z
+    .string()
+    .transform(sanitizeNullBytes)
+    .refine((value) => !isDisallowedIdentifier(value), {
+    message: "String contains disallowed characters (null bytes or path traversal)",
+});
 //# sourceMappingURL=schemas.js.map

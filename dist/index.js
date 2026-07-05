@@ -5,9 +5,9 @@
 // For Node-only utilities, import from "@rodrigo-barraza/utilities-library/node".
 // ─────────────────────────────────────────────────────────────
 // Format — Number, cost, duration, and time formatting
-export { formatCompact, formatNumber, formatTokenCount, formatCost, formatCostAdaptive, formatCostTag, formatCurrency, formatLatency, formatLatencyMilliseconds, formatDuration, formatElapsedTime, formatFileSize, formatBytes, formatMediaTimestamp, formatTokensPerSecond, formatTokensPerSec, formatContextTokens, formatPercent, roundMilliseconds, } from "./format.js";
+export { formatCompact, formatNumber, formatTokenCount, formatCost, formatCostAdaptive, formatCostTag, formatCurrency, formatLatency, formatLatencyMilliseconds, formatDuration, formatElapsedTime, formatFileSize, formatBytes, formatMediaTimestamp, formatTokensPerSecond, formatTokensPerSec, formatContextTokens, formatPercent, roundMilliseconds, formatRequestTime, } from "./format.js";
 // Text — String manipulation, sanitization, and case conversion
-export { stripHtml, normalizeName, renderToolName, humanizeToolName, truncate, escapeRegex, getRootDomain, getSubdomain, capitalize, slugify, toKebabCase, toCamelCase, toPascalCase, toSnakeCase, pluralize, wordCount, deriveAgentId, } from "./text.js";
+export { stripHtml, normalizeName, renderToolName, humanizeToolName, truncate, escapeRegex, getRootDomain, getSubdomain, capitalize, slugify, toKebabCase, toCamelCase, toPascalCase, toSnakeCase, pluralize, wordCount, deriveAgentId, sanitizeNullBytes, isDisallowedIdentifier, } from "./text.js";
 // Date — Date formatting and relative time
 export { toISODate, timeAgo, daysSinceIso, formatDateTime, daysAgo, toLocalDateString } from "./date.js";
 // Async — Promise-based timing, concurrency, and control
@@ -22,6 +22,7 @@ export { deepMerge, pick, omit, mapValues, mapKeys, invert, isEmpty, deepEqual }
 export { clamp, roundCents, randomInt, cosineSimilarity, lerp, remap, sum, average, median, roundTo } from "./math.js";
 // Validation — Input parsing and constraint checking
 export { parseIntParam, parsePrice, validateMaxLength, parseJsonSafe, parseJsonFromLargeLanguageModelResponse, isEmail, isUrl, isNumeric, } from "./validation.js";
+export { sanitizedStringSchema } from "./schemas.js";
 // Crypto — Browser-safe cryptographic utilities
 export { generateUUID } from "./crypto.js";
 // Phone — Phone number formatting
@@ -32,6 +33,10 @@ export { debounce, throttle } from "./rate.js";
 export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness, lerpRgb, paletteAt } from "./color.js";
 // Errors — Type-safe error handling utilities
 export { getErrorMessage, errorMessage } from "./errors.js";
+// Temporal — Native Temporal API Utilities
+export { TemporalHelpers } from "./temporal.js";
+// IDs — Identifier generation utilities
+export { generateId, generateSortableId } from "./ids.js";
 // Workspace — File operation constants and utilities
 export { WORKSPACE_MAX_READ_BYTES, WORKSPACE_MAX_WRITE_BYTES, WORKSPACE_MAX_LINES_PER_READ, WORKSPACE_MAX_PREVIEW_BYTES, WORKSPACE_MAX_GREP_RESULTS, WORKSPACE_MAX_GLOB_RESULTS, WORKSPACE_MAX_DIRECTORY_ENTRIES, BINARY_FILE_EXTENSIONS, PREVIEW_IMAGE_FILE_EXTENSIONS, WORKSPACE_SKIP_DIRECTORIES, globToRegex, } from "./workspace.js";
 //# sourceMappingURL=index.js.map

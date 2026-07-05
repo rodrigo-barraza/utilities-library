@@ -20,4 +20,12 @@ export declare function wordCount(text: string | null | undefined): number;
  * e.g. "My Agent" → "CUSTOM_MY_AGENT"
  */
 export declare function deriveAgentId(name: string): string;
+/**
+ * Remove null bytes from a string.
+ */
+export declare function sanitizeNullBytes(value: string | null | undefined): string;
+/**
+ * Check if a string contains disallowed characters (null bytes or path traversal).
+ */
+export declare function isDisallowedIdentifier(value: string | null | undefined): boolean;
 //# sourceMappingURL=text.d.ts.map
