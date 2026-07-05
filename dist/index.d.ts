@@ -19,4 +19,6 @@ export type { DebouncedFunction, ThrottledFunction, DebounceOptions } from "./ra
 export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness, lerpRgb, paletteAt } from "./color.ts";
 export type { RGB, RGBA, HSL, RgbTriplet } from "./color.ts";
 export { getErrorMessage, errorMessage } from "./errors.ts";
+export { WORKSPACE_MAX_READ_BYTES, WORKSPACE_MAX_WRITE_BYTES, WORKSPACE_MAX_LINES_PER_READ, WORKSPACE_MAX_PREVIEW_BYTES, WORKSPACE_MAX_GREP_RESULTS, WORKSPACE_MAX_GLOB_RESULTS, WORKSPACE_MAX_DIRECTORY_ENTRIES, BINARY_FILE_EXTENSIONS, PREVIEW_IMAGE_FILE_EXTENSIONS, WORKSPACE_SKIP_DIRECTORIES, globToRegex, } from "./workspace.ts";
+export type { PathValidationResult, FileInfoEntry, DirectoryEntry, TreeEntry, GrepMatch, GlobMatch, GitFileChange, GitStatusResult, GitDiffResult, GitLogResult, GitCommit, CommandExecutionResult, ProjectSummaryResult, } from "./types/workspace.ts";
 //# sourceMappingURL=index.d.ts.map

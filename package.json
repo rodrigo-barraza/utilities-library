@@ -74,6 +74,10 @@
     "./graph": {
       "types": "./dist/graph.d.ts",
       "import": "./dist/graph.js"
+    },
+    "./workspace": {
+      "types": "./dist/workspace.d.ts",
+      "import": "./dist/workspace.js"
     }
   },
   "files": [

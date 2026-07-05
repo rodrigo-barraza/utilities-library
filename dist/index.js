@@ -32,4 +32,6 @@ export { debounce, throttle } from "./rate.js";
 export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness, lerpRgb, paletteAt } from "./color.js";
 // Errors — Type-safe error handling utilities
 export { getErrorMessage, errorMessage } from "./errors.js";
+// Workspace — File operation constants and utilities
+export { WORKSPACE_MAX_READ_BYTES, WORKSPACE_MAX_WRITE_BYTES, WORKSPACE_MAX_LINES_PER_READ, WORKSPACE_MAX_PREVIEW_BYTES, WORKSPACE_MAX_GREP_RESULTS, WORKSPACE_MAX_GLOB_RESULTS, WORKSPACE_MAX_DIRECTORY_ENTRIES, BINARY_FILE_EXTENSIONS, PREVIEW_IMAGE_FILE_EXTENSIONS, WORKSPACE_SKIP_DIRECTORIES, globToRegex, } from "./workspace.js";
 //# sourceMappingURL=index.js.map
