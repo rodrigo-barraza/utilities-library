@@ -4,6 +4,9 @@ let database = null;
 export async function connectDatabase(connectionUri, databaseName) {
     if (database)
         return database;
+    if (!connectionUri) {
+        throw new Error(`[mongo] Cannot connect to database "${databaseName}": connectionUri is undefined. Check your MONGO_URI or MONGODB_URI environment variable.`);
+    }
     client = new MongoClient(connectionUri);
     await client.connect();
     const databaseInstance = client.db(databaseName);
