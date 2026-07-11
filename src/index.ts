@@ -53,6 +53,7 @@ export {
   sanitizeNullBytes,
   isDisallowedIdentifier,
 } from "./text.ts";
+export type { ToolDisplaySummaryResult } from "./text.ts";
 
 // Date — Date formatting and relative time
 export { toISODate, timeAgo, daysSinceIso, formatDateTime, daysAgo, toLocalDateString } from "./date.ts";

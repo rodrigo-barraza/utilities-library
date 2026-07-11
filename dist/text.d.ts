@@ -1,10 +1,14 @@
 export declare function stripHtml(html: string | null | undefined): string;
 export declare function normalizeName(text: string | null | undefined): string;
 export declare function renderToolName(name: string): string;
+export interface ToolDisplaySummaryResult {
+    verb: string;
+    subject: string;
+}
 interface ToolDisplaySummaryOptions {
     isActive?: boolean;
 }
-export declare function resolveToolDisplaySummary(name: string, args: Record<string, unknown>, options?: ToolDisplaySummaryOptions): string | null;
+export declare function resolveToolDisplaySummary(name: string, args: Record<string, unknown>, options?: ToolDisplaySummaryOptions): ToolDisplaySummaryResult | null;
 export declare function humanizeToolName(name: string): string;
 export declare function truncate(text: string | null | undefined, maximumLength?: number, suffix?: string): string;
 export declare function escapeRegex(text: string): string;
