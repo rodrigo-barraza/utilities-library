@@ -36,6 +36,7 @@ export {
   normalizeName,
   renderToolName,
   humanizeToolName,
+  resolveToolDisplaySummary,
   truncate,
   escapeRegex,
   getRootDomain,

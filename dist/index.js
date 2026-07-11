@@ -7,7 +7,7 @@
 // Format — Number, cost, duration, and time formatting
 export { formatCompact, formatNumber, formatTokenCount, formatCost, formatCostAdaptive, formatCostTag, formatCurrency, formatLatency, formatLatencyMilliseconds, formatDuration, formatElapsedTime, formatFileSize, formatBytes, formatMediaTimestamp, formatTokensPerSecond, formatTokensPerSec, formatContextTokens, formatPercent, roundMilliseconds, formatRequestTime, } from "./format.js";
 // Text — String manipulation, sanitization, and case conversion
-export { stripHtml, normalizeName, renderToolName, humanizeToolName, truncate, escapeRegex, getRootDomain, getSubdomain, capitalize, slugify, toKebabCase, toCamelCase, toPascalCase, toSnakeCase, pluralize, wordCount, deriveAgentId, sanitizeNullBytes, isDisallowedIdentifier, } from "./text.js";
+export { stripHtml, normalizeName, renderToolName, humanizeToolName, resolveToolDisplaySummary, truncate, escapeRegex, getRootDomain, getSubdomain, capitalize, slugify, toKebabCase, toCamelCase, toPascalCase, toSnakeCase, pluralize, wordCount, deriveAgentId, sanitizeNullBytes, isDisallowedIdentifier, } from "./text.js";
 // Date — Date formatting and relative time
 export { toISODate, timeAgo, daysSinceIso, formatDateTime, daysAgo, toLocalDateString } from "./date.js";
 // Async — Promise-based timing, concurrency, and control

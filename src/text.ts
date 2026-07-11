@@ -298,6 +298,212 @@ export function renderToolName(name: string): string {
     .replace(/\b\w/g, (character) => character.toUpperCase());
 }
 
+// ─── Tool Display Summary ──────────────────────────────────────
+// Derives a contextual, argument-aware display label for tool calls.
+// Returns null when no resolver exists, signaling the consumer to
+// fall back to the generic renderToolName output.
+
+interface ToolDisplaySummaryOptions {
+  isActive?: boolean;
+}
+
+type ToolDisplayResolver = (
+  args: Record<string, unknown>,
+  isActive: boolean,
+) => string | null;
+
+function extractBasename(filePath: unknown): string {
+  if (typeof filePath !== "string" || !filePath) return "";
+  const segments = filePath.replace(/\\/g, "/").split("/");
+  return segments[segments.length - 1] || filePath;
+}
+
+function extractDomain(url: unknown): string {
+  if (typeof url !== "string" || !url) return "";
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return typeof url === "string" ? url : "";
+  }
+}
+
+function truncateCommand(command: unknown, maximumLength = 60): string {
+  if (typeof command !== "string" || !command) return "";
+  const trimmedCommand = command.trim();
+  if (trimmedCommand.length <= maximumLength) return trimmedCommand;
+  return trimmedCommand.slice(0, maximumLength - 1) + "…";
+}
+
+const TOOL_DISPLAY_RESOLVERS: Record<string, ToolDisplayResolver> = {
+  list_directory: (args, isActive) => {
+    const path = typeof args.path === "string" ? args.path : null;
+    if (!path) return null;
+    return isActive ? `Analyzing ${path}` : `Analyzed ${path}`;
+  },
+
+  read_file: (args, isActive) => {
+    const path = typeof args.path === "string" ? args.path : null;
+    if (!path) return null;
+    const basename = extractBasename(path);
+    return isActive ? `Reading ${basename}` : `Read ${basename}`;
+  },
+
+  read_files: (args, isActive) => {
+    const paths = Array.isArray(args.paths) ? args.paths : null;
+    if (!paths || paths.length === 0) return null;
+    const fileCount = paths.length;
+    return isActive
+      ? `Reading ${fileCount} file${fileCount === 1 ? "" : "s"}`
+      : `Read ${fileCount} file${fileCount === 1 ? "" : "s"}`;
+  },
+
+  write_file: (args, isActive) => {
+    const path = typeof args.path === "string" ? args.path : null;
+    if (!path) return null;
+    const basename = extractBasename(path);
+    return isActive ? `Writing ${basename}` : `Wrote ${basename}`;
+  },
+
+  replace_in_file: (args, isActive) => {
+    const path = typeof args.path === "string" ? args.path : null;
+    if (!path) return null;
+    const basename = extractBasename(path);
+    return isActive ? `Editing ${basename}` : `Edited ${basename}`;
+  },
+
+  replace_file_block: (args, isActive) => {
+    const path = typeof args.path === "string" ? args.path : null;
+    if (!path) return null;
+    const basename = extractBasename(path);
+    return isActive ? `Editing ${basename}` : `Edited ${basename}`;
+  },
+
+  replace_file_regions: (args, isActive) => {
+    const path = typeof args.path === "string" ? args.path : null;
+    if (!path) return null;
+    const basename = extractBasename(path);
+    return isActive ? `Editing ${basename}` : `Edited ${basename}`;
+  },
+
+  patch_file: (args, isActive) => {
+    const path = typeof args.path === "string" ? args.path : null;
+    if (!path) return null;
+    const basename = extractBasename(path);
+    return isActive ? `Patching ${basename}` : `Patched ${basename}`;
+  },
+
+  search_file_contents: (args, isActive) => {
+    const query = typeof args.query === "string" ? args.query : null;
+    const path = typeof args.path === "string" ? args.path : null;
+    if (!query) return null;
+    const quotedQuery = `"${truncateCommand(query, 40)}"`;
+    const suffix = path ? ` in ${path}` : "";
+    return isActive
+      ? `Searching ${quotedQuery}${suffix}`
+      : `Searched ${quotedQuery}${suffix}`;
+  },
+
+  find_files: (args, isActive) => {
+    const pattern = typeof args.pattern === "string" ? args.pattern : null;
+    const path = typeof args.path === "string" ? args.path : null;
+    if (!pattern) return null;
+    const quotedPattern = `"${truncateCommand(pattern, 40)}"`;
+    const suffix = path ? ` in ${path}` : "";
+    return isActive
+      ? `Finding ${quotedPattern}${suffix}`
+      : `Found ${quotedPattern}${suffix}`;
+  },
+
+  execute_command: (args, isActive) => {
+    const command = typeof args.command === "string" ? args.command : null;
+    if (!command) return null;
+    const truncatedCommand = truncateCommand(command);
+    return isActive ? `Running ${truncatedCommand}` : `Ran ${truncatedCommand}`;
+  },
+
+  search_web: (args, isActive) => {
+    const query = typeof args.query === "string" ? args.query : null;
+    if (!query) return null;
+    return isActive
+      ? `Searching "${truncateCommand(query, 50)}"`
+      : `Searched "${truncateCommand(query, 50)}"`;
+  },
+
+  read_web_page: (args, isActive) => {
+    const url = typeof args.url === "string" ? args.url : null;
+    if (!url) return null;
+    const domain = extractDomain(url);
+    return isActive ? `Reading ${domain}` : `Read ${domain}`;
+  },
+
+  control_browser: (args, isActive) => {
+    const action = typeof args.action === "string" ? args.action : null;
+    if (!action) return null;
+    return isActive ? `Browser: ${action}` : `Browser: ${action}`;
+  },
+
+  move_file: (args, isActive) => {
+    const source = typeof args.source === "string" ? args.source : null;
+    const destination = typeof args.destination === "string" ? args.destination : null;
+    if (!source || !destination) return null;
+    return isActive
+      ? `Moving ${extractBasename(source)} → ${extractBasename(destination)}`
+      : `Moved ${extractBasename(source)} → ${extractBasename(destination)}`;
+  },
+
+  delete_file: (args, isActive) => {
+    const path = typeof args.path === "string" ? args.path : null;
+    if (!path) return null;
+    const basename = extractBasename(path);
+    return isActive ? `Deleting ${basename}` : `Deleted ${basename}`;
+  },
+
+  diff_files: (args, isActive) => {
+    const pathA = typeof args.pathA === "string" ? args.pathA : null;
+    const pathB = typeof args.pathB === "string" ? args.pathB : null;
+    if (!pathA || !pathB) return null;
+    return isActive
+      ? `Comparing ${extractBasename(pathA)} vs ${extractBasename(pathB)}`
+      : `Compared ${extractBasename(pathA)} vs ${extractBasename(pathB)}`;
+  },
+
+  summarize_project: (args, isActive) => {
+    const path = typeof args.path === "string" ? args.path : null;
+    if (!path) return null;
+    return isActive ? `Summarizing ${path}` : `Summarized ${path}`;
+  },
+
+  run_git: (args, isActive) => {
+    const command = typeof args.command === "string" ? args.command : null;
+    if (!command) return null;
+    const truncatedCommand = truncateCommand(command);
+    return isActive
+      ? `Running git ${truncatedCommand}`
+      : `Ran git ${truncatedCommand}`;
+  },
+
+  query_language_server: (args, isActive) => {
+    const action = typeof args.action === "string" ? args.action : null;
+    const symbol = typeof args.symbol === "string" ? args.symbol : null;
+    if (!action) return null;
+    const symbolSuffix = symbol ? ` "${symbol}"` : "";
+    return isActive
+      ? `Querying ${action}${symbolSuffix}`
+      : `Queried ${action}${symbolSuffix}`;
+  },
+};
+
+export function resolveToolDisplaySummary(
+  name: string,
+  args: Record<string, unknown>,
+  options?: ToolDisplaySummaryOptions,
+): string | null {
+  const resolver = TOOL_DISPLAY_RESOLVERS[name];
+  if (!resolver) return null;
+  const isActive = options?.isActive ?? false;
+  return resolver(args, isActive);
+}
+
 export function humanizeToolName(name: string): string {
   return name
     .replace(

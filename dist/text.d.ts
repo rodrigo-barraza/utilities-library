@@ -1,6 +1,10 @@
 export declare function stripHtml(html: string | null | undefined): string;
 export declare function normalizeName(text: string | null | undefined): string;
 export declare function renderToolName(name: string): string;
+interface ToolDisplaySummaryOptions {
+    isActive?: boolean;
+}
+export declare function resolveToolDisplaySummary(name: string, args: Record<string, unknown>, options?: ToolDisplaySummaryOptions): string | null;
 export declare function humanizeToolName(name: string): string;
 export declare function truncate(text: string | null | undefined, maximumLength?: number, suffix?: string): string;
 export declare function escapeRegex(text: string): string;
@@ -28,4 +32,5 @@ export declare function sanitizeNullBytes(value: string | null | undefined): str
  * Check if a string contains disallowed characters (null bytes or path traversal).
  */
 export declare function isDisallowedIdentifier(value: string | null | undefined): boolean;
+export {};
 //# sourceMappingURL=text.d.ts.map
