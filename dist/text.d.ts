@@ -6,8 +6,17 @@ export interface ToolDisplaySummaryResult {
     subject: string;
     filePath?: string;
 }
+export type ToolDisplaySubjectFormat = "basename" | "full" | "truncate" | "quoted" | "domain";
+export interface ToolDisplayMetadata {
+    activeVerb: string;
+    completedVerb: string;
+    subjectParam: string;
+    subjectFormat: ToolDisplaySubjectFormat;
+    filePathParam?: string;
+}
 interface ToolDisplaySummaryOptions {
     isActive?: boolean;
+    display?: ToolDisplayMetadata;
 }
 export declare function resolveToolDisplaySummary(name: string, args: Record<string, unknown>, options?: ToolDisplaySummaryOptions): ToolDisplaySummaryResult | null;
 export declare function humanizeToolName(name: string): string;

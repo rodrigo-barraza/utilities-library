@@ -441,11 +441,39 @@ const TOOL_DISPLAY_RESOLVERS = {
         return { verb: isActive ? "Querying" : "Queried", subject };
     },
 };
+function formatSubject(rawValue, format) {
+    switch (format) {
+        case "basename":
+            return extractBasename(rawValue);
+        case "full":
+            return typeof rawValue === "string" ? rawValue : "";
+        case "truncate":
+            return truncateCommand(rawValue);
+        case "quoted":
+            return typeof rawValue === "string" ? `"${rawValue}"` : "";
+        case "domain":
+            return extractDomain(rawValue);
+        default:
+            return typeof rawValue === "string" ? rawValue : "";
+    }
+}
 export function resolveToolDisplaySummary(name, args, options) {
+    const isActive = options?.isActive ?? false;
+    const display = options?.display;
+    if (display) {
+        const rawSubject = args[display.subjectParam];
+        const subject = formatSubject(rawSubject, display.subjectFormat);
+        if (!subject)
+            return null;
+        const verb = isActive ? display.activeVerb : display.completedVerb;
+        const filePath = display.filePathParam
+            ? (typeof args[display.filePathParam] === "string" ? args[display.filePathParam] : undefined)
+            : undefined;
+        return { verb, subject, filePath };
+    }
     const resolver = TOOL_DISPLAY_RESOLVERS[name];
     if (!resolver)
         return null;
-    const isActive = options?.isActive ?? false;
     return resolver(args, isActive);
 }
 export function humanizeToolName(name) {

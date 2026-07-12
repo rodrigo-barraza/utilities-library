@@ -1,7 +1,7 @@
 export { formatCompact, formatNumber, formatTokenCount, formatCost, formatCostAdaptive, formatCostTag, formatCurrency, formatLatency, formatLatencyMilliseconds, formatDuration, formatElapsedTime, formatFileSize, formatBytes, formatMediaTimestamp, formatTokensPerSecond, formatTokensPerSec, formatContextTokens, formatPercent, roundMilliseconds, formatRequestTime, } from "./format.ts";
 export type { FormatFileSizeOptions } from "./format.ts";
 export { stripHtml, normalizeName, renderToolName, humanizeToolName, resolveToolDisplaySummary, truncate, escapeRegex, getRootDomain, getSubdomain, capitalize, slugify, toKebabCase, toCamelCase, toPascalCase, toSnakeCase, pluralize, wordCount, deriveAgentId, sanitizeNullBytes, isDisallowedIdentifier, } from "./text.ts";
-export type { ToolDisplaySummaryResult } from "./text.ts";
+export type { ToolDisplaySummaryResult, ToolDisplayMetadata, ToolDisplaySubjectFormat } from "./text.ts";
 export { toISODate, timeAgo, daysSinceIso, formatDateTime, daysAgo, toLocalDateString } from "./date.ts";
 export { sleep, retry, withTimeout, withTimeoutFallback, fetchWithTimeout, parallelMap, defer } from "./async.ts";
 export type { RetryOptions, ParallelMapOptions, Deferred } from "./async.ts";
