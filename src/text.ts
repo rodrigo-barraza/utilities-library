@@ -350,7 +350,8 @@ const TOOL_DISPLAY_RESOLVERS: Record<string, ToolDisplayResolver> = {
   },
 
   read_file: (args, isActive) => {
-    const path = typeof args.path === "string" ? args.path : null;
+    const path = typeof args.absolutePath === "string" ? args.absolutePath
+      : typeof args.path === "string" ? args.path : null;
     if (!path) return null;
     return { verb: isActive ? "Reading" : "Read", subject: extractBasename(path) };
   },
@@ -394,20 +395,23 @@ const TOOL_DISPLAY_RESOLVERS: Record<string, ToolDisplayResolver> = {
   },
 
   search_file_contents: (args, isActive) => {
-    const query = typeof args.query === "string" ? args.query : null;
-    const path = typeof args.path === "string" ? args.path : null;
+    const query = typeof args.pattern === "string" ? args.pattern
+      : typeof args.query === "string" ? args.query : null;
+    const searchPath = typeof args.searchPath === "string" ? args.searchPath
+      : typeof args.path === "string" ? args.path : null;
     if (!query) return null;
     const quotedQuery = `"${truncateCommand(query, 40)}"`;
-    const subject = path ? `${quotedQuery} in ${path}` : quotedQuery;
+    const subject = searchPath ? `${quotedQuery} in ${searchPath}` : quotedQuery;
     return { verb: isActive ? "Searching" : "Searched", subject };
   },
 
   find_files: (args, isActive) => {
     const pattern = typeof args.pattern === "string" ? args.pattern : null;
-    const path = typeof args.path === "string" ? args.path : null;
+    const searchPath = typeof args.searchPath === "string" ? args.searchPath
+      : typeof args.path === "string" ? args.path : null;
     if (!pattern) return null;
     const quotedPattern = `"${truncateCommand(pattern, 40)}"`;
-    const subject = path ? `${quotedPattern} in ${path}` : quotedPattern;
+    const subject = searchPath ? `${quotedPattern} in ${searchPath}` : quotedPattern;
     return { verb: isActive ? "Finding" : "Found", subject };
   },
 
@@ -468,16 +472,19 @@ const TOOL_DISPLAY_RESOLVERS: Record<string, ToolDisplayResolver> = {
   },
 
   run_git: (args, isActive) => {
+    const action = typeof args.action === "string" ? args.action : null;
     const command = typeof args.command === "string" ? args.command : null;
-    if (!command) return null;
-    return { verb: isActive ? "Running" : "Ran", subject: `git ${truncateCommand(command)}` };
+    const subject = action ? `git ${action}` : command ? `git ${truncateCommand(command)}` : null;
+    if (!subject) return null;
+    return { verb: isActive ? "Running" : "Ran", subject };
   },
 
   query_language_server: (args, isActive) => {
-    const action = typeof args.action === "string" ? args.action : null;
-    const symbol = typeof args.symbol === "string" ? args.symbol : null;
-    if (!action) return null;
-    const subject = symbol ? `${action} "${symbol}"` : action;
+    const operation = typeof args.operation === "string" ? args.operation
+      : typeof args.action === "string" ? args.action : null;
+    const filePath = typeof args.filePath === "string" ? args.filePath : null;
+    if (!operation) return null;
+    const subject = filePath ? `${operation} in ${extractBasename(filePath)}` : operation;
     return { verb: isActive ? "Querying" : "Queried", subject };
   },
 };
