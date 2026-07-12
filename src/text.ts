@@ -309,6 +309,7 @@ export function renderToolName(name: string): string {
 export interface ToolDisplaySummaryResult {
   verb: string;
   subject: string;
+  filePath?: string;
 }
 
 interface ToolDisplaySummaryOptions {
@@ -346,14 +347,14 @@ const TOOL_DISPLAY_RESOLVERS: Record<string, ToolDisplayResolver> = {
   list_directory: (args, isActive) => {
     const path = typeof args.path === "string" ? args.path : null;
     if (!path) return null;
-    return { verb: isActive ? "Analyzing" : "Analyzed", subject: path };
+    return { verb: isActive ? "Analyzing" : "Analyzed", subject: path, filePath: path };
   },
 
   read_file: (args, isActive) => {
     const path = typeof args.absolutePath === "string" ? args.absolutePath
       : typeof args.path === "string" ? args.path : null;
     if (!path) return null;
-    return { verb: isActive ? "Reading" : "Read", subject: extractBasename(path) };
+    return { verb: isActive ? "Analyzing" : "Analyzed", subject: extractBasename(path), filePath: path };
   },
 
   read_files: (args, isActive) => {
@@ -367,31 +368,31 @@ const TOOL_DISPLAY_RESOLVERS: Record<string, ToolDisplayResolver> = {
   write_file: (args, isActive) => {
     const path = typeof args.path === "string" ? args.path : null;
     if (!path) return null;
-    return { verb: isActive ? "Writing" : "Wrote", subject: extractBasename(path) };
+    return { verb: isActive ? "Writing" : "Wrote", subject: extractBasename(path), filePath: path };
   },
 
   replace_in_file: (args, isActive) => {
     const path = typeof args.path === "string" ? args.path : null;
     if (!path) return null;
-    return { verb: isActive ? "Editing" : "Edited", subject: extractBasename(path) };
+    return { verb: isActive ? "Editing" : "Edited", subject: extractBasename(path), filePath: path };
   },
 
   replace_file_block: (args, isActive) => {
     const path = typeof args.path === "string" ? args.path : null;
     if (!path) return null;
-    return { verb: isActive ? "Editing" : "Edited", subject: extractBasename(path) };
+    return { verb: isActive ? "Editing" : "Edited", subject: extractBasename(path), filePath: path };
   },
 
   replace_file_regions: (args, isActive) => {
     const path = typeof args.path === "string" ? args.path : null;
     if (!path) return null;
-    return { verb: isActive ? "Editing" : "Edited", subject: extractBasename(path) };
+    return { verb: isActive ? "Editing" : "Edited", subject: extractBasename(path), filePath: path };
   },
 
   patch_file: (args, isActive) => {
     const path = typeof args.path === "string" ? args.path : null;
     if (!path) return null;
-    return { verb: isActive ? "Patching" : "Patched", subject: extractBasename(path) };
+    return { verb: isActive ? "Patching" : "Patched", subject: extractBasename(path), filePath: path };
   },
 
   search_file_contents: (args, isActive) => {
@@ -452,7 +453,7 @@ const TOOL_DISPLAY_RESOLVERS: Record<string, ToolDisplayResolver> = {
   delete_file: (args, isActive) => {
     const path = typeof args.path === "string" ? args.path : null;
     if (!path) return null;
-    return { verb: isActive ? "Deleting" : "Deleted", subject: extractBasename(path) };
+    return { verb: isActive ? "Deleting" : "Deleted", subject: extractBasename(path), filePath: path };
   },
 
   diff_files: (args, isActive) => {
@@ -468,7 +469,7 @@ const TOOL_DISPLAY_RESOLVERS: Record<string, ToolDisplayResolver> = {
   summarize_project: (args, isActive) => {
     const path = typeof args.path === "string" ? args.path : null;
     if (!path) return null;
-    return { verb: isActive ? "Summarizing" : "Summarized", subject: path };
+    return { verb: isActive ? "Summarizing" : "Summarized", subject: path, filePath: path };
   },
 
   run_git: (args, isActive) => {

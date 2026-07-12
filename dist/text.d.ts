@@ -4,6 +4,7 @@ export declare function renderToolName(name: string): string;
 export interface ToolDisplaySummaryResult {
     verb: string;
     subject: string;
+    filePath?: string;
 }
 interface ToolDisplaySummaryOptions {
     isActive?: boolean;

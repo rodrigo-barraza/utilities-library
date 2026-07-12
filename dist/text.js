@@ -299,14 +299,14 @@ const TOOL_DISPLAY_RESOLVERS = {
         const path = typeof args.path === "string" ? args.path : null;
         if (!path)
             return null;
-        return { verb: isActive ? "Analyzing" : "Analyzed", subject: path };
+        return { verb: isActive ? "Analyzing" : "Analyzed", subject: path, filePath: path };
     },
     read_file: (args, isActive) => {
         const path = typeof args.absolutePath === "string" ? args.absolutePath
             : typeof args.path === "string" ? args.path : null;
         if (!path)
             return null;
-        return { verb: isActive ? "Reading" : "Read", subject: extractBasename(path) };
+        return { verb: isActive ? "Analyzing" : "Analyzed", subject: extractBasename(path), filePath: path };
     },
     read_files: (args, isActive) => {
         const paths = Array.isArray(args.paths) ? args.paths : null;
@@ -320,31 +320,31 @@ const TOOL_DISPLAY_RESOLVERS = {
         const path = typeof args.path === "string" ? args.path : null;
         if (!path)
             return null;
-        return { verb: isActive ? "Writing" : "Wrote", subject: extractBasename(path) };
+        return { verb: isActive ? "Writing" : "Wrote", subject: extractBasename(path), filePath: path };
     },
     replace_in_file: (args, isActive) => {
         const path = typeof args.path === "string" ? args.path : null;
         if (!path)
             return null;
-        return { verb: isActive ? "Editing" : "Edited", subject: extractBasename(path) };
+        return { verb: isActive ? "Editing" : "Edited", subject: extractBasename(path), filePath: path };
     },
     replace_file_block: (args, isActive) => {
         const path = typeof args.path === "string" ? args.path : null;
         if (!path)
             return null;
-        return { verb: isActive ? "Editing" : "Edited", subject: extractBasename(path) };
+        return { verb: isActive ? "Editing" : "Edited", subject: extractBasename(path), filePath: path };
     },
     replace_file_regions: (args, isActive) => {
         const path = typeof args.path === "string" ? args.path : null;
         if (!path)
             return null;
-        return { verb: isActive ? "Editing" : "Edited", subject: extractBasename(path) };
+        return { verb: isActive ? "Editing" : "Edited", subject: extractBasename(path), filePath: path };
     },
     patch_file: (args, isActive) => {
         const path = typeof args.path === "string" ? args.path : null;
         if (!path)
             return null;
-        return { verb: isActive ? "Patching" : "Patched", subject: extractBasename(path) };
+        return { verb: isActive ? "Patching" : "Patched", subject: extractBasename(path), filePath: path };
     },
     search_file_contents: (args, isActive) => {
         const query = typeof args.pattern === "string" ? args.pattern
@@ -405,7 +405,7 @@ const TOOL_DISPLAY_RESOLVERS = {
         const path = typeof args.path === "string" ? args.path : null;
         if (!path)
             return null;
-        return { verb: isActive ? "Deleting" : "Deleted", subject: extractBasename(path) };
+        return { verb: isActive ? "Deleting" : "Deleted", subject: extractBasename(path), filePath: path };
     },
     diff_files: (args, isActive) => {
         const pathA = typeof args.pathA === "string" ? args.pathA : null;
@@ -421,7 +421,7 @@ const TOOL_DISPLAY_RESOLVERS = {
         const path = typeof args.path === "string" ? args.path : null;
         if (!path)
             return null;
-        return { verb: isActive ? "Summarizing" : "Summarized", subject: path };
+        return { verb: isActive ? "Summarizing" : "Summarized", subject: path, filePath: path };
     },
     run_git: (args, isActive) => {
         const action = typeof args.action === "string" ? args.action : null;

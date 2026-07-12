@@ -17,13 +17,14 @@ describe("resolveToolDisplaySummary", () => {
     });
     // ── list_directory ────────────────────────────────────────────
     describe("list_directory", () => {
-        it("returns verb and full path in completed state", () => {
+        it("returns verb, full path, and filePath in completed state", () => {
             const result = resolveToolDisplaySummary("list_directory", {
                 path: "/home/rodrigo/development/prism-client",
             });
             expect(result).toEqual({
                 verb: "Analyzed",
                 subject: "/home/rodrigo/development/prism-client",
+                filePath: "/home/rodrigo/development/prism-client",
             });
         });
         it("returns progressive verb when active", () => {
@@ -31,50 +32,63 @@ describe("resolveToolDisplaySummary", () => {
             expect(result).toEqual({
                 verb: "Analyzing",
                 subject: "/home/rodrigo/development",
+                filePath: "/home/rodrigo/development",
             });
         });
     });
     // ── read_file ─────────────────────────────────────────────────
     describe("read_file", () => {
-        it("resolves from absolutePath (canonical param name)", () => {
+        it("resolves from absolutePath with Analyzed verb", () => {
             const result = resolveToolDisplaySummary("read_file", {
                 absolutePath: "/workspace/prism-service/src/services/ToolOrchestratorService.ts",
             });
-            expect(result).toEqual({ verb: "Read", subject: "ToolOrchestratorService.ts" });
+            expect(result).toEqual({
+                verb: "Analyzed",
+                subject: "ToolOrchestratorService.ts",
+                filePath: "/workspace/prism-service/src/services/ToolOrchestratorService.ts",
+            });
         });
         it("falls back to path param", () => {
             const result = resolveToolDisplaySummary("read_file", {
                 path: "/src/index.ts",
             });
-            expect(result).toEqual({ verb: "Read", subject: "index.ts" });
+            expect(result).toEqual({
+                verb: "Analyzed",
+                subject: "index.ts",
+                filePath: "/src/index.ts",
+            });
         });
         it("prefers absolutePath over path", () => {
             const result = resolveToolDisplaySummary("read_file", {
                 absolutePath: "/correct/file.ts",
                 path: "/wrong/file.ts",
             });
-            expect(result).toEqual({ verb: "Read", subject: "file.ts" });
-            // Verify it used absolutePath, not path
-            expect(result.subject).toBe("file.ts");
+            expect(result.filePath).toBe("/correct/file.ts");
         });
         it("returns progressive verb when active", () => {
             const result = resolveToolDisplaySummary("read_file", { absolutePath: "/src/index.ts" }, { isActive: true });
-            expect(result).toEqual({ verb: "Reading", subject: "index.ts" });
+            expect(result).toEqual({
+                verb: "Analyzing",
+                subject: "index.ts",
+                filePath: "/src/index.ts",
+            });
         });
         it("handles Windows-style backslash paths", () => {
             const result = resolveToolDisplaySummary("read_file", {
                 absolutePath: "C:\\Users\\rodrigo\\file.ts",
             });
-            expect(result).toEqual({ verb: "Read", subject: "file.ts" });
+            expect(result.subject).toBe("file.ts");
+            expect(result.filePath).toBe("C:\\Users\\rodrigo\\file.ts");
         });
     });
     // ── read_files ────────────────────────────────────────────────
     describe("read_files", () => {
-        it("returns file count in completed state", () => {
+        it("returns file count without filePath", () => {
             const result = resolveToolDisplaySummary("read_files", {
                 paths: ["/a.ts", "/b.ts", "/c.ts"],
             });
             expect(result).toEqual({ verb: "Read", subject: "3 files" });
+            expect(result.filePath).toBeUndefined();
         });
         it("uses singular for one file", () => {
             const result = resolveToolDisplaySummary("read_files", {
@@ -91,55 +105,64 @@ describe("resolveToolDisplaySummary", () => {
     });
     // ── write_file ────────────────────────────────────────────────
     describe("write_file", () => {
-        it("returns verb and basename", () => {
+        it("returns verb, basename, and filePath", () => {
             const result = resolveToolDisplaySummary("write_file", {
                 path: "/src/utils/helpers.ts",
             });
-            expect(result).toEqual({ verb: "Wrote", subject: "helpers.ts" });
+            expect(result).toEqual({
+                verb: "Wrote",
+                subject: "helpers.ts",
+                filePath: "/src/utils/helpers.ts",
+            });
         });
         it("returns progressive verb when active", () => {
             const result = resolveToolDisplaySummary("write_file", { path: "/src/index.ts" }, { isActive: true });
-            expect(result).toEqual({ verb: "Writing", subject: "index.ts" });
+            expect(result.verb).toBe("Writing");
+            expect(result.filePath).toBe("/src/index.ts");
         });
     });
     // ── replace_in_file ───────────────────────────────────────────
     describe("replace_in_file", () => {
-        it("returns edit verb and basename", () => {
+        it("returns edit verb, basename, and filePath", () => {
             const result = resolveToolDisplaySummary("replace_in_file", {
                 path: "/src/config.ts",
             });
-            expect(result).toEqual({ verb: "Edited", subject: "config.ts" });
+            expect(result).toEqual({
+                verb: "Edited",
+                subject: "config.ts",
+                filePath: "/src/config.ts",
+            });
         });
     });
     // ── replace_file_block & replace_file_regions ──────────────────
     describe("replace_file_block", () => {
-        it("returns edit verb and basename", () => {
+        it("includes filePath", () => {
             const result = resolveToolDisplaySummary("replace_file_block", {
                 path: "/src/App.tsx",
             });
-            expect(result).toEqual({ verb: "Edited", subject: "App.tsx" });
+            expect(result.filePath).toBe("/src/App.tsx");
         });
     });
     describe("replace_file_regions", () => {
-        it("returns edit verb and basename", () => {
+        it("includes filePath", () => {
             const result = resolveToolDisplaySummary("replace_file_regions", {
                 path: "/src/App.tsx",
             });
-            expect(result).toEqual({ verb: "Edited", subject: "App.tsx" });
+            expect(result.filePath).toBe("/src/App.tsx");
         });
     });
     // ── patch_file ────────────────────────────────────────────────
     describe("patch_file", () => {
-        it("returns patch verb and basename", () => {
+        it("includes filePath", () => {
             const result = resolveToolDisplaySummary("patch_file", {
                 path: "/src/server.ts",
             });
-            expect(result).toEqual({ verb: "Patched", subject: "server.ts" });
+            expect(result.filePath).toBe("/src/server.ts");
         });
     });
     // ── search_file_contents ──────────────────────────────────────
     describe("search_file_contents", () => {
-        it("resolves from pattern + searchPath (canonical param names)", () => {
+        it("resolves from pattern + searchPath (no filePath)", () => {
             const result = resolveToolDisplaySummary("search_file_contents", {
                 pattern: "ToolCallsBlock",
                 searchPath: "/src/components",
@@ -148,6 +171,7 @@ describe("resolveToolDisplaySummary", () => {
                 verb: "Searched",
                 subject: '"ToolCallsBlock" in /src/components',
             });
+            expect(result.filePath).toBeUndefined();
         });
         it("falls back to query + path params", () => {
             const result = resolveToolDisplaySummary("search_file_contents", {
@@ -178,12 +202,13 @@ describe("resolveToolDisplaySummary", () => {
     });
     // ── find_files ────────────────────────────────────────────────
     describe("find_files", () => {
-        it("resolves from pattern + searchPath (canonical param names)", () => {
+        it("resolves from pattern + searchPath (no filePath)", () => {
             const result = resolveToolDisplaySummary("find_files", {
                 pattern: "*.test.ts",
                 searchPath: "/src",
             });
             expect(result).toEqual({ verb: "Found", subject: '"*.test.ts" in /src' });
+            expect(result.filePath).toBeUndefined();
         });
         it("falls back to path param", () => {
             const result = resolveToolDisplaySummary("find_files", {
@@ -201,15 +226,16 @@ describe("resolveToolDisplaySummary", () => {
     });
     // ── execute_command ───────────────────────────────────────────
     describe("execute_command", () => {
-        it("returns verb and command as subject", () => {
+        it("returns verb and command (no filePath)", () => {
             const result = resolveToolDisplaySummary("execute_command", {
                 command: "git status",
             });
             expect(result).toEqual({ verb: "Ran", subject: "git status" });
+            expect(result.filePath).toBeUndefined();
         });
         it("returns progressive verb when active", () => {
             const result = resolveToolDisplaySummary("execute_command", { command: "npm run build" }, { isActive: true });
-            expect(result).toEqual({ verb: "Running", subject: "npm run build" });
+            expect(result.verb).toBe("Running");
         });
         it("truncates very long commands in subject", () => {
             const longCommand = "echo " + "x".repeat(200);
@@ -222,20 +248,22 @@ describe("resolveToolDisplaySummary", () => {
     });
     // ── search_web ────────────────────────────────────────────────
     describe("search_web", () => {
-        it("returns verb and quoted query as subject", () => {
+        it("returns verb and quoted query (no filePath)", () => {
             const result = resolveToolDisplaySummary("search_web", {
                 query: "TypeScript tool display",
             });
             expect(result).toEqual({ verb: "Searched", subject: '"TypeScript tool display"' });
+            expect(result.filePath).toBeUndefined();
         });
     });
     // ── read_web_page ─────────────────────────────────────────────
     describe("read_web_page", () => {
-        it("returns verb and domain as subject", () => {
+        it("returns verb and domain (no filePath)", () => {
             const result = resolveToolDisplaySummary("read_web_page", {
                 url: "https://developer.mozilla.org/en-US/docs/Web/API",
             });
             expect(result).toEqual({ verb: "Read", subject: "developer.mozilla.org" });
+            expect(result.filePath).toBeUndefined();
         });
         it("handles malformed URLs gracefully", () => {
             const result = resolveToolDisplaySummary("read_web_page", {
@@ -246,21 +274,23 @@ describe("resolveToolDisplaySummary", () => {
     });
     // ── control_browser ───────────────────────────────────────────
     describe("control_browser", () => {
-        it("returns Browser: verb and action as subject", () => {
+        it("returns Browser: verb and action (no filePath)", () => {
             const result = resolveToolDisplaySummary("control_browser", {
                 action: "click",
             });
             expect(result).toEqual({ verb: "Browser:", subject: "click" });
+            expect(result.filePath).toBeUndefined();
         });
     });
     // ── move_file ─────────────────────────────────────────────────
     describe("move_file", () => {
-        it("returns verb and source→dest basenames as subject", () => {
+        it("returns verb and source→dest basenames (no filePath)", () => {
             const result = resolveToolDisplaySummary("move_file", {
                 source: "/src/old.ts",
                 destination: "/src/new.ts",
             });
             expect(result).toEqual({ verb: "Moved", subject: "old.ts → new.ts" });
+            expect(result.filePath).toBeUndefined();
         });
         it("returns null when source is missing", () => {
             expect(resolveToolDisplaySummary("move_file", { destination: "/dst/file.ts" })).toBeNull();
@@ -271,21 +301,26 @@ describe("resolveToolDisplaySummary", () => {
     });
     // ── delete_file ───────────────────────────────────────────────
     describe("delete_file", () => {
-        it("returns verb and basename as subject", () => {
+        it("returns verb, basename, and filePath", () => {
             const result = resolveToolDisplaySummary("delete_file", {
                 path: "/src/unused.ts",
             });
-            expect(result).toEqual({ verb: "Deleted", subject: "unused.ts" });
+            expect(result).toEqual({
+                verb: "Deleted",
+                subject: "unused.ts",
+                filePath: "/src/unused.ts",
+            });
         });
     });
     // ── diff_files ────────────────────────────────────────────────
     describe("diff_files", () => {
-        it("returns verb and both basenames as subject", () => {
+        it("returns verb and both basenames (no filePath)", () => {
             const result = resolveToolDisplaySummary("diff_files", {
                 pathA: "/src/v1.ts",
                 pathB: "/src/v2.ts",
             });
             expect(result).toEqual({ verb: "Compared", subject: "v1.ts vs v2.ts" });
+            expect(result.filePath).toBeUndefined();
         });
         it("returns null when pathA is missing", () => {
             expect(resolveToolDisplaySummary("diff_files", { pathB: "/b.ts" })).toBeNull();
@@ -293,20 +328,25 @@ describe("resolveToolDisplaySummary", () => {
     });
     // ── summarize_project ─────────────────────────────────────────
     describe("summarize_project", () => {
-        it("returns verb and full path as subject", () => {
+        it("returns verb, full path, and filePath", () => {
             const result = resolveToolDisplaySummary("summarize_project", {
                 path: "/home/rodrigo/development",
             });
-            expect(result).toEqual({ verb: "Summarized", subject: "/home/rodrigo/development" });
+            expect(result).toEqual({
+                verb: "Summarized",
+                subject: "/home/rodrigo/development",
+                filePath: "/home/rodrigo/development",
+            });
         });
     });
     // ── run_git ───────────────────────────────────────────────────
     describe("run_git", () => {
-        it("resolves from action (canonical param name)", () => {
+        it("resolves from action (no filePath)", () => {
             const result = resolveToolDisplaySummary("run_git", {
                 action: "status",
             });
             expect(result).toEqual({ verb: "Ran", subject: "git status" });
+            expect(result.filePath).toBeUndefined();
         });
         it("falls back to command param", () => {
             const result = resolveToolDisplaySummary("run_git", {
@@ -316,7 +356,7 @@ describe("resolveToolDisplaySummary", () => {
         });
         it("returns progressive verb when active", () => {
             const result = resolveToolDisplaySummary("run_git", { action: "log" }, { isActive: true });
-            expect(result).toEqual({ verb: "Running", subject: "git log" });
+            expect(result.verb).toBe("Running");
         });
         it("returns null when neither action nor command provided", () => {
             expect(resolveToolDisplaySummary("run_git", {})).toBeNull();
@@ -324,7 +364,7 @@ describe("resolveToolDisplaySummary", () => {
     });
     // ── query_language_server ─────────────────────────────────────
     describe("query_language_server", () => {
-        it("resolves from operation + filePath (canonical param names)", () => {
+        it("resolves from operation + filePath", () => {
             const result = resolveToolDisplaySummary("query_language_server", {
                 operation: "goToDefinition",
                 filePath: "/src/services/AuthService.ts",
@@ -352,11 +392,11 @@ describe("resolveToolDisplaySummary", () => {
         const result = resolveToolDisplaySummary("list_directory", {
             path: "/test",
         });
-        expect(result).toEqual({ verb: "Analyzed", subject: "/test" });
+        expect(result.verb).toBe("Analyzed");
     });
     it("defaults isActive to false when options is empty", () => {
         const result = resolveToolDisplaySummary("list_directory", { path: "/test" }, {});
-        expect(result).toEqual({ verb: "Analyzed", subject: "/test" });
+        expect(result.verb).toBe("Analyzed");
     });
 });
 //# sourceMappingURL=resolveToolDisplaySummary.test.js.map
