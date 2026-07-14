@@ -1,4 +1,4 @@
-import { type PlainObject } from "./objects.ts";
+import { type PlainObject } from "./objects.js";
 export declare function chunk<ArrayItem>(array: ArrayItem[], size: number): ArrayItem[][];
 export declare function shuffleArray<ArrayItem>(array: ArrayItem[]): ArrayItem[];
 export declare function pickRandom<ArrayItem>(array: ArrayItem[]): ArrayItem;

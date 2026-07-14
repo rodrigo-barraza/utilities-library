@@ -1,6 +1,6 @@
 {
   "name": "@rodrigo-barraza/utilities-library",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Shared TypeScript utility functions",
   "type": "module",
   "main": "dist/index.js",
@@ -38,6 +38,10 @@
     "./http": {
       "types": "./dist/http.d.ts",
       "import": "./dist/http.js"
+    },
+    "./environment": {
+      "types": "./dist/environment.d.ts",
+      "import": "./dist/environment.js"
     },
     "./nextjs": {
       "types": "./dist/nextjs.d.ts",
@@ -90,7 +94,7 @@
   ],
   "scripts": {
     "prepare-local": "[ -d node_modules/typescript ] && tsc || true && git config core.hooksPath .githooks || true",
-    "build": "tsc",
+    "build": "tsc && node scripts/fix-declaration-extensions.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
     "format": "prettier --write src",
