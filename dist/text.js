@@ -368,6 +368,9 @@ const TOOL_DISPLAY_RESOLVERS = {
         return { verb: isActive ? "Finding" : "Found", subject };
     },
     execute_command: (args, isActive) => {
+        const description = typeof args.description === "string" ? args.description.trim() : "";
+        if (description)
+            return { verb: "Bash", subject: description };
         const command = typeof args.command === "string" ? args.command : null;
         if (!command)
             return null;
@@ -461,14 +464,24 @@ export function resolveToolDisplaySummary(name, args, options) {
     const isActive = options?.isActive ?? false;
     const display = options?.display;
     if (display) {
+        const filePath = display.filePathParam
+            ? (typeof args[display.filePathParam] === "string" ? args[display.filePathParam] : undefined)
+            : undefined;
+        if (display.descriptionParam) {
+            const rawDescription = args[display.descriptionParam];
+            if (typeof rawDescription === "string" && rawDescription.trim()) {
+                return {
+                    verb: display.toolLabel ?? (isActive ? display.activeVerb : display.completedVerb),
+                    subject: rawDescription.trim(),
+                    filePath,
+                };
+            }
+        }
         const rawSubject = args[display.subjectParam];
         const subject = formatSubject(rawSubject, display.subjectFormat);
         if (!subject)
             return null;
         const verb = isActive ? display.activeVerb : display.completedVerb;
-        const filePath = display.filePathParam
-            ? (typeof args[display.filePathParam] === "string" ? args[display.filePathParam] : undefined)
-            : undefined;
         return { verb, subject, filePath };
     }
     const resolver = TOOL_DISPLAY_RESOLVERS[name];

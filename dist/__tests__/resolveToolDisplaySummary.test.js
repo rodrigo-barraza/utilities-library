@@ -245,6 +245,49 @@ describe("resolveToolDisplaySummary", () => {
             expect(result.subject.length).toBeLessThanOrEqual(60);
             expect(result.subject).toContain("…");
         });
+        it("prefers model-authored description with Bash label", () => {
+            const result = resolveToolDisplaySummary("execute_command", {
+                command: "ls -F",
+                description: "List files in current directory",
+            });
+            expect(result).toEqual({ verb: "Bash", subject: "List files in current directory" });
+        });
+        it("ignores blank descriptions", () => {
+            const result = resolveToolDisplaySummary("execute_command", {
+                command: "ls -F",
+                description: "   ",
+            });
+            expect(result).toEqual({ verb: "Ran", subject: "ls -F" });
+        });
+    });
+    // ── display metadata descriptionParam ─────────────────────────
+    describe("display metadata with descriptionParam", () => {
+        const display = {
+            activeVerb: "Running",
+            completedVerb: "Ran",
+            subjectParam: "command",
+            subjectFormat: "truncate",
+            descriptionParam: "description",
+            toolLabel: "Bash",
+        };
+        it("uses toolLabel + description when description is present", () => {
+            const result = resolveToolDisplaySummary("execute_command", { command: "ls -F", description: "List files in current directory" }, { display });
+            expect(result).toEqual({
+                verb: "Bash",
+                subject: "List files in current directory",
+                filePath: undefined,
+            });
+        });
+        it("falls back to verbs + subjectParam when description is absent", () => {
+            const completed = resolveToolDisplaySummary("execute_command", { command: "ls -F" }, { display });
+            expect(completed).toEqual({ verb: "Ran", subject: "ls -F", filePath: undefined });
+            const active = resolveToolDisplaySummary("execute_command", { command: "ls -F" }, { display, isActive: true });
+            expect(active.verb).toBe("Running");
+        });
+        it("falls back to verbs when toolLabel is not set", () => {
+            const result = resolveToolDisplaySummary("execute_command", { command: "ls -F", description: "List files" }, { display: { ...display, toolLabel: undefined } });
+            expect(result).toEqual({ verb: "Ran", subject: "List files", filePath: undefined });
+        });
     });
     // ── search_web ────────────────────────────────────────────────
     describe("search_web", () => {

@@ -13,6 +13,8 @@ export interface ToolDisplayMetadata {
     subjectParam: string;
     subjectFormat: ToolDisplaySubjectFormat;
     filePathParam?: string;
+    descriptionParam?: string;
+    toolLabel?: string;
 }
 interface ToolDisplaySummaryOptions {
     isActive?: boolean;

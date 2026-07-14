@@ -320,6 +320,11 @@ export interface ToolDisplayMetadata {
   subjectParam: string;
   subjectFormat: ToolDisplaySubjectFormat;
   filePathParam?: string;
+  // When the model supplies args[descriptionParam] (a short human-readable
+  // intent, e.g. "List files in current directory"), it replaces the subject
+  // and toolLabel replaces the verb — mirroring Claude Code's Bash header.
+  descriptionParam?: string;
+  toolLabel?: string;
 }
 
 interface ToolDisplaySummaryOptions {
@@ -428,6 +433,8 @@ const TOOL_DISPLAY_RESOLVERS: Record<string, ToolDisplayResolver> = {
   },
 
   execute_command: (args, isActive) => {
+    const description = typeof args.description === "string" ? args.description.trim() : "";
+    if (description) return { verb: "Bash", subject: description };
     const command = typeof args.command === "string" ? args.command : null;
     if (!command) return null;
     return { verb: isActive ? "Running" : "Ran", subject: truncateCommand(command) };
@@ -527,14 +534,26 @@ export function resolveToolDisplaySummary(
   const display = options?.display;
 
   if (display) {
+    const filePath = display.filePathParam
+      ? (typeof args[display.filePathParam] === "string" ? args[display.filePathParam] as string : undefined)
+      : undefined;
+
+    if (display.descriptionParam) {
+      const rawDescription = args[display.descriptionParam];
+      if (typeof rawDescription === "string" && rawDescription.trim()) {
+        return {
+          verb: display.toolLabel ?? (isActive ? display.activeVerb : display.completedVerb),
+          subject: rawDescription.trim(),
+          filePath,
+        };
+      }
+    }
+
     const rawSubject = args[display.subjectParam];
     const subject = formatSubject(rawSubject, display.subjectFormat);
     if (!subject) return null;
 
     const verb = isActive ? display.activeVerb : display.completedVerb;
-    const filePath = display.filePathParam
-      ? (typeof args[display.filePathParam] === "string" ? args[display.filePathParam] as string : undefined)
-      : undefined;
 
     return { verb, subject, filePath };
   }
