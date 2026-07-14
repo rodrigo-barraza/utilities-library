@@ -1,38 +1,13 @@
-import { MongoClient, ObjectId } from "mongodb";
-let client = null;
-let database = null;
-export async function connectDatabase(connectionUri, databaseName) {
-    if (database)
-        return database;
-    if (!connectionUri) {
-        throw new Error(`[mongo] Cannot connect to database "${databaseName}": connectionUri is undefined. Check your MONGO_URI or MONGODB_URI environment variable.`);
-    }
-    client = new MongoClient(connectionUri);
-    await client.connect();
-    const databaseInstance = client.db(databaseName);
-    // Safety guard: prevent accidentally connecting to the default 'test' database
-    if (databaseInstance.databaseName === "test") {
-        throw new Error("utilities-library: Connecting to the 'test' database is forbidden. Please specify a databaseName explicitly.");
-    }
-    database = databaseInstance;
-    console.log(`📡 Connected to MongoDB: ${database.databaseName}`);
-    return database;
-}
-export function getDatabase() {
-    if (!database)
-        throw new Error("Database not connected — call connectDatabase() first");
-    return database;
-}
-export function setDatabaseForTesting(mockDatabase) {
-    database = mockDatabase;
-}
-export async function disconnectDatabase() {
-    if (client) {
-        await client.close();
-        client = null;
-        database = null;
-    }
-}
+// ─────────────────────────────────────────────────────────────
+// Mongo — Pure, isomorphic query helpers
+// ─────────────────────────────────────────────────────────────
+// The stateful CONNECTION manager lives in service-library
+// (MongoManager) — the single source of truth for connecting to
+// MongoDB (named multi-DB pool + health + index creation). This
+// module holds only the pure, stateless helpers that are safe to
+// share with any consumer without pulling in connection concerns.
+// ─────────────────────────────────────────────────────────────
+import { ObjectId } from "mongodb";
 /**
  * Safely convert a string to a MongoDB ObjectId.
  * Returns null if the string is not a valid ObjectId.

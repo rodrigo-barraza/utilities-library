@@ -68,3 +68,14 @@ export {
 export {
   THINKING_PATTERNS,
 } from "./model-patterns.ts";
+
+export {
+  IDENTITY_HEADERS,
+  AUTH_HEADERS,
+  CORS_ALLOWED_HEADERS,
+  CORS_ALLOWED_HEADERS_STRING,
+  type IdentityHeaderKey,
+  type IdentityHeaderName,
+  type AuthHeaderKey,
+  type AuthHeaderName,
+} from "./headers.ts";

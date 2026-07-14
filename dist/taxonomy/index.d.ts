@@ -5,4 +5,5 @@ export { AGENT_IDS, AGENTLESS_AGENT, TOPOLOGIES, DEFAULT_TOPOLOGY, MAXIMUM_RECUR
 export { DEFAULT_CONVERSATION_TITLE, DEFAULT_WORKFLOW_TITLE, DEFAULT_USERNAME, DEFAULT_PROJECT, } from "./defaults.js";
 export { PROVIDERS, PROVIDER_LIST, LOCAL_PROVIDER_TYPES, PROVIDER_LABELS, isLocalProvider, resolveProviderBaseType, type ProviderType, } from "./providers.js";
 export { THINKING_PATTERNS, } from "./model-patterns.js";
+export { IDENTITY_HEADERS, AUTH_HEADERS, CORS_ALLOWED_HEADERS, CORS_ALLOWED_HEADERS_STRING, type IdentityHeaderKey, type IdentityHeaderName, type AuthHeaderKey, type AuthHeaderName, } from "./headers.js";
 //# sourceMappingURL=index.d.ts.map
