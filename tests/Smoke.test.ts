@@ -1285,6 +1285,11 @@ describe("errors.js", () => {
       expect(errorsModule.getErrorMessage("Simple string error")).toBe("Simple string error");
       expect(errorsModule.getErrorMessage({ custom: "obj" })).toBe("[object Object]");
     });
+    it("uses the fallback for non-error values when provided", () => {
+      expect(errorsModule.getErrorMessage({ custom: "obj" }, "Request failed")).toBe("Request failed");
+      expect(errorsModule.getErrorMessage(undefined, "Request failed")).toBe("Request failed");
+      expect(errorsModule.getErrorMessage(new Error("real"), "Request failed")).toBe("real");
+    });
   });
 });
 
