@@ -13,6 +13,42 @@ export function setEnvironmentVariable(key: string, value: string): void {
   }
 }
 
+export function isBrowser(): boolean {
+  return typeof window !== "undefined";
+}
+
+/**
+ * True when running in a browser served from a production hostname
+ * (default: any host ending in ".dev").
+ */
+export function isProductionHostname(suffix = ".dev"): boolean {
+  return isBrowser() && window.location.hostname.endsWith(suffix);
+}
+
+export interface ResolveClientServiceUrlOptions {
+  /** Vault/LAN URL — used server-side and in local dev. */
+  internalUrl?: string;
+  /** Public domain URL — used by browsers on production hostnames. */
+  publicUrl?: string;
+  /** Hostname suffix that marks production (default ".dev"). */
+  productionSuffix?: string;
+}
+
+/**
+ * Resolve which service URL a client should call without triggering
+ * Chrome's Private Network Access prompt: browsers on production
+ * hostnames get the public URL; SSR and local dev get the internal one.
+ */
+export function resolveClientServiceUrl({
+  internalUrl,
+  publicUrl,
+  productionSuffix = ".dev",
+}: ResolveClientServiceUrlOptions): string | undefined {
+  if (!isBrowser()) return internalUrl;
+  if (isProductionHostname(productionSuffix) && publicUrl) return publicUrl;
+  return internalUrl;
+}
+
 export function getNoColor(): boolean {
   return getEnvironmentVariable("NO_COLOR") !== undefined;
 }

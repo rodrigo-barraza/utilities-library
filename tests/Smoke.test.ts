@@ -1293,3 +1293,108 @@ describe("errors.js", () => {
   });
 });
 
+describe("http.js", () => {
+  let httpModule;
+  beforeAll(async () => {
+    httpModule = await import("../dist/http.js");
+  });
+
+  const jsonResponse = (body, status = 200) =>
+    new Response(body === undefined ? null : JSON.stringify(body), {
+      status,
+      headers: { "Content-Type": "application/json" },
+    });
+
+  describe("createApiClient", () => {
+    it("joins base URL and path, parses JSON, sends method", async () => {
+      const calls = [];
+      const client = httpModule.createApiClient("http://svc:1234/", {
+        fetchImplementation: async (url, init) => {
+          calls.push({ url, init });
+          return jsonResponse({ ok: true });
+        },
+      });
+      const result = await client.get("/health");
+      expect(result).toEqual({ ok: true });
+      expect(calls[0].url).toBe("http://svc:1234/health");
+      expect(calls[0].init.method).toBe("GET");
+    });
+
+    it("serializes bodies and sets JSON content type", async () => {
+      const calls = [];
+      const client = httpModule.createApiClient("/api/gauge", {
+        fetchImplementation: async (url, init) => {
+          calls.push({ url, init });
+          return jsonResponse({ id: 1 }, 201);
+        },
+      });
+      await client.post("sensors", { name: "s1" });
+      expect(calls[0].url).toBe("/api/gauge/sensors");
+      expect(calls[0].init.body).toBe(JSON.stringify({ name: "s1" }));
+      expect(new Headers(calls[0].init.headers).get("Content-Type")).toBe("application/json");
+    });
+
+    it("throws ApiError with the server's error message", async () => {
+      const client = httpModule.createApiClient("http://svc", {
+        fetchImplementation: async () => jsonResponse({ error: "Sensor not found" }, 404),
+      });
+      await expect(client.get("/sensors/x")).rejects.toMatchObject({
+        name: "ApiError",
+        message: "Sensor not found",
+        status: 404,
+      });
+    });
+
+    it("falls back to a status message for non-JSON error bodies", async () => {
+      const client = httpModule.createApiClient("http://svc", {
+        fetchImplementation: async () => new Response("boom", { status: 502 }),
+      });
+      await expect(client.get("/x")).rejects.toMatchObject({
+        message: "Request failed with status 502",
+        status: 502,
+        body: "boom",
+      });
+    });
+
+    it("resolves undefined for empty responses", async () => {
+      const client = httpModule.createApiClient("http://svc", {
+        fetchImplementation: async () => new Response(null, { status: 204 }),
+      });
+      await expect(client.delete("/x")).resolves.toBeUndefined();
+    });
+
+    it("applies default headers from a factory without clobbering per-request ones", async () => {
+      const calls = [];
+      const client = httpModule.createApiClient("http://svc", {
+        headers: () => ({ "x-username": "rodrigo" }),
+        fetchImplementation: async (url, init) => {
+          calls.push({ url, init });
+          return jsonResponse({});
+        },
+      });
+      await client.get("/a", { headers: { "x-username": "override" } });
+      expect(new Headers(calls[0].init.headers).get("x-username")).toBe("override");
+    });
+  });
+});
+
+describe("environment.js", () => {
+  let environmentModule;
+  beforeAll(async () => {
+    environmentModule = await import("../dist/environment.js");
+  });
+
+  it("isBrowser is false under Node", () => {
+    expect(environmentModule.isBrowser()).toBe(false);
+  });
+
+  it("resolveClientServiceUrl returns the internal URL server-side", () => {
+    expect(
+      environmentModule.resolveClientServiceUrl({
+        internalUrl: "http://192.168.86.2:5001",
+        publicUrl: "https://api.gauge.rod.dev",
+      }),
+    ).toBe("http://192.168.86.2:5001");
+  });
+});
+

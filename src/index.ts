@@ -144,6 +144,14 @@ export type { RGB, RGBA, HSL, RgbTriplet } from "./color.ts";
 // Errors — Type-safe error handling utilities
 export { getErrorMessage, errorMessage } from "./errors.ts";
 
+// HTTP — Isomorphic JSON API client
+export { createApiClient, ApiError } from "./http.ts";
+export type { ApiClient, ApiClientOptions } from "./http.ts";
+
+// Environment — Browser/production detection and client URL resolution
+export { isBrowser, isProductionHostname, resolveClientServiceUrl } from "./environment.ts";
+export type { ResolveClientServiceUrlOptions } from "./environment.ts";
+
 // Temporal — Native Temporal API Utilities
 export { TemporalHelpers } from "./temporal.ts";
 

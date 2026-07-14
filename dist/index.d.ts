@@ -21,6 +21,10 @@ export type { DebouncedFunction, ThrottledFunction, DebounceOptions } from "./ra
 export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness, lerpRgb, paletteAt } from "./color.ts";
 export type { RGB, RGBA, HSL, RgbTriplet } from "./color.ts";
 export { getErrorMessage, errorMessage } from "./errors.ts";
+export { createApiClient, ApiError } from "./http.ts";
+export type { ApiClient, ApiClientOptions } from "./http.ts";
+export { isBrowser, isProductionHostname, resolveClientServiceUrl } from "./environment.ts";
+export type { ResolveClientServiceUrlOptions } from "./environment.ts";
 export { TemporalHelpers } from "./temporal.ts";
 export { generateId, generateSortableId } from "./ids.ts";
 export { WORKSPACE_MAX_READ_BYTES, WORKSPACE_MAX_WRITE_BYTES, WORKSPACE_MAX_LINES_PER_READ, WORKSPACE_MAX_PREVIEW_BYTES, WORKSPACE_MAX_GREP_RESULTS, WORKSPACE_MAX_GLOB_RESULTS, WORKSPACE_MAX_DIRECTORY_ENTRIES, BINARY_FILE_EXTENSIONS, PREVIEW_IMAGE_FILE_EXTENSIONS, WORKSPACE_SKIP_DIRECTORIES, globToRegex, } from "./workspace.ts";

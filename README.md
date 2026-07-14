@@ -96,7 +96,9 @@ const mongoUrl = await vault.resolveInfraUrl("mongodb");
 | **crypto** | `generateUUID` |
 | **phone** | `formatPhone` |
 | **color** | `parseHex`, `toHex`, `lerpColor`, `rgbToHsl`, `hslToRgb`, `adjustBrightness`, `lerpRgb`, `paletteAt` |
-| **errors** | `errorMessage` |
+| **errors** | `getErrorMessage(error, fallback?)`, `errorMessage` (deprecated alias) |
+| **http** | `createApiClient`, `ApiError` — JSON-first fetch client bound to a base URL (also at `./http`) |
+| **environment** | `isBrowser`, `isProductionHostname`, `resolveClientServiceUrl` — PNA-safe client URL resolution |
 
 ### Browser-only (`@rodrigo-barraza/utilities-library/effects`)
 

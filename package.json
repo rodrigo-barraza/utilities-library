@@ -1,6 +1,6 @@
 {
   "name": "@rodrigo-barraza/utilities-library",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Shared TypeScript utility functions",
   "type": "module",
   "main": "dist/index.js",
@@ -34,6 +34,10 @@
     "./express": {
       "types": "./dist/express.d.ts",
       "import": "./dist/express.js"
+    },
+    "./http": {
+      "types": "./dist/http.d.ts",
+      "import": "./dist/http.js"
     },
     "./nextjs": {
       "types": "./dist/nextjs.d.ts",

@@ -33,6 +33,10 @@ export { debounce, throttle } from "./rate.js";
 export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness, lerpRgb, paletteAt } from "./color.js";
 // Errors — Type-safe error handling utilities
 export { getErrorMessage, errorMessage } from "./errors.js";
+// HTTP — Isomorphic JSON API client
+export { createApiClient, ApiError } from "./http.js";
+// Environment — Browser/production detection and client URL resolution
+export { isBrowser, isProductionHostname, resolveClientServiceUrl } from "./environment.js";
 // Temporal — Native Temporal API Utilities
 export { TemporalHelpers } from "./temporal.js";
 // IDs — Identifier generation utilities

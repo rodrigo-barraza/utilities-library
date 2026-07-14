@@ -10,6 +10,28 @@ export function setEnvironmentVariable(key, value) {
         process.env[key] = value;
     }
 }
+export function isBrowser() {
+    return typeof window !== "undefined";
+}
+/**
+ * True when running in a browser served from a production hostname
+ * (default: any host ending in ".dev").
+ */
+export function isProductionHostname(suffix = ".dev") {
+    return isBrowser() && window.location.hostname.endsWith(suffix);
+}
+/**
+ * Resolve which service URL a client should call without triggering
+ * Chrome's Private Network Access prompt: browsers on production
+ * hostnames get the public URL; SSR and local dev get the internal one.
+ */
+export function resolveClientServiceUrl({ internalUrl, publicUrl, productionSuffix = ".dev", }) {
+    if (!isBrowser())
+        return internalUrl;
+    if (isProductionHostname(productionSuffix) && publicUrl)
+        return publicUrl;
+    return internalUrl;
+}
 export function getNoColor() {
     return getEnvironmentVariable("NO_COLOR") !== undefined;
 }
