@@ -125,7 +125,8 @@ export {
 } from "./validation.ts";
 export type { IsUrlOptions } from "./validation.ts";
 
-export { sanitizedStringSchema } from "./schemas.ts";
+import { sanitizedStringSchema } from "./schemas.ts";
+export { sanitizedStringSchema };
 
 // Crypto — Browser-safe cryptographic utilities
 export { generateUUID } from "./crypto.ts";

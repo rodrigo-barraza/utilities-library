@@ -22,7 +22,8 @@ export { deepMerge, pick, omit, mapValues, mapKeys, invert, isEmpty, deepEqual }
 export { clamp, roundCents, randomInt, cosineSimilarity, lerp, remap, sum, average, median, roundTo } from "./math.js";
 // Validation — Input parsing and constraint checking
 export { parseIntParam, parsePrice, validateMaxLength, parseJsonSafe, parseJsonFromLargeLanguageModelResponse, isEmail, isUrl, isNumeric, } from "./validation.js";
-export { sanitizedStringSchema } from "./schemas.js";
+import { sanitizedStringSchema } from "./schemas.js";
+export { sanitizedStringSchema };
 // Crypto — Browser-safe cryptographic utilities
 export { generateUUID } from "./crypto.js";
 // Phone — Phone number formatting

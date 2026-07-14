@@ -13,6 +13,8 @@ export type { PlainObject } from "./objects.js";
 export { clamp, roundCents, randomInt, cosineSimilarity, lerp, remap, sum, average, median, roundTo } from "./math.js";
 export { parseIntParam, parsePrice, validateMaxLength, parseJsonSafe, parseJsonFromLargeLanguageModelResponse, isEmail, isUrl, isNumeric, } from "./validation.js";
 export type { IsUrlOptions } from "./validation.js";
+import { sanitizedStringSchema } from "./schemas.js";
+export { sanitizedStringSchema };
 export { generateUUID } from "./crypto.js";
 export { formatPhone } from "./phone.js";
 export { debounce, throttle } from "./rate.js";
