@@ -79,3 +79,16 @@ export {
   type AuthHeaderKey,
   type AuthHeaderName,
 } from "./headers.ts";
+
+export {
+  CAPABILITIES,
+  CAPABILITY_ALIASES,
+  CAPABILITY_DISPLAY_NAMES,
+  CAPABILITY_SHORT_NAMES,
+  CAPABILITY_EMOJI,
+  CAPABILITY_COLORS,
+  resolveCapability,
+  resolveCapabilityName,
+  type CapabilityMeta,
+  type CapabilityKey,
+} from "./capabilities.ts";

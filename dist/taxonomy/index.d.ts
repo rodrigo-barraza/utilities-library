@@ -6,4 +6,5 @@ export { DEFAULT_CONVERSATION_TITLE, DEFAULT_WORKFLOW_TITLE, DEFAULT_USERNAME, D
 export { PROVIDERS, PROVIDER_LIST, LOCAL_PROVIDER_TYPES, PROVIDER_LABELS, isLocalProvider, resolveProviderBaseType, type ProviderType, } from "./providers.js";
 export { THINKING_PATTERNS, } from "./model-patterns.js";
 export { IDENTITY_HEADERS, AUTH_HEADERS, CORS_ALLOWED_HEADERS, CORS_ALLOWED_HEADERS_STRING, type IdentityHeaderKey, type IdentityHeaderName, type AuthHeaderKey, type AuthHeaderName, } from "./headers.js";
+export { CAPABILITIES, CAPABILITY_ALIASES, CAPABILITY_DISPLAY_NAMES, CAPABILITY_SHORT_NAMES, CAPABILITY_EMOJI, CAPABILITY_COLORS, resolveCapability, resolveCapabilityName, type CapabilityMeta, type CapabilityKey, } from "./capabilities.js";
 //# sourceMappingURL=index.d.ts.map
