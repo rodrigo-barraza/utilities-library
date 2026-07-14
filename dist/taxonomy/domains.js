@@ -47,6 +47,7 @@ export const DOMAINS = {
     NETWORK_INTELLIGENCE: { key: "network_intelligence", displayName: "Network Intelligence" },
     CALENDAR: { key: "calendar", displayName: "Calendar" },
     INFRASTRUCTURE: { key: "infrastructure", displayName: "Infrastructure" },
+    ANALYTICS: { key: "analytics", displayName: "Analytics" },
 };
 export const DOMAIN_TAGS = Object.fromEntries(Object.entries(DOMAINS).map(([constantKey, entry]) => [
     constantKey,

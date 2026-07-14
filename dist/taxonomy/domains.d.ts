@@ -191,6 +191,10 @@ export declare const DOMAINS: {
         readonly key: "infrastructure";
         readonly displayName: "Infrastructure";
     };
+    readonly ANALYTICS: {
+        readonly key: "analytics";
+        readonly displayName: "Analytics";
+    };
 };
 export type DomainConstantKey = keyof typeof DOMAINS;
 export type DomainEntry = (typeof DOMAINS)[DomainConstantKey];
