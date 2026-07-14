@@ -10,7 +10,7 @@ export declare const PROVIDERS: {
     readonly LLAMA_CPP: "llama-cpp";
 };
 export type ProviderType = (typeof PROVIDERS)[keyof typeof PROVIDERS];
-export declare const PROVIDER_LIST: ("openai" | "anthropic" | "google" | "elevenlabs" | "inworld" | "lm-studio" | "vllm" | "ollama" | "llama-cpp")[];
+export declare const PROVIDER_LIST: ("anthropic" | "elevenlabs" | "google" | "inworld" | "llama-cpp" | "lm-studio" | "ollama" | "openai" | "vllm")[];
 /** All recognized local (self-hosted) provider type identifiers. */
 export declare const LOCAL_PROVIDER_TYPES: Set<ProviderType>;
 /** Human-readable display labels for provider IDs. */

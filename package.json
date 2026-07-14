@@ -1,7 +1,7 @@
 {
   "name": "@rodrigo-barraza/utilities-library",
-  "version": "0.3.2",
-  "description": "Shared TypeScript utility functions",
+  "version": "0.4.0",
+  "description": "Shared TypeScript utility functions and Express microservice chassis",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -86,6 +86,38 @@
     "./workspace": {
       "types": "./dist/workspace.d.ts",
       "import": "./dist/workspace.js"
+    },
+    "./service": {
+      "types": "./dist/service/index.d.ts",
+      "import": "./dist/service/index.js"
+    },
+    "./service/mongo": {
+      "types": "./dist/service/MongoManager.d.ts",
+      "import": "./dist/service/MongoManager.js"
+    },
+    "./service/minio": {
+      "types": "./dist/service/MinioManager.d.ts",
+      "import": "./dist/service/MinioManager.js"
+    },
+    "./service/auth": {
+      "types": "./dist/service/AuthMiddleware.d.ts",
+      "import": "./dist/service/AuthMiddleware.js"
+    },
+    "./service/health": {
+      "types": "./dist/service/HealthAggregator.d.ts",
+      "import": "./dist/service/HealthAggregator.js"
+    },
+    "./service/shutdown": {
+      "types": "./dist/service/GracefulShutdown.d.ts",
+      "import": "./dist/service/GracefulShutdown.js"
+    },
+    "./service/cron": {
+      "types": "./dist/service/CronScheduler.d.ts",
+      "import": "./dist/service/CronScheduler.js"
+    },
+    "./service/prism": {
+      "types": "./dist/service/PrismApiClient.d.ts",
+      "import": "./dist/service/PrismApiClient.js"
     }
   },
   "files": [
@@ -110,12 +142,22 @@
     "@types/node": "^25.9.0",
     "eslint": "^10.4.0",
     "eslint-config-prettier": "^10.1.8",
+    "express": "^5.2.1",
     "globals": "^17.6.0",
+    "minio": "^8.0.7",
     "next": "^16.2.6",
     "prettier": "^3.8.3",
     "typescript": "next",
     "typescript-eslint": "^8.33.0",
     "vitest": "^4.1.5"
+  },
+  "peerDependencies": {
+    "express": ">=5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "express": {
+      "optional": true
+    }
   },
   "repository": {
     "type": "git",
