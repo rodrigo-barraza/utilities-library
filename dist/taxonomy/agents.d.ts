@@ -8,6 +8,7 @@ export declare const AGENT_IDS: {
     readonly DIGEST: "DIGEST";
     readonly META: "META";
     readonly OMNI: "OMNI";
+    readonly BENDER: "BENDER";
     readonly MEEPO: "MEEPO";
     readonly NONE: "NONE";
     readonly ALL: "ALL";

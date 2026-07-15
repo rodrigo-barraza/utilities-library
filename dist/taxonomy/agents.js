@@ -14,6 +14,7 @@ export const AGENT_IDS = {
     DIGEST: "DIGEST",
     META: "META",
     OMNI: "OMNI",
+    BENDER: "BENDER",
     MEEPO: "MEEPO",
     NONE: "NONE",
     ALL: "ALL",
