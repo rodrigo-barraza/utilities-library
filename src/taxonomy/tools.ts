@@ -138,6 +138,9 @@ export const TOOL_NAMES = {
   LIST_MCP_RESOURCES: "list_mcp_resources",
   READ_MCP_RESOURCE: "read_mcp_resource",
   AUTHENTICATE_MCP_SERVER: "authenticate_mcp_server",
+  // Context management (lossless offload + rubric-gated compaction)
+  RETRIEVE_OFFLOADED_CONTENT: "retrieve_offloaded_content",
+  COMPACT_CONTEXT: "compact_context",
 
   // ── Orchestrator Tools ──
   CREATE_SUBAGENT: "create_subagent",
