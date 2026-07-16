@@ -17,6 +17,7 @@ export const TOOL_NAMES = {
     READ_URL: "read_url",
     GET_WEB_CONTENT: "get_web_content",
     GET_WIKIPEDIA_SUMMARY: "get_wikipedia_summary",
+    TRIM_VIDEO: "trim_video",
     GET_TRENDS: "get_trends",
     GET_HOT_TRENDS: "get_hot_trends",
     GET_TOP_TRENDS: "get_top_trends",

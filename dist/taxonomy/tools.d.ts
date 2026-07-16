@@ -7,6 +7,7 @@ export declare const TOOL_NAMES: {
     readonly READ_URL: "read_url";
     readonly GET_WEB_CONTENT: "get_web_content";
     readonly GET_WIKIPEDIA_SUMMARY: "get_wikipedia_summary";
+    readonly TRIM_VIDEO: "trim_video";
     readonly GET_TRENDS: "get_trends";
     readonly GET_HOT_TRENDS: "get_hot_trends";
     readonly GET_TOP_TRENDS: "get_top_trends";
