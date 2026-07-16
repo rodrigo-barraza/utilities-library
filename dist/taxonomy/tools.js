@@ -12,6 +12,21 @@ export const TOOL_NAMES = {
     DESCRIBE_IMAGE: "describe_image",
     CONVERT_IMAGE_TO_ASCII: "convert_image_to_ascii",
     MANIPULATE_IMAGE: "manipulate_image",
+    CREATE_VECTOR_ANIMATION: "create_vector_animation",
+    DRAW_TURTLE_GRAPHICS: "draw_turtle_graphics",
+    CREATE_3D_MESH: "create_3d_mesh",
+    CREATE_3D_SCENE: "create_3d_scene",
+    CREATE_3D_VOXEL: "create_3d_voxel",
+    // ── Embed-Only Visuals (non-Creative domains) ──
+    GENERATE_MAP: "generate_map",
+    GENERATE_CHART: "generate_chart",
+    RENDER_LATEX: "render_latex",
+    GENERATE_DIAGRAM: "generate_diagram",
+    CREATE_BONFIRE: "create_bonfire",
+    // ── Finance & Health (persona-granted singles) ──
+    GET_STOCK: "get_stock",
+    GET_FEAR_GREED_INDEX: "get_fear_greed_index",
+    GET_POLLEN_FORECAST: "get_pollen_forecast",
     // ── Web & Knowledge ──
     SEARCH_WEB: "search_web",
     READ_URL: "read_url",
