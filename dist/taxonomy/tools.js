@@ -146,6 +146,10 @@ export const TOOL_NAMES = {
     // Context management (lossless offload + rubric-gated compaction)
     RETRIEVE_OFFLOADED_CONTENT: "retrieve_offloaded_content",
     COMPACT_CONTEXT: "compact_context",
+    // Artifacts (agent-authored markdown/html documents)
+    CREATE_ARTIFACT: "create_artifact",
+    UPDATE_ARTIFACT: "update_artifact",
+    LIST_ARTIFACTS: "list_artifacts",
     // ── Orchestrator Tools ──
     CREATE_SUBAGENT: "create_subagent",
     CREATE_SUBAGENTS: "create_subagents",

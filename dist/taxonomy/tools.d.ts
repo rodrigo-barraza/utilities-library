@@ -118,6 +118,9 @@ export declare const TOOL_NAMES: {
     readonly AUTHENTICATE_MCP_SERVER: "authenticate_mcp_server";
     readonly RETRIEVE_OFFLOADED_CONTENT: "retrieve_offloaded_content";
     readonly COMPACT_CONTEXT: "compact_context";
+    readonly CREATE_ARTIFACT: "create_artifact";
+    readonly UPDATE_ARTIFACT: "update_artifact";
+    readonly LIST_ARTIFACTS: "list_artifacts";
     readonly CREATE_SUBAGENT: "create_subagent";
     readonly CREATE_SUBAGENTS: "create_subagents";
     readonly SEND_SUBAGENT_MESSAGE: "send_subagent_message";
