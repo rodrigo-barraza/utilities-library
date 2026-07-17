@@ -37,6 +37,10 @@ export const TOOL_NAMES = {
     GET_HOT_TRENDS: "get_hot_trends",
     GET_TOP_TRENDS: "get_top_trends",
     GET_ON_THIS_DAY: "get_on_this_day",
+    // ── Music (Spotify) ──
+    SEARCH_SPOTIFY: "search_spotify",
+    GET_SPOTIFY: "get_spotify",
+    CONTROL_SPOTIFY: "control_spotify",
     // ── Events & Products ──
     GET_EVENTS: "get_events",
     SEARCH_PRODUCTS: "search_products",

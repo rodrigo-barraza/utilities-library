@@ -25,6 +25,9 @@ export declare const TOOL_NAMES: {
     readonly GET_HOT_TRENDS: "get_hot_trends";
     readonly GET_TOP_TRENDS: "get_top_trends";
     readonly GET_ON_THIS_DAY: "get_on_this_day";
+    readonly SEARCH_SPOTIFY: "search_spotify";
+    readonly GET_SPOTIFY: "get_spotify";
+    readonly CONTROL_SPOTIFY: "control_spotify";
     readonly GET_EVENTS: "get_events";
     readonly SEARCH_PRODUCTS: "search_products";
     readonly GET_TRENDING_PRODUCTS: "get_trending_products";
