@@ -300,6 +300,7 @@ export const TOOL_INPUT_MODALITIES: Readonly<
   transcribe_audio: [INPUT_MODALITIES.AUDIO],
   read_pdf: [INPUT_MODALITIES.PDF],
   read_docx: [INPUT_MODALITIES.DOCUMENT],
+  read_csv: [INPUT_MODALITIES.DOCUMENT],
   read_spreadsheet: [INPUT_MODALITIES.DOCUMENT],
   convert_video_to_gif: [INPUT_MODALITIES.VIDEO],
   create_vector_animation: [INPUT_MODALITIES.IMAGE],

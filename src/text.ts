@@ -67,6 +67,7 @@ const TOOL_DISPLAY_OVERRIDES: Record<string, string> = {
   read_web_page: "Read Web Page",
   read_pdf: "Read PDF Document",
   read_docx: "Read DOCX Document",
+  read_csv: "Read CSV Data",
   read_spreadsheet: "Read Spreadsheet",
   read_rss_feed: "Read RSS Feed",
   search_web: "Search Web",
