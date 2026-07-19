@@ -68,3 +68,23 @@ export function getVaultServiceUrl(): string {
 export function getVaultServiceToken(): string {
   return getEnvironmentVariable("VAULT_SERVICE_TOKEN") || "";
 }
+
+/**
+ * Fail-fast aggregated required-config check. `required` maps a display
+ * label (usually the env var name, optionally annotated with the config
+ * key it feeds) to its resolved value; all falsy values are reported in
+ * one error instead of failing deep at the first use site.
+ */
+export function assertRequiredEnvironment(
+  required: Record<string, unknown>,
+  { prefix = "[config]" }: { prefix?: string } = {},
+): void {
+  const missing = Object.entries(required)
+    .filter(([, value]) => !value)
+    .map(([label]) => label);
+  if (missing.length > 0) {
+    throw new Error(
+      `${prefix} Missing required environment variable(s): ${missing.join(", ")}`,
+    );
+  }
+}

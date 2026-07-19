@@ -1,6 +1,6 @@
 {
   "name": "@rodrigo-barraza/utilities-library",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Shared TypeScript utility functions and Express microservice chassis",
   "type": "module",
   "main": "dist/index.js",
@@ -42,6 +42,14 @@
     "./discord": {
       "types": "./dist/discord.d.ts",
       "import": "./dist/discord.js"
+    },
+    "./cache": {
+      "types": "./dist/cache.d.ts",
+      "import": "./dist/cache.js"
+    },
+    "./github": {
+      "types": "./dist/github.d.ts",
+      "import": "./dist/github.js"
     },
     "./environment": {
       "types": "./dist/environment.d.ts",

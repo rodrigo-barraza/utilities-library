@@ -48,5 +48,21 @@ export declare function sanitizeNullBytes(value: string | null | undefined): str
  * Check if a string contains disallowed characters (null bytes or path traversal).
  */
 export declare function isDisallowedIdentifier(value: string | null | undefined): boolean;
+/**
+ * Escape a value for safe interpolation into HTML text or attributes.
+ * Escapes the five significant entities; null/undefined become "".
+ */
+export declare function escapeHtml(value: unknown): string;
+/**
+ * Normalize free text for fuzzy search matching: lowercase, keep only
+ * ASCII letters/digits/whitespace. The word-preserving variant of
+ * {@link toAlphanumeric}.
+ */
+export declare function normalizeSearchText(text: string | null | undefined): string;
+/**
+ * Squash text to bare lowercase alphanumerics (no spaces) — for building
+ * lookup keys where "St. John's" and "st johns" must collide.
+ */
+export declare function toAlphanumeric(text: string | null | undefined): string;
 export {};
 //# sourceMappingURL=text.d.ts.map

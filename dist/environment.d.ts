@@ -29,4 +29,13 @@ export declare function getForceColor(): boolean;
 export declare function getMinioInternalUrl(): string;
 export declare function getVaultServiceUrl(): string;
 export declare function getVaultServiceToken(): string;
+/**
+ * Fail-fast aggregated required-config check. `required` maps a display
+ * label (usually the env var name, optionally annotated with the config
+ * key it feeds) to its resolved value; all falsy values are reported in
+ * one error instead of failing deep at the first use site.
+ */
+export declare function assertRequiredEnvironment(required: Record<string, unknown>, { prefix }?: {
+    prefix?: string;
+}): void;
 //# sourceMappingURL=environment.d.ts.map

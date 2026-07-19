@@ -14,6 +14,34 @@ export declare class HealthTracker {
     markSuccess(): void;
     markError(error: unknown): void;
 }
+/**
+ * Configure an Express response for SSE streaming: required headers
+ * (including X-Accel-Buffering for nginx) flushed immediately.
+ */
+export declare function initSseResponse(res: Response): void;
+export interface SseEmitterOptions {
+    /** Stop writing once this signal aborts (e.g. client disconnect). */
+    signal?: AbortSignal;
+}
+/**
+ * Create an emit callback that writes `data: <json>\n\n` frames with
+ * guarded writes (no writes after abort/close) and force-flushing.
+ * Disables Nagle's algorithm so small frames aren't buffered while the
+ * server awaits; cork/uncork guarantees flushes without compression
+ * middleware's res.flush().
+ */
+export declare function createSseEmitter(res: Response, { signal }?: SseEmitterOptions): (event: unknown) => void;
+export interface SseHeartbeatOptions {
+    intervalMilliseconds?: number;
+    signal?: AbortSignal;
+}
+/**
+ * Emit `: ping` SSE comment frames on an interval so clients can tell a
+ * quiet-but-alive stream from a dead socket. Comment frames are invisible
+ * to `data:`-line parsers. Returns a stop function — always call it when
+ * the stream ends.
+ */
+export declare function startSseHeartbeat(res: Response, { intervalMilliseconds, signal }?: SseHeartbeatOptions): () => void;
 export declare function setupStreamingServerSentEvents(res: Response): (event: unknown) => void;
 export declare class TokenManager {
     #private;

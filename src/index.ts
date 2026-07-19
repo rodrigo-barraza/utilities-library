@@ -135,8 +135,16 @@ export { generateUUID } from "./crypto.ts";
 export { formatPhone } from "./phone.ts";
 
 // Rate — Debounce and throttle
-export { debounce, throttle } from "./rate.ts";
-export type { DebouncedFunction, ThrottledFunction, DebounceOptions } from "./rate.ts";
+export { debounce, throttle, createDailyBudget, createCircuitBreaker } from "./rate.ts";
+export type {
+  DebouncedFunction,
+  ThrottledFunction,
+  DebounceOptions,
+  DailyBudget,
+  CircuitBreaker,
+  CircuitBreakerOptions,
+} from "./rate.ts";
+export { escapeHtml, normalizeSearchText, toAlphanumeric } from "./text.ts";
 
 // Color — Color manipulation and interpolation
 export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness, lerpRgb, paletteAt } from "./color.ts";
@@ -159,9 +167,25 @@ export {
   DISCORD_STICKER_FORMAT,
 } from "./discord.ts";
 export type { DiscordAvatarOptions } from "./discord.ts";
+export { createTtlCache, createSimpleCache } from "./cache.ts";
+export type {
+  TtlCache,
+  TtlCacheOptions,
+  SimpleCache,
+  SimpleCacheOptions,
+  CacheHealth,
+  CacheError,
+} from "./cache.ts";
+export { createGitHubClient, parseGitHubRepoInput, GITHUB_API_BASE_URL } from "./github.ts";
+export type { GitHubClientOptions } from "./github.ts";
 
 // Environment — Browser/production detection and client URL resolution
-export { isBrowser, isProductionHostname, resolveClientServiceUrl } from "./environment.ts";
+export {
+  isBrowser,
+  isProductionHostname,
+  resolveClientServiceUrl,
+  assertRequiredEnvironment,
+} from "./environment.ts";
 export type { ResolveClientServiceUrlOptions } from "./environment.ts";
 
 // Temporal — Native Temporal API Utilities

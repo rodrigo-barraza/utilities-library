@@ -29,7 +29,8 @@ export { generateUUID } from "./crypto.js";
 // Phone — Phone number formatting
 export { formatPhone } from "./phone.js";
 // Rate — Debounce and throttle
-export { debounce, throttle } from "./rate.js";
+export { debounce, throttle, createDailyBudget, createCircuitBreaker } from "./rate.js";
+export { escapeHtml, normalizeSearchText, toAlphanumeric } from "./text.js";
 // Color — Color manipulation and interpolation
 export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness, lerpRgb, paletteAt } from "./color.js";
 // Errors — Type-safe error handling utilities
@@ -37,8 +38,10 @@ export { getErrorMessage, errorMessage } from "./errors.js";
 // HTTP — Isomorphic JSON API client
 export { createApiClient, ApiError } from "./http.js";
 export { discordAvatarUrl, discordGuildIconUrl, discordBannerUrl, discordSplashUrl, discordEmojiUrl, discordStickerUrl, discordMessageUrl, DISCORD_STICKER_FORMAT, } from "./discord.js";
+export { createTtlCache, createSimpleCache } from "./cache.js";
+export { createGitHubClient, parseGitHubRepoInput, GITHUB_API_BASE_URL } from "./github.js";
 // Environment — Browser/production detection and client URL resolution
-export { isBrowser, isProductionHostname, resolveClientServiceUrl } from "./environment.js";
+export { isBrowser, isProductionHostname, resolveClientServiceUrl, assertRequiredEnvironment, } from "./environment.js";
 // Temporal — Native Temporal API Utilities
 export { TemporalHelpers } from "./temporal.js";
 // IDs — Identifier generation utilities

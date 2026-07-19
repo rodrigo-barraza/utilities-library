@@ -678,3 +678,33 @@ export function isDisallowedIdentifier(value: string | null | undefined): boolea
   if (!value) return false;
   return value.includes("\0") || value.includes("../") || value.includes("..\\");
 }
+
+/**
+ * Escape a value for safe interpolation into HTML text or attributes.
+ * Escapes the five significant entities; null/undefined become "".
+ */
+export function escapeHtml(value: unknown): string {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/**
+ * Normalize free text for fuzzy search matching: lowercase, keep only
+ * ASCII letters/digits/whitespace. The word-preserving variant of
+ * {@link toAlphanumeric}.
+ */
+export function normalizeSearchText(text: string | null | undefined): string {
+  return (text ?? "").toLowerCase().replace(/[^a-z0-9\s]/g, "");
+}
+
+/**
+ * Squash text to bare lowercase alphanumerics (no spaces) — for building
+ * lookup keys where "St. John's" and "st johns" must collide.
+ */
+export function toAlphanumeric(text: string | null | undefined): string {
+  return (text ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
+}

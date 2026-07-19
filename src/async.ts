@@ -10,18 +10,25 @@ export interface RetryOptions {
   retries?: number;
   delay?: number;
   backoff?: number;
+  /** Random extra delay (0..jitter ms) added per retry to avoid thundering herds. */
+  jitter?: number;
+  /**
+   * Decide whether an error is retryable (e.g. only transient network or
+   * 503 errors). Default retries every error until attempts run out.
+   */
+  shouldRetry?: (error: unknown, attempt: number) => boolean;
 }
 
 export async function retry<T>(
   action: (attempt: number) => Promise<T> | T,
-  { retries = 3, delay = 1000, backoff = 2 }: RetryOptions = {},
+  { retries = 3, delay = 1000, backoff = 2, jitter = 0, shouldRetry }: RetryOptions = {},
 ): Promise<T> {
   for (let attempt = 0; ; attempt++) {
     try {
       return await action(attempt);
     } catch (error) {
-      if (attempt >= retries) throw error;
-      await sleep(delay * Math.pow(backoff, attempt));
+      if (attempt >= retries || (shouldRetry && !shouldRetry(error, attempt))) throw error;
+      await sleep(delay * Math.pow(backoff, attempt) + Math.random() * jitter);
     }
   }
 }

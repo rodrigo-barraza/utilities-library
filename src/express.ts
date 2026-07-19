@@ -85,6 +85,77 @@ export class HealthTracker {
   }
 }
 
+// ─── SSE (Server-Sent Events) ────────────────────────────────
+// Promoted from prism-service SseUtilities: header setup, a
+// guarded low-latency emitter, and a comment-frame heartbeat.
+
+/**
+ * Configure an Express response for SSE streaming: required headers
+ * (including X-Accel-Buffering for nginx) flushed immediately.
+ */
+export function initSseResponse(res: Response): void {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.setHeader("X-Accel-Buffering", "no");
+  res.flushHeaders();
+}
+
+export interface SseEmitterOptions {
+  /** Stop writing once this signal aborts (e.g. client disconnect). */
+  signal?: AbortSignal;
+}
+
+/**
+ * Create an emit callback that writes `data: <json>\n\n` frames with
+ * guarded writes (no writes after abort/close) and force-flushing.
+ * Disables Nagle's algorithm so small frames aren't buffered while the
+ * server awaits; cork/uncork guarantees flushes without compression
+ * middleware's res.flush().
+ */
+export function createSseEmitter(
+  res: Response,
+  { signal }: SseEmitterOptions = {},
+): (event: unknown) => void {
+  if (res.socket) res.socket.setNoDelay(true);
+
+  return (event: unknown) => {
+    if (signal?.aborted || res.destroyed || res.writableEnded) return;
+    res.write(`data: ${JSON.stringify(event)}\n\n`);
+    const responseWithFlush = res as Response & { flush?: () => void };
+    if (typeof responseWithFlush.flush === "function") {
+      responseWithFlush.flush();
+    } else if (res.socket && !res.socket.destroyed) {
+      res.socket.uncork?.();
+      res.socket.cork?.();
+      res.socket.uncork?.();
+    }
+  };
+}
+
+export interface SseHeartbeatOptions {
+  intervalMilliseconds?: number;
+  signal?: AbortSignal;
+}
+
+/**
+ * Emit `: ping` SSE comment frames on an interval so clients can tell a
+ * quiet-but-alive stream from a dead socket. Comment frames are invisible
+ * to `data:`-line parsers. Returns a stop function — always call it when
+ * the stream ends.
+ */
+export function startSseHeartbeat(
+  res: Response,
+  { intervalMilliseconds = 15_000, signal }: SseHeartbeatOptions = {},
+): () => void {
+  const interval = setInterval(() => {
+    if (!signal?.aborted && !res.destroyed && !res.writableEnded) {
+      res.write(`: ping\n\n`);
+    }
+  }, intervalMilliseconds);
+  return () => clearInterval(interval);
+}
+
 export function setupStreamingServerSentEvents(res: Response): (event: unknown) => void {
   res.writeHead(200, {
     "Content-Type": "text/event-stream",

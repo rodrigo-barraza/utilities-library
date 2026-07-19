@@ -87,4 +87,69 @@ export function throttle(targetFunction, delayMilliseconds) {
     };
     return throttled;
 }
+/** Create an in-memory per-UTC-day budget counter that resets at midnight UTC. */
+export function createDailyBudget(limit, now = Date.now) {
+    let dayKey = "";
+    let used = 0;
+    function rollDay() {
+        const key = new Date(now()).toISOString().slice(0, 10);
+        if (key !== dayKey) {
+            dayKey = key;
+            used = 0;
+        }
+    }
+    return {
+        tryConsume(count = 1) {
+            rollDay();
+            if (used + count > limit)
+                return false;
+            used += count;
+            return true;
+        },
+        used() {
+            rollDay();
+            return used;
+        },
+        remaining() {
+            rollDay();
+            return Math.max(0, limit - used);
+        },
+    };
+}
+/** Create an in-memory circuit breaker with a consecutive-failure threshold. */
+export function createCircuitBreaker({ tripDurationMilliseconds, failureThreshold = 1, now = Date.now, }) {
+    let openUntilTimestamp = null;
+    let consecutiveFailures = 0;
+    function isOpen() {
+        if (openUntilTimestamp === null)
+            return false;
+        if (now() >= openUntilTimestamp) {
+            openUntilTimestamp = null;
+            return false;
+        }
+        return true;
+    }
+    return {
+        isOpen,
+        openUntil: () => (isOpen() ? openUntilTimestamp : null),
+        trip() {
+            openUntilTimestamp = now() + tripDurationMilliseconds;
+            consecutiveFailures = 0;
+        },
+        reset() {
+            openUntilTimestamp = null;
+            consecutiveFailures = 0;
+        },
+        recordFailure() {
+            consecutiveFailures += 1;
+            if (consecutiveFailures >= failureThreshold) {
+                openUntilTimestamp = now() + tripDurationMilliseconds;
+                consecutiveFailures = 0;
+            }
+        },
+        recordSuccess() {
+            consecutiveFailures = 0;
+        },
+    };
+}
 //# sourceMappingURL=rate.js.map

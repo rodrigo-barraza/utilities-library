@@ -4,15 +4,15 @@
 export function sleep(milliseconds) {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
-export async function retry(action, { retries = 3, delay = 1000, backoff = 2 } = {}) {
+export async function retry(action, { retries = 3, delay = 1000, backoff = 2, jitter = 0, shouldRetry } = {}) {
     for (let attempt = 0;; attempt++) {
         try {
             return await action(attempt);
         }
         catch (error) {
-            if (attempt >= retries)
+            if (attempt >= retries || (shouldRetry && !shouldRetry(error, attempt)))
                 throw error;
-            await sleep(delay * Math.pow(backoff, attempt));
+            await sleep(delay * Math.pow(backoff, attempt) + Math.random() * jitter);
         }
     }
 }
