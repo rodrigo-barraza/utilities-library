@@ -7,11 +7,18 @@ export interface AuthMiddlewareConfig {
 }
 export declare function createAuthMiddleware({ auth, authEnabled }: AuthMiddlewareConfig): (request: Request) => Promise<NextResponse>;
 export interface NextjsProxyConfig {
-    port: number;
+    /** Dev-fallback port. Defaults to the SERVICE_PORTS registry entry for serviceName. */
+    port?: number;
     serviceName: string;
     publicUrlEnvironmentVariable?: string;
     internalUrlEnvironmentVariable?: string;
     forwardHeaders?: string[];
+    /**
+     * Headers to add server-side (shared secrets, resolved identity) that do
+     * NOT exist on the incoming request. Evaluated per request; undefined
+     * values are skipped. Applied after forwardHeaders, so injected values win.
+     */
+    injectHeaders?: () => Record<string, string | undefined> | Promise<Record<string, string | undefined>>;
     methods?: string[];
 }
 type RouteHandler = (request: Request, context: {
@@ -27,6 +34,6 @@ export interface ProxyRouteHandlers {
     PATCH?: RouteHandler;
     [method: string]: RouteHandler | undefined;
 }
-export declare function createNextjsProxy({ port, serviceName, publicUrlEnvironmentVariable, internalUrlEnvironmentVariable, forwardHeaders, methods, }: NextjsProxyConfig): ProxyRouteHandlers;
+export declare function createNextjsProxy({ port, serviceName, publicUrlEnvironmentVariable, internalUrlEnvironmentVariable, forwardHeaders, injectHeaders, methods, }: NextjsProxyConfig): ProxyRouteHandlers;
 export {};
 //# sourceMappingURL=nextjs.d.ts.map

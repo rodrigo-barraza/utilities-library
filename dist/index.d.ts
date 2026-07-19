@@ -2,7 +2,7 @@ export { formatCompact, formatNumber, formatTokenCount, formatCost, formatCostAd
 export type { FormatFileSizeOptions } from "./format.js";
 export { stripHtml, normalizeName, renderToolName, humanizeToolName, resolveToolDisplaySummary, truncate, escapeRegex, getRootDomain, getSubdomain, capitalize, slugify, toKebabCase, toCamelCase, toPascalCase, toSnakeCase, pluralize, wordCount, deriveAgentId, sanitizeNullBytes, isDisallowedIdentifier, } from "./text.js";
 export type { ToolDisplaySummaryResult, ToolDisplayMetadata, ToolDisplaySubjectFormat } from "./text.js";
-export { toISODate, timeAgo, daysSinceIso, formatDateTime, daysAgo, toLocalDateString } from "./date.js";
+export { toISODate, timeAgo, daysSinceIso, formatDateTime, formatDate, daysAgo, toLocalDateString } from "./date.js";
 export { sleep, retry, withTimeout, withTimeoutFallback, fetchWithTimeout, parallelMap, defer } from "./async.js";
 export type { RetryOptions, ParallelMapOptions, Deferred } from "./async.js";
 export { MILLISECONDS_PER_SECOND, MILLISECONDS_PER_MINUTE, MILLISECONDS_PER_HOUR, MILLISECONDS_PER_DAY, SECONDS_PER_DAY, MILLISECONDS_PER_WEEK, seconds, minutes, hours, days, weeks, POLL_FAST, POLL_STANDARD, POLL_MODERATE, POLL_SLOW, POLL_LAZY, FEEDBACK_BRIEF_MILLISECONDS, FEEDBACK_STANDARD_MILLISECONDS, TOAST_DURATION_MILLISECONDS, ACTION_COOLDOWN_MILLISECONDS, ACTION_COOLDOWN_LONG_MILLISECONDS, HIGHLIGHT_DURATION_MILLISECONDS, } from "./time.js";
@@ -19,7 +19,7 @@ export { generateUUID } from "./crypto.js";
 export { formatPhone } from "./phone.js";
 export { debounce, throttle, createDailyBudget, createCircuitBreaker } from "./rate.js";
 export type { DebouncedFunction, ThrottledFunction, DebounceOptions, DailyBudget, CircuitBreaker, CircuitBreakerOptions, } from "./rate.js";
-export { escapeHtml, normalizeSearchText, toAlphanumeric } from "./text.js";
+export { escapeHtml, normalizeSearchText, toAlphanumeric, cx } from "./text.js";
 export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness, lerpRgb, paletteAt } from "./color.js";
 export type { RGB, RGBA, HSL, RgbTriplet } from "./color.js";
 export { getErrorMessage, errorMessage } from "./errors.js";
@@ -35,6 +35,7 @@ export { isBrowser, isProductionHostname, resolveClientServiceUrl, assertRequire
 export type { ResolveClientServiceUrlOptions } from "./environment.js";
 export { TemporalHelpers } from "./temporal.js";
 export { generateId, generateSortableId } from "./ids.js";
+export { copyToClipboard } from "./dom.js";
 export { WORKSPACE_MAX_READ_BYTES, WORKSPACE_MAX_WRITE_BYTES, WORKSPACE_MAX_LINES_PER_READ, WORKSPACE_MAX_PREVIEW_BYTES, WORKSPACE_MAX_GREP_RESULTS, WORKSPACE_MAX_GLOB_RESULTS, WORKSPACE_MAX_DIRECTORY_ENTRIES, BINARY_FILE_EXTENSIONS, PREVIEW_IMAGE_FILE_EXTENSIONS, WORKSPACE_SKIP_DIRECTORIES, globToRegex, } from "./workspace.js";
 export type { PathValidationResult, FileInfoEntry, DirectoryEntry, TreeEntry, GrepMatch, GlobMatch, GitFileChange, GitStatusResult, GitDiffResult, GitLogResult, GitCommit, CommandExecutionResult, ProjectSummaryResult, } from "./types/workspace.js";
 //# sourceMappingURL=index.d.ts.map

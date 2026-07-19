@@ -81,6 +81,31 @@ export {
 } from "./headers.ts";
 
 export {
+  SERVICE_PORTS,
+  getServicePort,
+  type ServiceId,
+} from "./services.ts";
+
+export {
+  COLLECTIONS,
+  type CollectionKey,
+  type CollectionName,
+} from "./collections.ts";
+
+export {
+  DISCORD_GUILDS,
+  DISCORD_CHANNELS,
+  DISCORD_USERS,
+  type DiscordGuildKey,
+  type DiscordChannelKey,
+} from "./discord.ts";
+
+export {
+  MODEL_IDS,
+  type ModelIdKey,
+} from "./models.ts";
+
+export {
   CAPABILITIES,
   CAPABILITY_ALIASES,
   CAPABILITY_DISPLAY_NAMES,

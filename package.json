@@ -1,6 +1,6 @@
 {
   "name": "@rodrigo-barraza/utilities-library",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Shared TypeScript utility functions and Express microservice chassis",
   "type": "module",
   "main": "dist/index.js",

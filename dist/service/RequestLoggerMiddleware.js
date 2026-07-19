@@ -2,6 +2,7 @@
 // RequestLoggerMiddleware
 // ─────────────────────────────────────────────────────────────
 import { formatFileSize, formatRequestTime } from "../format.js";
+import { IDENTITY_HEADERS } from "./TraceContext.js";
 const formatBytes = (bytes) => formatFileSize(bytes, { compact: true });
 export function createRequestLoggerMiddleware(logger, options = {}) {
     const skipSSE = options.skipSSE !== false;
@@ -25,9 +26,9 @@ export function createRequestLoggerMiddleware(logger, options = {}) {
             const sizeTag = `(in: ${formatBytes(incomingBytes)}, out: ${formatBytes(outgoingBytes)}, total: ${formatBytes(incomingBytes + outgoingBytes)})`;
             const typedRequest = req;
             if (identityAware && logger.request && logger.request.length >= 4) {
-                const project = typedRequest.project || req.headers["x-project"] || null;
-                const username = typedRequest.username || req.headers["x-username"] || null;
-                const forwardedHeader = req.headers["x-forwarded-for"];
+                const project = typedRequest.project || req.headers[IDENTITY_HEADERS.project] || null;
+                const username = typedRequest.username || req.headers[IDENTITY_HEADERS.username] || null;
+                const forwardedHeader = req.headers[IDENTITY_HEADERS.forwardedFor];
                 const clientIp = typedRequest.clientIp || (typeof forwardedHeader === "string" ? forwardedHeader.split(",")[0]?.trim() : undefined) || req.ip;
                 logger.request(project, username, clientIp, `${method} ${path} ${status} — ${time} ${sizeTag}`);
             }

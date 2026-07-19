@@ -626,4 +626,11 @@ export function normalizeSearchText(text) {
 export function toAlphanumeric(text) {
     return (text ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
 }
+/**
+ * Join CSS class names, skipping falsy parts — the classic `classNames`/`clsx`
+ * one-liner: `cx("btn", isActive && "btn--active", size)`.
+ */
+export function cx(...parts) {
+    return parts.filter(Boolean).join(" ");
+}
 //# sourceMappingURL=text.js.map

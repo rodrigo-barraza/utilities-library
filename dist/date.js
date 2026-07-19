@@ -48,6 +48,18 @@ export function formatDateTime(dateInput, options = {}) {
         ...options,
     });
 }
+export function formatDate(dateInput) {
+    if (!dateInput)
+        return "—";
+    const parsedDate = dateInput instanceof Date ? dateInput : new Date(dateInput);
+    if (isNaN(parsedDate.getTime()))
+        return String(dateInput);
+    return parsedDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+    });
+}
 export function daysAgo(daysCount) {
     const result = new Date();
     result.setDate(result.getDate() - daysCount);

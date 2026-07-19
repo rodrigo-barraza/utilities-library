@@ -9,7 +9,7 @@ export { formatCompact, formatNumber, formatTokenCount, formatCost, formatCostAd
 // Text — String manipulation, sanitization, and case conversion
 export { stripHtml, normalizeName, renderToolName, humanizeToolName, resolveToolDisplaySummary, truncate, escapeRegex, getRootDomain, getSubdomain, capitalize, slugify, toKebabCase, toCamelCase, toPascalCase, toSnakeCase, pluralize, wordCount, deriveAgentId, sanitizeNullBytes, isDisallowedIdentifier, } from "./text.js";
 // Date — Date formatting and relative time
-export { toISODate, timeAgo, daysSinceIso, formatDateTime, daysAgo, toLocalDateString } from "./date.js";
+export { toISODate, timeAgo, daysSinceIso, formatDateTime, formatDate, daysAgo, toLocalDateString } from "./date.js";
 // Async — Promise-based timing, concurrency, and control
 export { sleep, retry, withTimeout, withTimeoutFallback, fetchWithTimeout, parallelMap, defer } from "./async.js";
 // Time — Duration constants, converters, and polling intervals
@@ -30,7 +30,7 @@ export { generateUUID } from "./crypto.js";
 export { formatPhone } from "./phone.js";
 // Rate — Debounce and throttle
 export { debounce, throttle, createDailyBudget, createCircuitBreaker } from "./rate.js";
-export { escapeHtml, normalizeSearchText, toAlphanumeric } from "./text.js";
+export { escapeHtml, normalizeSearchText, toAlphanumeric, cx } from "./text.js";
 // Color — Color manipulation and interpolation
 export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness, lerpRgb, paletteAt } from "./color.js";
 // Errors — Type-safe error handling utilities
@@ -46,6 +46,8 @@ export { isBrowser, isProductionHostname, resolveClientServiceUrl, assertRequire
 export { TemporalHelpers } from "./temporal.js";
 // IDs — Identifier generation utilities
 export { generateId, generateSortableId } from "./ids.js";
+// ── DOM (browser-only; SSR-safe no-ops) ─────────────────────
+export { copyToClipboard } from "./dom.js";
 // Workspace — File operation constants and utilities
 export { WORKSPACE_MAX_READ_BYTES, WORKSPACE_MAX_WRITE_BYTES, WORKSPACE_MAX_LINES_PER_READ, WORKSPACE_MAX_PREVIEW_BYTES, WORKSPACE_MAX_GREP_RESULTS, WORKSPACE_MAX_GLOB_RESULTS, WORKSPACE_MAX_DIRECTORY_ENTRIES, BINARY_FILE_EXTENSIONS, PREVIEW_IMAGE_FILE_EXTENSIONS, WORKSPACE_SKIP_DIRECTORIES, globToRegex, } from "./workspace.js";
 //# sourceMappingURL=index.js.map

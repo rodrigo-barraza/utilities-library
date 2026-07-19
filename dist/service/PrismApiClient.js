@@ -10,7 +10,7 @@
 // Identity is sent via headers (x-project / x-username) because Prism's
 // AuthMiddleware resolves username from the x-username header ONLY — a
 // `username` field in the request body is silently ignored.
-import { DEFAULT_USERNAME, DEFAULT_PROJECT, } from "../taxonomy/index.js";
+import { DEFAULT_USERNAME, DEFAULT_PROJECT, IDENTITY_HEADERS, AUTH_HEADERS, } from "../taxonomy/index.js";
 const DEFAULT_TIMEOUT_MS = 120_000;
 // ────────────────────────────────────────────────────────────
 // Client
@@ -40,9 +40,9 @@ export class PrismApiClient {
     headers(username) {
         return {
             "Content-Type": "application/json",
-            "x-project": this.project,
-            "x-username": username || this.defaultUsername,
-            ...(this.apiSecret && { "x-api-secret": this.apiSecret }),
+            [IDENTITY_HEADERS.project]: this.project,
+            [IDENTITY_HEADERS.username]: username || this.defaultUsername,
+            ...(this.apiSecret && { [AUTH_HEADERS.apiSecret]: this.apiSecret }),
             ...this.getExtraHeaders?.(),
         };
     }

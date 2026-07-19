@@ -8,6 +8,7 @@
 import { NextResponse } from "next/server";
 import { getErrorMessage } from "./errors.js";
 import { getEnvironmentVariable } from "./environment.ts";
+import { getServicePort } from "./taxonomy/services.ts";
 
 function getNextResponse() {
   return NextResponse;
@@ -70,11 +71,20 @@ function resolveUpstream(
 }
 
 export interface NextjsProxyConfig {
-  port: number;
+  /** Dev-fallback port. Defaults to the SERVICE_PORTS registry entry for serviceName. */
+  port?: number;
   serviceName: string;
   publicUrlEnvironmentVariable?: string;
   internalUrlEnvironmentVariable?: string;
   forwardHeaders?: string[];
+  /**
+   * Headers to add server-side (shared secrets, resolved identity) that do
+   * NOT exist on the incoming request. Evaluated per request; undefined
+   * values are skipped. Applied after forwardHeaders, so injected values win.
+   */
+  injectHeaders?: () =>
+    | Record<string, string | undefined>
+    | Promise<Record<string, string | undefined>>;
   methods?: string[];
 }
 
@@ -95,8 +105,16 @@ export function createNextjsProxy({
   publicUrlEnvironmentVariable,
   internalUrlEnvironmentVariable,
   forwardHeaders = [],
+  injectHeaders,
   methods,
 }: NextjsProxyConfig): ProxyRouteHandlers {
+  const registryPort = port ?? getServicePort(serviceName);
+  if (registryPort === undefined) {
+    throw new Error(
+      `createNextjsProxy: no port given and "${serviceName}" is not in the SERVICE_PORTS registry`,
+    );
+  }
+  const resolvedPort: number = registryPort;
   function resolveEnvValue(valueOrKey: string | undefined): string | undefined {
     if (!valueOrKey) return undefined;
     if (valueOrKey.includes("://")) return valueOrKey;
@@ -111,7 +129,7 @@ export function createNextjsProxy({
     const url = new URL(request.url);
     const queryString = url.search || "";
     const upstreamBase = resolveUpstream(request, {
-      port,
+      port: resolvedPort,
       publicUrlEnvironmentVariable: resolveEnvValue(publicUrlEnvironmentVariable),
       internalUrlEnvironmentVariable: resolveEnvValue(internalUrlEnvironmentVariable),
     });
@@ -124,6 +142,13 @@ export function createNextjsProxy({
         const value = request.headers.get(name);
         if (value) {
           headersRecord[name] = value;
+        }
+      }
+
+      if (injectHeaders) {
+        const injected = await injectHeaders();
+        for (const [name, value] of Object.entries(injected)) {
+          if (value !== undefined) headersRecord[name] = value;
         }
       }
 

@@ -1,6 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 // AuthMiddleware — Configurable identity resolution + secret guard
 // ─────────────────────────────────────────────────────────────
+import { AUTH_HEADERS } from "../taxonomy/index.js";
 import { IDENTITY_HEADERS, requestLocalStorage } from "./TraceContext.js";
 /**
  * Create an identity-resolution middleware.
@@ -53,7 +54,7 @@ export function createAuthMiddleware(options = {}) {
  * Rejects requests that don't include the correct secret in the specified header.
  */
 export function createSecretGuard(secret, options = {}) {
-    const header = options.header || "x-api-secret";
+    const header = options.header || AUTH_HEADERS.apiSecret;
     const bypassPaths = new Set(options.bypassPaths || ["/health"]);
     return function secretGuard(req, res, next) {
         if (bypassPaths.has(req.path))

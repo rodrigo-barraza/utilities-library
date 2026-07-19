@@ -3,6 +3,7 @@
 // ─────────────────────────────────────────────────────────────
 
 import type { Request, Response, NextFunction } from "express";
+import { AUTH_HEADERS } from "../taxonomy/index.ts";
 import { IDENTITY_HEADERS, requestLocalStorage } from "./TraceContext.ts";
 import type { RequestStore } from "./TraceContext.ts";
 
@@ -98,7 +99,7 @@ export interface SecretGuardOptions {
  * Rejects requests that don't include the correct secret in the specified header.
  */
 export function createSecretGuard(secret: string, options: SecretGuardOptions = {}) {
-  const header = options.header || "x-api-secret";
+  const header = options.header || AUTH_HEADERS.apiSecret;
   const bypassPaths = new Set(options.bypassPaths || ["/health"]);
 
   return function secretGuard(req: Request, res: Response, next: NextFunction) {

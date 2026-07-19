@@ -709,3 +709,11 @@ export function normalizeSearchText(text: string | null | undefined): string {
 export function toAlphanumeric(text: string | null | undefined): string {
   return (text ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
 }
+
+/**
+ * Join CSS class names, skipping falsy parts — the classic `classNames`/`clsx`
+ * one-liner: `cx("btn", isActive && "btn--active", size)`.
+ */
+export function cx(...parts: Array<string | false | null | undefined>): string {
+  return parts.filter(Boolean).join(" ");
+}

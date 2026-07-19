@@ -7,6 +7,7 @@
 import { NextResponse } from "next/server";
 import { getErrorMessage } from "./errors.js";
 import { getEnvironmentVariable } from "./environment.js";
+import { getServicePort } from "./taxonomy/services.js";
 function getNextResponse() {
     return NextResponse;
 }
@@ -43,7 +44,12 @@ function resolveUpstream(request, { port, publicUrlEnvironmentVariable, internal
     }
     return internalUrlEnvironmentVariable || `http://localhost:${port}`;
 }
-export function createNextjsProxy({ port, serviceName, publicUrlEnvironmentVariable, internalUrlEnvironmentVariable, forwardHeaders = [], methods, }) {
+export function createNextjsProxy({ port, serviceName, publicUrlEnvironmentVariable, internalUrlEnvironmentVariable, forwardHeaders = [], injectHeaders, methods, }) {
+    const registryPort = port ?? getServicePort(serviceName);
+    if (registryPort === undefined) {
+        throw new Error(`createNextjsProxy: no port given and "${serviceName}" is not in the SERVICE_PORTS registry`);
+    }
+    const resolvedPort = registryPort;
     function resolveEnvValue(valueOrKey) {
         if (!valueOrKey)
             return undefined;
@@ -57,7 +63,7 @@ export function createNextjsProxy({ port, serviceName, publicUrlEnvironmentVaria
         const url = new URL(request.url);
         const queryString = url.search || "";
         const upstreamBase = resolveUpstream(request, {
-            port,
+            port: resolvedPort,
             publicUrlEnvironmentVariable: resolveEnvValue(publicUrlEnvironmentVariable),
             internalUrlEnvironmentVariable: resolveEnvValue(internalUrlEnvironmentVariable),
         });
@@ -68,6 +74,13 @@ export function createNextjsProxy({ port, serviceName, publicUrlEnvironmentVaria
                 const value = request.headers.get(name);
                 if (value) {
                     headersRecord[name] = value;
+                }
+            }
+            if (injectHeaders) {
+                const injected = await injectHeaders();
+                for (const [name, value] of Object.entries(injected)) {
+                    if (value !== undefined)
+                        headersRecord[name] = value;
                 }
             }
             const fetchOptions = {

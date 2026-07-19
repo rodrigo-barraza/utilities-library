@@ -56,7 +56,7 @@ export {
 export type { ToolDisplaySummaryResult, ToolDisplayMetadata, ToolDisplaySubjectFormat } from "./text.ts";
 
 // Date — Date formatting and relative time
-export { toISODate, timeAgo, daysSinceIso, formatDateTime, daysAgo, toLocalDateString } from "./date.ts";
+export { toISODate, timeAgo, daysSinceIso, formatDateTime, formatDate, daysAgo, toLocalDateString } from "./date.ts";
 
 // Async — Promise-based timing, concurrency, and control
 export { sleep, retry, withTimeout, withTimeoutFallback, fetchWithTimeout, parallelMap, defer } from "./async.ts";
@@ -144,7 +144,7 @@ export type {
   CircuitBreaker,
   CircuitBreakerOptions,
 } from "./rate.ts";
-export { escapeHtml, normalizeSearchText, toAlphanumeric } from "./text.ts";
+export { escapeHtml, normalizeSearchText, toAlphanumeric, cx } from "./text.ts";
 
 // Color — Color manipulation and interpolation
 export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness, lerpRgb, paletteAt } from "./color.ts";
@@ -193,6 +193,9 @@ export { TemporalHelpers } from "./temporal.ts";
 
 // IDs — Identifier generation utilities
 export { generateId, generateSortableId } from "./ids.ts";
+
+// ── DOM (browser-only; SSR-safe no-ops) ─────────────────────
+export { copyToClipboard } from "./dom.ts";
 
 // Workspace — File operation constants and utilities
 export {

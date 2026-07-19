@@ -64,5 +64,10 @@ export declare function normalizeSearchText(text: string | null | undefined): st
  * lookup keys where "St. John's" and "st johns" must collide.
  */
 export declare function toAlphanumeric(text: string | null | undefined): string;
+/**
+ * Join CSS class names, skipping falsy parts — the classic `classNames`/`clsx`
+ * one-liner: `cx("btn", isActive && "btn--active", size)`.
+ */
+export declare function cx(...parts: Array<string | false | null | undefined>): string;
 export {};
 //# sourceMappingURL=text.d.ts.map

@@ -4,6 +4,7 @@
 
 import type { Request, Response, NextFunction } from "express";
 import { formatFileSize, formatRequestTime } from "../format.ts";
+import { IDENTITY_HEADERS } from "./TraceContext.ts";
 
 const formatBytes = (bytes: number) => formatFileSize(bytes, { compact: true });
 
@@ -44,9 +45,9 @@ export function createRequestLoggerMiddleware(logger: RequestLoggerLike, options
       const typedRequest = req as Request & { project?: string; username?: string; clientIp?: string };
 
       if (identityAware && logger.request && logger.request.length >= 4) {
-        const project = typedRequest.project || (req.headers["x-project"] as string) || null;
-        const username = typedRequest.username || (req.headers["x-username"] as string) || null;
-        const forwardedHeader = req.headers["x-forwarded-for"];
+        const project = typedRequest.project || (req.headers[IDENTITY_HEADERS.project] as string) || null;
+        const username = typedRequest.username || (req.headers[IDENTITY_HEADERS.username] as string) || null;
+        const forwardedHeader = req.headers[IDENTITY_HEADERS.forwardedFor];
         const clientIp = typedRequest.clientIp || (typeof forwardedHeader === "string" ? forwardedHeader.split(",")[0]?.trim() : undefined) || req.ip;
         logger.request(project, username, clientIp, `${method} ${path} ${status} — ${time} ${sizeTag}`);
       } else if (logger.request) {

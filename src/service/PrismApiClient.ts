@@ -14,6 +14,8 @@
 import {
   DEFAULT_USERNAME,
   DEFAULT_PROJECT,
+  IDENTITY_HEADERS,
+  AUTH_HEADERS,
 } from "../taxonomy/index.ts";
 
 // ────────────────────────────────────────────────────────────
@@ -233,9 +235,9 @@ export class PrismApiClient {
   private headers(username?: string): Record<string, string> {
     return {
       "Content-Type": "application/json",
-      "x-project": this.project,
-      "x-username": username || this.defaultUsername,
-      ...(this.apiSecret && { "x-api-secret": this.apiSecret }),
+      [IDENTITY_HEADERS.project]: this.project,
+      [IDENTITY_HEADERS.username]: username || this.defaultUsername,
+      ...(this.apiSecret && { [AUTH_HEADERS.apiSecret]: this.apiSecret }),
       ...this.getExtraHeaders?.(),
     };
   }
