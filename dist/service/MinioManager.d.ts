@@ -1,13 +1,23 @@
 import type { Readable } from "stream";
 import type { LoggerLike } from "./GracefulShutdown.js";
-export interface MinioInitConfig {
+import type { Client as MinioClient } from "minio";
+export interface MinioClientConfig {
     endpoint: string;
     accessKey: string;
     secretKey: string;
+}
+export interface MinioInitConfig extends MinioClientConfig {
     bucket: string;
     publicRead?: boolean;
     logger?: LoggerLike;
 }
+/**
+ * Construct a raw MinIO `Client` from a full endpoint URL
+ * (protocol → useSSL, port defaulted from protocol). Use this for
+ * multi-bucket/admin or throwaway clients; use {@link MinioManager}
+ * for the common single-bucket service case.
+ */
+export declare function createMinioClient({ endpoint, accessKey, secretKey, }: MinioClientConfig): Promise<MinioClient>;
 export interface MinioObjectInfo {
     name: string;
     size: number;

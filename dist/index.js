@@ -36,6 +36,7 @@ export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness, lerpR
 export { getErrorMessage, errorMessage } from "./errors.js";
 // HTTP — Isomorphic JSON API client
 export { createApiClient, ApiError } from "./http.js";
+export { discordAvatarUrl, discordGuildIconUrl, discordBannerUrl, discordSplashUrl, discordEmojiUrl, discordStickerUrl, discordMessageUrl, DISCORD_STICKER_FORMAT, } from "./discord.js";
 // Environment — Browser/production detection and client URL resolution
 export { isBrowser, isProductionHostname, resolveClientServiceUrl } from "./environment.js";
 // Temporal — Native Temporal API Utilities

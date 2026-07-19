@@ -147,7 +147,18 @@ export { getErrorMessage, errorMessage } from "./errors.ts";
 
 // HTTP — Isomorphic JSON API client
 export { createApiClient, ApiError } from "./http.ts";
-export type { ApiClient, ApiClientOptions } from "./http.ts";
+export type { ApiClient, ApiClientOptions, ApiRequestInit, ApiRetryOptions } from "./http.ts";
+export {
+  discordAvatarUrl,
+  discordGuildIconUrl,
+  discordBannerUrl,
+  discordSplashUrl,
+  discordEmojiUrl,
+  discordStickerUrl,
+  discordMessageUrl,
+  DISCORD_STICKER_FORMAT,
+} from "./discord.ts";
+export type { DiscordAvatarOptions } from "./discord.ts";
 
 // Environment — Browser/production detection and client URL resolution
 export { isBrowser, isProductionHostname, resolveClientServiceUrl } from "./environment.ts";

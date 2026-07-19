@@ -23,7 +23,9 @@ export { parseHex, toHex, lerpColor, rgbToHsl, hslToRgb, adjustBrightness, lerpR
 export type { RGB, RGBA, HSL, RgbTriplet } from "./color.js";
 export { getErrorMessage, errorMessage } from "./errors.js";
 export { createApiClient, ApiError } from "./http.js";
-export type { ApiClient, ApiClientOptions } from "./http.js";
+export type { ApiClient, ApiClientOptions, ApiRequestInit, ApiRetryOptions } from "./http.js";
+export { discordAvatarUrl, discordGuildIconUrl, discordBannerUrl, discordSplashUrl, discordEmojiUrl, discordStickerUrl, discordMessageUrl, DISCORD_STICKER_FORMAT, } from "./discord.js";
+export type { DiscordAvatarOptions } from "./discord.js";
 export { isBrowser, isProductionHostname, resolveClientServiceUrl } from "./environment.js";
 export type { ResolveClientServiceUrlOptions } from "./environment.js";
 export { TemporalHelpers } from "./temporal.js";

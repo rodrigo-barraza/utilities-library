@@ -13,13 +13,39 @@ let _client: MinioClient | null = null;
 let _bucketName: string | null = null;
 let _endpointUrl: string | null = null;
 
-export interface MinioInitConfig {
+export interface MinioClientConfig {
   endpoint: string;
   accessKey: string;
   secretKey: string;
+}
+
+export interface MinioInitConfig extends MinioClientConfig {
   bucket: string;
   publicRead?: boolean;
   logger?: LoggerLike;
+}
+
+/**
+ * Construct a raw MinIO `Client` from a full endpoint URL
+ * (protocol → useSSL, port defaulted from protocol). Use this for
+ * multi-bucket/admin or throwaway clients; use {@link MinioManager}
+ * for the common single-bucket service case.
+ */
+export async function createMinioClient({
+  endpoint,
+  accessKey,
+  secretKey,
+}: MinioClientConfig): Promise<MinioClient> {
+  // Minio Client is dynamically imported (optional peer dep)
+  const { Client } = await import("minio");
+  const url = new URL(endpoint);
+  return new Client({
+    endPoint: url.hostname,
+    port: parseInt(url.port, 10) || (url.protocol === "https:" ? 443 : 80),
+    useSSL: url.protocol === "https:",
+    accessKey,
+    secretKey,
+  });
 }
 
 export interface MinioObjectInfo {
@@ -43,18 +69,7 @@ export const MinioManager = {
     const log: LoggerLike = logger || console;
 
     try {
-      const { Client } = await import("minio");
-
-      const url = new URL(endpoint);
-      _client = new Client({
-        endPoint: url.hostname,
-        port:
-          parseInt(url.port, 10) ||
-          (url.protocol === "https:" ? 443 : 80),
-        useSSL: url.protocol === "https:",
-        accessKey,
-        secretKey,
-      });
+      _client = await createMinioClient({ endpoint, accessKey, secretKey });
       _bucketName = bucket;
       _endpointUrl = endpoint.replace(/\/+$/, "");
 

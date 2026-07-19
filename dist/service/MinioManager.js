@@ -6,6 +6,24 @@ import { errorMessage } from "../errors.js";
 let _client = null;
 let _bucketName = null;
 let _endpointUrl = null;
+/**
+ * Construct a raw MinIO `Client` from a full endpoint URL
+ * (protocol → useSSL, port defaulted from protocol). Use this for
+ * multi-bucket/admin or throwaway clients; use {@link MinioManager}
+ * for the common single-bucket service case.
+ */
+export async function createMinioClient({ endpoint, accessKey, secretKey, }) {
+    // Minio Client is dynamically imported (optional peer dep)
+    const { Client } = await import("minio");
+    const url = new URL(endpoint);
+    return new Client({
+        endPoint: url.hostname,
+        port: parseInt(url.port, 10) || (url.protocol === "https:" ? 443 : 80),
+        useSSL: url.protocol === "https:",
+        accessKey,
+        secretKey,
+    });
+}
 export const MinioManager = {
     /**
      * Initialize the MinIO client and ensure the bucket exists.
@@ -13,16 +31,7 @@ export const MinioManager = {
     async init({ endpoint, accessKey, secretKey, bucket, publicRead = false, logger, }) {
         const log = logger || console;
         try {
-            const { Client } = await import("minio");
-            const url = new URL(endpoint);
-            _client = new Client({
-                endPoint: url.hostname,
-                port: parseInt(url.port, 10) ||
-                    (url.protocol === "https:" ? 443 : 80),
-                useSSL: url.protocol === "https:",
-                accessKey,
-                secretKey,
-            });
+            _client = await createMinioClient({ endpoint, accessKey, secretKey });
             _bucketName = bucket;
             _endpointUrl = endpoint.replace(/\/+$/, "");
             // Ensure bucket exists
