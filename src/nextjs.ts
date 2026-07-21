@@ -50,8 +50,12 @@ function resolveUpstream(
     internalUrlEnvironmentVariable?: string;
   },
 ): string {
-  if (publicUrlEnvironmentVariable) return publicUrlEnvironmentVariable;
-
+  // INTERNAL FIRST: this resolver runs SERVER-SIDE (Next.js route handlers
+  // proxying to a sibling service). From inside a container on the LAN, the
+  // public URL is often unreachable — Docker DNS may not resolve public
+  // hostnames and home routers rarely hairpin NAT to their own WAN IP — so
+  // preferring it caused silent 502s on every proxied call. The public URL
+  // is the fallback for deployments where no internal route exists.
   if (
     internalUrlEnvironmentVariable &&
     !internalUrlEnvironmentVariable.includes("localhost") &&
@@ -59,6 +63,8 @@ function resolveUpstream(
   ) {
     return internalUrlEnvironmentVariable;
   }
+
+  if (publicUrlEnvironmentVariable) return publicUrlEnvironmentVariable;
 
   const host = request.headers.get("host");
   if (host) {
