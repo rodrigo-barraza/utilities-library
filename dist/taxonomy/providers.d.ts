@@ -4,13 +4,14 @@ export declare const PROVIDERS: {
     readonly GOOGLE: "google";
     readonly ELEVENLABS: "elevenlabs";
     readonly INWORLD: "inworld";
+    readonly MOONSHOT: "moonshot";
     readonly LM_STUDIO: "lm-studio";
     readonly VLLM: "vllm";
     readonly OLLAMA: "ollama";
     readonly LLAMA_CPP: "llama-cpp";
 };
 export type ProviderType = (typeof PROVIDERS)[keyof typeof PROVIDERS];
-export declare const PROVIDER_LIST: ("anthropic" | "elevenlabs" | "google" | "inworld" | "llama-cpp" | "lm-studio" | "ollama" | "openai" | "vllm")[];
+export declare const PROVIDER_LIST: ("anthropic" | "elevenlabs" | "google" | "inworld" | "llama-cpp" | "lm-studio" | "moonshot" | "ollama" | "openai" | "vllm")[];
 /** All recognized local (self-hosted) provider type identifiers. */
 export declare const LOCAL_PROVIDER_TYPES: Set<ProviderType>;
 /** Human-readable display labels for provider IDs. */
