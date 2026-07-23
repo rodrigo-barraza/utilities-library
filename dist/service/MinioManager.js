@@ -6,6 +6,13 @@ import { errorMessage } from "../errors.js";
 let _client = null;
 let _bucketName = null;
 let _endpointUrl = null;
+let _initConfig = null;
+let _reconnectTimer = null;
+// A failed boot-time connect must not latch MinIO off for the process
+// lifetime (a NAS restart briefly refuses connections and every consumer
+// then silently persists media inline for days) — keep retrying in the
+// background until the connect succeeds.
+const RECONNECT_DELAY_MILLISECONDS = 30_000;
 /**
  * Construct a raw MinIO `Client` from a full endpoint URL
  * (protocol → useSSL, port defaulted from protocol). Use this for
@@ -24,52 +31,80 @@ export async function createMinioClient({ endpoint, accessKey, secretKey, }) {
         secretKey,
     });
 }
+async function attemptConnect(config) {
+    const { endpoint, accessKey, secretKey, bucket, publicRead = false } = config;
+    const log = config.logger || console;
+    try {
+        const client = await createMinioClient({ endpoint, accessKey, secretKey });
+        // Ensure bucket exists
+        const exists = await client.bucketExists(bucket);
+        if (!exists) {
+            await client.makeBucket(bucket);
+            if (log.info)
+                log.info(`MinIO bucket "${bucket}" created`);
+        }
+        // Optionally set public read-only policy
+        if (publicRead) {
+            const publicPolicy = JSON.stringify({
+                Version: "2012-10-17",
+                Statement: [
+                    {
+                        Effect: "Allow",
+                        Principal: { AWS: ["*"] },
+                        Action: ["s3:GetObject"],
+                        Resource: [`arn:aws:s3:::${bucket}/*`],
+                    },
+                ],
+            });
+            await client.setBucketPolicy(bucket, publicPolicy);
+        }
+        // Only publish state once the bucket check proved the connection works
+        _client = client;
+        _bucketName = bucket;
+        _endpointUrl = endpoint.replace(/\/+$/, "");
+        if (log.success) {
+            log.success(`MinIO connected: ${endpoint} (bucket: ${bucket})`);
+        }
+        else {
+            console.log(`✅ MinIO connected: ${endpoint} (bucket: ${bucket})`);
+        }
+    }
+    catch (error) {
+        _client = null;
+        _bucketName = null;
+        _endpointUrl = null;
+        if (log.error) {
+            log.error(`MinIO connection failed: ${errorMessage(error)} — retrying in ${RECONNECT_DELAY_MILLISECONDS / 1000}s`);
+        }
+        scheduleReconnect();
+    }
+}
+function scheduleReconnect() {
+    if (_reconnectTimer)
+        return;
+    _reconnectTimer = setTimeout(() => {
+        _reconnectTimer = null;
+        if (_initConfig && !_client)
+            void attemptConnect(_initConfig);
+    }, RECONNECT_DELAY_MILLISECONDS);
+    // Never hold the process open just to retry MinIO
+    _reconnectTimer.unref?.();
+}
 export const MinioManager = {
     /**
      * Initialize the MinIO client and ensure the bucket exists.
+     *
+     * A failed connect resolves with MinIO unavailable (consumers keep
+     * working inline/degraded) and schedules background reconnect attempts
+     * every {@link RECONNECT_DELAY_MILLISECONDS} until one succeeds.
      */
-    async init({ endpoint, accessKey, secretKey, bucket, publicRead = false, logger, }) {
-        const log = logger || console;
-        try {
-            _client = await createMinioClient({ endpoint, accessKey, secretKey });
-            _bucketName = bucket;
-            _endpointUrl = endpoint.replace(/\/+$/, "");
-            // Ensure bucket exists
-            const exists = await _client.bucketExists(bucket);
-            if (!exists) {
-                await _client.makeBucket(bucket);
-                if (log.info)
-                    log.info(`MinIO bucket "${bucket}" created`);
-            }
-            // Optionally set public read-only policy
-            if (publicRead) {
-                const publicPolicy = JSON.stringify({
-                    Version: "2012-10-17",
-                    Statement: [
-                        {
-                            Effect: "Allow",
-                            Principal: { AWS: ["*"] },
-                            Action: ["s3:GetObject"],
-                            Resource: [`arn:aws:s3:::${bucket}/*`],
-                        },
-                    ],
-                });
-                await _client.setBucketPolicy(bucket, publicPolicy);
-            }
-            if (log.success) {
-                log.success(`MinIO connected: ${endpoint} (bucket: ${bucket})`);
-            }
-            else {
-                console.log(`✅ MinIO connected: ${endpoint} (bucket: ${bucket})`);
-            }
+    async init(config) {
+        _initConfig = config;
+        if (_reconnectTimer) {
+            clearTimeout(_reconnectTimer);
+            _reconnectTimer = null;
         }
-        catch (error) {
-            if (log.error)
-                log.error(`MinIO connection failed: ${errorMessage(error)}`);
-            _client = null;
-            _bucketName = null;
-            _endpointUrl = null;
-        }
+        await attemptConnect(config);
     },
     /**
      * Whether MinIO is available for use.
@@ -196,6 +231,11 @@ export const MinioManager = {
         _client = null;
         _bucketName = null;
         _endpointUrl = null;
+        _initConfig = null;
+        if (_reconnectTimer) {
+            clearTimeout(_reconnectTimer);
+            _reconnectTimer = null;
+        }
     },
 };
 //# sourceMappingURL=MinioManager.js.map

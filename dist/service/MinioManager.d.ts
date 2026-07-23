@@ -26,8 +26,12 @@ export interface MinioObjectInfo {
 export declare const MinioManager: {
     /**
      * Initialize the MinIO client and ensure the bucket exists.
+     *
+     * A failed connect resolves with MinIO unavailable (consumers keep
+     * working inline/degraded) and schedules background reconnect attempts
+     * every {@link RECONNECT_DELAY_MILLISECONDS} until one succeeds.
      */
-    init({ endpoint, accessKey, secretKey, bucket, publicRead, logger, }: MinioInitConfig): Promise<void>;
+    init(config: MinioInitConfig): Promise<void>;
     /**
      * Whether MinIO is available for use.
      */
