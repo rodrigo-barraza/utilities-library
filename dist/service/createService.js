@@ -11,6 +11,22 @@ import { createRequestLoggerMiddleware } from "./RequestLoggerMiddleware.js";
 import { HealthAggregator } from "./HealthAggregator.js";
 import { registerCleanup, installShutdownHandlers } from "./GracefulShutdown.js";
 import { CronScheduler } from "./CronScheduler.js";
+/**
+ * `Access-Control-Max-Age` sent on the preflight response, in seconds.
+ *
+ * Deliberately a constant and not a `ServiceConfig` option: how long a
+ * preflight may be cached is a property of the browser, not of the
+ * service, so every consumer wants the same answer.
+ *
+ * Browsers clamp this rather than reject it, so the number is a ceiling
+ * request and not a guarantee — Chromium honours up to 7200, Firefox up
+ * to 86400, and Safari caps well below both. 600 sits under every one of
+ * those ceilings, so every engine takes it literally, and it bounds how
+ * long a browser can keep applying a stale CORS policy after the
+ * allow-list changes. With no header at all the default is 5 seconds,
+ * which is what cross-origin callers pay today.
+ */
+export const CORS_PREFLIGHT_MAX_AGE_SECONDS = 600;
 export async function createService(config) {
     const { name, port, version = "0.1.0", description, cors: corsOrigin = "*", bodyLimit = "10mb", listen = true, } = config;
     const logger = config.logger || createLogger(name);
@@ -37,8 +53,12 @@ export async function createService(config) {
         res.header("Access-Control-Allow-Credentials", "true");
         res.header("Access-Control-Allow-Headers", CORS_ALLOWED_HEADERS_STRING);
         res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
-        if (req.method === "OPTIONS")
+        // Max-Age only means anything on the preflight — on a real
+        // response it is a header nothing reads.
+        if (req.method === "OPTIONS") {
+            res.header("Access-Control-Max-Age", String(CORS_PREFLIGHT_MAX_AGE_SECONDS));
             return res.sendStatus(204);
+        }
         next();
     });
     // ── Body parsing ─────────────────────────────────────────

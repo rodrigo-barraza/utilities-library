@@ -5,6 +5,22 @@ import { type MinioInitConfig } from "./MinioManager.js";
 import { HealthAggregator } from "./HealthAggregator.js";
 import { CronScheduler } from "./CronScheduler.js";
 import type { IndexSpec } from "./MongoManager.js";
+/**
+ * `Access-Control-Max-Age` sent on the preflight response, in seconds.
+ *
+ * Deliberately a constant and not a `ServiceConfig` option: how long a
+ * preflight may be cached is a property of the browser, not of the
+ * service, so every consumer wants the same answer.
+ *
+ * Browsers clamp this rather than reject it, so the number is a ceiling
+ * request and not a guarantee — Chromium honours up to 7200, Firefox up
+ * to 86400, and Safari caps well below both. 600 sits under every one of
+ * those ceilings, so every engine takes it literally, and it bounds how
+ * long a browser can keep applying a stale CORS policy after the
+ * allow-list changes. With no header at all the default is 5 seconds,
+ * which is what cross-origin callers pay today.
+ */
+export declare const CORS_PREFLIGHT_MAX_AGE_SECONDS = 600;
 export interface RouteMount {
     path: string;
     router: Router;
