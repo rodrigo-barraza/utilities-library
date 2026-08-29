@@ -2,7 +2,7 @@
 // createService — Service Chassis factory
 // ─────────────────────────────────────────────────────────────
 
-import express, { type Router, type Express } from "express";
+import express, { type Router, type Express, type RequestHandler } from "express";
 import type { Db } from "mongodb";
 import { createLogger, type Logger } from "../node.ts";
 import { CORS_ALLOWED_HEADERS_STRING } from "../taxonomy/index.ts";
@@ -66,6 +66,25 @@ export interface ServiceConfig {
   routes?: RouteMount[];
   cors?: string | string[];
   bodyLimit?: string;
+  /**
+   * The body-parsing middleware, in place of the chassis's own
+   * `express.json({ limit: bodyLimit })`.
+   *
+   * The chassis mounts ONE JSON parser for the whole app, ahead of every
+   * router, so `bodyLimit` is necessarily a single number: the most any
+   * route would ever keep. A service whose routes keep very different
+   * amounts — a 2 KB presence beat beside an 8 MB world document — pays
+   * the largest of them on every request until its own checks run, and
+   * those run AFTER the parse. This is the slot for a parser that knows
+   * the route: it is mounted exactly where the default one would be, and
+   * `bodyLimit` is then not read at all.
+   *
+   * ⚠ Whatever is passed OWNS parsing — it must set `req.body` itself or
+   * hand the request to an `express.json` of its choosing; nothing else in
+   * the chassis parses a body. (games-service's `bodyLimits.ts` is the
+   * shape: one `express.json` per distinct cap, picked per request.)
+   */
+  bodyParser?: RequestHandler;
   logger?: Logger;
   beforeRoutes?: (app: Express, context: ServiceContext) => void | Promise<void>;
   afterRoutes?: (app: Express, context: ServiceContext) => void | Promise<void>;
@@ -136,7 +155,11 @@ export async function createService(config: ServiceConfig): Promise<ServiceConte
   });
 
   // ── Body parsing ─────────────────────────────────────────
-  app.use(express.json({ limit: bodyLimit }));
+  //
+  // The service's own parser when it brings one (`bodyParser`), else one
+  // `express.json` for the whole app at `bodyLimit`. Same slot either way:
+  // after CORS, before auth, ahead of every router.
+  app.use(config.bodyParser ?? express.json({ limit: bodyLimit }));
 
   // ── Auth ─────────────────────────────────────────────────
   if (config.auth?.apiSecret) {

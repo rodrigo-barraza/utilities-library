@@ -62,7 +62,11 @@ export async function createService(config) {
         next();
     });
     // ── Body parsing ─────────────────────────────────────────
-    app.use(express.json({ limit: bodyLimit }));
+    //
+    // The service's own parser when it brings one (`bodyParser`), else one
+    // `express.json` for the whole app at `bodyLimit`. Same slot either way:
+    // after CORS, before auth, ahead of every router.
+    app.use(config.bodyParser ?? express.json({ limit: bodyLimit }));
     // ── Auth ─────────────────────────────────────────────────
     if (config.auth?.apiSecret) {
         app.use(createSecretGuard(config.auth.apiSecret, {
