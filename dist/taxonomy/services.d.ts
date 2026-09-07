@@ -30,7 +30,6 @@ export declare const SERVICE_PORTS: {
     readonly "iron-service": 5610;
     readonly "iron-client": 3009;
     readonly "games-service": 5611;
-    readonly "games-client": 3010;
     readonly "qbittorrent-service": 8080;
     readonly "lupos-client": 3011;
     readonly "notes-service": 5612;
