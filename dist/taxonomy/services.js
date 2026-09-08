@@ -40,7 +40,6 @@ export const SERVICE_PORTS = {
     "iron-service": 5610,
     "iron-client": 3009,
     "games-service": 5611,
-    "games-client": 3010,
     "qbittorrent-service": 8080,
     "lupos-client": 3011,
     "notes-service": 5612,

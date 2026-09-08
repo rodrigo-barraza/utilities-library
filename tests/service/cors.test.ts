@@ -8,7 +8,7 @@ import {
 
 // ── Helpers ────────────────────────────────────────────────
 
-const ORIGIN = "https://games.rod.dev";
+const ORIGIN = "https://example.rod.dev";
 
 // Boots the chassis without binding its configured port, then serves
 // the returned app on an ephemeral one so the assertions run against
