@@ -52,11 +52,13 @@ describe("HealthAggregator", () => {
     };
     await handler({}, res);
     expect(statusCode).toBe(200);
+    expect(json).toMatchObject({ status: "ok", service: "test-service" });
 
     // degraded case
     health.register("fail", async () => ({ status: "error" }));
     await handler({}, res);
     expect(statusCode).toBe(503);
+    expect(json).toMatchObject({ status: "degraded", checks: { fail: { status: "error" } } });
   });
 
   it("supports method chaining on register", () => {
