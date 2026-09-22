@@ -9,9 +9,10 @@ export declare const PROVIDERS: {
     readonly VLLM: "vllm";
     readonly OLLAMA: "ollama";
     readonly LLAMA_CPP: "llama-cpp";
+    readonly SGLANG: "sglang";
 };
 export type ProviderType = (typeof PROVIDERS)[keyof typeof PROVIDERS];
-export declare const PROVIDER_LIST: ("anthropic" | "elevenlabs" | "google" | "inworld" | "llama-cpp" | "lm-studio" | "moonshot" | "ollama" | "openai" | "vllm")[];
+export declare const PROVIDER_LIST: ("anthropic" | "elevenlabs" | "google" | "inworld" | "llama-cpp" | "lm-studio" | "moonshot" | "ollama" | "openai" | "sglang" | "vllm")[];
 /** All recognized local (self-hosted) provider type identifiers. */
 export declare const LOCAL_PROVIDER_TYPES: Set<ProviderType>;
 /** Human-readable display labels for provider IDs. */

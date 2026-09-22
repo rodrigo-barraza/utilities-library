@@ -1265,6 +1265,32 @@ describe("taxonomy.js", () => {
       expect(taxonomyModule.TOOL_INPUT_MODALITIES.convert_video_to_gif).toContain(taxonomyModule.INPUT_MODALITIES.VIDEO);
     });
   });
+
+  describe("PROVIDERS", () => {
+    it("classifies every self-hosted server type as local, and nothing else", () => {
+      const { PROVIDERS, PROVIDER_LIST, isLocalProvider } = taxonomyModule;
+      const local = PROVIDER_LIST.filter((provider) => isLocalProvider(provider));
+      expect(local.sort()).toEqual(
+        [PROVIDERS.LM_STUDIO, PROVIDERS.VLLM, PROVIDERS.OLLAMA, PROVIDERS.LLAMA_CPP, PROVIDERS.SGLANG].sort(),
+      );
+      expect(isLocalProvider(PROVIDERS.OPENAI)).toBe(false);
+    });
+
+    it("labels every provider", () => {
+      for (const provider of taxonomyModule.PROVIDER_LIST) {
+        expect(taxonomyModule.PROVIDER_LABELS[provider]).toBeTruthy();
+      }
+      expect(taxonomyModule.PROVIDER_LABELS.sglang).toBe("SGLang");
+    });
+
+    it("resolves numbered local instances to their base type", () => {
+      const { resolveProviderBaseType } = taxonomyModule;
+      expect(resolveProviderBaseType("sglang")).toBe("sglang");
+      expect(resolveProviderBaseType("sglang-2")).toBe("sglang");
+      expect(resolveProviderBaseType("llama-cpp-3")).toBe("llama-cpp");
+      expect(resolveProviderBaseType("unknown-2")).toBe("unknown-2");
+    });
+  });
 });
 
 // ─── Errors ──────────────────────────────────────────────────────
