@@ -42,9 +42,7 @@ function resolveStatus(error) {
 export function createErrorHandler(options = {}) {
     const logger = options.logger || console;
     const logStack = options.logStack !== false;
-    return function errorHandler(error, _req, res, 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _next) {
+    return function errorHandler(error, _req, res, _next) {
         const status = resolveStatus(error);
         const err = error;
         const logError = logger.error ?? logger.log ?? console.error;

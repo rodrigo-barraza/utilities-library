@@ -31,7 +31,7 @@ function copyViaLegacyExecCommand(text) {
     document.body.appendChild(textAreaElement);
     textAreaElement.select();
     textAreaElement.setSelectionRange(0, text.length);
-    let isSuccessful = false;
+    let isSuccessful;
     try {
         isSuccessful = document.execCommand("copy");
     }

@@ -99,7 +99,7 @@ describe("createCircuitBreaker", () => {
         expect(breaker.isOpen()).toBe(false);
     });
     it("supports manual trip and reset", () => {
-        let clock = 0;
+        const clock = 0;
         const breaker = createCircuitBreaker({ tripDurationMilliseconds: 500, now: () => clock });
         breaker.trip();
         expect(breaker.isOpen()).toBe(true);
