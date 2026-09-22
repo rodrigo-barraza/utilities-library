@@ -61,7 +61,6 @@ export function createErrorHandler(options: ErrorHandlerOptions = {}) {
     error: unknown,
     _req: Request,
     res: Response,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _next: NextFunction,
   ): void {
     const status = resolveStatus(error);

@@ -69,10 +69,10 @@ export class PrismApiClient {
             const isTimeout = error instanceof DOMException && error.name === "TimeoutError";
             if (isTimeout) {
                 this.logger.error(`[PrismApiClient] Timeout after ${timeoutMs}ms on ${endpoint}`);
-                throw new Error(`Prism timeout: ${endpoint} exceeded ${timeoutMs}ms`);
+                throw new Error(`Prism timeout: ${endpoint} exceeded ${timeoutMs}ms`, { cause: error });
             }
             if (!this.retryOnNetworkError) {
-                throw new Error(`Prism unreachable: ${errorText(error)}`);
+                throw new Error(`Prism unreachable: ${errorText(error)}`, { cause: error });
             }
             // Transient network error (connection refused/reset before any
             // response): retry once with jitter, then give up.
@@ -83,7 +83,7 @@ export class PrismApiClient {
             }
             catch (retryError) {
                 this.logger.error(`[PrismApiClient] Network error on ${endpoint} (after retry): ${errorText(retryError)}`);
-                throw new Error(`Prism unreachable: ${errorText(retryError)}`);
+                throw new Error(`Prism unreachable: ${errorText(retryError)}`, { cause: retryError });
             }
         }
         if (!response.ok) {

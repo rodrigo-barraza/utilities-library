@@ -148,19 +148,20 @@
     "prepublishOnly": "npm run build && vitest run"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
+    "@eslint/js": "^10.0.1",
     "@js-temporal/polyfill": "^0.5.1",
     "@types/express": "^5.0.0",
     "@types/node": "^25.9.0",
-    "eslint": "^10.4.0",
+    "@typescript/native": "npm:typescript@next",
+    "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
     "express": "^5.2.1",
     "globals": "^17.6.0",
     "minio": "^8.0.7",
     "next": "^16.2.6",
     "prettier": "^3.8.3",
-    "typescript": "next",
-    "typescript-eslint": "^8.33.0",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "typescript-eslint": "^8.70.1",
     "vitest": "^4.1.5"
   },
   "peerDependencies": {
