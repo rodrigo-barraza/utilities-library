@@ -15,6 +15,7 @@ export const PROVIDERS = {
   VLLM: "vllm",
   OLLAMA: "ollama",
   LLAMA_CPP: "llama-cpp",
+  SGLANG: "sglang",
 } as const;
 
 export type ProviderType = (typeof PROVIDERS)[keyof typeof PROVIDERS];
@@ -27,6 +28,7 @@ export const LOCAL_PROVIDER_TYPES = new Set<ProviderType>([
   PROVIDERS.VLLM,
   PROVIDERS.OLLAMA,
   PROVIDERS.LLAMA_CPP,
+  PROVIDERS.SGLANG,
 ]);
 
 /** Human-readable display labels for provider IDs. */
@@ -41,6 +43,7 @@ export const PROVIDER_LABELS: Readonly<Record<string, string>> = {
   [PROVIDERS.VLLM]: "vLLM",
   [PROVIDERS.OLLAMA]: "Ollama",
   [PROVIDERS.LLAMA_CPP]: "llama.cpp",
+  [PROVIDERS.SGLANG]: "SGLang",
 };
 
 /** Check whether a provider ID belongs to a local/self-hosted provider. */

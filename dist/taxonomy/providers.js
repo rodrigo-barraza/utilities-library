@@ -14,6 +14,7 @@ export const PROVIDERS = {
     VLLM: "vllm",
     OLLAMA: "ollama",
     LLAMA_CPP: "llama-cpp",
+    SGLANG: "sglang",
 };
 export const PROVIDER_LIST = Object.values(PROVIDERS);
 /** All recognized local (self-hosted) provider type identifiers. */
@@ -22,6 +23,7 @@ export const LOCAL_PROVIDER_TYPES = new Set([
     PROVIDERS.VLLM,
     PROVIDERS.OLLAMA,
     PROVIDERS.LLAMA_CPP,
+    PROVIDERS.SGLANG,
 ]);
 /** Human-readable display labels for provider IDs. */
 export const PROVIDER_LABELS = {
@@ -35,6 +37,7 @@ export const PROVIDER_LABELS = {
     [PROVIDERS.VLLM]: "vLLM",
     [PROVIDERS.OLLAMA]: "Ollama",
     [PROVIDERS.LLAMA_CPP]: "llama.cpp",
+    [PROVIDERS.SGLANG]: "SGLang",
 };
 /** Check whether a provider ID belongs to a local/self-hosted provider. */
 export function isLocalProvider(provider) {
