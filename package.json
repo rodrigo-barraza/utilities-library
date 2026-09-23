@@ -23,10 +23,6 @@
       "types": "./dist/mongo.d.ts",
       "import": "./dist/mongo.js"
     },
-    "./eslint": {
-      "types": "./dist/config/eslint.d.ts",
-      "import": "./dist/config/eslint.js"
-    },
     "./vitest": {
       "types": "./dist/config/vitest.d.ts",
       "import": "./dist/config/vitest.js"
