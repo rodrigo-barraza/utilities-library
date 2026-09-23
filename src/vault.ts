@@ -58,6 +58,11 @@ export interface VaultClient {
   clearRegistryCache(): void;
 }
 
+/** Never let the vault token reach a log line. */
+function redact(message: string, token: string | undefined): string {
+  return token ? message.split(token).join("[redacted]") : message;
+}
+
 export function createVaultClient(options: VaultClientOptions = {}): VaultClient {
   const { keys, prefix, exclude } = options;
 
@@ -140,7 +145,7 @@ export function createVaultClient(options: VaultClientOptions = {}): VaultClient
 
         return secrets;
       } catch (error: unknown) {
-        console.warn(`⚠️  Vault unreachable (${getErrorMessage(error)})`);
+        console.warn(`⚠️  Vault unreachable (${redact(getErrorMessage(error), vaultServiceToken)})`);
         return {};
       }
     },
@@ -157,12 +162,20 @@ export function createVaultClient(options: VaultClientOptions = {}): VaultClient
         const queryString = buildQueryString();
         const url = `${vaultServiceUrl}/secrets${queryString ? "?" + queryString : ""}`;
 
+        // The Authorization header goes to curl on stdin (`--config -`), never
+        // in argv: argv is readable by every local user via `ps`, and a failed
+        // execFileSync quotes the whole command line into its error message —
+        // which lands in build logs.
         const standardOutput = execFileSync("curl", [
           "-sf",
           "--max-time", String(FETCH_TIMEOUT_MILLISECONDS / 1000),
-          "-H", `Authorization: Bearer ${vaultServiceToken}`,
+          "--config", "-",
           url,
-        ], { encoding: "utf-8", timeout: FETCH_TIMEOUT_MILLISECONDS + 1000 });
+        ], {
+          encoding: "utf-8",
+          input: `header = "Authorization: Bearer ${vaultServiceToken}"\n`,
+          timeout: FETCH_TIMEOUT_MILLISECONDS + 1000,
+        });
 
         const secrets = JSON.parse(standardOutput) as DecryptedSecrets;
 
@@ -172,7 +185,7 @@ export function createVaultClient(options: VaultClientOptions = {}): VaultClient
 
         return secrets;
       } catch (error: unknown) {
-        console.warn(`⚠️  Vault unreachable (${getErrorMessage(error)})`);
+        console.warn(`⚠️  Vault unreachable (${redact(getErrorMessage(error), vaultServiceToken)})`);
         return {};
       }
     },
