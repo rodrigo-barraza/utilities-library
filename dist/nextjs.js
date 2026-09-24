@@ -27,7 +27,16 @@ export function createAuthMiddleware({ auth, authEnabled }) {
     };
 }
 // ── Passthrough Headers ─────────────────────────────────────
-const PASSTHROUGH_HEADERS = ["content-type", "content-disposition", "content-length"];
+// What a non-JSON upstream response keeps. `cache-control` lets a service
+// decide how its static files cache (sessions-service's tracker script:
+// short for client.js, immutable for its hashed chunks) — without it every
+// proxied file was re-downloaded on every page load.
+const PASSTHROUGH_HEADERS = [
+    "content-type",
+    "content-disposition",
+    "content-length",
+    "cache-control",
+];
 function resolveUpstream(request, { port, publicUrlEnvironmentVariable, internalUrlEnvironmentVariable }) {
     // INTERNAL FIRST: this resolver runs SERVER-SIDE (Next.js route handlers
     // proxying to a sibling service). From inside a container on the LAN, the
